@@ -20,18 +20,17 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 public class OutbreakGui {
 
 	// Icons
 	private ImageIcon nuclearIcon = createImageIcon("/icons/nuclear.png");
 
-	// Initialize all swing objects
-
 	// Frame
 	private JFrame Frame = new JFrame("TestlabOutbreak");
 
-	// Buttons with options
+	// Buttons
 	private JButton Open = new JButton("Open");
 	private JSeparator Separator = new JSeparator(JSeparator.VERTICAL);
 	private JButton Help = new JButton("Help");
@@ -47,15 +46,15 @@ public class OutbreakGui {
 			Locale.US);
 
 	// Text fields
-	private JTextField coordinatesNameParser = new JTextField("location", 10);
-	private JTextField HPDParser = new JTextField("95%", 5);
+	private JTextField coordinatesNameParser = new JTextField("location", 5);
+	private JTextField HPDParser = new JTextField("95%", 3);
 	private JTextField mrsdStringParser = new JTextField(formatter
-			.format(calendar.getTime()), 10);
+			.format(calendar.getTime()), 8);
 	private JComboBox eraParser;
 	private JTextField numberOfIntervalsParser = new JTextField("100", 5);
-	private JTextField maxAltMappingParser = new JTextField("5000000", 5);
+	private JTextField maxAltMappingParser = new JTextField("5000000", 10);
 	private JTextField kmlPathParser = new JTextField(
-			"/home/filip/Pulpit/output.kml", 15);
+			"/home/filip/Pulpit/output.kml", 17);
 
 	/**
 	 * Constructor for the GUI
@@ -82,19 +81,18 @@ public class OutbreakGui {
 		content.setLayout(new GridLayout(0, 1));
 
 		JPanel panel1 = new JPanel();
-		panel1.setBorder(new javax.swing.border.TitledBorder(
-				"Coordinate attribute name:"));
+
+		panel1.setBorder(new TitledBorder("Coordinate attribute name:"));
 		panel1.add(coordinatesNameParser);
 		content.add(panel1);
 
 		JPanel panel2 = new JPanel();
-		panel2.setBorder(new javax.swing.border.TitledBorder("HPD:"));
+		panel2.setBorder(new TitledBorder("HPD:"));
 		panel2.add(HPDParser);
 		content.add(panel2);
 
 		JPanel panel3 = new JPanel();
-		panel3.setBorder(new javax.swing.border.TitledBorder(
-				"Most recent sampling date:"));
+		panel3.setBorder(new TitledBorder("Most recent sampling date:"));
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
 		panel3.add(mrsdStringParser);
@@ -102,24 +100,22 @@ public class OutbreakGui {
 		content.add(panel3);
 
 		JPanel panel4 = new JPanel();
-		panel4.setBorder(new javax.swing.border.TitledBorder(
-				"Number of intervals:"));
+		panel4.setBorder(new TitledBorder("Number of intervals:"));
 		panel4.add(numberOfIntervalsParser);
 		content.add(panel4);
 
 		JPanel panel5 = new JPanel();
-		panel5.setBorder(new javax.swing.border.TitledBorder(
-				"Maximal altitude:"));
+		panel5.setBorder(new TitledBorder("Maximal altitude:"));
 		panel5.add(maxAltMappingParser);
 		content.add(panel5);
 
 		JPanel panel6 = new JPanel();
-		panel6.setBorder(new javax.swing.border.TitledBorder("KML name:"));
+		panel6.setBorder(new TitledBorder("KML name:"));
 		panel6.add(kmlPathParser);
 		content.add(panel6);
 
 		JPanel panel7 = new JPanel();
-		panel7.setBorder(new javax.swing.border.TitledBorder("Generate KML:"));
+		panel7.setBorder(new TitledBorder("Generate KML:"));
 		panel7.add(Generate);
 		content.add(panel7);
 
@@ -153,9 +149,9 @@ public class OutbreakGui {
 
 		// Display Frame
 		Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Frame.setSize(400, 500);
-		// Frame.setResizable(false);
-		Frame.pack(); // size frame
+		Frame.setSize(300, 600);
+		Frame.setResizable(false);
+		// Frame.pack(); // size frame
 		Frame.setVisible(true);
 
 	}
