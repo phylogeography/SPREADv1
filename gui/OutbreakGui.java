@@ -26,30 +26,32 @@ public class OutbreakGui {
 	// Initialize all swing objects
 
 	// Frame
-	private JFrame Frame = new JFrame("TestlabOutbreak"); // create Frame
+	private JFrame Frame = new JFrame("TestlabOutbreak");
 
 	// Buttons with options
 	private JButton Open = new JButton("Open");
 	private JSeparator Separator = new JSeparator(JSeparator.VERTICAL);
 	private JButton Help = new JButton("Help");
 	private JButton Quit = new JButton("Quit");
-
+	private JButton Generate = new JButton("Generate");
+	
 	// Menubar
 	private JMenuBar mb = new JMenuBar();
 
-    Calendar calendar = Calendar.getInstance();
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",
-			Locale.US);
-	
+	Calendar calendar = Calendar.getInstance();
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
 	// Text fields
 	JTextField coordinatesNameParser = new JTextField("location", 10);
 	JTextField HPDParser = new JTextField("95%", 5);
-	JTextField mrsdStringParser = new JTextField(formatter.format(calendar.getTime()), 10);
+	JTextField mrsdStringParser = new JTextField(formatter.format(calendar
+			.getTime()), 10);
 	JComboBox eraParser;
 	JTextField numberOfIntervalsParser = new JTextField("100", 5);
 	JTextField maxAltMappingParser = new JTextField("5000000", 5);
-	JTextField kmlPathParser = new JTextField("/home/filip/Pulpit/output.kml", 15);
-	
+	JTextField kmlPathParser = new JTextField("/home/filip/Pulpit/output.kml",
+			15);
+
 	/**
 	 * Constructor for the GUI
 	 * */
@@ -75,7 +77,8 @@ public class OutbreakGui {
 		content.setLayout(new GridLayout(0, 1));
 
 		JPanel panel1 = new JPanel();
-		panel1.setBorder(new javax.swing.border.TitledBorder("Coordinate attribute name:"));
+		panel1.setBorder(new javax.swing.border.TitledBorder(
+				"Coordinate attribute name:"));
 		panel1.add(coordinatesNameParser);
 		content.add(panel1);
 
@@ -85,28 +88,36 @@ public class OutbreakGui {
 		content.add(panel2);
 
 		JPanel panel3 = new JPanel();
-		panel3.setBorder(new javax.swing.border.TitledBorder("Most recent sampling date:"));
-		String era[] = {"AD","BC"};
+		panel3.setBorder(new javax.swing.border.TitledBorder(
+				"Most recent sampling date:"));
+		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
 		panel3.add(mrsdStringParser);
 		panel3.add(eraParser);
 		content.add(panel3);
-		
+
 		JPanel panel4 = new JPanel();
-		panel4.setBorder(new javax.swing.border.TitledBorder("number of intervals:"));
+		panel4.setBorder(new javax.swing.border.TitledBorder(
+				"number of intervals:"));
 		panel4.add(numberOfIntervalsParser);
 		content.add(panel4);
 
 		JPanel panel5 = new JPanel();
-		panel5.setBorder(new javax.swing.border.TitledBorder("maximal altitude:"));
+		panel5.setBorder(new javax.swing.border.TitledBorder(
+				"maximal altitude:"));
 		panel5.add(maxAltMappingParser);
 		content.add(panel5);
-		
+
 		JPanel panel6 = new JPanel();
 		panel6.setBorder(new javax.swing.border.TitledBorder("kml name:"));
 		panel6.add(kmlPathParser);
 		content.add(panel6);
 		
+		JPanel panel7 = new JPanel();
+		panel7.setBorder(new javax.swing.border.TitledBorder("Generate KML:"));
+		panel7.add(Generate);
+		content.add(panel7);
+
 	}
 
 	private class ListenMenuQuit implements ActionListener {
