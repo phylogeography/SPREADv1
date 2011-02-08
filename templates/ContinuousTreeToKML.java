@@ -74,7 +74,7 @@ public class ContinuousTreeToKML {
 	private static polygonsMappingEnum polygonsColorMapping;
 	private static polygonsMappingEnum polygonsOpacityMapping;
 
-	public static void main(String args[]) throws Exception {
+	public ContinuousTreeToKML() throws Exception {
 
 		// start timing
 		long time = -System.currentTimeMillis();
