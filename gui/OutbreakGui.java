@@ -23,6 +23,9 @@ import javax.swing.JTextField;
 
 public class OutbreakGui {
 
+	// Icons
+	private ImageIcon nuclearIcon = createImageIcon("/icons/nuclear.png");
+
 	// Initialize all swing objects
 
 	// Frame
@@ -33,24 +36,26 @@ public class OutbreakGui {
 	private JSeparator Separator = new JSeparator(JSeparator.VERTICAL);
 	private JButton Help = new JButton("Help");
 	private JButton Quit = new JButton("Quit");
-	private JButton Generate = new JButton("Generate");
-	
+	private JButton Generate = new JButton("Generate", nuclearIcon);
+
 	// Menubar
 	private JMenuBar mb = new JMenuBar();
 
-	Calendar calendar = Calendar.getInstance();
-	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+	// Current date
+	private Calendar calendar = Calendar.getInstance();
+	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",
+			Locale.US);
 
 	// Text fields
-	JTextField coordinatesNameParser = new JTextField("location", 10);
-	JTextField HPDParser = new JTextField("95%", 5);
-	JTextField mrsdStringParser = new JTextField(formatter.format(calendar
-			.getTime()), 10);
-	JComboBox eraParser;
-	JTextField numberOfIntervalsParser = new JTextField("100", 5);
-	JTextField maxAltMappingParser = new JTextField("5000000", 5);
-	JTextField kmlPathParser = new JTextField("/home/filip/Pulpit/output.kml",
-			15);
+	private JTextField coordinatesNameParser = new JTextField("location", 10);
+	private JTextField HPDParser = new JTextField("95%", 5);
+	private JTextField mrsdStringParser = new JTextField(formatter
+			.format(calendar.getTime()), 10);
+	private JComboBox eraParser;
+	private JTextField numberOfIntervalsParser = new JTextField("100", 5);
+	private JTextField maxAltMappingParser = new JTextField("5000000", 5);
+	private JTextField kmlPathParser = new JTextField(
+			"/home/filip/Pulpit/output.kml", 15);
 
 	/**
 	 * Constructor for the GUI
@@ -98,21 +103,21 @@ public class OutbreakGui {
 
 		JPanel panel4 = new JPanel();
 		panel4.setBorder(new javax.swing.border.TitledBorder(
-				"number of intervals:"));
+				"Number of intervals:"));
 		panel4.add(numberOfIntervalsParser);
 		content.add(panel4);
 
 		JPanel panel5 = new JPanel();
 		panel5.setBorder(new javax.swing.border.TitledBorder(
-				"maximal altitude:"));
+				"Maximal altitude:"));
 		panel5.add(maxAltMappingParser);
 		content.add(panel5);
 
 		JPanel panel6 = new JPanel();
-		panel6.setBorder(new javax.swing.border.TitledBorder("kml name:"));
+		panel6.setBorder(new javax.swing.border.TitledBorder("KML name:"));
 		panel6.add(kmlPathParser);
 		content.add(panel6);
-		
+
 		JPanel panel7 = new JPanel();
 		panel7.setBorder(new javax.swing.border.TitledBorder("Generate KML:"));
 		panel7.add(Generate);
@@ -155,7 +160,6 @@ public class OutbreakGui {
 
 	}
 
-	/** Returns an ImageIcon, or null if the path was invalid. */
 	protected ImageIcon createImageIcon(String path) {
 		java.net.URL imgURL = this.getClass().getResource(path);
 		if (imgURL != null) {
@@ -170,6 +174,6 @@ public class OutbreakGui {
 		OutbreakGui gui = new OutbreakGui();
 		gui.launchFrame();
 
-	}
+	}// END: main
 
 }
