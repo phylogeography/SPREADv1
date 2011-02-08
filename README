@@ -1,0 +1,44 @@
+                            S.P.R.E.A.D
+
+ 
+  This is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+ 
+   This software is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+ 
+ 
+________________________________________________________________________________
+                            PURPOSE
+                            
+This is a test run of Spread Java app to support processing and visualizing BEAST's 
+phylogeographic models. Contains only one (continuous) visualisation, 
+wrapped in simplistic gui.
+
+BEAST software: http://beast.bio.ed.ac.uk/Main_Page
+SPREAD:         https://github.com/fbielejec/Spread
+
+________________________________________________________________________________
+                            COMPILING
+
+Depends on the following libraries:
+
+jam.jar  
+jdom.jar  
+jebl.jar  
+org.boehn.kmlframework_20090320.jar
+core.jar
+
+The libraries can be downloaded from: http://dl.dropbox.com/u/5169517/lib.zip
+
+________________________________________________________________________________
+                              TODO
+
+* GUI
+
+
+
