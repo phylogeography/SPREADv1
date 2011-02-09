@@ -1,6 +1,13 @@
+// int n = Integer.parseInt(jTextField1.getText()); //no of repetitions (1, infty)
 package gui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,15 +18,22 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 public class OutbreakGui {
@@ -31,14 +45,14 @@ public class OutbreakGui {
 	private JFrame Frame = new JFrame("TestlabOutbreak");
 
 	// Buttons
-	private JButton Open = new JButton("Open");
-	private JSeparator Separator = new JSeparator(JSeparator.VERTICAL);
-	private JButton Help = new JButton("Help");
-	private JButton Quit = new JButton("Quit");
-	private JButton Generate = new JButton("Generate", nuclearIcon);
+	private JButton open = new JButton("Open");
+	private JSeparator separator = new JSeparator(JSeparator.VERTICAL);
+	private JButton help = new JButton("Help");
+	private JButton quit = new JButton("Quit");
+	private JButton generate = new JButton("Generate", nuclearIcon);
 
 	// Menubar
-	private JMenuBar mb = new JMenuBar();
+	private JMenuBar menuBar = new JMenuBar();
 
 	// Current date
 	private Calendar calendar = Calendar.getInstance();
@@ -47,7 +61,7 @@ public class OutbreakGui {
 
 	// Text fields
 	private JTextField coordinatesNameParser = new JTextField("location", 5);
-	private JTextField HPDParser = new JTextField("95%", 3);
+	private JTextField HPDParser = new JTextField("95", 2);
 	private JTextField mrsdStringParser = new JTextField(formatter
 			.format(calendar.getTime()), 8);
 	private JComboBox eraParser;
@@ -55,6 +69,9 @@ public class OutbreakGui {
 	private JTextField maxAltMappingParser = new JTextField("5000000", 10);
 	private JTextField kmlPathParser = new JTextField(
 			"/home/filip/Pulpit/output.kml", 17);
+
+	// Status Bar
+	JTextArea textArea;
 
 	/**
 	 * Constructor for the GUI
@@ -65,32 +82,35 @@ public class OutbreakGui {
 		Frame.addWindowListener(new ListenCloseWdw());
 
 		// Set menubar
-		Frame.setJMenuBar(mb);
+		Frame.setJMenuBar(menuBar);
 
 		// Build Menus
-		mb.add(Open);
-		mb.add(Separator);
-		mb.add(Help);
-		mb.add(Quit);
+		menuBar.add(open);
+		menuBar.add(separator);
+		menuBar.add(help);
+		menuBar.add(quit);
 
 		// Add Menu listeners
-		Quit.addActionListener(new ListenMenuQuit());
-		Open.addActionListener(new ListenMenuOpen());
+		quit.addActionListener(new ListenMenuQuit());
+		open.addActionListener(new ListenMenuOpen());
 
 		Container content = Frame.getContentPane();
 		content.setLayout(new GridLayout(0, 1));
 
 		JPanel panel1 = new JPanel();
-
 		panel1.setBorder(new TitledBorder("Coordinate attribute name:"));
 		panel1.add(coordinatesNameParser);
 		content.add(panel1);
 
 		JPanel panel2 = new JPanel();
+		JLabel label2 = new JLabel("%");
 		panel2.setBorder(new TitledBorder("HPD:"));
 		panel2.add(HPDParser);
+		panel2.add(label2);
+		label2.setLabelFor(panel2);
 		content.add(panel2);
 
+		// TODO: add right labels for - parse only the digits
 		JPanel panel3 = new JPanel();
 		panel3.setBorder(new TitledBorder("Most recent sampling date:"));
 		String era[] = { "AD", "BC" };
@@ -116,9 +136,26 @@ public class OutbreakGui {
 
 		JPanel panel7 = new JPanel();
 		panel7.setBorder(new TitledBorder("Generate KML:"));
-		panel7.add(Generate);
+		panel7.add(generate);
 		content.add(panel7);
 
+		// TODO: make scroll pane work
+		JPanel panel8 = new JPanel();
+		panel8.setLayout(new BorderLayout());
+		panel8.setPreferredSize(new Dimension(450, 110));
+		textArea = new JTextArea(4, 20);
+		textArea.setEditable(true);
+		JScrollPane scrollPane = new JScrollPane(textArea);
+		panel8.add(scrollPane, BorderLayout.CENTER);
+		panel8.add(textArea);
+		content.add(panel8);
+
+		// JPanel panel8 = new JPanel();
+		// panel8.setBorder(new TitledBorder("TEST"));
+		// LabelTextCombo test = new LabelTextCombo("First Name", new Font(
+		// "Arial", Font.PLAIN, 13), new Font("Arial", Font.PLAIN, 13), 15);
+		// panel8.add(test);
+		// content.add(panel8);
 	}
 
 	private class ListenMenuQuit implements ActionListener {
@@ -135,7 +172,20 @@ public class OutbreakGui {
 			chooser.showOpenDialog(chooser);
 			File file = chooser.getSelectedFile();
 			String filename = file.getAbsolutePath();
+			System.out.println(filename);
+		}
+	}
 
+	public class ListenGenerate implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+			String text = kmlPathParser.getText();
+			textArea.append(text + "\n");
+			// kmlPathParser.selectAll();
+
+			// Make sure the new text is visible, even if there
+			// was a selection in the text area.
+			textArea.setCaretPosition(textArea.getDocument().getLength());
 		}
 	}
 
@@ -156,7 +206,7 @@ public class OutbreakGui {
 
 	}
 
-	protected ImageIcon createImageIcon(String path) {
+	private ImageIcon createImageIcon(String path) {
 		java.net.URL imgURL = this.getClass().getResource(path);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL);
@@ -172,4 +222,23 @@ public class OutbreakGui {
 
 	}// END: main
 
-}
+	private class LabelTextCombo extends JPanel {
+
+		private JLabel label;
+		private JTextField textField;
+
+		public LabelTextCombo(String text, Font labelFont, Font textFieldFont,
+				int textFieldSize) {
+
+			// setLayout(new FlowLayout(FlowLayout.CENTER));
+			setLayout(new GridLayout(1, 2));
+			label = new JLabel(text);
+			label.setFont(labelFont);
+			textField = new JTextField(textFieldSize);
+			textField.setFont(textFieldFont);
+			add(label);
+			add(textField);
+		}
+	}
+
+}// END: OutbreakGui class
