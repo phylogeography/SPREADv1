@@ -151,10 +151,10 @@ public class OutbreakGui {
 		// panel8.add(test);
 		// content.add(panel8);
 	}
-	
+
 	private class ListenMenuHelp implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("TODO");
+			textArea.setText("TODO");
 		}
 	}
 
@@ -179,25 +179,26 @@ public class OutbreakGui {
 		public void actionPerformed(ActionEvent e) {
 			try {
 				ContinuousTreeToKML template = new ContinuousTreeToKML();
-				template.setHPD(HPDParser.getText()+"%");
+
+				String mrsdString = mrsdStringParser.getText() + " "
+						+ (eraParser.getSelectedIndex() == 0 ? "AD" : "BC");
+
+				template.setHPD(HPDParser.getText() + "%");
 				template.setcoordinatesName(coordinatesNameParser.getText());
-				template.setmaxAltitudeMapping(Double.valueOf(maxAltMappingParser.getText()));
-				
-				String mrsdString = mrsdStringParser.getText()+" "+
-				
-				(eraParser.getSelectedIndex() == 0 ? "AD":"BC" );
-				
-				
+				template.setmaxAltitudeMapping(Double
+						.valueOf(maxAltMappingParser.getText()));
 				template.setmrsdString(mrsdString);
-				template.setnumberOfIntervals(Integer.valueOf(numberOfIntervalsParser.getText()));
+				template.setnumberOfIntervals(Integer
+						.valueOf(numberOfIntervalsParser.getText()));
 				template.setKmlWriterPath(kmlPathParser.getText());
 				template.setTreePath(filename);
 				template.GenerateKML();
-				
-				System.out.println(template.time);
+
+				textArea.setText("finished in: " + template.time + " msec");
 
 			} catch (Exception e1) {
 				e1.printStackTrace();
+				textArea.setText("Could not generate!");
 			}
 		}
 	}
