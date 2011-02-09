@@ -1,26 +1,19 @@
-/**
- * RacRABV 
- * */
-//   "/home/filip/Dropbox/Java-ML/JavaProjects/Spread/data/RacRABV/RacRABV_cont_MCC.tre"
-
-/**
- * WNX
- * */
-//   "/home/filip/Dropbox/Java-ML/JavaProjects/Spread/data/WNX/WNV_relaxed_geo_gamma_MCC.tre"
-
 package templates;
 
 import generator.KMLGenerator;
 
 import java.awt.Color;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import jebl.evolution.graphs.Node;
+import jebl.evolution.io.NexusImporter;
+import jebl.evolution.io.TreeImporter;
+import jebl.evolution.trees.RootedTree;
 import structure.Coordinates;
 import structure.Layer;
 import structure.Line;
@@ -29,12 +22,6 @@ import structure.Style;
 import structure.TimeLine;
 import utils.SpreadDate;
 import utils.Utils;
-
-import jebl.evolution.graphs.Node;
-import jebl.evolution.io.ImportException;
-import jebl.evolution.io.NexusImporter;
-import jebl.evolution.io.TreeImporter;
-import jebl.evolution.trees.RootedTree;
 
 public class ContinuousTreeToKML {
 
@@ -82,20 +69,6 @@ public class ContinuousTreeToKML {
 
 	public ContinuousTreeToKML() throws Exception {
 
-		// this will be parsed from gui:
-		importer = new NexusImporter(
-				new FileReader(
-						"/home/filip/Dropbox/Java-ML/JavaProjects/Spread/data/RacRABV/RacRABV_cont_MCC.tre"
-
-				));
-
-		coordinatesName = "location";
-		HPD = "80%";
-		mrsdString = "2002-11-01 AD";
-		numberOfIntervals = 100;
-		maxAltMapping = 5000000;
-		writer = new PrintWriter("/home/filip/Pulpit/output.kml");
-
 		// parse combobox choices here
 		timescalerSwitcher = timescalerEnum.YEARS;
 		branchesColorMapping = branchesMappingEnum.TIME;
@@ -106,6 +79,34 @@ public class ContinuousTreeToKML {
 		polygonsOpacityMapping = polygonsMappingEnum.RATE;
 
 	}// END: ContinuousTreeToKML()
+
+	public void setHPD(String percent) {
+		HPD = percent;
+	}
+
+	public void setcoordinatesName(String name) {
+		coordinatesName = name;
+	}
+
+	public void setmrsdString(String mrsd) {
+		mrsdString = mrsd;
+	}
+
+	public void setnumberOfIntervals(int number) {
+		numberOfIntervals = number;
+	}
+
+	public void setmaxAltitudeMapping(double max) {
+		maxAltMapping = max;
+	}
+
+	public void setKmlWriterPath(String kmlpath) throws Exception {
+		writer = new PrintWriter(kmlpath);
+	}
+
+	public void setTreePath(String path) throws Exception {
+		importer = new NexusImporter(new FileReader(path));
+	}
 
 	public void GenerateKML() {
 		try {
@@ -327,11 +328,12 @@ public class ContinuousTreeToKML {
 		}
 	}// END: Branches class
 
+	// ////////////////
+	// ---POLYGONS---//
+	// ////////////////
 	private static class Polygons implements Runnable {
 		public void run() {
-			// ////////////////
-			// ---POLYGONS---//
-			// ////////////////
+
 			try {
 				// this is for Polygons folder:
 				String polygonsDescription = null;
