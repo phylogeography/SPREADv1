@@ -53,7 +53,8 @@ public class ContinuousTreeToKML {
 	private static String longitudeName;
 	private static String latitudeName;
 	private static double treeHeightMax;
-
+	private static String kmlPath;
+	
 	private enum branchesMappingEnum {
 		TIME, RATE, DISTANCE, DEFAULT
 	}
@@ -91,8 +92,8 @@ public class ContinuousTreeToKML {
 		mrsdString = "2002-11-01 AD";
 		numberOfIntervals = 100;
 		maxAltMapping = 5000000;
-		PrintWriter writer = new PrintWriter("/home/filip/Pulpit/output.kml");
-
+		kmlPath = "/home/filip/Pulpit/output.kml";
+		
 		// parse combobox choices here
 		timescalerSwitcher = timescalerEnum.YEARS;
 		branchesColorMapping = branchesMappingEnum.TIME;
@@ -149,6 +150,7 @@ public class ContinuousTreeToKML {
 		}
 
 		// generate kml
+		PrintWriter writer = new PrintWriter(kmlPath);
 		kmloutput.generate(writer, timeLine, layers);
 
 		// stop timing
