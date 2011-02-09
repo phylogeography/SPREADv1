@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,15 +33,17 @@ public class OutbreakGui {
 	private String filename;
 	// Icons
 	private ImageIcon nuclearIcon = createImageIcon("/icons/nuclear.png");
-
+	private ImageIcon treeIcon = createImageIcon("/icons/tree.png");
+	private ImageIcon quitIcon = createImageIcon("/icons/close.png");
+	private ImageIcon helpIcon = createImageIcon("/icons/help.png");
 	// Frame
 	private JFrame Frame = new JFrame("TestlabOutbreak");
 
 	// Buttons
-	private JButton open = new JButton("Open");
+	private JButton open = new JButton("Open", treeIcon);
 	private JSeparator separator = new JSeparator(JSeparator.VERTICAL);
-	private JButton help = new JButton("Help");
-	private JButton quit = new JButton("Quit");
+	private JButton help = new JButton("Help", helpIcon);
+	private JButton quit = new JButton("Quit", quitIcon);
 	private JButton generate = new JButton("Generate", nuclearIcon);
 
 	// Menubar
@@ -184,11 +185,11 @@ public class OutbreakGui {
 						+ (eraParser.getSelectedIndex() == 0 ? "AD" : "BC");
 
 				template.setHPD(HPDParser.getText() + "%");
-				template.setcoordinatesName(coordinatesNameParser.getText());
-				template.setmaxAltitudeMapping(Double
+				template.setCoordinatesName(coordinatesNameParser.getText());
+				template.setMaxAltitudeMapping(Double
 						.valueOf(maxAltMappingParser.getText()));
-				template.setmrsdString(mrsdString);
-				template.setnumberOfIntervals(Integer
+				template.setMrsdString(mrsdString);
+				template.setNumberOfIntervals(Integer
 						.valueOf(numberOfIntervalsParser.getText()));
 				template.setKmlWriterPath(kmlPathParser.getText());
 				template.setTreePath(filename);
@@ -235,25 +236,5 @@ public class OutbreakGui {
 		gui.launchFrame();
 
 	}// END: main
-
-	@SuppressWarnings("serial")
-	public class LabelTextCombo extends JPanel {
-
-		private JLabel label;
-		private JTextField textField;
-
-		public LabelTextCombo(String text, Font labelFont, Font textFieldFont,
-				int textFieldSize) {
-
-			// setLayout(new FlowLayout(FlowLayout.CENTER));
-			setLayout(new GridLayout(1, 2));
-			label = new JLabel(text);
-			label.setFont(labelFont);
-			textField = new JTextField(textFieldSize);
-			textField.setFont(textFieldFont);
-			add(label);
-			add(textField);
-		}
-	}
 
 }// END: OutbreakGui class
