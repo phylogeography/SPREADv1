@@ -14,6 +14,7 @@ import generator.KMLGenerator;
 
 import java.awt.Color;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +31,14 @@ import utils.SpreadDate;
 import utils.Utils;
 
 import jebl.evolution.graphs.Node;
+import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
 
 public class ContinuousTreeToKML {
+
+	public long time;
 
 	// how many millisecond one day holds
 	private static final int DayInMillis = 86400000;
@@ -53,8 +57,9 @@ public class ContinuousTreeToKML {
 	private static String longitudeName;
 	private static String latitudeName;
 	private static double treeHeightMax;
-	private static String kmlPath;
-	
+	private static TreeImporter importer;
+	private static PrintWriter writer;
+
 	private enum branchesMappingEnum {
 		TIME, RATE, DISTANCE, DEFAULT
 	}
@@ -77,23 +82,20 @@ public class ContinuousTreeToKML {
 
 	public ContinuousTreeToKML() throws Exception {
 
-		// start timing
-		long time = -System.currentTimeMillis();
-
 		// this will be parsed from gui:
-		TreeImporter importer = new NexusImporter(
+		importer = new NexusImporter(
 				new FileReader(
 						"/home/filip/Dropbox/Java-ML/JavaProjects/Spread/data/RacRABV/RacRABV_cont_MCC.tre"
 
 				));
 
 		coordinatesName = "location";
-		HPD = "95%";
+		HPD = "80%";
 		mrsdString = "2002-11-01 AD";
 		numberOfIntervals = 100;
 		maxAltMapping = 5000000;
-		kmlPath = "/home/filip/Pulpit/output.kml";
-		
+		writer = new PrintWriter("/home/filip/Pulpit/output.kml");
+
 		// parse combobox choices here
 		timescalerSwitcher = timescalerEnum.YEARS;
 		branchesColorMapping = branchesMappingEnum.TIME;
@@ -103,61 +105,69 @@ public class ContinuousTreeToKML {
 		polygonsColorMapping = polygonsMappingEnum.RATE;
 		polygonsOpacityMapping = polygonsMappingEnum.RATE;
 
-		// this is to generate kml output
-		KMLGenerator kmloutput = new KMLGenerator();
-		layers = new ArrayList<Layer>();
+	}// END: ContinuousTreeToKML()
 
-		// this is to choose the proper time scale (if the tree nodes are not
-		// scaled in years)
-		timescaler = Double.NaN;
-		switch (timescalerSwitcher) {
-		case DAYS:
-			timescaler = 1;
-			break;
-		case MONTHS:
-			timescaler = 30;
-		case YEARS:
-			timescaler = 365;
-			break;
+	public void GenerateKML() {
+		try {
+
+			// start timing
+			time = -System.currentTimeMillis();
+
+			// this is to generate kml output
+			KMLGenerator kmloutput = new KMLGenerator();
+			layers = new ArrayList<Layer>();
+
+			// this is to choose the proper time scale
+			timescaler = Double.NaN;
+			switch (timescalerSwitcher) {
+			case DAYS:
+				timescaler = 1;
+				break;
+			case MONTHS:
+				timescaler = 30;
+			case YEARS:
+				timescaler = 365;
+				break;
+			}
+
+			tree = (RootedTree) importer.importNextTree();
+
+			// this is for time calculations
+			rootHeight = tree.getHeight(tree.getRootNode());
+
+			// this is for coordinate attribute names
+			longitudeName = (coordinatesName + 2);
+			latitudeName = (coordinatesName + 1);
+
+			// this is for mappings
+			treeHeightMax = Utils.getTreeHeightMax(tree);
+
+			// This is a general time span for the tree
+			SpreadDate mrsd = new SpreadDate(mrsdString);
+			TimeLine timeLine = new TimeLine(mrsd.getTime()
+					- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
+					numberOfIntervals);
+
+			// Execute threads
+			final int NTHREDS = 10;
+			ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
+
+			executor.submit(new Branches());
+			executor.submit(new Polygons());
+			executor.shutdown();
+			// Wait until all threads are finished
+			while (!executor.isTerminated()) {
+			}
+
+			kmloutput.generate(writer, timeLine, layers);
+
+			// stop timing
+			time += System.currentTimeMillis();
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		tree = (RootedTree) importer.importNextTree();
-		// this is for time calculations
-		rootHeight = tree.getHeight(tree.getRootNode());
-
-		// this is for coordinate attribute names
-		longitudeName = (coordinatesName + 2);
-		latitudeName = (coordinatesName + 1);
-
-		// this is for mappings
-		treeHeightMax = Utils.getTreeHeightMax(tree);
-
-		// This is a general time span for the tree
-		SpreadDate mrsd = new SpreadDate(mrsdString);
-		TimeLine timeLine = new TimeLine(mrsd.getTime()
-				- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
-				numberOfIntervals);
-
-		// Execute threads
-		final int NTHREDS = 10;
-		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
-
-		executor.submit(new Branches());
-		executor.submit(new Polygons());
-		executor.shutdown();
-		// Wait until all threads are finished
-		while (!executor.isTerminated()) {
-		}
-
-		// generate kml
-		PrintWriter writer = new PrintWriter(kmlPath);
-		kmloutput.generate(writer, timeLine, layers);
-
-		// stop timing
-		time += System.currentTimeMillis();
-		System.out.println("finished in: " + time + " msec");
-
-	}// END: main
+	}// END: GenerateKML() method
 
 	// ////////////////
 	// ---BRANCHES---//
