@@ -84,19 +84,19 @@ public class ContinuousTreeToKML {
 		HPD = percent;
 	}
 
-	public void setcoordinatesName(String name) {
+	public void setCoordinatesName(String name) {
 		coordinatesName = name;
 	}
 
-	public void setmrsdString(String mrsd) {
+	public void setMrsdString(String mrsd) {
 		mrsdString = mrsd;
 	}
 
-	public void setnumberOfIntervals(int number) {
+	public void setNumberOfIntervals(int number) {
 		numberOfIntervals = number;
 	}
 
-	public void setmaxAltitudeMapping(double max) {
+	public void setMaxAltitudeMapping(double max) {
 		maxAltMapping = max;
 	}
 
