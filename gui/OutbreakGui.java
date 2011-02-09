@@ -36,7 +36,12 @@ import javax.swing.SpringLayout;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import templates.ContinuousTreeToKML;
+
 public class OutbreakGui {
+
+	// Instance of template
+	static ContinuousTreeToKML template;
 
 	// Icons
 	private ImageIcon nuclearIcon = createImageIcon("/icons/nuclear.png");
@@ -93,6 +98,7 @@ public class OutbreakGui {
 		// Add Menu listeners
 		quit.addActionListener(new ListenMenuQuit());
 		open.addActionListener(new ListenMenuOpen());
+		generate.addActionListener(new ListenGenerate());
 
 		Container content = Frame.getContentPane();
 		content.setLayout(new GridLayout(0, 1));
@@ -110,7 +116,6 @@ public class OutbreakGui {
 		label2.setLabelFor(panel2);
 		content.add(panel2);
 
-		// TODO: add right labels for - parse only the digits
 		JPanel panel3 = new JPanel();
 		panel3.setBorder(new TitledBorder("Most recent sampling date:"));
 		String era[] = { "AD", "BC" };
@@ -141,8 +146,7 @@ public class OutbreakGui {
 
 		// TODO: make scroll pane work
 		JPanel panel8 = new JPanel();
-		panel8.setLayout(new BorderLayout());
-		panel8.setPreferredSize(new Dimension(450, 110));
+		// panel8.setLayout(new BorderLayout());
 		textArea = new JTextArea(4, 20);
 		textArea.setEditable(true);
 		JScrollPane scrollPane = new JScrollPane(textArea);
@@ -178,14 +182,14 @@ public class OutbreakGui {
 
 	public class ListenGenerate implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			try {
 
-			String text = kmlPathParser.getText();
-			textArea.append(text + "\n");
-			// kmlPathParser.selectAll();
+				template.GenerateKML();
+				System.out.println(template.time);
 
-			// Make sure the new text is visible, even if there
-			// was a selection in the text area.
-			textArea.setCaretPosition(textArea.getDocument().getLength());
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -217,12 +221,14 @@ public class OutbreakGui {
 	}
 
 	public static void main(String args[]) throws Exception {
+		template = new ContinuousTreeToKML();
 		OutbreakGui gui = new OutbreakGui();
 		gui.launchFrame();
 
 	}// END: main
 
-	private class LabelTextCombo extends JPanel {
+	@SuppressWarnings("serial")
+	public class LabelTextCombo extends JPanel {
 
 		private JLabel label;
 		private JTextField textField;
