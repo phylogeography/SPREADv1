@@ -15,9 +15,9 @@
 ________________________________________________________________________________
                             PURPOSE
                             
-This is a test run of Spread Java app to support processing and visualizing BEAST's 
-phylogeographic models. Contains only one (continuous) visualisation, 
-wrapped in simplistic gui.
+This is a test run of Spread. Spread is a Java app supporting processing and 
+visualizing BEAST's phylogeographic models. Contains only one (continuous) 
+visualisation, wrapped in simplistic gui.
 
 BEAST software: http://beast.bio.ed.ac.uk/Main_Page
 SPREAD:         https://github.com/fbielejec/Spread
