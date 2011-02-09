@@ -1,13 +1,8 @@
-// int n = Integer.parseInt(jTextField1.getText()); //no of repetitions (1, infty)
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,8 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -32,17 +25,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout;
-import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import templates.ContinuousTreeToKML;
 
 public class OutbreakGui {
 
-	// Instance of template
-	static ContinuousTreeToKML template;
-
+	private String filename;
 	// Icons
 	private ImageIcon nuclearIcon = createImageIcon("/icons/nuclear.png");
 
@@ -66,7 +55,7 @@ public class OutbreakGui {
 
 	// Text fields
 	private JTextField coordinatesNameParser = new JTextField("location", 5);
-	private JTextField HPDParser = new JTextField("95", 2);
+	private static JTextField HPDParser = new JTextField("80", 2);
 	private JTextField mrsdStringParser = new JTextField(formatter
 			.format(calendar.getTime()), 8);
 	private JComboBox eraParser;
@@ -99,6 +88,7 @@ public class OutbreakGui {
 		quit.addActionListener(new ListenMenuQuit());
 		open.addActionListener(new ListenMenuOpen());
 		generate.addActionListener(new ListenGenerate());
+		help.addActionListener(new ListenMenuHelp());
 
 		Container content = Frame.getContentPane();
 		content.setLayout(new GridLayout(0, 1));
@@ -161,6 +151,12 @@ public class OutbreakGui {
 		// panel8.add(test);
 		// content.add(panel8);
 	}
+	
+	private class ListenMenuHelp implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("TODO");
+		}
+	}
 
 	private class ListenMenuQuit implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -175,16 +171,29 @@ public class OutbreakGui {
 
 			chooser.showOpenDialog(chooser);
 			File file = chooser.getSelectedFile();
-			String filename = file.getAbsolutePath();
-			System.out.println(filename);
+			filename = file.getAbsolutePath();
 		}
 	}
 
 	public class ListenGenerate implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			try {
-
+				ContinuousTreeToKML template = new ContinuousTreeToKML();
+				template.setHPD(HPDParser.getText()+"%");
+				template.setcoordinatesName(coordinatesNameParser.getText());
+				template.setmaxAltitudeMapping(Double.valueOf(maxAltMappingParser.getText()));
+				
+				String mrsdString = mrsdStringParser.getText()+" "+
+				
+				(eraParser.getSelectedIndex() == 0 ? "AD":"BC" );
+				
+				
+				template.setmrsdString(mrsdString);
+				template.setnumberOfIntervals(Integer.valueOf(numberOfIntervalsParser.getText()));
+				template.setKmlWriterPath(kmlPathParser.getText());
+				template.setTreePath(filename);
 				template.GenerateKML();
+				
 				System.out.println(template.time);
 
 			} catch (Exception e1) {
@@ -221,7 +230,6 @@ public class OutbreakGui {
 	}
 
 	public static void main(String args[]) throws Exception {
-		template = new ContinuousTreeToKML();
 		OutbreakGui gui = new OutbreakGui();
 		gui.launchFrame();
 
