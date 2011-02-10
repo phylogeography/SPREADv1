@@ -1,5 +1,6 @@
 package utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +11,7 @@ public class SpreadDate {
 	Calendar cal;
 	SimpleDateFormat formatter;
 
-	public SpreadDate(String date) throws Exception {
+	public SpreadDate(String date) throws ParseException {
 
 		// if no era specified assume current era
 		String line[] = date.split(" ");
