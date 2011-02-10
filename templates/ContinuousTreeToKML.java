@@ -3,8 +3,10 @@ package templates;
 import generator.KMLGenerator;
 
 import java.awt.Color;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -67,7 +69,7 @@ public class ContinuousTreeToKML {
 	private static polygonsMappingEnum polygonsColorMapping;
 	private static polygonsMappingEnum polygonsOpacityMapping;
 
-	public ContinuousTreeToKML() throws Exception {
+	public ContinuousTreeToKML() {
 
 		// parse combobox choices here
 		timescalerSwitcher = timescalerEnum.YEARS;
@@ -80,7 +82,7 @@ public class ContinuousTreeToKML {
 
 	}// END: ContinuousTreeToKML()
 
-	public void setHPD(String percent) {
+	public void setHPD(String percent) throws RuntimeException {
 		HPD = percent;
 	}
 
@@ -100,11 +102,11 @@ public class ContinuousTreeToKML {
 		maxAltMapping = max;
 	}
 
-	public void setKmlWriterPath(String kmlpath) throws Exception {
+	public void setKmlWriterPath(String kmlpath) throws FileNotFoundException {
 		writer = new PrintWriter(kmlpath);
 	}
 
-	public void setTreePath(String path) throws Exception {
+	public void setTreePath(String path) throws FileNotFoundException {
 		importer = new NexusImporter(new FileReader(path));
 	}
 
@@ -441,7 +443,8 @@ public class ContinuousTreeToKML {
 
 				e.printStackTrace();
 			}
-		}
+
+		}// END: run
 	}// END: polygons class
 
 }// END: ContinuousTreeToKML class
