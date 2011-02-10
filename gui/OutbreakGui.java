@@ -8,9 +8,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.lang.RuntimeException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,7 +44,6 @@ public class OutbreakGui {
 
 	// Buttons
 	private JButton open = new JButton("Open", treeIcon);
-	private JSeparator separator = new JSeparator(JSeparator.VERTICAL);
 	private JButton help = new JButton("Help", helpIcon);
 	private JButton quit = new JButton("Quit", quitIcon);
 	private JButton generate = new JButton("Generate", nuclearIcon);
@@ -81,7 +83,7 @@ public class OutbreakGui {
 
 		// Build Menus
 		menuBar.add(open);
-		menuBar.add(separator);
+		// menuBar.add(new JSeparator(JSeparator.VERTICAL));
 		menuBar.add(help);
 		menuBar.add(quit);
 
@@ -145,12 +147,6 @@ public class OutbreakGui {
 		panel8.add(textArea);
 		content.add(panel8);
 
-		// JPanel panel8 = new JPanel();
-		// panel8.setBorder(new TitledBorder("TEST"));
-		// LabelTextCombo test = new LabelTextCombo("First Name", new Font(
-		// "Arial", Font.PLAIN, 13), new Font("Arial", Font.PLAIN, 13), 15);
-		// panel8.add(test);
-		// content.add(panel8);
 	}
 
 	private class ListenMenuHelp implements ActionListener {
@@ -167,23 +163,30 @@ public class OutbreakGui {
 
 	public class ListenMenuOpen implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			try {
+				JFileChooser chooser = new JFileChooser();
 
-			JFileChooser chooser = new JFileChooser();
+				chooser.showOpenDialog(chooser);
+				File file = chooser.getSelectedFile();
+				filename = file.getAbsolutePath();
 
-			chooser.showOpenDialog(chooser);
-			File file = chooser.getSelectedFile();
-			filename = file.getAbsolutePath();
+				textArea.setText("Opened " + filename);
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				textArea.setText("Could not Open!");
+			}
 		}
 	}
 
 	public class ListenGenerate implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			try {
-				ContinuousTreeToKML template = new ContinuousTreeToKML();
 
+			try {
+
+				ContinuousTreeToKML template = new ContinuousTreeToKML();
 				String mrsdString = mrsdStringParser.getText() + " "
 						+ (eraParser.getSelectedIndex() == 0 ? "AD" : "BC");
-
 				template.setHPD(HPDParser.getText() + "%");
 				template.setCoordinatesName(coordinatesNameParser.getText());
 				template.setMaxAltitudeMapping(Double
@@ -194,15 +197,40 @@ public class OutbreakGui {
 				template.setKmlWriterPath(kmlPathParser.getText());
 				template.setTreePath(filename);
 				template.GenerateKML();
-
-				textArea.setText("finished in: " + template.time + " msec");
-
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				textArea.setText("Could not generate!");
+				textArea.setText("Finished in: " + template.time + " msec");
 			}
-		}
-	}
+			/**
+			 * TODO: catch exception for:
+			 * 
+			 * missing/wrong coord attribute name
+			 * 
+			 * missing/wrong coord HPD name
+			 * 
+			 * missing/wrong mrsd date
+			 * */
+
+			// catch (ParseException e0) {
+			// textArea.setText("FUBAR!");
+			// }
+
+			catch (NullPointerException e0) {
+				textArea.setText("Could not generate! Check if: \n"
+						+ "* tree file is loaded \n");
+			}
+
+			catch (RuntimeException e1) {
+				textArea.setText("Could not generate! Check if: \n"
+						+ "* proper nr of intervals is specified \n"
+						+ "* proper altitude maximum is specified \n");
+			}
+
+			catch (FileNotFoundException e2) {
+				textArea.setText("File not found exception! Check if: \n"
+						+ "* proper kml file path is specified \n");
+			}
+
+		}// END: actionPerformed
+	}// END: ListenGenerate class
 
 	private class ListenCloseWdw extends WindowAdapter {
 		public void windowClosing(WindowEvent e) {
@@ -216,7 +244,7 @@ public class OutbreakGui {
 		Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Frame.setSize(300, 600);
 		Frame.setResizable(false);
-		// Frame.pack(); // size frame
+		Frame.pack(); // size frame
 		Frame.setVisible(true);
 
 	}
