@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -312,6 +313,7 @@ public class OutbreakGui {
 				template.GenerateKML();
 				textAreaCm.setText("Finished in: " + template.time + " msec");
 			}
+			
 			/**
 			 * TODO: catch exception for (missing att from node):
 			 * 
@@ -432,6 +434,11 @@ public class OutbreakGui {
 				textAreaDm.setText("File not found exception! Check if: \n"
 						+ "* proper kml file path is specified \n");
 			}
+			
+//			catch (ParseException e3) {
+//				textAreaDm.setText("File not found exception! Check if: \n"
+//						+ "* proper kml file path is specified \n");
+//			}
 
 		}// END: actionPerformed
 	}// END: ListenGenerate class

@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -333,7 +334,7 @@ public class ContinuousTreeToKML {
 	// ---POLYGONS---//
 	// ////////////////
 	private static class Polygons implements Runnable {
-		public void run() {
+		public void run() throws RuntimeException {
 
 			try {
 				// this is for Polygons folder:
@@ -413,7 +414,6 @@ public class ContinuousTreeToKML {
 								Style polygonsStyle = new Style(col, 0);
 								polygonsStyle.setId("polygon_style"
 										+ polygonsStyleId);
-
 								SpreadDate mrsd = new SpreadDate(mrsdString);
 								int days = (int) (nodeHeight * timescaler);
 								double startTime = mrsd.minus(days);
@@ -438,8 +438,14 @@ public class ContinuousTreeToKML {
 
 				layers.add(polygonsLayer);
 
-			} catch (Exception e) {
+			}// END: try
 
+			catch (ParseException e) {
+				e.printStackTrace();
+				throw new RuntimeException("FUBAR", e);
+			}
+
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 
