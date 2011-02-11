@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,11 +8,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import java.lang.RuntimeException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,6 +22,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
@@ -33,23 +31,32 @@ import templates.ContinuousTreeToKML;
 
 public class OutbreakGui {
 
-	private String filename;
 	// Icons
 	private ImageIcon nuclearIcon = createImageIcon("/icons/nuclear.png");
 	private ImageIcon treeIcon = createImageIcon("/icons/tree.png");
 	private ImageIcon quitIcon = createImageIcon("/icons/close.png");
 	private ImageIcon helpIcon = createImageIcon("/icons/help.png");
+
 	// Frame
 	private JFrame Frame = new JFrame("TestlabOutbreak");
+	private JTabbedPane tabbedPane = new JTabbedPane();
 
-	// Buttons
-	private JButton open = new JButton("Open", treeIcon);
-	private JButton help = new JButton("Help", helpIcon);
-	private JButton quit = new JButton("Quit", quitIcon);
-	private JButton generate = new JButton("Generate", nuclearIcon);
-
+	/**
+	 * Main menu
+	 * */
 	// Menubar
-	private JMenuBar menuBar = new JMenuBar();
+	private JMenuBar mainMenu = new JMenuBar();
+
+	// Buttons with options
+	private JSeparator Separator = new JSeparator(JSeparator.VERTICAL);
+	private JButton Help = new JButton("Help", helpIcon);
+	private JButton Quit = new JButton("Quit", quitIcon);
+
+	/**
+	 * Continuous Model
+	 * */
+	private String filename = null;
+	// private ContinuousTreeToProcessing segments;
 
 	// Current date
 	private Calendar calendar = Calendar.getInstance();
@@ -67,47 +74,60 @@ public class OutbreakGui {
 	private JTextField kmlPathParser = new JTextField(
 			"/home/filip/Pulpit/output.kml", 17);
 
-	// Status Bar
+	// Buttons for tab
+	private JButton Generate = new JButton("Generate", nuclearIcon);
+	private JButton Open = new JButton("Open", treeIcon);
+
+	// Status Bar for tab
 	JTextArea textArea;
 
-	/**
-	 * Constructor for the GUI
-	 * */
 	public OutbreakGui() {
 
-		// Allows the Swing App to be closed
+		// segments = new ContinuousTreeToProcessing();
+
+		// Setup Main Frame
+		Frame.getContentPane().setLayout(new BorderLayout());
+		Frame.add(tabbedPane);
+		Frame.setJMenuBar(mainMenu);
 		Frame.addWindowListener(new ListenCloseWdw());
 
-		// Set menubar
-		Frame.setJMenuBar(menuBar);
+		// Setup Main Menu
+		mainMenu.add(Separator);
+		mainMenu.add(Help);
+		mainMenu.add(Quit);
 
-		// Build Menus
-		menuBar.add(open);
-		// menuBar.add(new JSeparator(JSeparator.VERTICAL));
-		menuBar.add(help);
-		menuBar.add(quit);
+		// Add Menu buttons listeners
+		Quit.addActionListener(new ListenMenuQuit());
+		Help.addActionListener(new ListenMenuHelp());
 
-		// Add Menu listeners
-		quit.addActionListener(new ListenMenuQuit());
-		open.addActionListener(new ListenMenuOpen());
-		generate.addActionListener(new ListenGenerate());
-		help.addActionListener(new ListenMenuHelp());
+		/**
+		 * Continuous Model Tab
+		 * */
+		JPanel continuousModelTab = new JPanel();
+		continuousModelTab.setLayout(new GridLayout(0, 1));
+		tabbedPane.addTab("Continuous Model", continuousModelTab);
 
-		Container content = Frame.getContentPane();
-		content.setLayout(new GridLayout(0, 1));
+		Open.addActionListener(new ListenMenuOpen());
+		Generate.addActionListener(new ListenGenerate());
+
+		JPanel panel0 = new JPanel();
+		panel0.setBorder(new TitledBorder("Load tree file:"));
+		panel0.add(Open);
+		continuousModelTab.add(panel0);
 
 		JPanel panel1 = new JPanel();
 		panel1.setBorder(new TitledBorder("Coordinate attribute name:"));
 		panel1.add(coordinatesNameParser);
-		content.add(panel1);
+		continuousModelTab.add(panel1);
 
 		JPanel panel2 = new JPanel();
+		panel2.setOpaque(false);
 		JLabel label2 = new JLabel("%");
 		panel2.setBorder(new TitledBorder("HPD:"));
 		panel2.add(HPDParser);
 		panel2.add(label2);
 		label2.setLabelFor(panel2);
-		content.add(panel2);
+		continuousModelTab.add(panel2);
 
 		JPanel panel3 = new JPanel();
 		panel3.setBorder(new TitledBorder("Most recent sampling date:"));
@@ -115,27 +135,27 @@ public class OutbreakGui {
 		eraParser = new JComboBox(era);
 		panel3.add(mrsdStringParser);
 		panel3.add(eraParser);
-		content.add(panel3);
+		continuousModelTab.add(panel3);
 
 		JPanel panel4 = new JPanel();
 		panel4.setBorder(new TitledBorder("Number of intervals:"));
 		panel4.add(numberOfIntervalsParser);
-		content.add(panel4);
+		continuousModelTab.add(panel4);
 
 		JPanel panel5 = new JPanel();
 		panel5.setBorder(new TitledBorder("Maximal altitude:"));
 		panel5.add(maxAltMappingParser);
-		content.add(panel5);
+		continuousModelTab.add(panel5);
 
 		JPanel panel6 = new JPanel();
 		panel6.setBorder(new TitledBorder("KML name:"));
 		panel6.add(kmlPathParser);
-		content.add(panel6);
+		continuousModelTab.add(panel6);
 
 		JPanel panel7 = new JPanel();
 		panel7.setBorder(new TitledBorder("Generate KML:"));
-		panel7.add(generate);
-		content.add(panel7);
+		panel7.add(Generate);
+		continuousModelTab.add(panel7);
 
 		// TODO: make scroll pane work
 		JPanel panel8 = new JPanel();
@@ -145,8 +165,14 @@ public class OutbreakGui {
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		panel8.add(scrollPane, BorderLayout.CENTER);
 		panel8.add(textArea);
-		content.add(panel8);
+		continuousModelTab.add(panel8);
 
+		/**
+		 * Discrete Model Tab
+		 * */
+		JPanel discreteModelTab = new JPanel();
+		discreteModelTab.setOpaque(false);
+		tabbedPane.addTab("Discrete Model", discreteModelTab);
 	}
 
 	private class ListenMenuHelp implements ActionListener {
@@ -155,7 +181,7 @@ public class OutbreakGui {
 		}
 	}
 
-	private class ListenMenuQuit implements ActionListener {
+	public class ListenMenuQuit implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			System.exit(0);
 		}
@@ -200,17 +226,22 @@ public class OutbreakGui {
 				textArea.setText("Finished in: " + template.time + " msec");
 			}
 			/**
-			 * TODO: catch exception for:
+			 * TODO: catch exception for (missing att from node):
 			 * 
 			 * missing/wrong coord attribute name
 			 * 
 			 * missing/wrong coord HPD name
+			 **/
+
+			/**
+			 * TODO: catch exception for (unparseable date):
 			 * 
 			 * missing/wrong mrsd date
 			 * */
 
-			// catch (ParseException e0) {
+			// catch (Throwable e0) {
 			// textArea.setText("FUBAR!");
+			// e0.printStackTrace;
 			// }
 
 			catch (NullPointerException e0) {
@@ -232,20 +263,26 @@ public class OutbreakGui {
 		}// END: actionPerformed
 	}// END: ListenGenerate class
 
-	private class ListenCloseWdw extends WindowAdapter {
+	public class ListenCloseWdw extends WindowAdapter {
 		public void windowClosing(WindowEvent e) {
 			System.exit(0);
 		}
 	}
 
-	private void launchFrame() {
+	public void launchFrame() {
 
 		// Display Frame
 		Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Frame.setSize(300, 600);
 		Frame.setResizable(false);
-		Frame.pack(); // size frame
+		// Frame.pack(); // size frame
 		Frame.setVisible(true);
+
+	}
+
+	public static void main(String args[]) throws Exception {
+		OutbreakGui gui = new OutbreakGui();
+		gui.launchFrame();
 
 	}
 
@@ -259,10 +296,4 @@ public class OutbreakGui {
 		}
 	}
 
-	public static void main(String args[]) throws Exception {
-		OutbreakGui gui = new OutbreakGui();
-		gui.launchFrame();
-
-	}// END: main
-
-}// END: OutbreakGui class
+}
