@@ -31,6 +31,11 @@ import templates.ContinuousTreeToKML;
 
 public class OutbreakGui {
 
+	// Current date
+	private Calendar calendar = Calendar.getInstance();
+	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",
+			Locale.US);
+	
 	// Icons
 	private ImageIcon nuclearIcon = createImageIcon("/icons/nuclear.png");
 	private ImageIcon treeIcon = createImageIcon("/icons/tree.png");
@@ -55,35 +60,27 @@ public class OutbreakGui {
 	/**
 	 * Continuous Model
 	 * */
-	private String filename = null;
-	// private ContinuousTreeToProcessing segments;
-
-	// Current date
-	private Calendar calendar = Calendar.getInstance();
-	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",
-			Locale.US);
+	private String filenameCm = null;
 
 	// Text fields
-	private JTextField coordinatesNameParser = new JTextField("location", 5);
-	private static JTextField HPDParser = new JTextField("80", 2);
-	private JTextField mrsdStringParser = new JTextField(formatter
+	private JTextField coordinatesNameParserCm = new JTextField("location", 5);
+	private static JTextField HPDParserCm = new JTextField("80", 2);
+	private JTextField mrsdStringParserCm = new JTextField(formatter
 			.format(calendar.getTime()), 8);
-	private JComboBox eraParser;
-	private JTextField numberOfIntervalsParser = new JTextField("100", 5);
-	private JTextField maxAltMappingParser = new JTextField("5000000", 10);
-	private JTextField kmlPathParser = new JTextField(
+	private JComboBox eraParserCm;
+	private JTextField numberOfIntervalsParserCm = new JTextField("100", 5);
+	private JTextField maxAltMappingParserCm = new JTextField("5000000", 10);
+	private JTextField kmlPathParserCm = new JTextField(
 			"/home/filip/Pulpit/output.kml", 17);
 
 	// Buttons for tab
-	private JButton Generate = new JButton("Generate", nuclearIcon);
-	private JButton Open = new JButton("Open", treeIcon);
+	private JButton GenerateCm = new JButton("Generate", nuclearIcon);
+	private JButton OpenCm = new JButton("Open", treeIcon);
 
 	// Status Bar for tab
-	JTextArea textArea;
+	JTextArea textAreaCm;
 
 	public OutbreakGui() {
-
-		// segments = new ContinuousTreeToProcessing();
 
 		// Setup Main Frame
 		Frame.getContentPane().setLayout(new BorderLayout());
@@ -104,27 +101,27 @@ public class OutbreakGui {
 		 * Continuous Model Tab
 		 * */
 		JPanel continuousModelTab = new JPanel();
-		continuousModelTab.setLayout(new GridLayout(0, 1));
+		continuousModelTab.setLayout(new GridLayout(9, 2));
 		tabbedPane.addTab("Continuous Model", continuousModelTab);
 
-		Open.addActionListener(new ListenMenuOpen());
-		Generate.addActionListener(new ListenGenerate());
+		OpenCm.addActionListener(new ListenMenuOpen());
+		GenerateCm.addActionListener(new ListenGenerate());
 
 		JPanel panel0 = new JPanel();
 		panel0.setBorder(new TitledBorder("Load tree file:"));
-		panel0.add(Open);
+		panel0.add(OpenCm);
 		continuousModelTab.add(panel0);
 
 		JPanel panel1 = new JPanel();
 		panel1.setBorder(new TitledBorder("Coordinate attribute name:"));
-		panel1.add(coordinatesNameParser);
+		panel1.add(coordinatesNameParserCm);
 		continuousModelTab.add(panel1);
 
 		JPanel panel2 = new JPanel();
 		panel2.setOpaque(false);
 		JLabel label2 = new JLabel("%");
 		panel2.setBorder(new TitledBorder("HPD:"));
-		panel2.add(HPDParser);
+		panel2.add(HPDParserCm);
 		panel2.add(label2);
 		label2.setLabelFor(panel2);
 		continuousModelTab.add(panel2);
@@ -132,39 +129,39 @@ public class OutbreakGui {
 		JPanel panel3 = new JPanel();
 		panel3.setBorder(new TitledBorder("Most recent sampling date:"));
 		String era[] = { "AD", "BC" };
-		eraParser = new JComboBox(era);
-		panel3.add(mrsdStringParser);
-		panel3.add(eraParser);
+		eraParserCm = new JComboBox(era);
+		panel3.add(mrsdStringParserCm);
+		panel3.add(eraParserCm);
 		continuousModelTab.add(panel3);
 
 		JPanel panel4 = new JPanel();
 		panel4.setBorder(new TitledBorder("Number of intervals:"));
-		panel4.add(numberOfIntervalsParser);
+		panel4.add(numberOfIntervalsParserCm);
 		continuousModelTab.add(panel4);
 
 		JPanel panel5 = new JPanel();
 		panel5.setBorder(new TitledBorder("Maximal altitude:"));
-		panel5.add(maxAltMappingParser);
+		panel5.add(maxAltMappingParserCm);
 		continuousModelTab.add(panel5);
 
 		JPanel panel6 = new JPanel();
 		panel6.setBorder(new TitledBorder("KML name:"));
-		panel6.add(kmlPathParser);
+		panel6.add(kmlPathParserCm);
 		continuousModelTab.add(panel6);
 
 		JPanel panel7 = new JPanel();
 		panel7.setBorder(new TitledBorder("Generate KML:"));
-		panel7.add(Generate);
+		panel7.add(GenerateCm);
 		continuousModelTab.add(panel7);
 
 		// TODO: make scroll pane work
 		JPanel panel8 = new JPanel();
 		// panel8.setLayout(new BorderLayout());
-		textArea = new JTextArea(4, 20);
-		textArea.setEditable(true);
-		JScrollPane scrollPane = new JScrollPane(textArea);
+		textAreaCm = new JTextArea(4, 20);
+		textAreaCm.setEditable(true);
+		JScrollPane scrollPane = new JScrollPane(textAreaCm);
 		panel8.add(scrollPane, BorderLayout.CENTER);
-		panel8.add(textArea);
+		panel8.add(textAreaCm);
 		continuousModelTab.add(panel8);
 
 		/**
@@ -177,7 +174,7 @@ public class OutbreakGui {
 
 	private class ListenMenuHelp implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			textArea.setText("TODO");
+			textAreaCm.setText("TODO");
 		}
 	}
 
@@ -194,13 +191,13 @@ public class OutbreakGui {
 
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
-				filename = file.getAbsolutePath();
+				filenameCm = file.getAbsolutePath();
 
-				textArea.setText("Opened " + filename);
+				textAreaCm.setText("Opened " + filenameCm);
 
 			} catch (Exception e1) {
 				e1.printStackTrace();
-				textArea.setText("Could not Open!");
+				textAreaCm.setText("Could not Open!");
 			}
 		}
 	}
@@ -211,19 +208,19 @@ public class OutbreakGui {
 			try {
 
 				ContinuousTreeToKML template = new ContinuousTreeToKML();
-				String mrsdString = mrsdStringParser.getText() + " "
-						+ (eraParser.getSelectedIndex() == 0 ? "AD" : "BC");
-				template.setHPD(HPDParser.getText() + "%");
-				template.setCoordinatesName(coordinatesNameParser.getText());
+				String mrsdString = mrsdStringParserCm.getText() + " "
+						+ (eraParserCm.getSelectedIndex() == 0 ? "AD" : "BC");
+				template.setHPD(HPDParserCm.getText() + "%");
+				template.setCoordinatesName(coordinatesNameParserCm.getText());
 				template.setMaxAltitudeMapping(Double
-						.valueOf(maxAltMappingParser.getText()));
+						.valueOf(maxAltMappingParserCm.getText()));
 				template.setMrsdString(mrsdString);
 				template.setNumberOfIntervals(Integer
-						.valueOf(numberOfIntervalsParser.getText()));
-				template.setKmlWriterPath(kmlPathParser.getText());
-				template.setTreePath(filename);
+						.valueOf(numberOfIntervalsParserCm.getText()));
+				template.setKmlWriterPath(kmlPathParserCm.getText());
+				template.setTreePath(filenameCm);
 				template.GenerateKML();
-				textArea.setText("Finished in: " + template.time + " msec");
+				textAreaCm.setText("Finished in: " + template.time + " msec");
 			}
 			/**
 			 * TODO: catch exception for (missing att from node):
@@ -245,18 +242,18 @@ public class OutbreakGui {
 			// }
 
 			catch (NullPointerException e0) {
-				textArea.setText("Could not generate! Check if: \n"
+				textAreaCm.setText("Could not generate! Check if: \n"
 						+ "* tree file is loaded \n");
 			}
 
 			catch (RuntimeException e1) {
-				textArea.setText("Could not generate! Check if: \n"
+				textAreaCm.setText("Could not generate! Check if: \n"
 						+ "* proper nr of intervals is specified \n"
 						+ "* proper altitude maximum is specified \n");
 			}
 
 			catch (FileNotFoundException e2) {
-				textArea.setText("File not found exception! Check if: \n"
+				textAreaCm.setText("File not found exception! Check if: \n"
 						+ "* proper kml file path is specified \n");
 			}
 
