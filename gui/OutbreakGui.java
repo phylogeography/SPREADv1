@@ -86,9 +86,9 @@ public class OutbreakGui {
 
 		// Display Frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 600);
+		frame.setSize(300 + 750, 600);
 		frame.setResizable(false);
-		// Frame.pack(); // size frame
+		// frame.pack();
 		frame.setVisible(true);
 	}
 
