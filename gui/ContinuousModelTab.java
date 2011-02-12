@@ -36,9 +36,8 @@ public class ContinuousModelTab extends JPanel {
 	private ImageIcon nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 	private ImageIcon treeIcon = CreateImageIcon("/icons/tree.png");
 
-	// Classes
+	// Strings for paths
 	private String treeFilename = null;
-	private ContinuousTreeToProcessing continuousTreeToProcessing;
 
 	// Text fields
 	private JTextField coordinatesNameParser = new JTextField("location", 5);
@@ -59,11 +58,13 @@ public class ContinuousModelTab extends JPanel {
 	// Status Bar for tab
 	private JTextArea textArea;
 
+	// Processing
+	private ContinuousTreeToProcessing continuousTreeToProcessing;
+
 	public ContinuousModelTab() {
 
 		continuousTreeToProcessing = new ContinuousTreeToProcessing();
 
-		// setOpaque(false);
 		setLayout(new GridLayout(0, 1));
 
 		openTree.addActionListener(new ListenOpenTree());
@@ -213,7 +214,8 @@ public class ContinuousModelTab extends JPanel {
 
 			try {
 
-				// continuousTreeToProcessing = new ContinuousTreeToProcessing();
+				// continuousTreeToProcessing = new
+				// ContinuousTreeToProcessing();
 				continuousTreeToProcessing
 						.setCoordinatesName(coordinatesNameParser.getText());
 				continuousTreeToProcessing.setTreePath(treeFilename);
