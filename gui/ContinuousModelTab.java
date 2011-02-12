@@ -1,7 +1,8 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -10,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -35,6 +37,7 @@ public class ContinuousModelTab extends JPanel {
 	// Icons
 	private ImageIcon nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 	private ImageIcon treeIcon = CreateImageIcon("/icons/tree.png");
+	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
 
 	// Strings for paths
 	private String treeFilename = null;
@@ -53,19 +56,29 @@ public class ContinuousModelTab extends JPanel {
 	// Buttons for tab
 	private JButton generateKml = new JButton("Generate", nuclearIcon);
 	private JButton openTree = new JButton("Open", treeIcon);
-	private JButton generateProcessing = new JButton("Plot");
+	private JButton generateProcessing = new JButton("Plot", processingIcon);
 
 	// Status Bar for tab
 	private JTextArea textArea;
 
-	// Processing
+	// left tools pane
+	private JPanel leftPanel;
+
+	// right tools panel
+	private JPanel rightPanel;
 	private ContinuousTreeToProcessing continuousTreeToProcessing;
 
 	public ContinuousModelTab() {
 
-		continuousTreeToProcessing = new ContinuousTreeToProcessing();
+		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
-		setLayout(new GridLayout(0, 1));
+		/**
+		 * left tools pane
+		 * */
+		leftPanel = new JPanel();
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
+		leftPanel.setSize(300, 600);
+		leftPanel.setMaximumSize(new Dimension(300, 600));
 
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -74,12 +87,12 @@ public class ContinuousModelTab extends JPanel {
 		JPanel panel0 = new JPanel();
 		panel0.setBorder(new TitledBorder("Load tree file:"));
 		panel0.add(openTree);
-		add(panel0);
+		leftPanel.add(panel0);
 
 		JPanel panel1 = new JPanel();
 		panel1.setBorder(new TitledBorder("Coordinate attribute name:"));
 		panel1.add(coordinatesNameParser);
-		add(panel1);
+		leftPanel.add(panel1);
 
 		JPanel panel2 = new JPanel();
 		panel2.setOpaque(false);
@@ -88,7 +101,7 @@ public class ContinuousModelTab extends JPanel {
 		panel2.add(HPDParser);
 		panel2.add(label2);
 		label2.setLabelFor(panel2);
-		add(panel2);
+		leftPanel.add(panel2);
 
 		JPanel panel3 = new JPanel();
 		panel3.setBorder(new TitledBorder("Most recent sampling date:"));
@@ -96,28 +109,28 @@ public class ContinuousModelTab extends JPanel {
 		eraParser = new JComboBox(era);
 		panel3.add(mrsdStringParser);
 		panel3.add(eraParser);
-		add(panel3);
+		leftPanel.add(panel3);
 
 		JPanel panel4 = new JPanel();
 		panel4.setBorder(new TitledBorder("Number of intervals:"));
 		panel4.add(numberOfIntervalsParser);
-		add(panel4);
+		leftPanel.add(panel4);
 
 		JPanel panel5 = new JPanel();
 		panel5.setBorder(new TitledBorder("Maximal altitude:"));
 		panel5.add(maxAltMappingParser);
-		add(panel5);
+		leftPanel.add(panel5);
 
 		JPanel panel6 = new JPanel();
 		panel6.setBorder(new TitledBorder("KML name:"));
 		panel6.add(kmlPathParser);
-		add(panel6);
+		leftPanel.add(panel6);
 
 		JPanel panel7 = new JPanel();
 		panel7.setBorder(new TitledBorder("Generate KML / Plot tree:"));
 		panel7.add(generateKml);
 		panel7.add(generateProcessing);
-		add(panel7);
+		leftPanel.add(panel7);
 
 		// TODO: make scroll pane work
 		JPanel panel8 = new JPanel();
@@ -126,18 +139,27 @@ public class ContinuousModelTab extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		panel8.add(scrollPane, BorderLayout.CENTER);
 		panel8.add(textArea);
-		add(panel8);
+		leftPanel.add(panel8);
 
-		// // TODO: add PApplet
-		// JPanel panel9Cm = new JPanel();
-		// panel9Cm.add(continuousTreeToProcessing);
-		// add(panel9Cm);
+		add(leftPanel);
 
+		/**
+		 * Processing pane
+		 * */
+		rightPanel = new JPanel();
+		continuousTreeToProcessing = new ContinuousTreeToProcessing();
+		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
+		rightPanel.setBorder(new TitledBorder(""));
+		rightPanel.setBackground(new Color(255, 255, 255));
+		rightPanel.add(continuousTreeToProcessing);
+		add(rightPanel);
 	}
 
 	private class ListenOpenTree implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+
 			try {
+
 				JFileChooser chooser = new JFileChooser();
 
 				chooser.showOpenDialog(chooser);
@@ -147,7 +169,6 @@ public class ContinuousModelTab extends JPanel {
 				textArea.setText("Opened " + treeFilename);
 
 			} catch (Exception e1) {
-				// e1.printStackTrace();
 				textArea.setText("Could not Open!");
 			}
 		}
@@ -214,12 +235,11 @@ public class ContinuousModelTab extends JPanel {
 
 			try {
 
-				// continuousTreeToProcessing = new
-				// ContinuousTreeToProcessing();
+//				continuousTreeToProcessing = new ContinuousTreeToProcessing();
+//				rightPanel.add(continuousTreeToProcessing);
 				continuousTreeToProcessing
 						.setCoordinatesName(coordinatesNameParser.getText());
 				continuousTreeToProcessing.setTreePath(treeFilename);
-
 				continuousTreeToProcessing.init();
 			}
 
