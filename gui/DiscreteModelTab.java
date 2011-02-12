@@ -59,11 +59,10 @@ public class DiscreteModelTab extends JPanel {
 
 	public DiscreteModelTab() {
 
-		// setOpaque(false);
 		setLayout(new GridLayout(0, 1));
 
 		openTree.addActionListener(new ListenOpenTree());
-		generateKml.addActionListener(new ListenGenerate());
+		generateKml.addActionListener(new ListenGenerateKml());
 		openLocations.addActionListener(new ListenOpenLocations());
 
 		JPanel panel0 = new JPanel();
@@ -156,7 +155,7 @@ public class DiscreteModelTab extends JPanel {
 		}
 	}
 
-	private class ListenGenerate implements ActionListener {
+	private class ListenGenerateKml implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
 			try {
