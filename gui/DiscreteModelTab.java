@@ -79,10 +79,12 @@ public class DiscreteModelTab extends JPanel {
 		/**
 		 * left tools pane
 		 * */
+		Dimension leftPanelDimension = new Dimension(300, 600);
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
-		leftPanel.setSize(300, 600);
-		leftPanel.setMaximumSize(new Dimension(300, 600));
+		leftPanel.setSize(leftPanelDimension);
+		leftPanel.setMinimumSize(leftPanelDimension);
+		leftPanel.setMaximumSize(leftPanelDimension);
 
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -261,12 +263,13 @@ public class DiscreteModelTab extends JPanel {
 				discreteTreeToProcessing.setLocationFilePath(locationsFilename);
 				discreteTreeToProcessing.setTreePath(treeFilename);
 				discreteTreeToProcessing.init();
-			}
 
-			catch (FileNotFoundException e1) {
+			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
+
 			} catch (IOException e2) {
 				e2.printStackTrace();
+
 			} catch (ImportException e3) {
 				e3.printStackTrace();
 			}
