@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -22,6 +23,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+
+import jebl.evolution.io.ImportException;
 
 import templates.ContinuousTreeToKML;
 import templates.ContinuousTreeToProcessing;
@@ -235,17 +238,20 @@ public class ContinuousModelTab extends JPanel {
 
 			try {
 
-//				continuousTreeToProcessing = new ContinuousTreeToProcessing();
-//				rightPanel.add(continuousTreeToProcessing);
 				continuousTreeToProcessing
 						.setCoordinatesName(coordinatesNameParser.getText());
 				continuousTreeToProcessing.setTreePath(treeFilename);
 				continuousTreeToProcessing.init();
-			}
 
-			catch (FileNotFoundException e1) {
+			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
-			}
+
+			} catch (IOException e2) {
+				e2.printStackTrace();
+
+			} catch (ImportException e3) {
+				e3.printStackTrace();
+			}// END: try
 
 		}
 	}
