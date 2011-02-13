@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -22,7 +23,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import jebl.evolution.io.ImportException;
+
 import templates.DiscreteTreeToKML;
+import templates.DiscreteTreeToProcessing;
 
 @SuppressWarnings("serial")
 public class DiscreteModelTab extends JPanel {
@@ -36,6 +40,7 @@ public class DiscreteModelTab extends JPanel {
 	private ImageIcon nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 	private ImageIcon treeIcon = CreateImageIcon("/icons/tree.png");
 	private ImageIcon locationsIcon = CreateImageIcon("/icons/locations.png");
+	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
 
 	// Strings for paths
 	private String treeFilename = null;
@@ -55,16 +60,17 @@ public class DiscreteModelTab extends JPanel {
 	private JButton generateKml = new JButton("Generate", nuclearIcon);
 	private JButton openTree = new JButton("Open", treeIcon);
 	private JButton openLocations = new JButton("Open", locationsIcon);
+	private JButton generateProcessing = new JButton("Plot", processingIcon);
 
 	// Status Bar for tab
 	private JTextArea textArea;
-	
+
 	// left tools pane
 	private JPanel leftPanel;
 
 	// right tools panel
 	private JPanel rightPanel;
-//	private DiscreteTreeToProcessing discreteTreeToProcessing;
+	private DiscreteTreeToProcessing discreteTreeToProcessing;
 
 	public DiscreteModelTab() {
 
@@ -78,10 +84,10 @@ public class DiscreteModelTab extends JPanel {
 		leftPanel.setSize(300, 600);
 		leftPanel.setMaximumSize(new Dimension(300, 600));
 
-
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
 		openLocations.addActionListener(new ListenOpenLocations());
+		generateProcessing.addActionListener(new ListenGenerateProcessing());
 
 		JPanel panel0 = new JPanel();
 		panel0.setBorder(new TitledBorder("Load tree file:"));
@@ -122,8 +128,9 @@ public class DiscreteModelTab extends JPanel {
 		leftPanel.add(panel6);
 
 		JPanel panel7 = new JPanel();
-		panel7.setBorder(new TitledBorder("Generate KML:"));
+		panel7.setBorder(new TitledBorder("Generate KML / Plot tree:"));
 		panel7.add(generateKml);
+		panel7.add(generateProcessing);
 		leftPanel.add(panel7);
 
 		// TODO: make scroll pane work
@@ -134,18 +141,18 @@ public class DiscreteModelTab extends JPanel {
 		panel8.add(scrollPane, BorderLayout.CENTER);
 		panel8.add(textArea);
 		leftPanel.add(panel8);
-		
+
 		add(leftPanel);
 
 		/**
 		 * Processing pane
 		 * */
 		rightPanel = new JPanel();
-//		discreteTreeToProcessing = new discreteTreeToProcessing();
+		discreteTreeToProcessing = new DiscreteTreeToProcessing();
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
 		rightPanel.setBorder(new TitledBorder(""));
 		rightPanel.setBackground(new Color(255, 255, 255));
-//		rightPanel.add(discreteTreeToProcessing);
+		rightPanel.add(discreteTreeToProcessing);
 		add(rightPanel);
 
 	}
@@ -197,8 +204,7 @@ public class DiscreteModelTab extends JPanel {
 
 				discreteTreeToKML.setLocationFilePath(locationsFilename);
 
-				discreteTreeToKML.setStateAttName(stateAttNameParser
-						.getText());
+				discreteTreeToKML.setStateAttName(stateAttNameParser.getText());
 
 				discreteTreeToKML.setMaxAltitudeMapping(Double
 						.valueOf(maxAltMappingParser.getText()));
@@ -245,6 +251,29 @@ public class DiscreteModelTab extends JPanel {
 		}// END: actionPerformed
 	}// END: ListenGenerate class
 
+	private class ListenGenerateProcessing implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+			try {
+
+				discreteTreeToProcessing.setStateAttName(stateAttNameParser
+						.getText());
+				discreteTreeToProcessing.setLocationFilePath(locationsFilename);
+				discreteTreeToProcessing.setTreePath(treeFilename);
+				discreteTreeToProcessing.init();
+			}
+
+			catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			} catch (IOException e2) {
+				e2.printStackTrace();
+			} catch (ImportException e3) {
+				e3.printStackTrace();
+			}
+
+		}
+	}
+
 	private ImageIcon CreateImageIcon(String path) {
 		java.net.URL imgURL = this.getClass().getResource(path);
 		if (imgURL != null) {
@@ -254,7 +283,7 @@ public class DiscreteModelTab extends JPanel {
 			return null;
 		}
 	}
-	
+
 	public void setText(String text) {
 		textArea.setText(text);
 	}
