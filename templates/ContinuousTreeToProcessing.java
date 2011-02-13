@@ -1,6 +1,5 @@
 package templates;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -27,23 +26,30 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 	private static ReadLocations mapdata;
 	// min/max longitude
-	static float minX, maxX;
+	private static float minX, maxX;
 	// min/max latitude
-	static float minY, maxY;
+	private static float minY, maxY;
 	// Border of where the map should be drawn on screen
-	static float mapX1, mapX2;
-	static float mapY1, mapY2;
+	private static float mapX1, mapX2;
+	private static float mapY1, mapY2;
 
 	public ContinuousTreeToProcessing() {
 
 	}// END:ContinuousTreeToProcessing
 
 	public void setCoordinatesName(String name) {
-		ContinuousTreeToProcessing.coordinatesName = name;
+		coordinatesName = name;
+		// this is for coordinate attribute names
+		longitudeName = (coordinatesName + 2);
+		latitudeName = (coordinatesName + 1);
 	}
 
-	public void setTreePath(String path) throws FileNotFoundException {
+	public void setTreePath(String path) throws IOException, ImportException {
 		importer = new NexusImporter(new FileReader(path));
+		tree = (RootedTree) importer.importNextTree();
+
+		// this is for mappings
+		treeHeightMax = Utils.getTreeHeightMax(tree);
 	}
 
 	public void setGetPng(boolean set) {
@@ -52,48 +58,31 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 	public void setup() {
 
-		try {
+		size(800, 500);
+		noLoop();
+		smooth();
 
-			size(800, 500);
-			noLoop();
-			smooth();
+		mapX1 = 30;
+		mapX2 = width - mapX1;
+		mapY1 = 20;
+		mapY2 = height - mapY1;
 
-			mapX1 = 30;
-			mapX2 = width - mapX1;
-			mapY1 = 20;
-			mapY2 = height - mapY1;
+		// will improve font rendering speed with default renderer
+		hint(ENABLE_NATIVE_FONTS);
+		PFont plotFont = createFont("Arial", 12);
+		textFont(plotFont);
 
-			// will improve font rendering speed with default renderer
-			hint(ENABLE_NATIVE_FONTS);
-			PFont plotFont = createFont("Arial", 12);
-			textFont(plotFont);
+		// load the map data
+		mapdata = new ReadLocations(this.getClass()
+				.getResource("world_map.txt").getPath());
 
-			// load the map data
-			mapdata = new ReadLocations(this.getClass().getResource(
-					"world_map.txt").getPath());
+		// calculate min/max longitude
+		minX = mapdata.getLongMin();
+		maxX = mapdata.getLongMax();
+		// calculate min/max latitude
+		minY = Utils.getMercatorLatitude(mapdata.getLatMin());
+		maxY = Utils.getMercatorLatitude(mapdata.getLatMax());
 
-			// calculate min/max longitude
-			minX = mapdata.getLongMin();
-			maxX = mapdata.getLongMax();
-			// calculate min/max latitude
-			minY = Utils.getMercatorLatitude(mapdata.getLatMin());
-			maxY = Utils.getMercatorLatitude(mapdata.getLatMax());
-
-			tree = (RootedTree) importer.importNextTree();
-
-			// this is for coordinate attribute names
-			longitudeName = (coordinatesName + 2);
-			latitudeName = (coordinatesName + 1);
-
-			// this is for mappings
-			treeHeightMax = Utils.getTreeHeightMax(tree);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-
-		} catch (ImportException e) {
-			e.printStackTrace();
-		}
 	}// END:setup
 
 	public void draw() {
