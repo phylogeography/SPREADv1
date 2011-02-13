@@ -158,6 +158,7 @@ public class DiscreteTreeToKML {
 			}
 
 			tree = (RootedTree) importer.importNextTree();
+
 			// this is for time calculations
 			rootHeight = tree.getHeight(tree.getRootNode());
 
