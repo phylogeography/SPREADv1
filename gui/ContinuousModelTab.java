@@ -78,10 +78,12 @@ public class ContinuousModelTab extends JPanel {
 		/**
 		 * left tools pane
 		 * */
+		Dimension leftPanelDimension = new Dimension(300, 600);
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
-		leftPanel.setSize(300, 600);
-		leftPanel.setMaximumSize(new Dimension(300, 600));
+		leftPanel.setSize(leftPanelDimension);
+		leftPanel.setMinimumSize(leftPanelDimension);
+		leftPanel.setMaximumSize(leftPanelDimension);
 
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -243,14 +245,22 @@ public class ContinuousModelTab extends JPanel {
 				continuousTreeToProcessing.setTreePath(treeFilename);
 				continuousTreeToProcessing.init();
 
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
+			} catch (NullPointerException e0) {
+				textArea.setText("Could not plot! Check if: \n"
+						+ "* tree file is loaded \n");
+
+			} catch (RuntimeException e1) {
+				// TODO: is not caught!
+				textArea.setText("Could not generate! Check if: \n"
+						+ "* proper tree file is loaded \n");
 
 			} catch (IOException e2) {
 				e2.printStackTrace();
+				textArea.setText("FUBAR2");
 
 			} catch (ImportException e3) {
 				e3.printStackTrace();
+				textArea.setText("FUBAR3");
 			}// END: try
 
 		}
