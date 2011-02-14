@@ -229,6 +229,8 @@ public class ContinuousModelTab extends JPanel {
 			catch (FileNotFoundException e2) {
 				textArea.setText("File not found exception! Check if: \n"
 						+ "* proper kml file path is specified \n");
+			} catch (Exception e3) {
+				textArea.setText("FUBAR");
 			}
 
 		}// END: actionPerformed
@@ -245,6 +247,8 @@ public class ContinuousModelTab extends JPanel {
 				continuousTreeToProcessing.setHPD(HPDParser.getText() + "%");
 				continuousTreeToProcessing.init();
 
+				textArea.setText("Done!");
+
 			} catch (NullPointerException e0) {
 				textArea.setText("Could not plot! Check if: \n"
 						+ "* tree file is loaded \n");
@@ -259,10 +263,10 @@ public class ContinuousModelTab extends JPanel {
 
 			} catch (ImportException e3) {
 				textArea.setText("FUBAR3");
-			}// END: try
+			}
 
-		}
-	}
+		}// END: actionPerformed
+	}// END: class
 
 	private ImageIcon CreateImageIcon(String path) {
 		java.net.URL imgURL = this.getClass().getResource(path);
