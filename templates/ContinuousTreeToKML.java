@@ -167,9 +167,11 @@ public class ContinuousTreeToKML {
 			// stop timing
 			time += System.currentTimeMillis();
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
+			throw new RuntimeException("FUBAR!!!", e);
 		}
+		
 	}// END: GenerateKML() method
 
 	// ////////////////
@@ -324,10 +326,10 @@ public class ContinuousTreeToKML {
 				layers.add(branchesLayer);
 
 			} catch (Exception e) {
-
 				e.printStackTrace();
 			}
-		}
+			
+		}// END: run
 	}// END: Branches class
 
 	// ////////////////
@@ -439,15 +441,23 @@ public class ContinuousTreeToKML {
 				layers.add(polygonsLayer);
 
 			}// END: try
-
-			catch (ParseException e) {
+			
+			catch(Throwable e){
 				e.printStackTrace();
 				throw new RuntimeException("FUBAR", e);
+				
 			}
-
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+			
+//			catch (ParseException e) {
+//				e.printStackTrace();
+//				throw new RuntimeException("FUBAR", e);
+//			}
+//
+//			catch (RuntimeException e) {
+//				e.printStackTrace();
+//				System.err.println("Polygons class");
+//				throw new RuntimeException("FUBAR2", e);
+//			}
 
 		}// END: run
 	}// END: polygons class
