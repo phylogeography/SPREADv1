@@ -54,7 +54,6 @@ public class ContinuousTreeToProcessing extends PApplet {
 	public void setTreePath(String path) throws IOException, ImportException {
 		importer = new NexusImporter(new FileReader(path));
 		tree = (RootedTree) importer.importNextTree();
-
 		// this is for mappings
 		treeHeightMax = Utils.getTreeHeightMax(tree);
 	}
@@ -82,7 +81,6 @@ public class ContinuousTreeToProcessing extends PApplet {
 		// load the map data
 		mapdata = new ReadLocations(this.getClass()
 				.getResource("world_map.txt").getPath());
-		// mapdata = new ReadLocations(getResourcePath("world_map.txt"));
 
 		// calculate min/max longitude
 		minX = mapdata.getLongMin();
@@ -124,11 +122,11 @@ public class ContinuousTreeToProcessing extends PApplet {
 	void drawMapPolygons() {
 
 		// Dark grey polygon boundaries
-		stroke(105, 105, 105);
+		stroke(105, 105, 105, 255);
 		strokeWeight(1);
 		strokeJoin(ROUND);
 		// Sand brown polygon filling
-		fill(244, 164, 96);
+		fill(244, 164, 96, 255);
 
 		int rowCount = mapdata.nrow;
 		String region;
@@ -280,7 +278,9 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 						List<Coordinates> coordinates = Utils.ParsePolygons(
 								longitudeHPD, latitudeHPD);
+
 						beginShape();
+
 						for (int row = 0; row < coordinates.size() - 1; row++) {
 
 							float X = map((float) coordinates.get(row)
