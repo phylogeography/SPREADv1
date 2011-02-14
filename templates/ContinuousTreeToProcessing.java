@@ -43,7 +43,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	public void setHPD(String percent) throws RuntimeException {
 		HPD = percent;
 	}
-	
+
 	public void setCoordinatesName(String name) {
 		coordinatesName = name;
 		// this is for coordinate attribute names
@@ -253,7 +253,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 			if (!tree.isRoot(node)) {
 				if (!tree.isExternal(node)) {
 
-//					double nodeHeight = tree.getHeight(node);
+					// double nodeHeight = tree.getHeight(node);
 					int modality = Utils.getIntegerNodeAttribute(node,
 							coordinatesName + "_" + HPD + "HPD_modality");
 
@@ -272,31 +272,36 @@ public class ContinuousTreeToProcessing extends PApplet {
 						int green = (int) Utils.map(nodeHeight, 0,
 								treeHeightMax, 255, 0);
 						int blue = 0;
-						int alpha = (int) Utils.map(nodeHeight, 0, treeHeightMax, 100,
-								255);
+						int alpha = (int) Utils.map(nodeHeight, 0,
+								treeHeightMax, 100, 255);
 
 						stroke(red, green, blue, alpha);
 						fill(red, green, blue, alpha);
-						
-						List<Coordinates> coordinates = Utils.ParsePolygons(longitudeHPD,
-								latitudeHPD);
+
+						List<Coordinates> coordinates = Utils.ParsePolygons(
+								longitudeHPD, latitudeHPD);
 						beginShape();
 						for (int row = 0; row < coordinates.size() - 1; row++) {
 
-								float X = map((float) coordinates.get(row).getLongitude(), minX, maxX, mapX1,
-										mapX2);
-								float Y = map(Utils.getMercatorLatitude(coordinates.get(row).getLatitude()), minY, maxY, mapY2, mapY1);
+							float X = map((float) coordinates.get(row)
+									.getLongitude(), minX, maxX, mapX1, mapX2);
+							float Y = map(Utils.getMercatorLatitude(coordinates
+									.get(row).getLatitude()), minY, maxY,
+									mapY2, mapY1);
 
-								float XEND = map((float) coordinates.get(row + 1).getLongitude(), minX, maxX,
-										mapX1, mapX2);
-								float YEND = map(Utils.getMercatorLatitude(coordinates.get(row + 1).getLatitude()), minY, maxY, mapY2, mapY1);
+							float XEND = map((float) coordinates.get(row + 1)
+									.getLongitude(), minX, maxX, mapX1, mapX2);
+							float YEND = map(Utils
+									.getMercatorLatitude(coordinates.get(
+											row + 1).getLatitude()), minY,
+									maxY, mapY2, mapY1);
 
-								vertex(X, Y);
-								vertex(XEND, YEND);
+							vertex(X, Y);
+							vertex(XEND, YEND);
 
-						}//END: coordinates loop
+						}// END: coordinates loop
 						endShape(CLOSE);
-						
+
 					}// END: modality loop
 				}
 			}
