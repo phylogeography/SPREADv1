@@ -239,9 +239,10 @@ public class ContinuousModelTab extends JPanel {
 
 			try {
 
+				continuousTreeToProcessing.setTreePath(treeFilename);
 				continuousTreeToProcessing
 						.setCoordinatesName(coordinatesNameParser.getText());
-				continuousTreeToProcessing.setTreePath(treeFilename);
+				continuousTreeToProcessing.setHPD(HPDParser.getText() + "%");
 				continuousTreeToProcessing.init();
 
 			} catch (NullPointerException e0) {
