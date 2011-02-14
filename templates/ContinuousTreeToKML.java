@@ -169,7 +169,7 @@ public class ContinuousTreeToKML {
 
 		} catch (Throwable e) {
 			e.printStackTrace();
-			throw new RuntimeException("FUBAR!!!", e);
+			throw new RuntimeException("FUBAR!", e);
 		}
 		
 	}// END: GenerateKML() method
@@ -348,7 +348,6 @@ public class ContinuousTreeToKML {
 					if (!tree.isRoot(node)) {
 						if (!tree.isExternal(node)) {
 
-							double nodeHeight = tree.getHeight(node);
 							int modality = Utils.getIntegerNodeAttribute(node,
 									coordinatesName + "_" + HPD
 											+ "HPD_modality");
@@ -367,6 +366,8 @@ public class ContinuousTreeToKML {
 								/**
 								 * Color mapping
 								 * */
+								double nodeHeight = tree.getHeight(node);
+								
 								int red = (int) Double.NaN;
 								int green = (int) Double.NaN;
 								int blue = (int) Double.NaN;
