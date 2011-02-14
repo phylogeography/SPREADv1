@@ -635,5 +635,17 @@ public class Utils {
 
 		return coordinate;
 	}// END: MatchStateCoordinate
+	
+	public String getResourcePath(String resource) {
+
+		String resourcePath = this.getClass().getResource(resource).getPath();
+		
+		if (resourcePath != null) {
+			return resourcePath;
+		} else {
+			System.err.println("Couldn't find file: " + resourcePath);
+			return null;
+		}
+	}//END: getResourcePath
 
 }// END: Utils class
