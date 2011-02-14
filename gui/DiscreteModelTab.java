@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -22,8 +21,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-
-import jebl.evolution.io.ImportException;
 
 import templates.DiscreteTreeToKML;
 import templates.DiscreteTreeToProcessing;
@@ -135,13 +132,12 @@ public class DiscreteModelTab extends JPanel {
 		panel7.add(generateProcessing);
 		leftPanel.add(panel7);
 
-		// TODO: make scroll pane work
 		JPanel panel8 = new JPanel();
 		textArea = new JTextArea(4, 20);
 		textArea.setEditable(true);
 		JScrollPane scrollPane = new JScrollPane(textArea);
+		scrollPane.setPreferredSize(new Dimension(200, 60));
 		panel8.add(scrollPane, BorderLayout.CENTER);
-		panel8.add(textArea);
 		leftPanel.add(panel8);
 
 		add(leftPanel);
@@ -264,14 +260,11 @@ public class DiscreteModelTab extends JPanel {
 				discreteTreeToProcessing.setTreePath(treeFilename);
 				discreteTreeToProcessing.init();
 
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-
-			} catch (IOException e2) {
-				e2.printStackTrace();
-
-			} catch (ImportException e3) {
-				e3.printStackTrace();
+				//TODO: catch improper state att name
+			} catch (Throwable e0) {
+				textArea.setText("Could not plot! Check if: \n"
+						+ "* proper tree file is loaded \n"
+						+ "* proper locations file is loaded \n");
 			}
 
 		}
@@ -282,7 +275,7 @@ public class DiscreteModelTab extends JPanel {
 		if (imgURL != null) {
 			return new ImageIcon(imgURL);
 		} else {
-			System.err.println("Couldn't find file: " + path);
+			textArea.setText("Couldn't find file: " + path);
 			return null;
 		}
 	}
