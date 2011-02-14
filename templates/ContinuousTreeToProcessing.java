@@ -2,6 +2,7 @@ package templates;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
@@ -73,9 +74,9 @@ public class ContinuousTreeToProcessing extends PApplet {
 		textFont(plotFont);
 
 		// load the map data
-		mapdata = new ReadLocations(this.getClass()
-				.getResource("world_map.txt").getPath());
-
+//		mapdata = new ReadLocations(this.getClass().getResource("world_map.txt").getPath());
+		mapdata = new ReadLocations(getResourcePath("world_map.txt"));
+		
 		// calculate min/max longitude
 		minX = mapdata.getLongMin();
 		maxX = mapdata.getLongMax();
@@ -234,5 +235,17 @@ public class ContinuousTreeToProcessing extends PApplet {
 			}
 		}// END: nodes loop
 	}// END: DrawBranches
+
+	private String getResourcePath(String resource) {
+
+		String resourcePath = this.getClass().getResource(resource).getPath();
+		
+		if (resourcePath != null) {
+			return resourcePath;
+		} else {
+			System.err.println("Couldn't find file: " + resourcePath);
+			return null;
+		}
+	}
 
 }// END: PlotOnMap class
