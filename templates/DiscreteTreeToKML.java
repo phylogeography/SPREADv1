@@ -1,24 +1,3 @@
-/**
- * H5N1 
- * */
-// "/home/filip/Dropbox/Java-ML/JavaProjects/Spread/data/H5N1/locationCoordinates"
-
-// "/home/filip/Dropbox/Java-ML/JavaProjects/Spread/data/H5N1/H5N1_HA_discrete_MCC.tre"
-
-/**
- * Americas 
- * */
-// "/home/filip/Dropbox/Java-ML/JavaProjects/Spread/data/Americas/LocationDegrees_YFV_18_states"
-
-// "/home/filip/Dropbox/Java-ML/JavaProjects/Spread/data/Americas/Americas.104.YFV.E.GTRUCLN_BSSVS_dis.byregion_18_MCC.tre"
-
-/**
- * geoMuskox
- * */
-
-// "/home/filip/Dropbox/Java-ML/JavaProjects/Spread/data/geoMuskox/locationDegreesMuskox"
-
-// "/home/filip/Dropbox/Java-ML/JavaProjects/Spread/data/geoMuskox/geoMuskox_skyride_MCC.tre"
 package templates;
 
 import generator.KMLGenerator;
