@@ -5,6 +5,7 @@ import generator.KMLGenerator;
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import jebl.evolution.graphs.Node;
+import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
@@ -110,69 +112,62 @@ public class ContinuousTreeToKML {
 		importer = new NexusImporter(new FileReader(path));
 	}
 
-	public void GenerateKML() throws Exception {
+	public void GenerateKML() throws IOException, ImportException,
+			ParseException {
 
-		try {
+		// start timing
+		time = -System.currentTimeMillis();
 
-			// start timing
-			time = -System.currentTimeMillis();
+		// this is to generate kml output
+		KMLGenerator kmloutput = new KMLGenerator();
+		layers = new ArrayList<Layer>();
 
-			// this is to generate kml output
-			KMLGenerator kmloutput = new KMLGenerator();
-			layers = new ArrayList<Layer>();
-
-			// this is to choose the proper time scale
-			timescaler = Double.NaN;
-			switch (timescalerSwitcher) {
-			case DAYS:
-				timescaler = 1;
-				break;
-			case MONTHS:
-				timescaler = 30;
-			case YEARS:
-				timescaler = 365;
-				break;
-			}
-
-			tree = (RootedTree) importer.importNextTree();
-
-			// this is for time calculations
-			rootHeight = tree.getHeight(tree.getRootNode());
-
-			// this is for coordinate attribute names
-			longitudeName = (coordinatesName + 2);
-			latitudeName = (coordinatesName + 1);
-
-			// this is for mappings
-			treeHeightMax = Utils.getTreeHeightMax(tree);
-
-			// This is a general time span for the tree
-			SpreadDate mrsd = new SpreadDate(mrsdString);
-			TimeLine timeLine = new TimeLine(mrsd.getTime()
-					- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
-					numberOfIntervals);
-
-			// Execute threads
-			final int NTHREDS = 10;
-			ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
-
-			executor.submit(new Branches());
-			executor.submit(new Polygons());
-			executor.shutdown();
-			// Wait until all threads are finished
-			while (!executor.isTerminated()) {
-			}
-
-			kmloutput.generate(writer, timeLine, layers);
-
-			// stop timing
-			time += System.currentTimeMillis();
-
-		} catch (Throwable e) {
-			e.printStackTrace();
-			System.err.println("ContinuousTreeToKML.GenerateKML");
-			throw new RuntimeException("FUBAR!", e);
+		// this is to choose the proper time scale
+		timescaler = Double.NaN;
+		switch (timescalerSwitcher) {
+		case DAYS:
+			timescaler = 1;
+			break;
+		case MONTHS:
+			timescaler = 30;
+		case YEARS:
+			timescaler = 365;
+			break;
 		}
+
+		tree = (RootedTree) importer.importNextTree();
+
+		// this is for time calculations
+		rootHeight = tree.getHeight(tree.getRootNode());
+
+		// this is for coordinate attribute names
+		longitudeName = (coordinatesName + 2);
+		latitudeName = (coordinatesName + 1);
+
+		// this is for mappings
+		treeHeightMax = Utils.getTreeHeightMax(tree);
+
+		// This is a general time span for the tree
+		SpreadDate mrsd = new SpreadDate(mrsdString);
+		TimeLine timeLine = new TimeLine(mrsd.getTime()
+				- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
+				numberOfIntervals);
+
+		// Execute threads
+		final int NTHREDS = 10;
+		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
+
+		executor.submit(new Branches());
+		executor.submit(new Polygons());
+		executor.shutdown();
+		// Wait until all threads are finished
+		while (!executor.isTerminated()) {
+		}
+
+		kmloutput.generate(writer, timeLine, layers);
+
+		// stop timing
+		time += System.currentTimeMillis();
 
 	}// END: GenerateKML() method
 
@@ -184,6 +179,7 @@ public class ContinuousTreeToKML {
 		public void run() {
 
 			try {
+
 				// this is for Branches folder:
 				String branchesDescription = null;
 				Layer branchesLayer = new Layer("Branches", branchesDescription);
@@ -327,8 +323,10 @@ public class ContinuousTreeToKML {
 
 				layers.add(branchesLayer);
 
-			} catch (Exception e) {
+			} catch (ParseException e) {
 				e.printStackTrace();
+				System.err.println("ContinuousTreeToKML.Branches");
+				throw new RuntimeException("FUBAR", e);
 			}
 
 		}// END: run
@@ -338,9 +336,11 @@ public class ContinuousTreeToKML {
 	// ---POLYGONS---//
 	// ////////////////
 	private static class Polygons implements Runnable {
-		public void run() throws RuntimeException {
+
+		public void run() {
 
 			try {
+
 				// this is for Polygons folder:
 				String polygonsDescription = null;
 				Layer polygonsLayer = new Layer("Polygons", polygonsDescription);
@@ -443,24 +443,11 @@ public class ContinuousTreeToKML {
 
 				layers.add(polygonsLayer);
 
-			}// END: try
-
-			catch (Throwable e) {
+			} catch (ParseException e) {
 				e.printStackTrace();
+				System.err.println("ContinuousTreeToKML.Polygons");
 				throw new RuntimeException("FUBAR", e);
-
 			}
-
-			// catch (ParseException e) {
-			// e.printStackTrace();
-			// throw new RuntimeException("FUBAR", e);
-			// }
-			//
-			// catch (RuntimeException e) {
-			// e.printStackTrace();
-			// System.err.println("Polygons class");
-			// throw new RuntimeException("FUBAR2", e);
-			// }
 
 		}// END: run
 	}// END: polygons class
