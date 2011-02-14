@@ -27,19 +27,21 @@ ________________________________________________________________________________
 
 Depends on the following libraries:
 
-jam.jar  
-jdom.jar  
 jebl.jar  
 org.boehn.kmlframework_20090320.jar
 core.jar
 
 The libraries can be downloaded from: http://dl.dropbox.com/u/5169517/lib.zip
-
 ________________________________________________________________________________
                               TODO
 
 * improve GUI looks & feels
 * catch exceptions
-* check libraries dependencies
+* fill map polygons in Processing templates
+
+
+
+
+
 
 
