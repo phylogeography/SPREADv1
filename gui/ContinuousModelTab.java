@@ -47,7 +47,7 @@ public class ContinuousModelTab extends JPanel {
 
 	// Text fields
 	private JTextField coordinatesNameParser = new JTextField("location", 5);
-	private static JTextField HPDParser = new JTextField("80", 2);
+	private static JTextField HPDParser = new JTextField("95", 2);
 	private JTextField mrsdStringParser = new JTextField(formatter
 			.format(calendar.getTime()), 8);
 	private JComboBox eraParser;
@@ -249,14 +249,11 @@ public class ContinuousModelTab extends JPanel {
 
 				textArea.setText("Done!");
 
+				// TODO: catch improper coordinate att name
+				// TODO: catch improper HPD specified
 			} catch (NullPointerException e0) {
 				textArea.setText("Could not plot! Check if: \n"
 						+ "* tree file is loaded \n");
-
-			} catch (RuntimeException e1) {
-				// TODO: is not caught!
-				textArea.setText("Could not generate! Check if: \n"
-						+ "* proper tree file is loaded \n");
 
 			} catch (IOException e2) {
 				textArea.setText("FUBAR2");
