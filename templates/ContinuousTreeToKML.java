@@ -110,7 +110,8 @@ public class ContinuousTreeToKML {
 		importer = new NexusImporter(new FileReader(path));
 	}
 
-	public void GenerateKML() {
+	public void GenerateKML() throws Exception {
+
 		try {
 
 			// start timing
@@ -169,9 +170,10 @@ public class ContinuousTreeToKML {
 
 		} catch (Throwable e) {
 			e.printStackTrace();
+			System.err.println("ContinuousTreeToKML.GenerateKML");
 			throw new RuntimeException("FUBAR!", e);
 		}
-		
+
 	}// END: GenerateKML() method
 
 	// ////////////////
@@ -328,7 +330,7 @@ public class ContinuousTreeToKML {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 		}// END: run
 	}// END: Branches class
 
@@ -367,7 +369,7 @@ public class ContinuousTreeToKML {
 								 * Color mapping
 								 * */
 								double nodeHeight = tree.getHeight(node);
-								
+
 								int red = (int) Double.NaN;
 								int green = (int) Double.NaN;
 								int blue = (int) Double.NaN;
@@ -442,23 +444,23 @@ public class ContinuousTreeToKML {
 				layers.add(polygonsLayer);
 
 			}// END: try
-			
-			catch(Throwable e){
+
+			catch (Throwable e) {
 				e.printStackTrace();
 				throw new RuntimeException("FUBAR", e);
-				
+
 			}
-			
-//			catch (ParseException e) {
-//				e.printStackTrace();
-//				throw new RuntimeException("FUBAR", e);
-//			}
-//
-//			catch (RuntimeException e) {
-//				e.printStackTrace();
-//				System.err.println("Polygons class");
-//				throw new RuntimeException("FUBAR2", e);
-//			}
+
+			// catch (ParseException e) {
+			// e.printStackTrace();
+			// throw new RuntimeException("FUBAR", e);
+			// }
+			//
+			// catch (RuntimeException e) {
+			// e.printStackTrace();
+			// System.err.println("Polygons class");
+			// throw new RuntimeException("FUBAR2", e);
+			// }
 
 		}// END: run
 	}// END: polygons class
