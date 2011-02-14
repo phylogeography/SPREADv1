@@ -137,13 +137,12 @@ public class ContinuousModelTab extends JPanel {
 		panel7.add(generateProcessing);
 		leftPanel.add(panel7);
 
-		// TODO: make scroll pane work
 		JPanel panel8 = new JPanel();
 		textArea = new JTextArea(4, 20);
 		textArea.setEditable(true);
 		JScrollPane scrollPane = new JScrollPane(textArea);
+		scrollPane.setPreferredSize(new Dimension(200, 60));
 		panel8.add(scrollPane, BorderLayout.CENTER);
-		panel8.add(textArea);
 		leftPanel.add(panel8);
 
 		add(leftPanel);
@@ -255,11 +254,9 @@ public class ContinuousModelTab extends JPanel {
 						+ "* proper tree file is loaded \n");
 
 			} catch (IOException e2) {
-				e2.printStackTrace();
 				textArea.setText("FUBAR2");
 
 			} catch (ImportException e3) {
-				e3.printStackTrace();
 				textArea.setText("FUBAR3");
 			}// END: try
 
@@ -271,7 +268,7 @@ public class ContinuousModelTab extends JPanel {
 		if (imgURL != null) {
 			return new ImageIcon(imgURL);
 		} else {
-			System.err.println("Couldn't find file: " + path);
+			textArea.setText("Couldn't find file: " + path);
 			return null;
 		}
 	}
