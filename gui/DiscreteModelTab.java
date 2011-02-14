@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -21,6 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+
+import jebl.evolution.io.ImportException;
 
 import templates.DiscreteTreeToKML;
 import templates.DiscreteTreeToProcessing;
@@ -260,15 +263,23 @@ public class DiscreteModelTab extends JPanel {
 				discreteTreeToProcessing.setTreePath(treeFilename);
 				discreteTreeToProcessing.init();
 
-				//TODO: catch improper state att name
-			} catch (Throwable e0) {
+				textArea.setText("Done!");
+
+				// TODO: catch improper state att name
+			} catch (NullPointerException e0) {
 				textArea.setText("Could not plot! Check if: \n"
-						+ "* proper tree file is loaded \n"
-						+ "* proper locations file is loaded \n");
+						+ "* tree file is loaded \n"
+						+ "* locations file is loaded");
+
+			} catch (IOException e1) {
+				textArea.setText("FUBAR1");
+
+			} catch (ImportException e2) {
+				textArea.setText("FUBAR2");
 			}
 
-		}
-	}
+		}// END: actionPerformed
+	}// END: ListenGenerateProcessing
 
 	private ImageIcon CreateImageIcon(String path) {
 		java.net.URL imgURL = this.getClass().getResource(path);
