@@ -2,7 +2,7 @@ package templates;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
+import java.util.List;
 
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
@@ -11,6 +11,7 @@ import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
 import processing.core.PApplet;
 import processing.core.PFont;
+import structure.Coordinates;
 import utils.ReadLocations;
 import utils.Utils;
 
@@ -24,6 +25,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	private static String latitudeName;
 	private static double treeHeightMax;
 	private static boolean getPng;
+	private static String HPD;
 
 	private static ReadLocations mapdata;
 	// min/max longitude
@@ -38,6 +40,10 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 	}// END:ContinuousTreeToProcessing
 
+	public void setHPD(String percent) throws RuntimeException {
+		HPD = percent;
+	}
+	
 	public void setCoordinatesName(String name) {
 		coordinatesName = name;
 		// this is for coordinate attribute names
@@ -74,9 +80,10 @@ public class ContinuousTreeToProcessing extends PApplet {
 		textFont(plotFont);
 
 		// load the map data
-//		mapdata = new ReadLocations(this.getClass().getResource("world_map.txt").getPath());
-		mapdata = new ReadLocations(getResourcePath("world_map.txt"));
-		
+		mapdata = new ReadLocations(this.getClass()
+				.getResource("world_map.txt").getPath());
+		// mapdata = new ReadLocations(getResourcePath("world_map.txt"));
+
 		// calculate min/max longitude
 		minX = mapdata.getLongMin();
 		maxX = mapdata.getLongMax();
@@ -93,6 +100,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 		drawVertGrid();
 		drawMapPolygons();
 
+		drawPolygons();
 		DrawBranches();
 		drawOutline();
 
@@ -236,16 +244,63 @@ public class ContinuousTreeToProcessing extends PApplet {
 		}// END: nodes loop
 	}// END: DrawBranches
 
-	private String getResourcePath(String resource) {
+	// ////////////////
+	// ---POLYGONS---//
+	// ////////////////
+	private void drawPolygons() {
 
-		String resourcePath = this.getClass().getResource(resource).getPath();
-		
-		if (resourcePath != null) {
-			return resourcePath;
-		} else {
-			System.err.println("Couldn't find file: " + resourcePath);
-			return null;
-		}
-	}
+		for (Node node : tree.getNodes()) {
+			if (!tree.isRoot(node)) {
+				if (!tree.isExternal(node)) {
+
+//					double nodeHeight = tree.getHeight(node);
+					int modality = Utils.getIntegerNodeAttribute(node,
+							coordinatesName + "_" + HPD + "HPD_modality");
+
+					for (int i = 1; i <= modality; i++) {
+
+						Object[] longitudeHPD = Utils.getArrayNodeAttribute(
+								node, longitudeName + "_" + HPD + "HPD_" + i);
+						Object[] latitudeHPD = Utils.getArrayNodeAttribute(
+								node, latitudeName + "_" + HPD + "HPD_" + i);
+						/**
+						 * Color mapping
+						 * */
+						double nodeHeight = tree.getHeight(node);
+
+						int red = 55;
+						int green = (int) Utils.map(nodeHeight, 0,
+								treeHeightMax, 255, 0);
+						int blue = 0;
+						int alpha = (int) Utils.map(nodeHeight, 0, treeHeightMax, 100,
+								255);
+
+						stroke(red, green, blue, alpha);
+						fill(red, green, blue, alpha);
+						
+						List<Coordinates> coordinates = Utils.ParsePolygons(longitudeHPD,
+								latitudeHPD);
+						beginShape();
+						for (int row = 0; row < coordinates.size() - 1; row++) {
+
+								float X = map((float) coordinates.get(row).getLongitude(), minX, maxX, mapX1,
+										mapX2);
+								float Y = map(Utils.getMercatorLatitude(coordinates.get(row).getLatitude()), minY, maxY, mapY2, mapY1);
+
+								float XEND = map((float) coordinates.get(row + 1).getLongitude(), minX, maxX,
+										mapX1, mapX2);
+								float YEND = map(Utils.getMercatorLatitude(coordinates.get(row + 1).getLatitude()), minY, maxY, mapY2, mapY1);
+
+								vertex(X, Y);
+								vertex(XEND, YEND);
+
+						}//END: coordinates loop
+						endShape(CLOSE);
+						
+					}// END: modality loop
+				}
+			}
+		}// END: node loop
+	}// END: drawPolygons
 
 }// END: PlotOnMap class
