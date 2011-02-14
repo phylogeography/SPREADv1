@@ -411,7 +411,7 @@ public class DiscreteTreeToKML {
 								blue = 93;
 								break;
 							}
-
+							
 							/**
 							 * Opacity mapping
 							 * 
