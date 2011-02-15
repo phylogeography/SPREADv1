@@ -74,7 +74,7 @@ public class DiscreteTreeToKML {
 		// parse combobox choices here
 		timescalerSwitcher = timescalerEnum.YEARS;
 		branchesColorMapping = branchesMappingEnum.TIME;
-		branchesOpacityMapping = branchesMappingEnum.STATESPROB;
+		branchesOpacityMapping = branchesMappingEnum.TIME;
 		widthMapping = branchesMappingEnum.DEFAULT;
 		altitudeMapping = branchesMappingEnum.DISTANCE;
 		circlesColorMapping = circlesMappingEnum.COUNT;
