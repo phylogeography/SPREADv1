@@ -58,14 +58,14 @@ public class ContinuousTreeToProcessing extends PApplet {
 		noLoop();
 		smooth();
 
-		minX = -180;
-		maxX = 180;
+		minX = -170;// -180
+		maxX = 170;// 180
 
-		minY = -90;
-		maxY = 90;
+		minY = -80;// -90
+		maxY = 80;// 90
 
-		width = 800;
-		height = 500;
+		width = 800;// 800
+		height = 510;// 500
 
 		size(width, height);
 
@@ -80,11 +80,12 @@ public class ContinuousTreeToProcessing extends PApplet {
 	}// END:draw
 
 	void drawMapBackground() {
-		
+
 		// World map in Equirectangular projection
-		PImage mapImage = loadImage(this.getClass().getResource("world_map.png").getPath());
+		PImage mapImage = loadImage(this.getClass().getResource(
+				"world_map2.png").getPath());
 		image(mapImage, 0, 0, width, height);
-		
+
 	}// END: drawMapPolygons
 
 	// ////////////////
