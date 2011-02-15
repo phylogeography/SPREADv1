@@ -80,11 +80,11 @@ public class ContinuousTreeToProcessing extends PApplet {
 	}// END:draw
 
 	void drawMapBackground() {
+		
 		// World map in Equirectangular projection
-		PImage mapImage = loadImage(this.getClass()
-				.getResource("world_map.png").getPath());
+		PImage mapImage = loadImage(this.getClass().getResource("world_map.png").getPath());
 		image(mapImage, 0, 0, width, height);
-
+		
 	}// END: drawMapPolygons
 
 	// ////////////////
