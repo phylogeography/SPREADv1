@@ -50,14 +50,14 @@ public class DiscreteTreeToProcessing extends PApplet {
 		noLoop();
 		smooth();
 
-		minX = -180;
-		maxX = 180;
+		minX = -180;// -180
+		maxX = 180;// 180
 
-		minY = -90;
-		maxY = 90;
+		minY = -90;// -90
+		maxY = 90;// 90
 
-		width = 800;
-		height = 500;
+		width = 800;// 800
+		height = 510;// 500
 
 		size(width, height);
 
