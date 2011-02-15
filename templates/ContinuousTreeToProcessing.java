@@ -10,9 +10,8 @@ import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
 import processing.core.PApplet;
-import processing.core.PFont;
+import processing.core.PImage;
 import structure.Coordinates;
-import utils.ReadLocations;
 import utils.Utils;
 
 @SuppressWarnings("serial")
@@ -24,17 +23,13 @@ public class ContinuousTreeToProcessing extends PApplet {
 	private static String longitudeName;
 	private static String latitudeName;
 	private static double treeHeightMax;
-	private static boolean getPng;
 	private static String HPD;
 
-	private static ReadLocations mapdata;
+	// Borders of the map coordinates
 	// min/max longitude
 	private static float minX, maxX;
 	// min/max latitude
 	private static float minY, maxY;
-	// Border of where the map should be drawn on screen
-	private static float mapX1, mapX2;
-	private static float mapY1, mapY2;
 
 	public ContinuousTreeToProcessing() {
 
@@ -58,141 +53,39 @@ public class ContinuousTreeToProcessing extends PApplet {
 		treeHeightMax = Utils.getTreeHeightMax(tree);
 	}
 
-	public void setGetPng(boolean set) {
-		getPng = set;
-	}
-
 	public void setup() {
 
-		size(800, 500);
 		noLoop();
 		smooth();
 
-		mapX1 = 30;
-		mapX2 = width - mapX1;
-		mapY1 = 20;
-		mapY2 = height - mapY1;
+		minX = -180;
+		maxX = 180;
 
-		// will improve font rendering speed with default renderer
-		hint(ENABLE_NATIVE_FONTS);
-		PFont plotFont = createFont("Arial", 12);
-		textFont(plotFont);
+		minY = -90;
+		maxY = 90;
 
-		// load the map data
-		mapdata = new ReadLocations(this.getClass()
-				.getResource("world_map.txt").getPath());
+		width = 800;
+		height = 500;
 
-		// calculate min/max longitude
-		minX = mapdata.getLongMin();
-		maxX = mapdata.getLongMax();
-		// calculate min/max latitude
-		minY = Utils.getMercatorLatitude(mapdata.getLatMin());
-		maxY = Utils.getMercatorLatitude(mapdata.getLatMax());
+		size(width, height);
 
 	}// END:setup
 
 	public void draw() {
 
-		drawPlotArea();
-		drawHorGrid();
-		drawVertGrid();
-		drawMapPolygons();
-
+		drawMapBackground();
 		drawPolygons();
 		DrawBranches();
-		drawOutline();
 
-		if (getPng) {
-			save("segments.png");
-		}
 	}// END:draw
 
-	void drawPlotArea() {
+	void drawMapBackground() {
+		// World map in Equirectangular projection
+		PImage mapImage = loadImage(this.getClass().getResource(
+				"world_map2.png").getPath());
+		image(mapImage, 0, 0, width, height);
 
-		// White background
-		background(255, 255, 255);
-		// Show the plot area as a blue box.
-		fill(100, 149, 237);
-		noStroke();
-		rectMode(CORNERS);
-		rect(mapX1, mapY1, mapX2, mapY2);
-
-	}// END: drawPlotArea
-
-	void drawMapPolygons() {
-
-		// Dark grey polygon boundaries
-		stroke(105, 105, 105, 255);
-		strokeWeight(1);
-		strokeJoin(ROUND);
-		// Sand brown polygon filling
-		fill(244, 164, 96, 255);
-
-		int rowCount = mapdata.nrow;
-		String region;
-		String nextRegion;
-
-		for (int row = 0; row < rowCount - 1; row++) {
-
-			region = mapdata.locations[row];
-			nextRegion = mapdata.locations[row + 1];
-
-			if (nextRegion.toLowerCase().equals(region.toLowerCase())) {
-
-				beginShape();
-
-				float X = map(mapdata.getFloat(row, 0), minX, maxX, mapX1,
-						mapX2);
-				float Y = map(Utils.getMercatorLatitude(mapdata
-						.getFloat(row, 1)), minY, maxY, mapY2, mapY1);
-
-				float XEND = map(mapdata.getFloat(row + 1, 0), minX, maxX,
-						mapX1, mapX2);
-				float YEND = map(Utils.getMercatorLatitude(mapdata.getFloat(
-						row + 1, 1)), minY, maxY, mapY2, mapY1);
-
-				vertex(X, Y);
-				vertex(XEND, YEND);
-
-			}
-
-			endShape(CLOSE);
-
-		}// END: row loop
 	}// END: drawMapPolygons
-
-	void drawVertGrid() {
-
-		int Interval = 100;
-		stroke(255, 255, 255);
-
-		for (float v = mapX1; v <= mapX2; v += Interval) {
-
-			strokeWeight(1);
-			line(v, mapY1, v, mapY2);
-
-		}// END: longitude loop
-	}// END: drawVertGrid
-
-	void drawHorGrid() {
-
-		int Interval = 50;
-		stroke(255, 255, 255);
-
-		for (float v = mapY1; v <= mapY2; v += Interval) {
-
-			strokeWeight(1);
-			line(mapX1, v, mapX2, v);
-
-		} // END: latitude loop
-	}// End: drawHorGrid
-
-	void drawOutline() {
-		noFill();
-		stroke(0, 0, 0);
-		rectMode(CORNERS);
-		rect(mapX1, mapY1, mapX2, mapY2);
-	}// END: drawOutline
 
 	// ////////////////
 	// ---BRANCHES---//
@@ -216,13 +109,12 @@ public class ContinuousTreeToProcessing extends PApplet {
 				float parentLatitude = (float) Utils.getDoubleNodeAttribute(
 						parentNode, latitudeName);
 
-				float x0 = map(parentLongitude, minX, maxX, mapX1, mapX2);
-				float y0 = map(Utils.getMercatorLatitude(parentLatitude), minY,
-						maxY, mapY2, mapY1);
+				// Equirectangular projection:
+				float x0 = map(parentLongitude, minX, maxX, 0, width);
+				float y0 = map(parentLatitude, maxY, minY, 0, height);
 
-				float x1 = map(longitude, minX, maxX, mapX1, mapX2);
-				float y1 = map(Utils.getMercatorLatitude(latitude), minY, maxY,
-						mapY2, mapY1);
+				float x1 = map(longitude, minX, maxX, 0, width);
+				float y1 = map(latitude, maxY, minY, 0, height);
 
 				/**
 				 * Color mapping
@@ -267,9 +159,9 @@ public class ContinuousTreeToProcessing extends PApplet {
 						double nodeHeight = tree.getHeight(node);
 
 						int red = 55;
-						int green = (int) Utils.map(nodeHeight, 0,
+						int green = 0;
+						int blue = (int) Utils.map(nodeHeight, 0,
 								treeHeightMax, 255, 0);
-						int blue = 0;
 						int alpha = (int) Utils.map(nodeHeight, 0,
 								treeHeightMax, 100, 255);
 
@@ -284,17 +176,14 @@ public class ContinuousTreeToProcessing extends PApplet {
 						for (int row = 0; row < coordinates.size() - 1; row++) {
 
 							float X = map((float) coordinates.get(row)
-									.getLongitude(), minX, maxX, mapX1, mapX2);
-							float Y = map(Utils.getMercatorLatitude(coordinates
-									.get(row).getLatitude()), minY, maxY,
-									mapY2, mapY1);
+									.getLongitude(), minX, maxX, 0, width);
+							float Y = map((float) coordinates.get(row)
+									.getLatitude(), maxY, minY, 0, height);
 
 							float XEND = map((float) coordinates.get(row + 1)
-									.getLongitude(), minX, maxX, mapX1, mapX2);
-							float YEND = map(Utils
-									.getMercatorLatitude(coordinates.get(
-											row + 1).getLatitude()), minY,
-									maxY, mapY2, mapY1);
+									.getLongitude(), minX, maxX, 0, width);
+							float YEND = map((float) (coordinates.get(row + 1)
+									.getLatitude()), maxY, minY, 0, height);
 
 							vertex(X, Y);
 							vertex(XEND, YEND);
