@@ -76,8 +76,8 @@ public class ContinuousTreeToKML {
 		// parse combobox choices here
 		timescalerSwitcher = timescalerEnum.YEARS;
 		branchesColorMapping = branchesMappingEnum.TIME;
-		branchesOpacityMapping = branchesMappingEnum.RATE;
-		branchesWidthMapping = branchesMappingEnum.RATE;
+		branchesOpacityMapping = branchesMappingEnum.TIME;
+		branchesWidthMapping = branchesMappingEnum.DEFAULT;
 		branchesAltitudeMapping = branchesMappingEnum.DISTANCE;
 		polygonsColorMapping = polygonsMappingEnum.RATE;
 		polygonsOpacityMapping = polygonsMappingEnum.RATE;
