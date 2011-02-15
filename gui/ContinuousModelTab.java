@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +24,6 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import jebl.evolution.io.ImportException;
-
 import templates.ContinuousTreeToKML;
 import templates.ContinuousTreeToProcessing;
 
@@ -154,7 +152,7 @@ public class ContinuousModelTab extends JPanel {
 		continuousTreeToProcessing = new ContinuousTreeToProcessing();
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
 		rightPanel.setBorder(new TitledBorder(""));
-		rightPanel.setBackground(new Color(255, 255, 255));
+		// rightPanel.setBackground(new Color(255, 255, 255));
 		rightPanel.add(continuousTreeToProcessing);
 		add(rightPanel);
 	}
