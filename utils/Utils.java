@@ -621,7 +621,7 @@ public class Utils {
 	public static float MatchStateCoordinate(ReadLocations data, String state,
 			int latlon) {
 		/**
-		 * Match state name with its coordinates in
+		 * Match state name with its coordinates
 		 * 
 		 * 0 for lon, 1 for lat
 		 */
