@@ -588,11 +588,6 @@ public class Utils {
 		return (lon + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
 	}
 
-	// public static double LatNormalise(double lat) {
-	// // normalise to -90...+90
-	// return (lat + 2 * Math.PI) % (1 * Math.PI);
-	// }
-
 	public static float getMercatorLatitude(double lat) {
 
 		double R_MAJOR = 6378137.0;
@@ -635,17 +630,5 @@ public class Utils {
 
 		return coordinate;
 	}// END: MatchStateCoordinate
-	
-	public String getResourcePath(String resource) {
-
-		String resourcePath = this.getClass().getResource(resource).getPath();
-		
-		if (resourcePath != null) {
-			return resourcePath;
-		} else {
-			System.err.println("Couldn't find file: " + resourcePath);
-			return null;
-		}
-	}//END: getResourcePath
 
 }// END: Utils class
