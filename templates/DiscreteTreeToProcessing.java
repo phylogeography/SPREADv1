@@ -10,6 +10,7 @@ import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.core.PImage;
 import utils.ReadLocations;
 import utils.Utils;
 
@@ -21,14 +22,11 @@ public class DiscreteTreeToProcessing extends PApplet {
 	private static ReadLocations data;
 	private static String stateAttName;
 
-	private ReadLocations mapdata;
+	// Borders of the map coordinates
 	// min/max longitude
 	private static float minX, maxX;
 	// min/max latitude
 	private static float minY, maxY;
-	// Border of where the map should be drawn on screen
-	private static float mapX1, mapX2;
-	private static float mapY1, mapY2;
 
 	public DiscreteTreeToProcessing() {
 
@@ -49,137 +47,43 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 	public void setup() {
 
-		size(800, 500);
 		noLoop();
 		smooth();
 
-		mapX1 = 30;
-		mapX2 = width - mapX1;
-		mapY1 = 20;
-		mapY2 = height - mapY1;
+		minX = -180;
+		maxX = 180;
+
+		minY = -90;
+		maxY = 90;
+
+		width = 800;
+		height = 500;
+
+		size(width, height);
 
 		// will improve font rendering speed with default renderer
 		hint(ENABLE_NATIVE_FONTS);
 		PFont plotFont = createFont("Arial", 12);
 		textFont(plotFont);
 
-		// load the map data
-		mapdata = new ReadLocations(this.getClass()
-				.getResource("world_map.txt").getPath());
-
-		// calculate min/max longitude
-		minX = mapdata.getLongMin();
-		maxX = mapdata.getLongMax();
-		// calculate min/max latitude
-		minY = Utils.getMercatorLatitude(mapdata.getLatMin());
-		maxY = Utils.getMercatorLatitude(mapdata.getLatMax());
-
 	}// END: setup
 
 	public void draw() {
 
-		drawPlotArea();
-		drawHorGrid();
-		drawVertGrid();
-		drawMapPolygons();
-
+		drawMapBackground();
 		DrawPlaces();
 		DrawBranches();
 		DrawPlacesLabels();
 
-		drawOutline();
-
 	}// END:draw
 
-	void drawPlotArea() {
+	void drawMapBackground() {
 
-		// White background
-		background(255, 255, 255);
-		// Show the plot area as a blue box.
-		fill(100, 149, 237);
-		noStroke();
-		rectMode(CORNERS);
-		rect(mapX1, mapY1, mapX2, mapY2);
-
-	}// END: drawPlotArea
-
-	void drawMapPolygons() {
-
-		// Dark grey polygon boundaries
-		stroke(105, 105, 105);
-		strokeWeight(1);
-		strokeJoin(ROUND);
-		// Sand brown polygon filling
-		fill(244, 164, 96);
-
-		int rowCount = mapdata.nrow;
-		String region;
-		String nextRegion;
-
-		for (int row = 0; row < rowCount - 1; row++) {
-
-			region = mapdata.locations[row];
-			nextRegion = mapdata.locations[row + 1];
-
-			if (nextRegion.toLowerCase().equals(region.toLowerCase())) {
-
-				beginShape();
-
-				float X = map(mapdata.getFloat(row, 0), minX, maxX, mapX1,
-						mapX2);
-				float Y = map(Utils.getMercatorLatitude(mapdata
-						.getFloat(row, 1)), minY, maxY, mapY2, mapY1);
-
-				float XEND = map(mapdata.getFloat(row + 1, 0), minX, maxX,
-						mapX1, mapX2);
-				float YEND = map(Utils.getMercatorLatitude(mapdata.getFloat(
-						row + 1, 1)), minY, maxY, mapY2, mapY1);
-
-				vertex(X, Y);
-				vertex(XEND, YEND);
-
-			}
-
-			endShape(CLOSE);
-
-		}// END: row loop
+		PImage mapImage = loadImage(this.getClass().getResource(
+				"world_map2.png").getPath());
+		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons
-
-	void drawVertGrid() {
-
-		int Interval = 100;
-		stroke(255, 255, 255);
-
-		for (float v = mapX1; v <= mapX2; v += Interval) {
-
-			strokeWeight(1);
-			line(v, mapY1, v, mapY2);
-
-		}// END: longitude loop
-	}// END: drawVertGrid
-
-	void drawHorGrid() {
-
-		int Interval = 50;
-		stroke(255, 255, 255);
-
-		for (float v = mapY1; v <= mapY2; v += Interval) {
-
-			strokeWeight(1);
-			line(mapX1, v, mapX2, v);
-
-		} // END: latitude loop
-	}// End: drawHorGrid
-
-	void drawOutline() {
-
-		noFill();
-		stroke(0, 0, 0);
-		rectMode(CORNERS);
-		rect(mapX1, mapY1, mapX2, mapY2);
-
-	}// END: drawOutline
 
 	// //////////////
 	// ---PLACES---//
@@ -193,9 +97,9 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 		for (int row = 0; row < data.nrow; row++) {
 
-			float X = map(data.getFloat(row, 1), minX, maxX, mapX1, mapX2);
-			float Y = map(Utils.getMercatorLatitude(data.getFloat(row, 0)),
-					minY, maxY, mapY2, mapY1);
+			// Equirectangular projection:
+			float X = map(data.getFloat(row, 1), minX, maxX, 0, width);
+			float Y = map(data.getFloat(row, 0), maxY, minY, 0, height);
 
 			ellipse(X, Y, radius, radius);
 
@@ -211,9 +115,8 @@ public class DiscreteTreeToProcessing extends PApplet {
 		for (int row = 0; row < data.nrow; row++) {
 
 			String name = data.locations[row];
-			float X = map(data.getFloat(row, 1), minX, maxX, mapX1, mapX2);
-			float Y = map(Utils.getMercatorLatitude(data.getFloat(row, 0)),
-					minY, maxY, mapY2, mapY1);
+			float X = map(data.getFloat(row, 1), minX, maxX, 0, width);
+			float Y = map(data.getFloat(row, 0), maxY, minY, 0, height);
 
 			text(name, X, Y);
 		}
@@ -248,13 +151,11 @@ public class DiscreteTreeToProcessing extends PApplet {
 					float parentLatitude = Utils.MatchStateCoordinate(data,
 							parentState, 0);
 
-					float x0 = map(parentLongitude, minX, maxX, mapX1, mapX2);
-					float y0 = map(Utils.getMercatorLatitude(parentLatitude),
-							minY, maxY, mapY2, mapY1);
+					float x0 = map(parentLongitude, minX, maxX, 0, width);
+					float y0 = map(parentLatitude, maxY, minY, 0, height);
 
-					float x1 = map(longitude, minX, maxX, mapX1, mapX2);
-					float y1 = map(Utils.getMercatorLatitude(latitude), minY,
-							maxY, mapY2, mapY1);
+					float x1 = map(longitude, minX, maxX, 0, width);
+					float y1 = map(latitude, maxY, minY, 0, height);
 
 					/**
 					 * Color mapping
