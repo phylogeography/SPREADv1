@@ -73,16 +73,18 @@ public class ContinuousModelTab extends JPanel {
 	public ContinuousModelTab() {
 
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+		// setLayout(new BorderLayout());
 
 		/**
 		 * left tools pane
 		 * */
-		Dimension leftPanelDimension = new Dimension(300, 600);
+		Dimension leftPanelDimension = new Dimension(230, 600);
 		leftPanel = new JPanel();
-		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));// PAGE_AXIS
 		leftPanel.setSize(leftPanelDimension);
 		leftPanel.setMinimumSize(leftPanelDimension);
 		leftPanel.setMaximumSize(leftPanelDimension);
+		leftPanel.setPreferredSize(leftPanelDimension);
 
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -144,18 +146,29 @@ public class ContinuousModelTab extends JPanel {
 		panel8.add(scrollPane, BorderLayout.CENTER);
 		leftPanel.add(panel8);
 
-		add(leftPanel);
+		JPanel leftPanelContainer = new JPanel();
+		leftPanelContainer.setLayout(new BorderLayout());
+		leftPanelContainer.add(leftPanel, BorderLayout.NORTH);
+		add(leftPanelContainer);
 
 		/**
 		 * Processing pane
 		 * */
-		rightPanel = new JPanel();
 		continuousTreeToProcessing = new ContinuousTreeToProcessing();
+		Dimension rightPanelDimension = new Dimension(
+				continuousTreeToProcessing.imageWidth,
+				continuousTreeToProcessing.imageHeight);
+		rightPanel = new JPanel();
+		rightPanel.setSize(rightPanelDimension);
+		rightPanel.setMinimumSize(rightPanelDimension);
+		rightPanel.setMaximumSize(rightPanelDimension);
+		rightPanel.setPreferredSize(rightPanelDimension);
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
 		rightPanel.setBorder(new TitledBorder(""));
 		rightPanel.setBackground(new Color(255, 255, 255));
 		rightPanel.add(continuousTreeToProcessing);
 		add(rightPanel);
+
 	}
 
 	private class ListenOpenTree implements ActionListener {
@@ -245,8 +258,6 @@ public class ContinuousModelTab extends JPanel {
 						.setCoordinatesName(coordinatesNameParser.getText());
 				continuousTreeToProcessing.setHPD(HPDParser.getText() + "%");
 				continuousTreeToProcessing.init();
-
-				textArea.setText("Done!");
 
 				// TODO: catch improper coordinate att name
 				// TODO: catch improper HPD specified
