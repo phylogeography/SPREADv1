@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -10,10 +12,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 
 public class OutbreakGui {
+
+	// Dimension
+	Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
 	// Icons
 	private ImageIcon quitIcon = CreateImageIcon("/icons/close.png");
@@ -42,6 +48,8 @@ public class OutbreakGui {
 		frame.add(tabbedPane);
 		frame.setJMenuBar(mainMenu);
 		frame.addWindowListener(new ListenCloseWdw());
+		JScrollPane scrollPane = new JScrollPane(tabbedPane);
+		frame.add(scrollPane, BorderLayout.CENTER);
 
 		// Setup Main Menu
 		mainMenu.add(separator);
@@ -86,9 +94,9 @@ public class OutbreakGui {
 
 		// Display Frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300 + 750, 600);
-		frame.setResizable(false);
-		// frame.pack();
+		frame.setSize(new Dimension(dimension.width - 100, dimension.height - 100));
+		frame.setMaximumSize(dimension);
+		frame.setResizable(true);
 		frame.setVisible(true);
 	}
 
