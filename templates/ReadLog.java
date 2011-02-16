@@ -10,15 +10,20 @@ import processing.core.PApplet;
 @SuppressWarnings("serial")
 public class ReadLog extends PApplet {
 
+	public long time;
+	public String[] colNames;
 	public float[][] indicators;
 	public int nrow;
 	public int ncol;
 
 	public ReadLog(String filename) {
 
+		// start timing
+		time = -System.currentTimeMillis();
+
 		String[] lines = loadStrings(filename);
 		nrow = lines.length - 1;
-		String[] colNames = lines[0].split("\t");
+		colNames = lines[0].split("\t");
 
 		List<Integer> list = new ArrayList<Integer>();
 
@@ -44,6 +49,9 @@ public class ReadLog extends PApplet {
 		}
 		indicators = (float[][]) indicators;
 
+		// stop timing
+		time += System.currentTimeMillis();
+
 	}// END: ReadLog
 
 	int getNrow() {
@@ -59,8 +67,11 @@ public class ReadLog extends PApplet {
 	}// END: getFloat
 
 	public float[][] getIndicators() {
-
 		return indicators;
+	}
+
+	public String[] getColNames() {
+		return colNames;
 	}
 
 }// END: class
