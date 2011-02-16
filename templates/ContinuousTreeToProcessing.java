@@ -1,5 +1,7 @@
 package templates;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -17,6 +19,9 @@ import utils.Utils;
 @SuppressWarnings("serial")
 public class ContinuousTreeToProcessing extends PApplet {
 
+	public final int imageWidth = 2048;
+	public final int imageHeight = 1025;
+	
 	private static String coordinatesName;
 	private static TreeImporter importer;
 	private static RootedTree tree;
@@ -24,6 +29,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	private static String latitudeName;
 	private static double treeHeightMax;
 	private static String HPD;
+	private PImage mapImage;
 
 	// Borders of the map coordinates
 	// min/max longitude
@@ -55,24 +61,21 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 	public void setup() {
 
-		noLoop();
-		smooth();
+		minX = -180;
+		maxX = 180;
 
-		minX = -170;// -180
-		maxX = 170;// 180
+		minY = -80;
+		maxY = 90;
 
-		minY = -80;// -90
-		maxY = 80;// 90
-
-		width = 800;// 800
-		height = 510;// 500
+		width = imageWidth;
+		height = imageHeight;
 
 		size(width, height);
 
 	}// END:setup
 
 	public void draw() {
-
+		smooth();
 		drawMapBackground();
 		drawPolygons();
 		DrawBranches();
@@ -82,8 +85,8 @@ public class ContinuousTreeToProcessing extends PApplet {
 	void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		PImage mapImage = loadImage(this.getClass().getResource(
-				"world_map2.png").getPath());
+		mapImage = loadImage(this.getClass().getResource("world_map.png")
+				.getPath());
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons
@@ -144,7 +147,6 @@ public class ContinuousTreeToProcessing extends PApplet {
 			if (!tree.isRoot(node)) {
 				if (!tree.isExternal(node)) {
 
-					// double nodeHeight = tree.getHeight(node);
 					int modality = Utils.getIntegerNodeAttribute(node,
 							coordinatesName + "_" + HPD + "HPD_modality");
 
