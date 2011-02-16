@@ -24,7 +24,7 @@ public class OutbreakGui {
 	// Icons
 	private ImageIcon quitIcon = CreateImageIcon("/icons/close.png");
 	private ImageIcon helpIcon = CreateImageIcon("/icons/help.png");
-
+	
 	// Frame
 	private JFrame frame = new JFrame("TestlabOutbreak");
 	private JTabbedPane tabbedPane = new JTabbedPane();

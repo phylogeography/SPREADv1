@@ -24,6 +24,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 	private static RootedTree tree;
 	private static ReadLocations data;
 	private static String stateAttName;
+	private PImage mapImage;
 
 	// Borders of the map coordinates
 	// min/max longitude
@@ -80,8 +81,11 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 	void drawMapBackground() {
 
-		PImage mapImage = loadImage(this.getClass()
-				.getResource("world_map.png").getPath());
+		// World map in Equirectangular projection
+
+		mapImage = loadImage(this.getClass().getResource("world_map.png")
+				.getPath());
+		// mapImage = loadImage(LoadMapBackgroundFromJar());
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons
@@ -177,5 +181,12 @@ public class DiscreteTreeToProcessing extends PApplet {
 		}// END: nodes loop
 
 	}// END: DrawBranches
+
+	@SuppressWarnings("unused")
+	private String LoadMapBackgroundFromJar() {
+		String imgPathFromJar = "jar:"
+				+ this.getClass().getResource("world_map.png").getPath();
+		return imgPathFromJar;
+	}
 
 }// END: PlotOnMap class

@@ -1,7 +1,5 @@
 package templates;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +19,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 	public final int imageWidth = 2048;
 	public final int imageHeight = 1025;
-	
+
 	private static String coordinatesName;
 	private static TreeImporter importer;
 	private static RootedTree tree;
@@ -85,8 +83,10 @@ public class ContinuousTreeToProcessing extends PApplet {
 	void drawMapBackground() {
 
 		// World map in Equirectangular projection
+
 		mapImage = loadImage(this.getClass().getResource("world_map.png")
 				.getPath());
+		// mapImage = loadImage(LoadMapBackgroundFromJar());
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons
@@ -199,5 +199,12 @@ public class ContinuousTreeToProcessing extends PApplet {
 			}
 		}// END: node loop
 	}// END: drawPolygons
+
+	@SuppressWarnings("unused")
+	private String LoadMapBackgroundFromJar() {
+		String imgPathFromJar = "jar:"
+				+ this.getClass().getResource("world_map.png").getPath();
+		return imgPathFromJar;
+	}
 
 }// END: PlotOnMap class

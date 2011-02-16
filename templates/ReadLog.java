@@ -58,7 +58,7 @@ public class ReadLog extends PApplet {
 		return (int) indicators[row][col];
 	}// END: getFloat
 
-	public float[][] getInd() {
+	public float[][] getIndicators() {
 
 		return indicators;
 	}
