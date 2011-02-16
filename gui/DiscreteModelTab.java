@@ -78,12 +78,13 @@ public class DiscreteModelTab extends JPanel {
 		/**
 		 * left tools pane
 		 * */
-		Dimension leftPanelDimension = new Dimension(300, 600);
+		Dimension leftPanelDimension = new Dimension(230, 600);// 300,600
 		leftPanel = new JPanel();
-		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));// PAGE_AXIS
 		leftPanel.setSize(leftPanelDimension);
 		leftPanel.setMinimumSize(leftPanelDimension);
 		leftPanel.setMaximumSize(leftPanelDimension);
+		leftPanel.setPreferredSize(leftPanelDimension);
 
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -142,13 +143,21 @@ public class DiscreteModelTab extends JPanel {
 		panel8.add(scrollPane, BorderLayout.CENTER);
 		leftPanel.add(panel8);
 
-		add(leftPanel);
+		JPanel leftPanelContainer = new JPanel();
+		leftPanelContainer.setLayout(new BorderLayout());
+		leftPanelContainer.add(leftPanel, BorderLayout.NORTH);
+		add(leftPanelContainer);
 
 		/**
 		 * Processing pane
 		 * */
-		rightPanel = new JPanel();
 		discreteTreeToProcessing = new DiscreteTreeToProcessing();
+		Dimension rightPanelDimension = new Dimension(2048, 1025);
+		rightPanel = new JPanel();
+		rightPanel.setSize(rightPanelDimension);
+		rightPanel.setMinimumSize(rightPanelDimension);
+		rightPanel.setMaximumSize(rightPanelDimension);
+		rightPanel.setPreferredSize(rightPanelDimension);
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
 		rightPanel.setBorder(new TitledBorder(""));
 		rightPanel.setBackground(new Color(255, 255, 255));
@@ -261,8 +270,6 @@ public class DiscreteModelTab extends JPanel {
 				discreteTreeToProcessing.setLocationFilePath(locationsFilename);
 				discreteTreeToProcessing.setTreePath(treeFilename);
 				discreteTreeToProcessing.init();
-
-				textArea.setText("Done!");
 
 				// TODO: catch improper state att name
 			} catch (NullPointerException e0) {
