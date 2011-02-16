@@ -17,6 +17,9 @@ import utils.Utils;
 @SuppressWarnings("serial")
 public class DiscreteTreeToProcessing extends PApplet {
 
+	public final int imageWidth = 2048;
+	public final int imageHeight = 1025;
+
 	private TreeImporter importer;
 	private static RootedTree tree;
 	private static ReadLocations data;
@@ -47,17 +50,14 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 	public void setup() {
 
-		noLoop();
-		smooth();
+		minX = -180;
+		maxX = 180;
 
-		minX = -180;// -180
-		maxX = 180;// 180
+		minY = -90;
+		maxY = 90;
 
-		minY = -90;// -90
-		maxY = 90;// 90
-
-		width = 800;// 800
-		height = 510;// 500
+		width = imageWidth;
+		height = imageHeight;
 
 		size(width, height);
 
@@ -70,6 +70,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 	public void draw() {
 
+		smooth();
 		drawMapBackground();
 		DrawPlaces();
 		DrawBranches();
