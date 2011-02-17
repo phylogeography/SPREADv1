@@ -1,4 +1,8 @@
+//http://www.merriampark.com/comb.htm
 package templates;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import utils.ReadLocations;
 import utils.Utils;
@@ -22,8 +26,9 @@ public class RateIndicatorBF {
 
 		);
 
-		int K = locations.nrow;
+		double bfCutoff = 10.0;
 
+		int K = locations.nrow;
 		boolean symmetrical = false;
 		if (indicators.ncol == K * (K - 1)) {
 			symmetrical = false;
@@ -36,6 +41,15 @@ public class RateIndicatorBF {
 
 		// TODO: combinations
 
+		for(int row = 0; row<locations.locations.length;row++) {
+			
+		}
+		
+		
+		
+		
+		
+		
 		double qk = Double.NaN;
 		if (symmetrical) {
 			qk = (Math.log(2) + K - 1) / ((K * (K - 1)) / 2);
@@ -44,17 +58,26 @@ public class RateIndicatorBF {
 		}
 
 		double[] pk = ColMeans(indicators.indicators);
+		// Utils.PrintArray(pk);
 
-		
-		
-		
-		
-		Utils.PrintArray(pk);
+		List<Double> bayesFactors = new ArrayList<Double>();
+		double denominator = qk / (1 - qk);
+
+		for (int row = 0; row < pk.length; row++) {
+
+			double bf = (pk[row] / (1 - pk[row])) / denominator;
+
+			if (bf > bfCutoff) {
+				bayesFactors.add(bf);
+			}
+		}
+
+		Utils.PrintArray(bayesFactors.toArray());
 
 		System.out.println("finished in: " + indicators.time + " msec");
 	}// END: main
 
-	private static double ColMean(float a[][], int col) {
+	private static double ColMean(double a[][], int col) {
 		double sum = 0;
 		int nrows = a.length;
 		for (int row = 0; row < nrows; row++) {
@@ -63,7 +86,7 @@ public class RateIndicatorBF {
 		return sum / nrows;
 	}
 
-	private static double[] ColMeans(float a[][]) {
+	private static double[] ColMeans(double a[][]) {
 		int ncol = a[0].length;
 		double[] b = new double[ncol];
 		for (int c = 0; c < ncol; c++) {
