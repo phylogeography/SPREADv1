@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import processing.core.PApplet;
+import utils.Utils;
 
 @SuppressWarnings("serial")
 public class ReadLog extends PApplet {
@@ -47,7 +48,7 @@ public class ReadLog extends PApplet {
 		for (int row = delete; row < nrow; row++) {
 
 			String[] line = lines[row].split("\t");
-			indicators[i] = parseDouble(Subset(line, list.get(0), ncol));
+			indicators[i] = parseDouble(Utils.Subset(line, list.get(0), ncol));
 			i++;
 		}
 		indicators = (double[][]) indicators;
@@ -68,10 +69,5 @@ public class ReadLog extends PApplet {
 		return a;
 	}
 
-	private static String[] Subset(String line[], int start, int length) {
-		    String output[] = new String[length];
-		    System.arraycopy(line, start, output, 0, length);
-		    return output;
-		  }
 
 }// END: class
