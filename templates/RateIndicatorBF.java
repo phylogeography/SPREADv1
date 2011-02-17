@@ -42,16 +42,22 @@ public class RateIndicatorBF {
 
 		// TODO: combinations
 		int n = locations.nrow;
+		List<String> combin = new ArrayList<String>();
+		// String[] combin = new String[Newton(n, 2)];
 
-		String[] combin = new String[Newton(n, 2)];
-
-		for (int row = 0; row < n-1; row++) {
+		for (int row = 0; row < n - 1; row++) {
 
 			String[] subset = Utils.Subset(locations.locations, row, n - row);
-			Utils.PrintArray(subset);
-			System.out.println("------------");
+			
+			for (int i = 1; i < subset.length; i++) {
+				combin.add(locations.locations[row] + ":" + subset[i]);
+			}
 		}
 
+		
+		Utils.PrintArray(combin.toArray());
+		
+		
 		double qk = Double.NaN;
 		if (symmetrical) {
 			qk = (Math.log(2) + K - 1) / ((K * (K - 1)) / 2);
@@ -97,23 +103,6 @@ public class RateIndicatorBF {
 		return b;
 	}
 
-	private static int factor(int i) {
-		if (i < 1) {
-			return 1;
-		} else {
-			return i * factor(i - 1);
-		}
-	}
 
-	private static int Newton(int n, int k) {
-		BigInteger newton = BigInteger.valueOf(1);
-		String newtonString = null;
-		for (int i = 1; i <= k; i++) {
-			newton = newton.multiply(BigInteger.valueOf(n - i + 1)).divide(
-					BigInteger.valueOf(i));
-			newtonString = newton.toString();
-		}
-		return Integer.parseInt(newtonString);
-	}
 
 }// END: RateIndicatorBF
