@@ -326,6 +326,20 @@ public class Utils {
 		}
 	}// END: Head2DArray
 
+	public static void PrintTwoArrays(Object[] left, Object[] right) {
+		/**
+		 * Prints elements of two arrays until smaller one runs out of any
+		 * elements
+		 * */
+		int n = left.length < right.length ? left.length : right.length;
+
+		for (int row = 0; row < n; row++) {
+
+			System.out.println(left[row] + " " + right[row]);
+
+		}
+	}
+
 	public static void Save2DArray(String filename, double[][] array) {
 
 		try {
