@@ -17,7 +17,8 @@ public class RateIndicatorBF {
 		);
 
 		indicators = new ReadLog(
-				"/home/filip/Dropbox/Java-ML/JavaProjects/TestlabOutbreak/data/Philippe/genomes.HKYG.UCLN.EGC.DISC.BSSVS.Indicator.log"
+				"/home/filip/Dropbox/Java-ML/JavaProjects/TestlabOutbreak/data/Philippe/genomes.HKYG.UCLN.EGC.DISC.BSSVS.Indicator.log",
+				0.1
 
 		);
 
@@ -42,29 +43,33 @@ public class RateIndicatorBF {
 			qk = (Math.log(2) + K - 1) / ((K * (K - 1)) / 1);
 		}
 
-		double[] pk = colMean(indicators.indicators);
+		double[] pk = ColMeans(indicators.indicators);
 
-		Utils.PrintArray(pk);
 		
-		System.out.println(indicators.time);
+		
+		
+		
+		Utils.PrintArray(pk);
+
+		System.out.println("finished in: " + indicators.time + " msec");
 	}// END: main
 
-	private static double[] colMean(float[][] a) {
+	private static double ColMean(float a[][], int col) {
+		double sum = 0;
+		int nrows = a.length;
+		for (int row = 0; row < nrows; row++) {
+			sum += a[row][col];
+		}
+		return sum / nrows;
+	}
 
-		int nrow = a.length;
+	private static double[] ColMeans(float a[][]) {
 		int ncol = a[0].length;
-		double sum;
-
 		double[] b = new double[ncol];
-		for (int col = 0; col < ncol; col++) {
-			sum = 0;
-			for (int row = 0; row < nrow; row++) {
-				sum += a[row][col];
-			}
-			b[col] = sum / ncol;
+		for (int c = 0; c < ncol; c++) {
+			b[c] = ColMean(a, c);
 		}
 		return b;
 	}
 
-	
 }// END: RateIndicatorBF
