@@ -5,6 +5,7 @@ import jebl.evolution.trees.RootedTree;
 
 import java.awt.Color;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -273,7 +274,7 @@ public class Utils {
 
 		return coords;
 	}// END: GenerateCircle
-	
+
 	public static void PrintArray(double[] x) {
 		for (int i = 0; i < x.length; i++) {
 			System.out.println(x[i]);
@@ -291,11 +292,10 @@ public class Utils {
 			System.out.println(x[i]);
 		}
 	}// END: PrintArray
-	
 
 	public static void HeadArray(double[] array, int nrow) {
 		for (int row = 0; row < nrow; row++) {
-				System.out.println(array[row]);
+			System.out.println(array[row]);
 		}
 	}// END: Head2DArray
 
@@ -643,13 +643,22 @@ public class Utils {
 
 		return coordinate;
 	}// END: MatchStateCoordinate
-	
+
 	public static String[] Subset(String line[], int start, int length) {
-	    String output[] = new String[length];
-	    System.arraycopy(line, start, output, 0, length);
-	    return output;
-	  }
-	
-	
+		String output[] = new String[length];
+		System.arraycopy(line, start, output, 0, length);
+		return output;
+	}
+
+	public static int Newton(int n, int k) {
+		BigInteger newton = BigInteger.valueOf(1);
+		String newtonString = null;
+		for (int i = 1; i <= k; i++) {
+			newton = newton.multiply(BigInteger.valueOf(n - i + 1)).divide(
+					BigInteger.valueOf(i));
+			newtonString = newton.toString();
+		}
+		return Integer.parseInt(newtonString);
+	}
 
 }// END: Utils class
