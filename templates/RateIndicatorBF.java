@@ -1,6 +1,7 @@
 //http://www.merriampark.com/comb.htm
 package templates;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,17 +41,17 @@ public class RateIndicatorBF {
 		}
 
 		// TODO: combinations
-		int n = locations.locations.length;
-		String[] combin = new String[factor(n) / (2 * factor(n - 2))];
+		int n = locations.nrow;
 
-		for (int row = 0; row < n; row++) {
+		String[] combin = new String[Newton(n, 2)];
 
+		for (int row = 0; row < n-1; row++) {
+
+			String[] subset = Utils.Subset(locations.locations, row, n - row);
+			Utils.PrintArray(subset);
+			System.out.println("------------");
 		}
 
-		
-		
-		
-		
 		double qk = Double.NaN;
 		if (symmetrical) {
 			qk = (Math.log(2) + K - 1) / ((K * (K - 1)) / 2);
@@ -102,6 +103,17 @@ public class RateIndicatorBF {
 		} else {
 			return i * factor(i - 1);
 		}
+	}
+
+	private static int Newton(int n, int k) {
+		BigInteger newton = BigInteger.valueOf(1);
+		String newtonString = null;
+		for (int i = 1; i <= k; i++) {
+			newton = newton.multiply(BigInteger.valueOf(n - i + 1)).divide(
+					BigInteger.valueOf(i));
+			newtonString = newton.toString();
+		}
+		return Integer.parseInt(newtonString);
 	}
 
 }// END: RateIndicatorBF
