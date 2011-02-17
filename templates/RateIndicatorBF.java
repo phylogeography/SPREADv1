@@ -40,12 +40,13 @@ public class RateIndicatorBF {
 		}
 
 		// TODO: combinations
+		int n = locations.locations.length;
+		String[] combin = new String[factor(n) / (2 * factor(n - 2))];
 
-		for(int row = 0; row<locations.locations.length;row++) {
-			
+		for (int row = 0; row < n; row++) {
+
 		}
-		
-		
+
 		
 		
 		
@@ -72,7 +73,7 @@ public class RateIndicatorBF {
 			}
 		}
 
-		Utils.PrintArray(bayesFactors.toArray());
+		// Utils.PrintArray(bayesFactors.toArray());
 
 		System.out.println("finished in: " + indicators.time + " msec");
 	}// END: main
@@ -93,6 +94,14 @@ public class RateIndicatorBF {
 			b[c] = ColMean(a, c);
 		}
 		return b;
+	}
+
+	private static int factor(int i) {
+		if (i < 1) {
+			return 1;
+		} else {
+			return i * factor(i - 1);
+		}
 	}
 
 }// END: RateIndicatorBF
