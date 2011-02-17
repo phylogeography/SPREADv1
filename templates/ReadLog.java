@@ -11,7 +11,7 @@ import processing.core.PApplet;
 public class ReadLog extends PApplet {
 
 	public long time;
-	public float[][] indicators;
+	public double[][] indicators;
 	public int nrow;
 	public int ncol;
 
@@ -39,18 +39,18 @@ public class ReadLog extends PApplet {
 		}
 
 		ncol = list.size();
+		// skip first line with col names and the burn in lines
 		int delete = (int) (nrow * burnIn) + 1;
-		indicators = new float[nrow - delete][ncol];
+		indicators = new double[nrow - delete][ncol];
 
 		int i = 0;
 		for (int row = delete; row < nrow; row++) {
 
-			// skip first line with col names
 			String[] line = lines[row].split("\t");
-			indicators[i] = parseFloat(subset(line, list.get(0), ncol));
+			indicators[i] = parseDouble(Subset(line, list.get(0), ncol));
 			i++;
 		}
-		indicators = (float[][]) indicators;
+		indicators = (double[][]) indicators;
 		nrow = indicators.length;
 
 		// stop timing
@@ -58,20 +58,20 @@ public class ReadLog extends PApplet {
 
 	}// END: ReadLog
 
-	int getNrow() {
-		return nrow;
-	}// END: getNrow
+	private double[] parseDouble(String[] lines) {
 
-	public float getFloat(int row, int col) {
-		return indicators[row][col];
-	}// END: getFloat
-
-	public int getInt(int row, int col) {
-		return (int) indicators[row][col];
-	}// END: getFloat
-
-	public float[][] getIndicators() {
-		return indicators;
+		int nrow = lines.length;
+		double[] a = new double[nrow];
+		for (int i = 0; i < nrow; i++) {
+			a[i] = Double.parseDouble(lines[i]);
+		}
+		return a;
 	}
+
+	private static String[] Subset(String line[], int start, int length) {
+		    String output[] = new String[length];
+		    System.arraycopy(line, start, output, 0, length);
+		    return output;
+		  }
 
 }// END: class
