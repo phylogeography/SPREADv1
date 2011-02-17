@@ -1,7 +1,5 @@
-//http://www.merriampark.com/comb.htm
 package templates;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +8,15 @@ import utils.Utils;
 
 public class RateIndicatorBF {
 
-	static ReadLocations locations;
-	static ReadLog indicators;
+	public static long time;
+
+	private static ReadLocations locations;
+	private static ReadLog indicators;
 
 	public static void main(String args[]) throws Exception {
+
+		// start timing
+		time = -System.currentTimeMillis();
 
 		// this will be parsed from gui:
 		locations = new ReadLocations(
@@ -29,40 +32,41 @@ public class RateIndicatorBF {
 
 		double bfCutoff = 10.0;
 
-		int K = locations.nrow;
+		int n = locations.nrow;
 		boolean symmetrical = false;
-		if (indicators.ncol == K * (K - 1)) {
+		if (indicators.ncol == n * (n - 1)) {
 			symmetrical = false;
-		} else if (indicators.ncol == (K * (K - 1)) / 2) {
+		} else if (indicators.ncol == (n * (n - 1)) / 2) {
 			symmetrical = true;
 		} else {
 			System.err
 					.println("the number of rate indicators does not match the number of locations!");
 		}
 
-		// TODO: combinations
-		int n = locations.nrow;
 		List<String> combin = new ArrayList<String>();
-		// String[] combin = new String[Newton(n, 2)];
+		// List<String> from = new ArrayList<String>();
+		// List<String> to = new ArrayList<String>();
 
 		for (int row = 0; row < n - 1; row++) {
 
 			String[] subset = Utils.Subset(locations.locations, row, n - row);
-			
+
 			for (int i = 1; i < subset.length; i++) {
 				combin.add(locations.locations[row] + ":" + subset[i]);
+				// from.add(locations.locations[row]);
+				// to.add(subset[i]);
 			}
 		}
 
-		
-		Utils.PrintArray(combin.toArray());
-		
-		
+		if (symmetrical == false) {
+			combin.addAll(combin);
+		}
+
 		double qk = Double.NaN;
 		if (symmetrical) {
-			qk = (Math.log(2) + K - 1) / ((K * (K - 1)) / 2);
+			qk = (Math.log(2) + n - 1) / ((n * (n - 1)) / 2);
 		} else {
-			qk = (Math.log(2) + K - 1) / ((K * (K - 1)) / 1);
+			qk = (Math.log(2) + n - 1) / ((n * (n - 1)) / 1);
 		}
 
 		double[] pk = ColMeans(indicators.indicators);
@@ -75,14 +79,22 @@ public class RateIndicatorBF {
 
 			double bf = (pk[row] / (1 - pk[row])) / denominator;
 
-			if (bf > bfCutoff) {
-				bayesFactors.add(bf);
-			}
+			bayesFactors.add(bf);
 		}
 
-		// Utils.PrintArray(bayesFactors.toArray());
+		
+		
+		Utils.PrintTwoArrays(combin.toArray(), bayesFactors.toArray());
 
-		System.out.println("finished in: " + indicators.time + " msec");
+		
+		
+		
+		
+		
+		
+		// stop timing
+		time += System.currentTimeMillis();
+		System.out.println("finished in: " + time + " msec");
 	}// END: main
 
 	private static double ColMean(double a[][], int col) {
@@ -102,7 +114,5 @@ public class RateIndicatorBF {
 		}
 		return b;
 	}
-
-
 
 }// END: RateIndicatorBF
