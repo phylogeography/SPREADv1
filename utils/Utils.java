@@ -273,6 +273,12 @@ public class Utils {
 
 		return coords;
 	}// END: GenerateCircle
+	
+	public static void PrintArray(double[] x) {
+		for (int i = 0; i < x.length; i++) {
+			System.out.println(x[i]);
+		}
+	}// END: PrintArray
 
 	public static void PrintArray(String[] x) {
 		for (int i = 0; i < x.length; i++) {
@@ -285,6 +291,13 @@ public class Utils {
 			System.out.println(x[i]);
 		}
 	}// END: PrintArray
+	
+
+	public static void HeadArray(double[] array, int nrow) {
+		for (int row = 0; row < nrow; row++) {
+				System.out.println(array[row]);
+		}
+	}// END: Head2DArray
 
 	public static void Print2DArray(double[][] array) {
 		for (int row = 0; row < array.length; row++) {
@@ -630,6 +643,12 @@ public class Utils {
 
 		return coordinate;
 	}// END: MatchStateCoordinate
+	
+	public static String[] Subset(String line[], int start, int length) {
+	    String output[] = new String[length];
+	    System.arraycopy(line, start, output, 0, length);
+	    return output;
+	  }
 	
 	
 
