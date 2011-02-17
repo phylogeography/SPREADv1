@@ -11,19 +11,18 @@ import processing.core.PApplet;
 public class ReadLog extends PApplet {
 
 	public long time;
-	public String[] colNames;
 	public float[][] indicators;
 	public int nrow;
 	public int ncol;
 
-	public ReadLog(String filename) {
+	public ReadLog(String filename, double burnIn) {
 
 		// start timing
 		time = -System.currentTimeMillis();
 
 		String[] lines = loadStrings(filename);
 		nrow = lines.length - 1;
-		colNames = lines[0].split("\t");
+		String[] colNames = lines[0].split("\t");
 
 		List<Integer> list = new ArrayList<Integer>();
 
@@ -40,14 +39,19 @@ public class ReadLog extends PApplet {
 		}
 
 		ncol = list.size();
-		indicators = new float[nrow][ncol];
-		for (int i = 0; i < nrow; i++) {
+		int delete = (int) (nrow * burnIn) + 1;
+		indicators = new float[nrow - delete][ncol];
+
+		int i = 0;
+		for (int row = delete; row < nrow; row++) {
 
 			// skip first line with col names
-			String[] line = lines[i + 1].split("\t");
+			String[] line = lines[row].split("\t");
 			indicators[i] = parseFloat(subset(line, list.get(0), ncol));
+			i++;
 		}
 		indicators = (float[][]) indicators;
+		nrow = indicators.length;
 
 		// stop timing
 		time += System.currentTimeMillis();
@@ -68,10 +72,6 @@ public class ReadLog extends PApplet {
 
 	public float[][] getIndicators() {
 		return indicators;
-	}
-
-	public String[] getColNames() {
-		return colNames;
 	}
 
 }// END: class
