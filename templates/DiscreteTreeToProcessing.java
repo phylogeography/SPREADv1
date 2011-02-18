@@ -83,9 +83,8 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 		// World map in Equirectangular projection
 
-		mapImage = loadImage(this.getClass().getResource("world_map.png")
-				.getPath());
-		// mapImage = loadImage(LoadMapBackgroundFromJar());
+		mapImage = loadImage(LoadMapBackgroundInEclipse());
+//		 mapImage = loadImage(LoadMapBackgroundFromJar());
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons
@@ -179,13 +178,19 @@ public class DiscreteTreeToProcessing extends PApplet {
 				}
 			}
 		}// END: nodes loop
-
 	}// END: DrawBranches
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings("all")
 	private String LoadMapBackgroundFromJar() {
 		String imgPathFromJar = "jar:"
 				+ this.getClass().getResource("world_map.png").getPath();
+		return imgPathFromJar;
+	}
+
+	@SuppressWarnings("all")
+	private String LoadMapBackgroundInEclipse() {
+		String imgPathFromJar = this.getClass().getResource("world_map.png")
+				.getPath();
 		return imgPathFromJar;
 	}
 

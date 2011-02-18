@@ -82,10 +82,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	void drawMapBackground() {
 
 		// World map in Equirectangular projection
-
-		mapImage = loadImage(this.getClass().getResource("world_map.png")
-				.getPath());
-		// mapImage = loadImage(LoadMapBackgroundFromJar());
+		mapImage = loadImage(LoadMapBackgroundInEclipse());
+//		 mapImage = loadImage(LoadMapBackgroundFromJar());
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons
@@ -94,7 +92,9 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	// ---PLACES---//
 	// //////////////
 	private void DrawPlaces() {
+
 		float radius = 7;
+
 		// White
 		fill(255, 255, 255);
 		noStroke();
@@ -113,6 +113,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private void DrawPlacesLabels() {
 
 		textSize(7);
+
 		// Black labels
 		fill(0, 0, 0);
 
@@ -145,9 +146,6 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				int alpha = (int) Utils.map(bf, 0, bfMax, 100, 255);
 				stroke(red, green, blue, alpha);
 
-				/**
-				 * width mapping
-				 * */
 				strokeWeight(2);
 
 				String state = combin.get(i).split(":")[1];
@@ -171,14 +169,12 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 				line(x0, y0, x1, y1);
 			}
-		}
-
+		}// END: ArrayList loop
 	}// END: DrawRates
 
 	private void ComputeBFTest() {
-		int n = locations.nrow;
 
-		// System.out.println(n + " " + indicators.ncol);
+		int n = locations.nrow;
 
 		boolean symmetrical = false;
 		if (indicators.ncol == n * (n - 1)) {
@@ -205,8 +201,6 @@ public class RateIndicatorBFToProcessing extends PApplet {
 			combin.addAll(combin);
 		}
 
-		// Utils.PrintArray(combin.toArray());
-
 		double qk = Double.NaN;
 		if (symmetrical) {
 			qk = (Math.log(2) + n - 1) / ((n * (n - 1)) / 2);
@@ -223,7 +217,20 @@ public class RateIndicatorBFToProcessing extends PApplet {
 			double bf = (pk[row] / (1 - pk[row])) / denominator;
 			bayesFactors.add(bf);
 		}
-
 	}// END: ComputeBFTest
+
+	@SuppressWarnings("all")
+	private String LoadMapBackgroundFromJar() {
+		String imgPathFromJar = "jar:"
+				+ this.getClass().getResource("world_map.png").getPath();
+		return imgPathFromJar;
+	}
+
+	@SuppressWarnings("all")
+	private String LoadMapBackgroundInEclipse() {
+		String imgPathFromJar = this.getClass().getResource("world_map.png")
+				.getPath();
+		return imgPathFromJar;
+	}
 
 }// END: RateIndicatorBFToProcessing class

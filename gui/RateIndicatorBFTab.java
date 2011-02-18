@@ -27,7 +27,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Icons
 	private ImageIcon nuclearIcon = CreateImageIcon("/icons/nuclear.png");
-	// private ImageIcon logIcon = CreateImageIcon("/icons/log.png");
+	private ImageIcon logIcon = CreateImageIcon("/icons/log.png");
 	private ImageIcon locationsIcon = CreateImageIcon("/icons/locations.png");
 	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
 
@@ -44,7 +44,7 @@ public class RateIndicatorBFTab extends JPanel {
 			"/home/filip/Pulpit/output.kml", 17);
 
 	// Buttons for tab
-	private JButton openLog = new JButton("Open");
+	private JButton openLog = new JButton("Open", logIcon);
 	private JButton openLocations = new JButton("Open", locationsIcon);
 	private JButton generateKml = new JButton("Generate", nuclearIcon);
 	private JButton generateProcessing = new JButton("Plot", processingIcon);
