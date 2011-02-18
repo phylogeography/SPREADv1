@@ -19,15 +19,15 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import templates.DiscreteTreeToProcessing;
 import templates.RateIndicatorBFToKML;
+import templates.RateIndicatorBFToProcessing;
 
 @SuppressWarnings("serial")
 public class RateIndicatorBFTab extends JPanel {
 
 	// Icons
 	private ImageIcon nuclearIcon = CreateImageIcon("/icons/nuclear.png");
-	// private ImageIcon treeIcon = CreateImageIcon("/icons/tree.png");
+	// private ImageIcon logIcon = CreateImageIcon("/icons/log.png");
 	private ImageIcon locationsIcon = CreateImageIcon("/icons/locations.png");
 	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
 
@@ -57,7 +57,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// right tools panel
 	private JPanel rightPanel;
-	private DiscreteTreeToProcessing discreteTreeToProcessing;
+	private RateIndicatorBFToProcessing rateIndicatorBFToProcessing;
 
 	public RateIndicatorBFTab() {
 
@@ -136,7 +136,7 @@ public class RateIndicatorBFTab extends JPanel {
 		/**
 		 * Processing pane
 		 * */
-		discreteTreeToProcessing = new DiscreteTreeToProcessing();
+		rateIndicatorBFToProcessing = new RateIndicatorBFToProcessing();
 		Dimension rightPanelDimension = new Dimension(2048, 1025);
 		rightPanel = new JPanel();
 		rightPanel.setSize(rightPanelDimension);
@@ -146,7 +146,7 @@ public class RateIndicatorBFTab extends JPanel {
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
 		rightPanel.setBorder(new TitledBorder(""));
 		rightPanel.setBackground(new Color(255, 255, 255));
-		rightPanel.add(discreteTreeToProcessing);
+		rightPanel.add(rateIndicatorBFToProcessing);
 		add(rightPanel);
 
 	}
@@ -229,6 +229,16 @@ public class RateIndicatorBFTab extends JPanel {
 
 	private class ListenGenerateProcessing implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+
+			rateIndicatorBFToProcessing.setLogFilePath(logFilename, Double
+					.parseDouble(burnInParser.getText()));
+
+			rateIndicatorBFToProcessing.setBfCutoff(Double
+					.valueOf(bfCutoffParser.getText()));
+
+			rateIndicatorBFToProcessing.setLocationFilePath(locationsFilename);
+
+			rateIndicatorBFToProcessing.init();
 
 		}// END: actionPerformed
 	}// END: ListenGenerateProcessing

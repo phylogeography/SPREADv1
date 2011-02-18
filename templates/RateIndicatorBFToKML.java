@@ -67,14 +67,10 @@ public class RateIndicatorBFToKML {
 
 	public void GenerateKML() throws IOException {
 
-		// Utils.Print2DArray(indicators.indicators);
-
 		// start timing
 		time = -System.currentTimeMillis();
 
 		int n = locations.nrow;
-
-		// System.out.println(n + " " + indicators.ncol);
 
 		boolean symmetrical = false;
 		if (indicators.ncol == n * (n - 1)) {
@@ -98,10 +94,10 @@ public class RateIndicatorBFToKML {
 		}
 
 		if (symmetrical == false) {
+			// TODO: the added ArrayList should actually have reversed entries
+			// (to:from)
 			combin.addAll(combin);
 		}
-
-		// Utils.PrintArray(combin.toArray());
 
 		double qk = Double.NaN;
 		if (symmetrical) {
@@ -143,7 +139,7 @@ public class RateIndicatorBFToKML {
 		// stop timing
 		time += System.currentTimeMillis();
 
-	}// :END: GenerateKML
+	}// END: GenerateKML
 
 	// //////////////
 	// ---PLACES---//
@@ -167,13 +163,12 @@ public class RateIndicatorBFToKML {
 		}
 	}// END: Places
 
+	// /////////////
+	// ---RATES---//
+	// /////////////
 	private static class Rates implements Runnable {
 
 		public void run() {
-
-			// /////////////
-			// ---RATES---//
-			// /////////////
 
 			// this is for Branches folder:
 			String ratesDescription = null;
