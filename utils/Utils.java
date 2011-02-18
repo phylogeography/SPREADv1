@@ -714,5 +714,24 @@ public class Utils {
 		}
 		return Integer.parseInt(newtonString);
 	}
+	
+	public static double ColMean(double a[][], int col) {
+		double sum = 0;
+		int nrows = a.length;
+		for (int row = 0; row < nrows; row++) {
+			sum += a[row][col];
+		}
+		return sum / nrows;
+	}
+
+	public static double[] ColMeans(double a[][]) {
+		int ncol = a[0].length;
+		double[] b = new double[ncol];
+		for (int c = 0; c < ncol; c++) {
+			b[c] = ColMean(a, c);
+		}
+		return b;
+	}
+
 
 }// END: Utils class

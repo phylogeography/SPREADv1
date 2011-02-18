@@ -40,6 +40,7 @@ public class OutbreakGui {
 	// Tabs
 	ContinuousModelTab continuousModelTab;
 	DiscreteModelTab discreteModelTab;
+	RateIndicatorBFTab rateIndicatorBFTab;
 
 	public OutbreakGui() {
 
@@ -67,6 +68,10 @@ public class OutbreakGui {
 		// add Discrete Model Tab
 		discreteModelTab = new DiscreteModelTab();
 		tabbedPane.add("Discrete Model", discreteModelTab);
+		
+		// add Discrete Model Tab
+		rateIndicatorBFTab = new RateIndicatorBFTab();
+		tabbedPane.add("Rate Indicator BF test", rateIndicatorBFTab);
 
 	}
 
