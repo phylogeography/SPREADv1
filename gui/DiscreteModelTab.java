@@ -67,7 +67,7 @@ public class DiscreteModelTab extends JPanel {
 	// left tools pane
 	private JPanel leftPanel;
 
-	// right tools panel
+	// Processing pane
 	private JPanel rightPanel;
 	private DiscreteTreeToProcessing discreteTreeToProcessing;
 
@@ -162,6 +162,8 @@ public class DiscreteModelTab extends JPanel {
 		rightPanel.setBorder(new TitledBorder(""));
 		rightPanel.setBackground(new Color(255, 255, 255));
 		rightPanel.add(discreteTreeToProcessing);
+//		JScrollPane ProcessingScrollPane = new JScrollPane(continuousTreeToProcessing);
+//		rightPanel.add(ProcessingScrollPane, BorderLayout.CENTER);
 		add(rightPanel);
 
 	}

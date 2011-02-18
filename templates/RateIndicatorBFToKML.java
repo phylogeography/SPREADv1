@@ -35,7 +35,7 @@ public class RateIndicatorBFToKML {
 	private static List<Double> bayesFactors;
 	private static List<String> combin;
 
-	public RateIndicatorBFToKML() throws RuntimeException {
+	public RateIndicatorBFToKML() {
 
 	}// END: RateIndicatorBF()
 
@@ -70,51 +70,7 @@ public class RateIndicatorBFToKML {
 		// start timing
 		time = -System.currentTimeMillis();
 
-		int n = locations.nrow;
-
-		boolean symmetrical = false;
-		if (indicators.ncol == n * (n - 1)) {
-			symmetrical = false;
-		} else if (indicators.ncol == (n * (n - 1)) / 2) {
-			symmetrical = true;
-		} else {
-			System.err.println("the number of rate indicators does not match "
-					+ "the number of locations!");
-		}
-
-		combin = new ArrayList<String>();
-
-		for (int row = 0; row < n - 1; row++) {
-
-			String[] subset = Utils.Subset(locations.locations, row, n - row);
-
-			for (int i = 1; i < subset.length; i++) {
-				combin.add(locations.locations[row] + ":" + subset[i]);
-			}
-		}
-
-		if (symmetrical == false) {
-			// TODO: the added ArrayList should actually have reversed entries
-			// (to:from)
-			combin.addAll(combin);
-		}
-
-		double qk = Double.NaN;
-		if (symmetrical) {
-			qk = (Math.log(2) + n - 1) / ((n * (n - 1)) / 2);
-		} else {
-			qk = (Math.log(2) + n - 1) / ((n * (n - 1)) / 1);
-		}
-
-		double[] pk = Utils.ColMeans(indicators.indicators);
-
-		bayesFactors = new ArrayList<Double>();
-		double denominator = qk / (1 - qk);
-
-		for (int row = 0; row < pk.length; row++) {
-			double bf = (pk[row] / (1 - pk[row])) / denominator;
-			bayesFactors.add(bf);
-		}
+		ComputeBFTest();
 
 		// this is to generate kml output
 		KMLGenerator kmloutput = new KMLGenerator();
@@ -242,5 +198,53 @@ public class RateIndicatorBFToKML {
 
 		}
 	}// END: Rates
+	
+	private void ComputeBFTest() {
+
+		int n = locations.nrow;
+
+		boolean symmetrical = false;
+		if (indicators.ncol == n * (n - 1)) {
+			symmetrical = false;
+		} else if (indicators.ncol == (n * (n - 1)) / 2) {
+			symmetrical = true;
+		} else {
+			System.err.println("the number of rate indicators does not match "
+					+ "the number of locations!");
+		}
+
+		combin = new ArrayList<String>();
+
+		for (int row = 0; row < n - 1; row++) {
+
+			String[] subset = Utils.Subset(locations.locations, row, n - row);
+
+			for (int i = 1; i < subset.length; i++) {
+				combin.add(locations.locations[row] + ":" + subset[i]);
+			}
+		}
+
+		if (symmetrical == false) {
+			combin.addAll(combin);
+		}
+
+		double qk = Double.NaN;
+		if (symmetrical) {
+			qk = (Math.log(2) + n - 1) / ((n * (n - 1)) / 2);
+		} else {
+			qk = (Math.log(2) + n - 1) / ((n * (n - 1)) / 1);
+		}
+
+		double[] pk = Utils.ColMeans(indicators.indicators);
+
+		bayesFactors = new ArrayList<Double>();
+		double denominator = qk / (1 - qk);
+
+		for (int row = 0; row < pk.length; row++) {
+			double bf = (pk[row] / (1 - pk[row])) / denominator;
+			bayesFactors.add(bf);
+		}
+	}// END: ComputeBFTest
+
 
 }// END: RateIndicatorBF

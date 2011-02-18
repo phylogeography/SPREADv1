@@ -82,9 +82,8 @@ public class DiscreteTreeToProcessing extends PApplet {
 	void drawMapBackground() {
 
 		// World map in Equirectangular projection
-
 		mapImage = loadImage(LoadMapBackgroundInEclipse());
-//		 mapImage = loadImage(LoadMapBackgroundFromJar());
+		// mapImage = loadImage(LoadMapBackgroundFromJar());
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons
@@ -113,6 +112,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 	private void DrawPlacesLabels() {
 
 		textSize(7);
+
 		// Black labels
 		fill(0, 0, 0);
 

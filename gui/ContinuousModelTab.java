@@ -66,14 +66,13 @@ public class ContinuousModelTab extends JPanel {
 	// left tools pane
 	private JPanel leftPanel;
 
-	// right tools panel
+	// Processing pane
 	private JPanel rightPanel;
 	private ContinuousTreeToProcessing continuousTreeToProcessing;
 
 	public ContinuousModelTab() {
 
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-		// setLayout(new BorderLayout());
 
 		/**
 		 * left tools pane
@@ -167,6 +166,8 @@ public class ContinuousModelTab extends JPanel {
 		rightPanel.setBorder(new TitledBorder(""));
 		rightPanel.setBackground(new Color(255, 255, 255));
 		rightPanel.add(continuousTreeToProcessing);
+//		JScrollPane ProcessingScrollPane = new JScrollPane(continuousTreeToProcessing);
+//		rightPanel.add(ProcessingScrollPane, BorderLayout.CENTER);
 		add(rightPanel);
 
 	}

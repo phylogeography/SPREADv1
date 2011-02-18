@@ -49,6 +49,7 @@ public class OutbreakGui {
 		frame.add(tabbedPane);
 		frame.setJMenuBar(mainMenu);
 		frame.addWindowListener(new ListenCloseWdw());
+		//TODO: remove this, add scrolls to each tab
 		JScrollPane scrollPane = new JScrollPane(tabbedPane);
 		frame.add(scrollPane, BorderLayout.CENTER);
 
@@ -80,6 +81,7 @@ public class OutbreakGui {
 			String helpText = "TODO";
 			discreteModelTab.setText(helpText);
 			continuousModelTab.setText(helpText);
+			rateIndicatorBFTab.setText(helpText);
 		}
 	}
 

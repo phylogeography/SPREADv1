@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.BoxLayout;
@@ -55,7 +54,7 @@ public class RateIndicatorBFTab extends JPanel {
 	// left tools pane
 	private JPanel leftPanel;
 
-	// right tools panel
+	// Processing pane
 	private JPanel rightPanel;
 	private RateIndicatorBFToProcessing rateIndicatorBFToProcessing;
 
@@ -147,6 +146,9 @@ public class RateIndicatorBFTab extends JPanel {
 		rightPanel.setBorder(new TitledBorder(""));
 		rightPanel.setBackground(new Color(255, 255, 255));
 		rightPanel.add(rateIndicatorBFToProcessing);
+		// JScrollPane ProcessingScrollPane = new
+		// JScrollPane(continuousTreeToProcessing);
+		// rightPanel.add(ProcessingScrollPane, BorderLayout.CENTER);
 		add(rightPanel);
 
 	}
@@ -214,13 +216,9 @@ public class RateIndicatorBFTab extends JPanel {
 				textArea.setText("Finished in: " + RateIndicatorBFToKML.time
 						+ " msec");
 
-			} catch (FileNotFoundException e1) {
+			} catch (IOException e0) {
 
-				e1.printStackTrace();
-
-			} catch (IOException e2) {
-
-				e2.printStackTrace();
+				textArea.setText("Could not generate!");
 
 			}
 
