@@ -18,6 +18,7 @@ import structure.Place;
 import structure.Style;
 import structure.TimeLine;
 import utils.ReadLocations;
+import utils.ReadLog;
 import utils.Utils;
 
 public class RateIndicatorBFToKML {
