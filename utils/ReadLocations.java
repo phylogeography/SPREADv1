@@ -9,7 +9,7 @@ public class ReadLocations extends PApplet {
 	public String[] locations;
 	public float[][] coordinates;
 	public int nrow;
-
+	
 	public ReadLocations(String filename) {
 
 		lines = loadStrings(filename);

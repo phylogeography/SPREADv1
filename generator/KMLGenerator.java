@@ -145,7 +145,9 @@ public class KMLGenerator implements Generator {
 				feature = generateLineSegment(line.getStartLocation(), line
 						.getEndLocation(), startTime, duration, line
 						.getStartStyle());
+
 			} else {
+
 				Folder folder = new Folder();
 
 				// Parse start and end point coordinates
@@ -153,8 +155,6 @@ public class KMLGenerator implements Generator {
 				double startLat = line.getStartLocation().getLatitude();
 				double endLon = line.getEndLocation().getLongitude();
 				double endLat = line.getEndLocation().getLatitude();
-				// double startAltitude = line.getStartLocation().getAltitude();
-				// double endAltitude = line.getEndLocation().getAltitude();
 
 				// Calculate full distance
 				double distance = Utils.RhumbDistance(startLon, startLat,
@@ -286,16 +286,20 @@ public class KMLGenerator implements Generator {
 		lineString.setCoordinates(points);
 		Placemark placemark = new Placemark();
 
-		// Parse minus if date is BC
-		TimePrimitive timePrimitive = new TimeSpan(
-				startTime < YearZeroinMillis ? "-"
-						+ formatter.format(startTime) : formatter
-						.format(startTime), duration > 0.0 ? (startTime
-						+ duration < YearZeroinMillis ? "-"
-						+ formatter.format(startTime + duration) : formatter
-						.format(startTime + duration)) : "");
+		if (!Double.isNaN(duration)) {
 
-		placemark.setTimePrimitive(timePrimitive);
+			// Parse minus if date is BC
+			TimePrimitive timePrimitive = new TimeSpan(
+					startTime < YearZeroinMillis ? "-"
+							+ formatter.format(startTime) : formatter
+							.format(startTime), duration > 0.0 ? (startTime
+							+ duration < YearZeroinMillis ? "-"
+							+ formatter.format(startTime + duration)
+							: formatter.format(startTime + duration)) : "");
+
+			placemark.setTimePrimitive(timePrimitive);
+		}
+
 		placemark.setStyleUrl(style.getId());
 		placemark.setGeometry(lineString);
 		return placemark;

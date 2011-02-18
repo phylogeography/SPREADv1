@@ -129,6 +129,26 @@ public class Utils {
 		return m;
 	}// END: getTreeHeightMax
 
+	public static double getListMin(List<Double> list) {
+		double m = Double.MAX_VALUE;
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i) < m) {
+				m = list.get(i);
+			}
+		}
+		return m;
+	}// END: getDoubleListMax
+
+	public static double getListMax(List<Double> list) {
+		double m = -Double.MAX_VALUE;
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i) > m) {
+				m = list.get(i);
+			}
+		}
+		return m;
+	}// END: getDoubleListMax
+
 	public static double get2DArrayMax(double[][] array) {
 		double m = -Double.MAX_VALUE;
 		for (int i = 0; i < array.length; i++) {
@@ -293,7 +313,19 @@ public class Utils {
 		}
 	}// END: PrintArray
 
+	public static void HeadArray(Object[] array, int nrow) {
+		for (int row = 0; row < nrow; row++) {
+			System.out.println(array[row]);
+		}
+	}// END: HeadArray
+
 	public static void HeadArray(double[] array, int nrow) {
+		for (int row = 0; row < nrow; row++) {
+			System.out.println(array[row]);
+		}
+	}// END: HeadArray
+
+	public static void HeadArray(String[] array, int nrow) {
 		for (int row = 0; row < nrow; row++) {
 			System.out.println(array[row]);
 		}
@@ -337,6 +369,14 @@ public class Utils {
 
 			System.out.println(left[row] + " " + right[row]);
 
+		}
+	}
+
+	public static void PrintReadLocations(ReadLocations locations) {
+		for (int row = 0; row < locations.nrow; row++) {
+			System.out.println(locations.locations[row] + " "
+					+ locations.coordinates[row][0] + " "
+					+ locations.coordinates[row][1]);
 		}
 	}
 

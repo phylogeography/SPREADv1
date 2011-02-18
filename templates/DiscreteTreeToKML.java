@@ -169,7 +169,6 @@ public class DiscreteTreeToKML {
 
 			// stop timing
 			time += System.currentTimeMillis();
-			System.out.println("finished in: " + time + " msec");
 
 		} catch (Exception e) {
 			e.printStackTrace();
