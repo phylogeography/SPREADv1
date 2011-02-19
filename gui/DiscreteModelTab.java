@@ -60,7 +60,8 @@ public class DiscreteModelTab extends JPanel {
 	private JButton openTree = new JButton("Open", treeIcon);
 	private JButton openLocations = new JButton("Open", locationsIcon);
 	private JButton generateProcessing = new JButton("Plot", processingIcon);
-
+	private JButton saveProcessingPlot = new JButton("Save");
+	
 	// Status Bar for tab
 	private JTextArea textArea;
 
@@ -90,7 +91,8 @@ public class DiscreteModelTab extends JPanel {
 		generateKml.addActionListener(new ListenGenerateKml());
 		openLocations.addActionListener(new ListenOpenLocations());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
-
+		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
+		
 		JPanel panel0 = new JPanel();
 		panel0.setBorder(new TitledBorder("Load tree file:"));
 		panel0.add(openTree);
@@ -136,12 +138,17 @@ public class DiscreteModelTab extends JPanel {
 		leftPanel.add(panel7);
 
 		JPanel panel8 = new JPanel();
+		panel8.setBorder(new TitledBorder("Save plot:"));
+		panel8.add(saveProcessingPlot);
+		leftPanel.add(panel8);
+		
+		JPanel panel9 = new JPanel();
 		textArea = new JTextArea(4, 20);
 		textArea.setEditable(true);
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		scrollPane.setPreferredSize(new Dimension(200, 60));
-		panel8.add(scrollPane, BorderLayout.CENTER);
-		leftPanel.add(panel8);
+		panel9.add(scrollPane, BorderLayout.CENTER);
+		leftPanel.add(panel9);
 
 		JPanel leftPanelContainer = new JPanel();
 		leftPanelContainer.setLayout(new BorderLayout());
@@ -288,6 +295,30 @@ public class DiscreteModelTab extends JPanel {
 
 		}// END: actionPerformed
 	}// END: ListenGenerateProcessing
+	
+	private class ListenSaveProcessingPlot implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+			try {
+
+				JFileChooser chooser = new JFileChooser();
+				// System.getProperty("user.dir")
+				// chooser.setDialogTitle("");
+
+				chooser.showSaveDialog(chooser);
+				File file = chooser.getSelectedFile();
+				String plotToSaveFilename = file.getAbsolutePath();
+
+				discreteTreeToProcessing.save(plotToSaveFilename);
+
+				textArea.setText("Saved " + plotToSaveFilename);
+
+			} catch (Exception e0) {
+				textArea.setText("Could not save!");
+			}
+
+		}// END: actionPerformed
+	}// END: class
 
 	private ImageIcon CreateImageIcon(String path) {
 		java.net.URL imgURL = this.getClass().getResource(path);

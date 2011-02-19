@@ -17,10 +17,10 @@ ________________________________________________________________________________
                             
 This is a test run of Spread. Spread is a Java app supporting processing and 
 visualizations of BEAST's phylogeographic models. Contains visualisations 
-(templates), wrapped in a simplistic gui.
+(templates), wrapped in a simplistic gui. Supported visualisations include 
+embedded Processing applets and KML output for viewing in Google Earth.
 
 BEAST software: http://beast.bio.ed.ac.uk/Main_Page
-SPREAD:         https://github.com/fbielejec/Spread
 
 ________________________________________________________________________________
                             COMPILING

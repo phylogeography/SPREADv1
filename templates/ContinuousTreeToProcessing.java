@@ -44,7 +44,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	}
 
 	public void setCoordinatesName(String name) {
-		
+
 		coordinatesName = name;
 		// this is for coordinate attribute names
 		longitudeName = (coordinatesName + 2);
@@ -52,7 +52,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	}
 
 	public void setTreePath(String path) throws IOException, ImportException {
-		
+
 		importer = new NexusImporter(new FileReader(path));
 		tree = (RootedTree) importer.importNextTree();
 		// this is for mappings
@@ -75,7 +75,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	}// END:setup
 
 	public void draw() {
-		
+
 		smooth();
 		drawMapBackground();
 		drawPolygons();
@@ -83,11 +83,11 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 	}// END:draw
 
-	void drawMapBackground() {
+	private void drawMapBackground() {
 
 		// World map in Equirectangular projection
 		mapImage = loadImage(LoadMapBackgroundInEclipse());
-//		 mapImage = loadImage(LoadMapBackgroundFromJar());
+		// mapImage = loadImage(LoadMapBackgroundFromJar());
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons
