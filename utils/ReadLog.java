@@ -61,7 +61,7 @@ public class ReadLog extends PApplet {
 		for (int row = delete; row < nrow; row++) {
 
 			String[] line = lines[row].split("\t");
-			indicators[i] = parseDouble(Utils.Subset(line, list.get(0), ncol));
+			indicators[i] = Utils.parseDouble(Utils.Subset(line, list.get(0), ncol));
 			i++;
 
 		}
@@ -73,17 +73,7 @@ public class ReadLog extends PApplet {
 
 	}// END: ReadLog
 
-	private double[] parseDouble(String[] lines) {
-
-		int nrow = lines.length;
-		double[] a = new double[nrow];
-		for (int i = 0; i < nrow; i++) {
-			a[i] = Double.parseDouble(lines[i]);
-		}
-		return a;
-	}
-
-	public String[] LoadStrings(String filename) {
+	private String[] LoadStrings(String filename) {
 		InputStream is = createInput(filename);
 		if (is != null)
 			return LoadStrings(is);
@@ -94,7 +84,7 @@ public class ReadLog extends PApplet {
 		return null;
 	}
 
-	static public String[] LoadStrings(InputStream input) {
+	private String[] LoadStrings(InputStream input) {
 
 		try {
 
