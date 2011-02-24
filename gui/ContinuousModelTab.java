@@ -40,7 +40,8 @@ public class ContinuousModelTab extends JPanel {
 	private ImageIcon nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 	private ImageIcon treeIcon = CreateImageIcon("/icons/tree.png");
 	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
-
+	private ImageIcon saveIcon = CreateImageIcon("/icons/save.png");
+	
 	// Strings for paths
 	private String treeFilename = null;
 
@@ -59,7 +60,7 @@ public class ContinuousModelTab extends JPanel {
 	private JButton generateKml = new JButton("Generate", nuclearIcon);
 	private JButton openTree = new JButton("Open", treeIcon);
 	private JButton generateProcessing = new JButton("Plot", processingIcon);
-	private JButton saveProcessingPlot = new JButton("Save");
+	private JButton saveProcessingPlot = new JButton("Save", saveIcon);
 
 	// Status Bar for tab
 	private JTextArea textArea;
