@@ -29,7 +29,8 @@ public class RateIndicatorBFTab extends JPanel {
 	private ImageIcon logIcon = CreateImageIcon("/icons/log.png");
 	private ImageIcon locationsIcon = CreateImageIcon("/icons/locations.png");
 	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
-
+	private ImageIcon saveIcon = CreateImageIcon("/icons/save.png");
+	
 	// Strings for paths
 	private String logFilename = null;
 	private String locationsFilename = null;
@@ -47,7 +48,7 @@ public class RateIndicatorBFTab extends JPanel {
 	private JButton openLocations = new JButton("Open", locationsIcon);
 	private JButton generateKml = new JButton("Generate", nuclearIcon);
 	private JButton generateProcessing = new JButton("Plot", processingIcon);
-	private JButton saveProcessingPlot = new JButton("Save");
+	private JButton saveProcessingPlot = new JButton("Save", saveIcon);
 
 	// Status Bar for tab
 	private JTextArea textArea;
