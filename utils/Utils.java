@@ -97,6 +97,20 @@ public class Utils {
 		return (Object[]) node.getAttribute(attributeName);
 	}
 
+
+	public static int getExternalNodeCount(RootedTree tree) {
+
+		int externalNodeCount = 0;
+		for (Node node : tree.getNodes()) {
+			if (tree.isExternal(node)) {
+
+				externalNodeCount++;
+			}
+		}
+
+		return externalNodeCount;
+	}
+
 	public static double getTreeHeightMin(RootedTree tree) {
 		/**
 		 * Finds the min height for given tree.
@@ -281,6 +295,16 @@ public class Utils {
 		return coords;
 	}// END: GenerateCircle
 
+	public static double[] parseDouble(String[] lines) {
+
+		int nrow = lines.length;
+		double[] a = new double[nrow];
+		for (int i = 0; i < nrow; i++) {
+			a[i] = Double.parseDouble(lines[i]);
+		}
+		return a;
+	}
+
 	public static List<Coordinates> ParsePolygons(Object[] longitudeHPD,
 			Object[] latitudeHPD) {
 
@@ -330,6 +354,15 @@ public class Utils {
 			System.out.println(array[row]);
 		}
 	}// END: Head2DArray
+
+	public static void Print2DArray(Object[][] array) {
+		for (int row = 0; row < array.length; row++) {
+			for (int col = 0; col < array[row].length; col++) {
+				System.out.print(array[row][col] + " ");
+			}
+			System.out.print("\n");
+		}
+	}// END: Print2DArray
 
 	public static void Print2DArray(double[][] array) {
 		for (int row = 0; row < array.length; row++) {
@@ -714,7 +747,7 @@ public class Utils {
 		}
 		return Integer.parseInt(newtonString);
 	}
-	
+
 	public static double ColMean(double a[][], int col) {
 		double sum = 0;
 		int nrows = a.length;
@@ -732,6 +765,5 @@ public class Utils {
 		}
 		return b;
 	}
-
 
 }// END: Utils class
