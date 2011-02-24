@@ -40,7 +40,8 @@ public class DiscreteModelTab extends JPanel {
 	private ImageIcon treeIcon = CreateImageIcon("/icons/tree.png");
 	private ImageIcon locationsIcon = CreateImageIcon("/icons/locations.png");
 	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
-
+	private ImageIcon saveIcon = CreateImageIcon("/icons/save.png");
+	
 	// Strings for paths
 	private String treeFilename = null;
 	private String locationsFilename = null;
@@ -60,7 +61,7 @@ public class DiscreteModelTab extends JPanel {
 	private JButton openTree = new JButton("Open", treeIcon);
 	private JButton openLocations = new JButton("Open", locationsIcon);
 	private JButton generateProcessing = new JButton("Plot", processingIcon);
-	private JButton saveProcessingPlot = new JButton("Save");
+	private JButton saveProcessingPlot = new JButton("Save", saveIcon);
 	
 	// Status Bar for tab
 	private JTextArea textArea;
