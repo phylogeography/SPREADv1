@@ -1,9 +1,5 @@
 // "/home/filip/Dropbox/Phyleography/data/WNX/WNV_relaxed_geo_gamma.trees"
 
-//		BufferedReader bufferedReader = new BufferedReader(
-//				new FileReader(
-//						"/home/filip/Dropbox/Phyleography/data/WNX/WNV_relaxed_geo_gamma.trees"));
-
 package templates;
 
 import java.io.FileReader;
@@ -121,6 +117,7 @@ public class TimeSlicer {
 
 		double[][] precision = null;
 
+		//TODO: move this to imputeValue
 		if (impute) {
 
 			Object o = tree.getAttribute(precisionString);
