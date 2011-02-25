@@ -30,7 +30,7 @@ public class TimeSlicer {
 	private static String locationString;
 	private static String rateString;
 	private static int numberOfIntervals;
-	// private static boolean trueNoise;
+	private static boolean trueNoise;
 	private static String mrsdString;
 	private static double timescaler;
 	private static TimeLine timeLine;
@@ -62,7 +62,7 @@ public class TimeSlicer {
 		locationString = "location";
 		rateString = "rate";
 		numberOfIntervals = 10;
-		// trueNoise = true;
+		trueNoise = false;
 		mrsdString = "2011-02-25";
 
 		// parse combobox choices here
@@ -117,7 +117,7 @@ public class TimeSlicer {
 
 		double[][] precision = null;
 
-		//TODO: move this to imputeValue
+		// TODO: move this to imputeValue
 		if (impute) {
 
 			Object o = tree.getAttribute(precisionString);
@@ -173,47 +173,39 @@ public class TimeSlicer {
 
 					Object[] imputedLocation = imputeValue(location,
 							parentLocation, sliceTime, nodeTime, parentTime,
-							precision, rate, false);
-
-//					System.out.println("Parent time: "
-//							+ formatter.format(parentTime));
-//
-//					System.out.println("Slice time: "
-//							+ formatter.format(sliceTime));
-//
-//					System.out.println("Node time: "
-//							+ formatter.format(nodeTime));
+							precision, rate, trueNoise);
 
 					if (parentTime < sliceTime && sliceTime <= nodeTime) {
-						
-//						System.out.println("Parent time: "
-//								+ formatter.format(parentTime));
-//
-//						System.out.println("Slice time: "
-//								+ formatter.format(sliceTime));
-//
-//						System.out.println("Node time: "
-//								+ formatter.format(nodeTime));			
-//
-//						System.out.println("location: " + latitude + " "
-//								+ longitude);
-//						System.out.println("parent location: " + parentLatitude
-//								+ " " + parentLongitude);
-//						System.out
-//								.println("imputed location: "
-//										+ imputedLocation[0] + " "
-//										+ imputedLocation[1]);
-//						
-//						System.out.println();
+
+						// TODO: collect Coordinates in a List here
+						System.out.println("Parent time: "
+								+ formatter.format(parentTime));
+
+						System.out.println("Slice time: "
+								+ formatter.format(sliceTime));
+
+						System.out.println("Node time: "
+								+ formatter.format(nodeTime));
+
+						System.out.println("location: " + latitude + " "
+								+ longitude);
+						System.out.println("parent location: " + parentLatitude
+								+ " " + parentLongitude);
+						System.out
+								.println("imputed location: "
+										+ imputedLocation[0] + " "
+										+ imputedLocation[1]);
+
+						System.out.println();
 					}
-					
-					
 
 				}// END : numberOfIntervals loop
 			}
 		}// END: node loop
-		
+
 		System.out.println("============================================");
+
+		// TODO: create Polygons from Coordinates here
 
 	}// END: analyzeTree
 
