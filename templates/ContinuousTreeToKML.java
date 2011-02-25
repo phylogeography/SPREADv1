@@ -419,7 +419,7 @@ public class ContinuousTreeToKML {
 								Style polygonsStyle = new Style(col, 0);
 								polygonsStyle.setId("polygon_style"
 										+ polygonsStyleId);
-								
+
 								SpreadDate mrsd = new SpreadDate(mrsdString);
 								int days = (int) (nodeHeight * timescaler);
 								double startTime = mrsd.minus(days);
