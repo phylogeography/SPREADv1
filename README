@@ -36,6 +36,7 @@ ________________________________________________________________________________
                               TODO
 
 * improve GUI looks & feels
+  - add indeterminate progress bar + progress messages in terminal
 * catch exceptions
 * work on speed-ups
 * implement TimeSlicer template
