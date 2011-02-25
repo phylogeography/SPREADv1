@@ -39,7 +39,8 @@ ________________________________________________________________________________
 * catch exceptions
 * work on speed-ups
 * implement TimeSlicer template
-
+  - bug in true noise ?
+  - create Polygon layer, add trees as elements
 
 
 
