@@ -1,5 +1,7 @@
-lib/core.jar
-lib/jebl.jar
-lib/org.boehn.kmlframework_20090320.jar
+.gitignore
+github_commit
+bin/
+lib/
+src/icons/
 classes/
 dist/
