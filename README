@@ -38,7 +38,10 @@ ________________________________________________________________________________
 * improve GUI looks & feels
   - add indeterminate progress bar + progress messages in terminal
 * catch exceptions
+<<<<<<< HEAD
   - Runtime exceptions for "attribute missing from node"
+=======
+>>>>>>> 4137e217f18ef6a5a260a5c655ea99151047728d
 * work on speed-ups
 * implement TimeSlicer template
   - bug in true noise ?
