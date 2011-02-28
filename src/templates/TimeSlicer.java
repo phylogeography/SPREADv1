@@ -1,23 +1,5 @@
 // "/home/filip/Dropbox/Phyleography/data/WNX/WNV_relaxed_geo_gamma.trees"
-//						System.out.println("Parent time: "
-//								+ formatter.format(parentTime));
-//
-//						System.out.println("Slice time: "
-//								+ formatter.format(sliceTime));
-//
-//						System.out.println("Node time: "
-//								+ formatter.format(nodeTime));
-//
-//						System.out.println("location: " + latitude + " "
-//								+ longitude);
-//						System.out.println("parent location: " + parentLatitude
-//								+ " " + parentLongitude);
-//						System.out
-//								.println("imputed location: "
-//										+ imputedLocation[0] + " "
-//										+ imputedLocation[1]);
-//
-//						System.out.println();
+
 package templates;
 
 import generator.KMLGenerator;
@@ -85,7 +67,7 @@ public class TimeSlicer {
 
 		// this will be parsed from gui
 		treesImporter = new NexusImporter(new FileReader(
-				"/home/filip/Dropbox/Phyleography/data/WNX/WNX_small.trees"));
+				"/home/filip/Dropbox/Phyleography/data/WNX/WNV_relaxed_geo_gamma.trees"));
 
 		treeImporter = new NexusImporter(
 				new FileReader(
@@ -119,8 +101,6 @@ public class TimeSlicer {
 		// this is to generate kml output
 		KMLGenerator kmloutput = new KMLGenerator();
 		layers = new ArrayList<Layer>();
-
-		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
 
 		tree = (RootedTree) treeImporter.importNextTree();
 
@@ -233,6 +213,7 @@ public class TimeSlicer {
 							parentLocation, sliceTime, nodeTime, parentTime,
 							precision, rate, trueNoise);
 
+					// TODO: improve that, cut into paths
 					if (parentTime < sliceTime && sliceTime <= nodeTime) {
 
 						if (sliceMap.containsKey(sliceTime)) {
@@ -331,6 +312,8 @@ public class TimeSlicer {
 	// ////////////////
 	private static void Polygons() {
 
+		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
+
 		Set<Double> HostKeys = sliceMap.keySet();
 		Iterator<Double> iterator = HostKeys.iterator();
 
@@ -356,7 +339,7 @@ public class TimeSlicer {
 			Style polygonsStyle = new Style(col, 0);
 			polygonsStyle.setId("polygon_style" + polygonsStyleId);
 
-			polygonsLayer.addItem(new Polygon("node"
+			polygonsLayer.addItem(new Polygon("node_"
 					+ formatter.format(sliceTime), // String name
 					sliceMap.get(sliceTime), // List<Coordinates>
 					polygonsStyle, // Style style
