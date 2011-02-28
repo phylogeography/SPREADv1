@@ -20,6 +20,7 @@
 //						System.out.println();
 package templates;
 
+import java.awt.Color;
 import java.io.FileReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,6 +37,9 @@ import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
 import math.MultivariateNormalDistribution;
 import structure.Coordinates;
+import structure.Layer;
+import structure.Polygon;
+import structure.Style;
 import structure.TimeLine;
 import utils.SpreadDate;
 import utils.Utils;
@@ -129,14 +133,39 @@ public class TimeSlicer {
 
 		}// END trees loop
 
+		// ////////////////
+		// ---POLYGONS---//
+		// ////////////////
 		
 		Set<Double> HostKeys = sliceMap.keySet();
 		Iterator<Double> iterator = HostKeys.iterator();
 		
+		String polygonsDescription = null;
+		Layer polygonsLayer = new Layer("Polygons", polygonsDescription);
+		
+		int polygonsStyleId = 1;
 		while (iterator.hasNext()) {
 		
 		Double sliceTime = (Double) iterator.next();
-		System.out.println(sliceTime + " - " + sliceMap.get(sliceTime));
+		
+		int red = 55;
+		int green = (int) Utils.map(sliceTime, 0, sliceTimeMax, 255, 0);
+		int blue = 0;
+		int alpha = (int) Utils.map(sliceTime, 0, sliceTimeMax, 100, 255);
+		
+		Color col = new Color(red, green, blue, alpha);
+		Style polygonsStyle = new Style(col, 0);
+		polygonsStyle.setId("polygon_style" + polygonsStyleId);
+
+		polygonsLayer.addItem(new Polygon(
+				"node" + formatter.format(sliceTime), // String name
+				sliceMap.get(sliceTime), // List<Coordinates>
+				polygonsStyle, // Style style
+				sliceTime, // double startime
+				0.0 // double duration
+				));
+
+		polygonsStyleId++;
 		
 		}
 		
