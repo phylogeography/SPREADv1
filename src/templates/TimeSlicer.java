@@ -200,12 +200,13 @@ public class TimeSlicer {
 					}
 
 				}// END : numberOfIntervals loop
+				
+				// TODO: create Polygons from Coordinates here
 			}
 		}// END: node loop
 
 		System.out.println("============================================");
 
-		// TODO: create Polygons from Coordinates here
 
 	}// END: analyzeTree
 
