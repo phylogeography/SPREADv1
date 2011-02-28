@@ -133,13 +133,10 @@ public class TimeSlicer {
 		Set<Double> HostKeys = sliceMap.keySet();
 		Iterator<Double> iterator = HostKeys.iterator();
 		
-		int i = 1;
 		while (iterator.hasNext()) {
 		
-		System.out.println(i);
-		i++;
-		Double HostNow = (Double) iterator.next();
-		System.out.println(HostNow + " - " + sliceMap.get(HostNow));
+		Double sliceTime = (Double) iterator.next();
+		System.out.println(sliceTime + " - " + sliceMap.get(sliceTime));
 		
 		}
 		
@@ -219,7 +216,7 @@ public class TimeSlicer {
 					if (parentTime < sliceTime && sliceTime <= nodeTime) {
 
 						
-						if(sliceMap.containsKey(sliceTime)){
+						if(sliceMap.containsKey(sliceTime)) {
 							
 							sliceMap.get(sliceTime).add(new Coordinates(parentLongitude, parentLatitude, 0.0));
 							sliceMap.get(sliceTime).add(new Coordinates(Double.valueOf(imputedLocation[1].toString()), Double.valueOf(imputedLocation[0].toString()), 0.0));
