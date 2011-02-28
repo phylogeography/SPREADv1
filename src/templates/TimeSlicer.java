@@ -83,10 +83,6 @@ public class TimeSlicer {
 		// start timing
 		time = -System.currentTimeMillis();
 
-		// this is to generate kml output
-		KMLGenerator kmloutput = new KMLGenerator();
-		layers = new ArrayList<Layer>();
-
 		// this will be parsed from gui
 		treesImporter = new NexusImporter(new FileReader(
 				"/home/filip/Dropbox/Phyleography/data/WNX/WNX_small.trees"));
@@ -120,15 +116,20 @@ public class TimeSlicer {
 			break;
 		}
 
+		// this is to generate kml output
+		KMLGenerator kmloutput = new KMLGenerator();
+		layers = new ArrayList<Layer>();
+
 		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
 
-		sliceTimeMin = Double.MAX_VALUE;
-		sliceTimeMax = -Double.MAX_VALUE;
-		
 		tree = (RootedTree) treeImporter.importNextTree();
 
 		// this is for time calculations
 		treeRootHeight = tree.getHeight(tree.getRootNode());
+
+		// this is for mappings
+		sliceTimeMin = Double.MAX_VALUE;
+		sliceTimeMax = -Double.MAX_VALUE;
 
 		// This is a general time span for all of the trees
 		SpreadDate mrsd = new SpreadDate(mrsdString);
@@ -147,46 +148,7 @@ public class TimeSlicer {
 
 		}// END trees loop
 
-		// ////////////////
-		// ---POLYGONS---//
-		// ////////////////
-
-		Set<Double> HostKeys = sliceMap.keySet();
-		Iterator<Double> iterator = HostKeys.iterator();
-
-		String polygonsDescription = null;
-		Layer polygonsLayer = new Layer("Polygons", polygonsDescription);
-
-		int polygonsStyleId = 1;
-		while (iterator.hasNext()) {
-
-			Double sliceTime = (Double) iterator.next();
-
-			/**
-			 * Color and Opacity mapping
-			 * */
-			int red = 55;
-			int green = (int) Utils.map(sliceTime, sliceTimeMin, sliceTimeMax, 255, 0);
-			int blue = 0;
-			int alpha = (int) Utils.map(sliceTime, sliceTimeMin, sliceTimeMax, 100, 255);
-
-			Color col = new Color(red, green, blue, alpha);
-			Style polygonsStyle = new Style(col, 0);
-			polygonsStyle.setId("polygon_style" + polygonsStyleId);
-
-			polygonsLayer.addItem(new Polygon("node"
-					+ formatter.format(sliceTime), // String name
-					sliceMap.get(sliceTime), // List<Coordinates>
-					polygonsStyle, // Style style
-					sliceTime, // double startime
-					0.0 // double duration
-					));
-
-			polygonsStyleId++;
-
-		}
-
-		layers.add(polygonsLayer);
+		Polygons();
 
 		kmloutput.generate(writer, timeLine, layers);
 
@@ -302,15 +264,10 @@ public class TimeSlicer {
 							sliceMap.put(sliceTime, coords);
 
 						}// END: key check
-
 					}
-
 				}// END: numberOfIntervals loop
-
 			}
 		}// END: node loop
-
-		// System.out.println("============================================");
 
 	}// END: analyzeTree
 
@@ -367,6 +324,52 @@ public class TimeSlicer {
 			result[i] = mean[i];
 
 		return result;
-	}// END ImputeValue
+	}// END: ImputeValue
+
+	// ////////////////
+	// ---POLYGONS---//
+	// ////////////////
+	private static void Polygons() {
+
+		Set<Double> HostKeys = sliceMap.keySet();
+		Iterator<Double> iterator = HostKeys.iterator();
+
+		String polygonsDescription = null;
+		Layer polygonsLayer = new Layer("Polygons", polygonsDescription);
+
+		int polygonsStyleId = 1;
+		while (iterator.hasNext()) {
+
+			Double sliceTime = (Double) iterator.next();
+
+			/**
+			 * Color and Opacity mapping
+			 * */
+			int red = 55;
+			int green = (int) Utils.map(sliceTime, sliceTimeMin, sliceTimeMax,
+					255, 0);
+			int blue = 0;
+			int alpha = (int) Utils.map(sliceTime, sliceTimeMin, sliceTimeMax,
+					100, 255);
+
+			Color col = new Color(red, green, blue, alpha);
+			Style polygonsStyle = new Style(col, 0);
+			polygonsStyle.setId("polygon_style" + polygonsStyleId);
+
+			polygonsLayer.addItem(new Polygon("node"
+					+ formatter.format(sliceTime), // String name
+					sliceMap.get(sliceTime), // List<Coordinates>
+					polygonsStyle, // Style style
+					sliceTime, // double startime
+					0.0 // double duration
+					));
+
+			polygonsStyleId++;
+
+		}
+
+		layers.add(polygonsLayer);
+
+	}// END: Polygons
 
 }// END: TimeSlicer class
