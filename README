@@ -43,9 +43,12 @@ ________________________________________________________________________________
 * work on speed-ups
 * implement TimeSlicer template
   - bug in true noise ?
-  - create a Map of List<Coordinates? with slice times as keys
-  - use the Map to create actual Polygons
-  - map time to color and opacity   
+  - Map of List<Coordinates> needs work
+  - maybe combined key (sliceTime & path)
+
+
+
+
 
 
 
