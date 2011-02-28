@@ -45,7 +45,7 @@ ________________________________________________________________________________
   - bug in true noise ?
   - create a Map of List<Coordinates? with slice times as keys
   - use the Map to create actual Polygons
-  - map time color and opacity   
+  - map time to color and opacity   
 
 
 
