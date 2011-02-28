@@ -177,7 +177,6 @@ public class TimeSlicer {
 
 					if (parentTime < sliceTime && sliceTime <= nodeTime) {
 
-						// TODO: collect Coordinates in a List here
 						System.out.println("Parent time: "
 								+ formatter.format(parentTime));
 
@@ -201,7 +200,6 @@ public class TimeSlicer {
 
 				}// END : numberOfIntervals loop
 				
-				// TODO: create Polygons from Coordinates here
 			}
 		}// END: node loop
 
