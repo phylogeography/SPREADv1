@@ -1,17 +1,41 @@
 // "/home/filip/Dropbox/Phyleography/data/WNX/WNV_relaxed_geo_gamma.trees"
-
+//						System.out.println("Parent time: "
+//								+ formatter.format(parentTime));
+//
+//						System.out.println("Slice time: "
+//								+ formatter.format(sliceTime));
+//
+//						System.out.println("Node time: "
+//								+ formatter.format(nodeTime));
+//
+//						System.out.println("location: " + latitude + " "
+//								+ longitude);
+//						System.out.println("parent location: " + parentLatitude
+//								+ " " + parentLongitude);
+//						System.out
+//								.println("imputed location: "
+//										+ imputedLocation[0] + " "
+//										+ imputedLocation[1]);
+//
+//						System.out.println();
 package templates;
 
 import java.io.FileReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
 import math.MultivariateNormalDistribution;
+import structure.Coordinates;
 import structure.TimeLine;
 import utils.SpreadDate;
 import utils.Utils;
@@ -34,7 +58,8 @@ public class TimeSlicer {
 	private static String mrsdString;
 	private static double timescaler;
 	private static TimeLine timeLine;
-
+	private static HashMap<Double, List<Coordinates>> sliceMap;
+	
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
 	}
@@ -92,6 +117,8 @@ public class TimeSlicer {
 				- (treeRootHeight * DayInMillis * timescaler), mrsd.getTime(),
 				numberOfIntervals);
 
+
+		sliceMap = new HashMap<Double, List<Coordinates>>();
 		while (treesImporter.hasTree()) {
 
 			RootedTree currentTree = (RootedTree) treesImporter
@@ -102,6 +129,20 @@ public class TimeSlicer {
 
 		}// END trees loop
 
+		
+		Set<Double> HostKeys = sliceMap.keySet();
+		Iterator<Double> iterator = HostKeys.iterator();
+		
+		int i = 1;
+		while (iterator.hasNext()) {
+		
+		System.out.println(i);
+		i++;
+		Double HostNow = (Double) iterator.next();
+		System.out.println(HostNow + " - " + sliceMap.get(HostNow));
+		
+		}
+		
 		// stop timing
 		time += System.currentTimeMillis();
 		System.out.println("Finished in: " + time + " msec");
@@ -177,33 +218,31 @@ public class TimeSlicer {
 
 					if (parentTime < sliceTime && sliceTime <= nodeTime) {
 
-						System.out.println("Parent time: "
-								+ formatter.format(parentTime));
-
-						System.out.println("Slice time: "
-								+ formatter.format(sliceTime));
-
-						System.out.println("Node time: "
-								+ formatter.format(nodeTime));
-
-						System.out.println("location: " + latitude + " "
-								+ longitude);
-						System.out.println("parent location: " + parentLatitude
-								+ " " + parentLongitude);
-						System.out
-								.println("imputed location: "
-										+ imputedLocation[0] + " "
-										+ imputedLocation[1]);
-
-						System.out.println();
+						
+						if(sliceMap.containsKey(sliceTime)){
+							
+							sliceMap.get(sliceTime).add(new Coordinates(parentLongitude, parentLatitude, 0.0));
+							sliceMap.get(sliceTime).add(new Coordinates(Double.valueOf(imputedLocation[1].toString()), Double.valueOf(imputedLocation[0].toString()), 0.0));
+							sliceMap.get(sliceTime).add(new Coordinates(longitude, latitude, 0.0));
+							
+						} else {
+							
+						List<Coordinates> coords = new ArrayList<Coordinates>();
+						coords.add(new Coordinates(parentLongitude, parentLatitude, 0.0));
+						coords.add(new Coordinates(Double.valueOf(imputedLocation[1].toString()), Double.valueOf(imputedLocation[0].toString()), 0.0));
+						coords.add(new Coordinates(longitude, latitude, 0.0));
+						sliceMap.put(sliceTime, coords);
+					
+						}// END: key check
+						
 					}
 
-				}// END : numberOfIntervals loop
+				}// END: numberOfIntervals loop
 				
 			}
 		}// END: node loop
 
-		System.out.println("============================================");
+//		System.out.println("============================================");
 
 
 	}// END: analyzeTree
