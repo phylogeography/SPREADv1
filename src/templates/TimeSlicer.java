@@ -67,7 +67,7 @@ public class TimeSlicer {
 
 		// this will be parsed from gui
 		treesImporter = new NexusImporter(new FileReader(
-				"/home/filip/Dropbox/Phyleography/data/WNX/WNV_relaxed_geo_gamma.trees"));
+				"/home/filip/Dropbox/Phyleography/data/WNX/WNX_small.trees"));
 
 		treeImporter = new NexusImporter(
 				new FileReader(
