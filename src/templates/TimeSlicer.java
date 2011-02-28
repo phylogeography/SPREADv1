@@ -63,6 +63,9 @@ public class TimeSlicer {
 	private static double timescaler;
 	private static TimeLine timeLine;
 	private static HashMap<Double, List<Coordinates>> sliceMap;
+	private static double sliceTimeMax;
+	private static double sliceTimeMin;
+	
 	
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -76,6 +79,9 @@ public class TimeSlicer {
 
 		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
 
+		sliceTimeMin = Double.MAX_VALUE;
+		sliceTimeMax = -Double.MAX_VALUE;
+		
 		// start timing
 		time = -System.currentTimeMillis();
 
@@ -132,7 +138,7 @@ public class TimeSlicer {
 			analyzeTree(currentTree, true);
 
 		}// END trees loop
-
+		
 		// ////////////////
 		// ---POLYGONS---//
 		// ////////////////
@@ -149,9 +155,9 @@ public class TimeSlicer {
 		Double sliceTime = (Double) iterator.next();
 		
 		int red = 55;
-		int green = (int) Utils.map(sliceTime, 0, sliceTimeMax, 255, 0);
+		int green = (int) Utils.map(sliceTimeMin, 0, sliceTimeMax, 255, 0);
 		int blue = 0;
-		int alpha = (int) Utils.map(sliceTime, 0, sliceTimeMax, 100, 255);
+		int alpha = (int) Utils.map(sliceTimeMin, 0, sliceTimeMax, 100, 255);
 		
 		Color col = new Color(red, green, blue, alpha);
 		Style polygonsStyle = new Style(col, 0);
@@ -230,6 +236,14 @@ public class TimeSlicer {
 							- (timeSpan / numberOfIntervals)
 							* ((double) i * speed);
 
+					if (sliceTime < sliceTimeMin) {
+						sliceTimeMin = sliceTime;
+					}
+					
+					if (sliceTime > sliceTimeMax) {
+						sliceTimeMax = sliceTime;
+					}
+					
 					SpreadDate mrsd0 = new SpreadDate(mrsdString);
 					double parentTime = mrsd0
 							.minus((int) (parentHeight * timescaler));
