@@ -16,6 +16,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import contouring.ContourMaker;
+import contouring.ContourPath;
+import contouring.ContourWithSynder;
+
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
@@ -321,6 +325,7 @@ public class TimeSlicer {
 		Layer polygonsLayer = new Layer("Polygons", polygonsDescription);
 
 		int polygonsStyleId = 1;
+
 		while (iterator.hasNext()) {
 
 			Double sliceTime = (Double) iterator.next();
@@ -339,14 +344,53 @@ public class TimeSlicer {
 			Style polygonsStyle = new Style(col, 0);
 			polygonsStyle.setId("polygon_style" + polygonsStyleId);
 
-			polygonsLayer.addItem(new Polygon("node_"
+			// ///////////////////////////////////////////
+
+			List<Coordinates> list = sliceMap.get(sliceTime);
+
+			double[] x = new double[list.size()];
+			double[] y = new double[list.size()];
+			
+for (int i=0; i<list.size(); i++){
+	
+	x[i] = list.get(i).getLatitude();
+		y[i] = list.get(i).getLongitude();
+		
+	//	System.out.println(x[i]);	
+//	System.out.println(y[i]);
+}
+			
+			List<Coordinates> coords = new ArrayList<Coordinates>();
+			ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
+			ContourPath[] paths = contourMaker.getContourPaths(0.8);
+
+			
+			int pathCounter = 1;
+			 for (ContourPath path : paths) {
+				 
+				 
+				 
+				 double[] latitude = path.getAllX();
+				 double[] longitude = path.getAllY();
+				
+				 for(int i=0; i<latitude.length;i++){
+				 
+				 coords.add(new Coordinates(longitude[i],
+							latitude[i], 0.0));				 
+				 }
+				pathCounter++;
+				 	 }//END: paths loop
+				 
+			polygonsLayer.addItem(new Polygon("node_" + pathCounter
 					+ formatter.format(sliceTime), // String name
-					sliceMap.get(sliceTime), // List<Coordinates>
+					coords, // List<Coordinates>
 					polygonsStyle, // Style style
 					sliceTime, // double startime
 					0.0 // double duration
 					));
 
+		
+			
 			polygonsStyleId++;
 
 		}
