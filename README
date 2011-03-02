@@ -36,7 +36,8 @@ ________________________________________________________________________________
                               TODO
 
 * improve GUI looks & feels
-  - add indeterminate progress bar + progress messages in terminal
+  - add indeterminate progress bar + progress messages in terminal 
+    to all tabs
 * catch exceptions
   - Runtime exceptions for "attribute missing from node" is not caught
     and resulting error mesage not displayed in scrollable terminal
