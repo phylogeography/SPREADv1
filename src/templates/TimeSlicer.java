@@ -217,7 +217,7 @@ public class TimeSlicer {
 							parentLocation, sliceTime, nodeTime, parentTime,
 							precision, rate, trueNoise);
 
-					// TODO: improve that, cut into paths
+					// TODO: improve that
 					if (parentTime < sliceTime && sliceTime <= nodeTime) {
 
 						if (sliceMap.containsKey(sliceTime)) {
@@ -235,6 +235,8 @@ public class TimeSlicer {
 									new Coordinates(longitude, latitude, 0.0));
 
 						} else {
+
+//							double[][] coordinates = new double[2][];
 
 							List<Coordinates> coords = new ArrayList<Coordinates>();
 							coords.add(new Coordinates(parentLongitude,
@@ -344,56 +346,48 @@ public class TimeSlicer {
 			Style polygonsStyle = new Style(col, 0);
 			polygonsStyle.setId("polygon_style" + polygonsStyleId);
 
-			// ///////////////////////////////////////////
-
+			// TODO: clean this!
 			List<Coordinates> list = sliceMap.get(sliceTime);
 
 			double[] x = new double[list.size()];
 			double[] y = new double[list.size()];
-			
-for (int i=0; i<list.size(); i++){
-	
-	x[i] = list.get(i).getLatitude();
-		y[i] = list.get(i).getLongitude();
-		
-	//	System.out.println(x[i]);	
-//	System.out.println(y[i]);
-}
-			
+
+			for (int i = 0; i < list.size(); i++) {
+
+				x[i] = list.get(i).getLatitude();
+				y[i] = list.get(i).getLongitude();
+
+			}
+
 			List<Coordinates> coords = new ArrayList<Coordinates>();
 			ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
 			ContourPath[] paths = contourMaker.getContourPaths(0.8);
 
-			
 			int pathCounter = 1;
-			 for (ContourPath path : paths) {
-				 
-				 
-				 
-				 double[] latitude = path.getAllX();
-				 double[] longitude = path.getAllY();
-				
-				 for(int i=0; i<latitude.length;i++){
-				 
-				 coords.add(new Coordinates(longitude[i],
-							latitude[i], 0.0));				 
-				 }
+			for (ContourPath path : paths) {
+
+				double[] latitude = path.getAllX();
+				double[] longitude = path.getAllY();
+
+				for (int i = 0; i < latitude.length; i++) {
+
+					coords.add(new Coordinates(longitude[i], latitude[i], 0.0));
+				}
+
+
+				polygonsLayer.addItem(new Polygon("node_" + pathCounter + "_"
+						+ formatter.format(sliceTime), // String name
+						coords, // List<Coordinates>
+						polygonsStyle, // Style style
+						sliceTime, // double startime
+						0.0 // double duration
+						));
+
+				polygonsStyleId++;
 				pathCounter++;
-				 	 }//END: paths loop
-				 
-			polygonsLayer.addItem(new Polygon("node_" + pathCounter
-					+ formatter.format(sliceTime), // String name
-					coords, // List<Coordinates>
-					polygonsStyle, // Style style
-					sliceTime, // double startime
-					0.0 // double duration
-					));
-
-		
-			
-			polygonsStyleId++;
-
-		}
+				
+			}// END: paths loop
+		}// END: Map keys loop
 
 		layers.add(polygonsLayer);
 
