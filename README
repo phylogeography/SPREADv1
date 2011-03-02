@@ -43,9 +43,7 @@ ________________________________________________________________________________
 * work on speed-ups
 * implement TimeSlicer template
   - bug in true noise ?
-  - Map of List<Coordinates> needs work, Coordinates should be distributed 
-    among similar locations
-  - maybe combined key (sliceTime & path)
+  - clean the spaghetti code in distributing polygons among paths its UGLY!
 
 
 
