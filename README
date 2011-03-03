@@ -30,8 +30,8 @@ Depends on the following libraries:
 jebl.jar  
 org.boehn.kmlframework_20090320.jar
 core.jar
+colt.jar
 
-The libraries can be downloaded from: http://dl.dropbox.com/u/5169517/lib.zip
 ________________________________________________________________________________
                               TODO
 
