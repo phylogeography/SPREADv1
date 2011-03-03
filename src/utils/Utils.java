@@ -7,8 +7,10 @@ import java.awt.Color;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.boehn.kmlframework.kml.Point;
 
@@ -96,7 +98,6 @@ public class Utils {
 		}
 		return (Object[]) node.getAttribute(attributeName);
 	}
-
 
 	public static int getExternalNodeCount(RootedTree tree) {
 
@@ -318,6 +319,32 @@ public class Utils {
 
 		return coords;
 	}// END: GenerateCircle
+
+	public void PrintHashMap(HashMap<Double, List<Coordinates>> hashMap) {
+
+		Set<Double> hostKeys = hashMap.keySet();
+		Iterator<Double> iterator = hostKeys.iterator();
+
+		while (iterator.hasNext()) {
+
+			Double mapKey = (Double) iterator.next();
+
+			System.out.println("===================================");
+			System.out.println(mapKey);
+			System.out.println("===================================");
+
+			List<Coordinates> list = hashMap.get(mapKey);
+
+			for (int i = 0; i < list.size(); i++) {
+
+				Coordinates coord = list.get(i);
+
+				System.out.println(coord.getLongitude() + " "
+						+ coord.getLatitude());
+
+			}
+		}
+	}// END: PrintHashMap
 
 	public static void PrintArray(double[] x) {
 		for (int i = 0; i < x.length; i++) {
