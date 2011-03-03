@@ -86,7 +86,7 @@ public class TimeSlicer {
 		numberOfIntervals = 10;
 		trueNoise = false;
 		mrsdString = "2006-12-31";
-		burnIn = 0.1;
+		burnIn = 0.98;
 
 		// parse combobox choices here
 		timescalerSwitcher = timescalerEnum.YEARS;
@@ -324,9 +324,8 @@ public class TimeSlicer {
 			while (iterator.hasNext()) {
 
 				Double sliceTime = (Double) iterator.next();
-				String polygonsDescription = null;
 				Layer polygonsLayer = new Layer("Time Slices"
-						+ formatter.format(sliceTime), polygonsDescription);
+						+ formatter.format(sliceTime), null);
 				/**
 				 * Color and Opacity mapping
 				 * */
