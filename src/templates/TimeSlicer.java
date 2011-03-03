@@ -132,6 +132,8 @@ public class TimeSlicer {
 
 		}// END trees loop
 
+		System.out.println("ANALYZED TREES");
+		System.gc();
 		Polygons();
 
 		kmloutput.generate(writer, timeLine, layers);

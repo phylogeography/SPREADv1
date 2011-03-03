@@ -45,7 +45,7 @@ public class ContourGenerator {
 	private static final int kMinNumPoints = 3;
 
 	//	A list of contour paths.
-	private List pathList = new ArrayList();
+	private List<ContourPath> pathList = new ArrayList<ContourPath>();
 
 	//	A flag to indicate that the contours have been computed or not.
 	private boolean cCalculated = false;

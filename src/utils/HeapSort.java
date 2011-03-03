@@ -76,7 +76,7 @@ public class HeapSort {
     /**
      * Sorts a vector of comparable objects into increasing order.
      */
-    public static void sort(AbstractList array) {
+    public static void sort(AbstractList<Object> array) {
 
         Object temp;
         int j, n = array.size();
@@ -122,7 +122,7 @@ public class HeapSort {
     /**
      * Sorts an array of objects into increasing order given a comparator.
      */
-    public static void sort(Object[] array, Comparator c) {
+    public static void sort(Object[] array, Comparator<Object> c) {
 
         Object temp;
         int j, n = array.length;
@@ -243,7 +243,7 @@ public class HeapSort {
 
         // test index to Vector of Comparable objects
 
-        Vector testv = new Vector();
+        Vector<Comparable> testv = new Vector<Comparable>();
         int[] indices = new int[testSize];
 
         for (int i = 0; i < testSize; i++) {
