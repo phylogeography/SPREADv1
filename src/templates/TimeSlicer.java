@@ -39,7 +39,7 @@ public class TimeSlicer {
 
 	private static final int DayInMillis = 86400000;
 
-	private static RootedTree tree;
+	private static RootedTree MccTree;
 	private static TreeImporter treesImporter;
 	private static TreeImporter treeImporter;
 	private static double treeRootHeight;
@@ -77,8 +77,6 @@ public class TimeSlicer {
 				new FileReader(
 						"/home/filip/Dropbox/Phyleography/data/WNX/WNV_relaxed_geo_gamma_MCC.tre"));
 
-		writer = new PrintWriter("/home/filip/Pulpit/output.kml");
-
 		precisionString = "precision";
 		locationString = "location";
 		rateString = "rate";
@@ -106,10 +104,10 @@ public class TimeSlicer {
 		KMLGenerator kmloutput = new KMLGenerator();
 		layers = new ArrayList<Layer>();
 
-		tree = (RootedTree) treeImporter.importNextTree();
+		MccTree = (RootedTree) treeImporter.importNextTree();
 
 		// this is for time calculations
-		treeRootHeight = tree.getHeight(tree.getRootNode());
+		treeRootHeight = MccTree.getHeight(MccTree.getRootNode());
 
 		// this is for mappings
 		sliceTimeMin = Double.MAX_VALUE;
@@ -128,12 +126,13 @@ public class TimeSlicer {
 					.importNextTree();
 
 			// TODO: start separate thread for each tree
-			analyzeTree(currentTree, true);
+			analyzeTree(currentTree);
 
 		}// END trees loop
 
 		Polygons();
 
+		writer = new PrintWriter("/home/filip/Pulpit/output.kml");
 		kmloutput.generate(writer, timeLine, layers);
 
 		// stop timing
@@ -141,33 +140,12 @@ public class TimeSlicer {
 		System.out.println("Finished in: " + time + " msec");
 	}// END: main
 
-	private static void analyzeTree(RootedTree tree, boolean impute)
+	private static void analyzeTree(RootedTree tree)
 			throws ParseException {
 
 		double startTime = timeLine.getStartTime();
 		double endTime = timeLine.getEndTime();
 		double timeSpan = startTime - endTime;
-		double speed = 1;
-
-		double[][] precision = null;
-
-		// TODO: move this to imputeValue
-		if (impute) {
-
-			Object o = tree.getAttribute(precisionString);
-			double treeNormalization = tree.getHeight(tree.getRootNode());
-
-			Object[] array = (Object[]) o;
-			int dim = (int) Math.sqrt(1 + 8 * array.length) / 2;
-			precision = new double[dim][dim];
-			int c = 0;
-			for (int i = 0; i < dim; i++) {
-				for (int j = i; j < dim; j++) {
-					precision[j][i] = precision[i][j] = ((Double) array[c++])
-							* treeNormalization;
-				}
-			}
-		}
 
 		for (Node node : tree.getNodes()) {
 
@@ -194,8 +172,7 @@ public class TimeSlicer {
 							.getDoubleNodeAttribute(node, rateString);
 
 					double sliceTime = startTime
-							- (timeSpan / numberOfIntervals)
-							* ((double) i * speed);
+							- (timeSpan / numberOfIntervals) * ((double) i);
 
 					if (sliceTime < sliceTimeMin) {
 						sliceTimeMin = sliceTime;
@@ -215,7 +192,7 @@ public class TimeSlicer {
 
 					Object[] imputedLocation = imputeValue(location,
 							parentLocation, sliceTime, nodeTime, parentTime,
-							precision, rate, trueNoise);
+							tree, rate, trueNoise);
 
 					// TODO: improve that
 					if (parentTime < sliceTime && sliceTime <= nodeTime) {
@@ -260,10 +237,23 @@ public class TimeSlicer {
 
 	private static Object[] imputeValue(Object[] location,
 			Object[] parentLocation, double sliceTime, double nodeTime,
-			double parentTime, double[][] precision, double rate,
-			boolean trueNoise) {
+			double parentTime, RootedTree tree, double rate, boolean trueNoise) {
 
-		int dim = location.length;
+		Object o = tree.getAttribute(precisionString);
+		double treeNormalization = tree.getHeight(tree.getRootNode());
+
+		Object[] array = (Object[]) o;
+		int dim = (int) Math.sqrt(1 + 8 * array.length) / 2;
+		double[][] precision = new double[dim][dim];
+		int c = 0;
+		for (int i = 0; i < dim; i++) {
+			for (int j = i; j < dim; j++) {
+				precision[j][i] = precision[i][j] = ((Double) array[c++])
+						* treeNormalization;
+			}
+		}
+
+		dim = location.length;
 		double[] nodeValue = new double[2];
 		double[] parentValue = new double[2];
 
@@ -373,8 +363,7 @@ public class TimeSlicer {
 					coords.add(new Coordinates(longitude[i], latitude[i], 0.0));
 				}
 
-				polygonsLayer.addItem(new Polygon(
-						"HPDRegion_" + pathCounter, // name
+				polygonsLayer.addItem(new Polygon("HPDRegion_" + pathCounter, // name
 						coords, // List<Coordinates>
 						polygonsStyle, // Style style
 						sliceTime, // double startime
