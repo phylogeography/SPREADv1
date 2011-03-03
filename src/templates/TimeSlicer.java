@@ -132,8 +132,6 @@ public class TimeSlicer {
 
 		}// END trees loop
 
-		System.out.println("ANALYZED TREES");
-		System.gc();
 		Polygons();
 
 		kmloutput.generate(writer, timeLine, layers);
@@ -238,7 +236,7 @@ public class TimeSlicer {
 
 						} else {
 
-//							double[][] coordinates = new double[2][];
+							// double[][] coordinates = new double[2][];
 
 							List<Coordinates> coords = new ArrayList<Coordinates>();
 							coords.add(new Coordinates(parentLongitude,
@@ -325,15 +323,14 @@ public class TimeSlicer {
 		Set<Double> HostKeys = sliceMap.keySet();
 		Iterator<Double> iterator = HostKeys.iterator();
 
-		String polygonsDescription = null;
-		Layer polygonsLayer = new Layer("Polygons", polygonsDescription);
-
 		int polygonsStyleId = 1;
 
 		while (iterator.hasNext()) {
 
 			Double sliceTime = (Double) iterator.next();
-
+			String polygonsDescription = null;
+			Layer polygonsLayer = new Layer("Time Slices"
+					+ formatter.format(sliceTime), polygonsDescription);
 			/**
 			 * Color and Opacity mapping
 			 * */
@@ -376,22 +373,21 @@ public class TimeSlicer {
 					coords.add(new Coordinates(longitude[i], latitude[i], 0.0));
 				}
 
-
-				polygonsLayer.addItem(new Polygon("node_" + pathCounter + "_"
-						+ formatter.format(sliceTime), // String name
+				polygonsLayer.addItem(new Polygon(
+						"HPDRegion_" + pathCounter, // name
 						coords, // List<Coordinates>
 						polygonsStyle, // Style style
 						sliceTime, // double startime
 						0.0 // double duration
 						));
 
-				polygonsStyleId++;
 				pathCounter++;
-				
-			}// END: paths loop
-		}// END: Map keys loop
 
-		layers.add(polygonsLayer);
+			}// END: paths loop
+
+			polygonsStyleId++;
+			layers.add(polygonsLayer);
+		}// END: Map keys loop
 
 	}// END: Polygons
 
