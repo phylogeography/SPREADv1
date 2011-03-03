@@ -58,6 +58,7 @@ public class TimeSlicer {
 	private static double sliceTimeMin;
 	private static List<Layer> layers;
 	private static PrintWriter writer;
+	private static double burnIn;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -85,6 +86,7 @@ public class TimeSlicer {
 		numberOfIntervals = 10;
 		trueNoise = false;
 		mrsdString = "2006-12-31";
+		burnIn = 0.1;
 
 		// parse combobox choices here
 		timescalerSwitcher = timescalerEnum.YEARS;
@@ -124,8 +126,6 @@ public class TimeSlicer {
 		sliceMap = new HashMap<Double, List<Coordinates>>();
 
 		List<Tree> forest = treesImporter.importTrees();
-
-		double burnIn = 0.1;
 
 		for (int i = (int) (forest.size() * burnIn); i < forest.size(); i++) {
 
