@@ -37,6 +37,7 @@ import utils.Utils;
 public class TimeSlicer {
 
 	public static long time;
+	public static String message;
 
 	private static final int DayInMillis = 86400000;
 
@@ -59,7 +60,6 @@ public class TimeSlicer {
 	private static List<Layer> layers;
 	private static PrintWriter writer;
 	private static double burnIn;
-	private static boolean impute;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -71,6 +71,8 @@ public class TimeSlicer {
 
 		// start timing
 		time = -System.currentTimeMillis();
+
+		System.out.println("Importing trees...");
 
 		// this will be parsed from gui
 		treesImporter = new NexusImporter(
@@ -84,11 +86,10 @@ public class TimeSlicer {
 		precisionString = "precision";
 		locationString = "location";
 		rateString = "rate";
-		numberOfIntervals = 10;
+		numberOfIntervals = 5;// 10
 		trueNoise = false;
 		mrsdString = "2006-12-31";
-		burnIn = 0.98;
-		impute = false;
+		burnIn = 0.5; // 0.998
 
 		// parse combobox choices here
 		timescalerSwitcher = timescalerEnum.YEARS;
@@ -128,16 +129,27 @@ public class TimeSlicer {
 		sliceMap = new HashMap<Double, List<Coordinates>>();
 
 		List<Tree> forest = treesImporter.importTrees();
+		treesImporter = null;
+		System.gc();
 
+		message = "Analyzing trees...";
+		System.out.println(message);
 		for (int i = (int) (forest.size() * burnIn); i < forest.size(); i++) {
 
 			RootedTree currentTree = (RootedTree) forest.get(i);
 
 			// TODO: start separate thread for each tree
 			analyzeTree(currentTree);
+
 		}
 
+		message = "Generating Polygons...";
+		System.out.println(message);
+
 		Polygons();
+
+		message = "Writing to kml...";
+		System.out.println(message);
 
 		writer = new PrintWriter("/home/filip/Pulpit/output.kml");
 		kmloutput.generate(writer, timeLine, layers);
@@ -219,9 +231,6 @@ public class TimeSlicer {
 
 						} else {
 
-							// double[][] coordinates = new double[3][2];
-							// coordinates[][] =
-
 							List<Coordinates> coords = new ArrayList<Coordinates>();
 
 							coords.add(new Coordinates(parentLongitude,
@@ -233,6 +242,7 @@ public class TimeSlicer {
 							coords
 									.add(new Coordinates(longitude, latitude,
 											0.0));
+
 							sliceMap.put(sliceTime, coords);
 
 						}// END: key check
@@ -327,8 +337,12 @@ public class TimeSlicer {
 
 			while (iterator.hasNext()) {
 
+				message = "Iterating through Map, key " + polygonsStyleId
+						+ "...";
+				System.out.println(message);
+
 				Double sliceTime = (Double) iterator.next();
-				Layer polygonsLayer = new Layer("Time Slices"
+				Layer polygonsLayer = new Layer("Time_Slice_"
 						+ formatter.format(sliceTime), null);
 				/**
 				 * Color and Opacity mapping
@@ -388,7 +402,11 @@ public class TimeSlicer {
 				polygonsStyleId++;
 				layers.add(polygonsLayer);
 
-			}// END: Map keys loop
+				sliceMap.put(sliceTime, null);
+				// sliceMap.remove(sliceTime);
+				System.gc();
+
+			}// END: sliceTime loop
 
 		} catch (Exception e) {
 
