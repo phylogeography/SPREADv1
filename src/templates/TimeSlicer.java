@@ -59,6 +59,7 @@ public class TimeSlicer {
 	private static List<Layer> layers;
 	private static PrintWriter writer;
 	private static double burnIn;
+	private static boolean impute;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -87,6 +88,7 @@ public class TimeSlicer {
 		trueNoise = false;
 		mrsdString = "2006-12-31";
 		burnIn = 0.98;
+		impute = false;
 
 		// parse combobox choices here
 		timescalerSwitcher = timescalerEnum.YEARS;
@@ -217,9 +219,11 @@ public class TimeSlicer {
 
 						} else {
 
-							// double[][] coordinates = new double[2][];
+							// double[][] coordinates = new double[3][2];
+							// coordinates[][] =
 
 							List<Coordinates> coords = new ArrayList<Coordinates>();
+
 							coords.add(new Coordinates(parentLongitude,
 									parentLatitude, 0.0));
 							coords.add(new Coordinates(Double
@@ -316,8 +320,8 @@ public class TimeSlicer {
 
 			formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
 
-			Set<Double> HostKeys = sliceMap.keySet();
-			Iterator<Double> iterator = HostKeys.iterator();
+			Set<Double> hostKeys = sliceMap.keySet();
+			Iterator<Double> iterator = hostKeys.iterator();
 
 			int polygonsStyleId = 1;
 
@@ -353,7 +357,6 @@ public class TimeSlicer {
 
 				}
 
-				List<Coordinates> coords = new ArrayList<Coordinates>();
 				ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
 				ContourPath[] paths = contourMaker.getContourPaths(0.8);
 
@@ -362,6 +365,7 @@ public class TimeSlicer {
 
 					double[] latitude = path.getAllX();
 					double[] longitude = path.getAllY();
+					List<Coordinates> coords = new ArrayList<Coordinates>();
 
 					for (int i = 0; i < latitude.length; i++) {
 
@@ -383,6 +387,7 @@ public class TimeSlicer {
 
 				polygonsStyleId++;
 				layers.add(polygonsLayer);
+
 			}// END: Map keys loop
 
 		} catch (Exception e) {
