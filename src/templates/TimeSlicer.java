@@ -24,6 +24,7 @@ import jebl.evolution.graphs.Node;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
+import jebl.evolution.trees.Tree;
 import math.MultivariateNormalDistribution;
 import structure.Coordinates;
 import structure.Layer;
@@ -70,8 +71,9 @@ public class TimeSlicer {
 		time = -System.currentTimeMillis();
 
 		// this will be parsed from gui
-		treesImporter = new NexusImporter(new FileReader(
-				"/home/filip/Dropbox/Phyleography/data/WNX/WNX_small.trees"));
+		treesImporter = new NexusImporter(
+				new FileReader(
+						"/home/filip/Dropbox/Phyleography/data/WNX/WNV_relaxed_geo_gamma.trees"));
 
 		treeImporter = new NexusImporter(
 				new FileReader(
@@ -120,15 +122,18 @@ public class TimeSlicer {
 				numberOfIntervals);
 
 		sliceMap = new HashMap<Double, List<Coordinates>>();
-		while (treesImporter.hasTree()) {
 
-			RootedTree currentTree = (RootedTree) treesImporter
-					.importNextTree();
+		List<Tree> forest = treesImporter.importTrees();
+
+		double burnIn = 0.1;
+
+		for (int i = (int) (forest.size() * burnIn); i < forest.size(); i++) {
+
+			RootedTree currentTree = (RootedTree) forest.get(i);
 
 			// TODO: start separate thread for each tree
 			analyzeTree(currentTree);
-
-		}// END trees loop
+		}
 
 		Polygons();
 
@@ -140,8 +145,7 @@ public class TimeSlicer {
 		System.out.println("Finished in: " + time + " msec");
 	}// END: main
 
-	private static void analyzeTree(RootedTree tree)
-			throws ParseException {
+	private static void analyzeTree(RootedTree tree) throws ParseException {
 
 		double startTime = timeLine.getStartTime();
 		double endTime = timeLine.getEndTime();
@@ -308,76 +312,85 @@ public class TimeSlicer {
 	// ////////////////
 	private static void Polygons() {
 
-		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
+		try {
 
-		Set<Double> HostKeys = sliceMap.keySet();
-		Iterator<Double> iterator = HostKeys.iterator();
+			formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
 
-		int polygonsStyleId = 1;
+			Set<Double> HostKeys = sliceMap.keySet();
+			Iterator<Double> iterator = HostKeys.iterator();
 
-		while (iterator.hasNext()) {
+			int polygonsStyleId = 1;
 
-			Double sliceTime = (Double) iterator.next();
-			String polygonsDescription = null;
-			Layer polygonsLayer = new Layer("Time Slices"
-					+ formatter.format(sliceTime), polygonsDescription);
-			/**
-			 * Color and Opacity mapping
-			 * */
-			int red = 55;
-			int green = (int) Utils.map(sliceTime, sliceTimeMin, sliceTimeMax,
-					255, 0);
-			int blue = 0;
-			int alpha = (int) Utils.map(sliceTime, sliceTimeMin, sliceTimeMax,
-					100, 255);
+			while (iterator.hasNext()) {
 
-			Color col = new Color(red, green, blue, alpha);
-			Style polygonsStyle = new Style(col, 0);
-			polygonsStyle.setId("polygon_style" + polygonsStyleId);
+				Double sliceTime = (Double) iterator.next();
+				String polygonsDescription = null;
+				Layer polygonsLayer = new Layer("Time Slices"
+						+ formatter.format(sliceTime), polygonsDescription);
+				/**
+				 * Color and Opacity mapping
+				 * */
+				int red = 55;
+				int green = (int) Utils.map(sliceTime, sliceTimeMin,
+						sliceTimeMax, 255, 0);
+				int blue = 0;
+				int alpha = (int) Utils.map(sliceTime, sliceTimeMin,
+						sliceTimeMax, 100, 255);
 
-			// TODO: clean this!
-			List<Coordinates> list = sliceMap.get(sliceTime);
+				Color col = new Color(red, green, blue, alpha);
+				Style polygonsStyle = new Style(col, 0);
+				polygonsStyle.setId("polygon_style" + polygonsStyleId);
 
-			double[] x = new double[list.size()];
-			double[] y = new double[list.size()];
+				// TODO: clean this!
+				List<Coordinates> list = sliceMap.get(sliceTime);
 
-			for (int i = 0; i < list.size(); i++) {
+				double[] x = new double[list.size()];
+				double[] y = new double[list.size()];
 
-				x[i] = list.get(i).getLatitude();
-				y[i] = list.get(i).getLongitude();
+				for (int i = 0; i < list.size(); i++) {
 
-			}
+					x[i] = list.get(i).getLatitude();
+					y[i] = list.get(i).getLongitude();
 
-			List<Coordinates> coords = new ArrayList<Coordinates>();
-			ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
-			ContourPath[] paths = contourMaker.getContourPaths(0.8);
-
-			int pathCounter = 1;
-			for (ContourPath path : paths) {
-
-				double[] latitude = path.getAllX();
-				double[] longitude = path.getAllY();
-
-				for (int i = 0; i < latitude.length; i++) {
-
-					coords.add(new Coordinates(longitude[i], latitude[i], 0.0));
 				}
 
-				polygonsLayer.addItem(new Polygon("HPDRegion_" + pathCounter, // name
-						coords, // List<Coordinates>
-						polygonsStyle, // Style style
-						sliceTime, // double startime
-						0.0 // double duration
-						));
+				List<Coordinates> coords = new ArrayList<Coordinates>();
+				ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
+				ContourPath[] paths = contourMaker.getContourPaths(0.8);
 
-				pathCounter++;
+				int pathCounter = 1;
+				for (ContourPath path : paths) {
 
-			}// END: paths loop
+					double[] latitude = path.getAllX();
+					double[] longitude = path.getAllY();
 
-			polygonsStyleId++;
-			layers.add(polygonsLayer);
-		}// END: Map keys loop
+					for (int i = 0; i < latitude.length; i++) {
 
+						coords.add(new Coordinates(longitude[i], latitude[i],
+								0.0));
+					}
+
+					polygonsLayer.addItem(new Polygon("HPDRegion_"
+							+ pathCounter, // name
+							coords, // List<Coordinates>
+							polygonsStyle, // Style style
+							sliceTime, // double startime
+							0.0 // double duration
+							));
+
+					pathCounter++;
+
+				}// END: paths loop
+
+				polygonsStyleId++;
+				layers.add(polygonsLayer);
+			}// END: Map keys loop
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
 	}// END: Polygons
 
 }// END: TimeSlicer class
