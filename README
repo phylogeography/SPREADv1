@@ -43,8 +43,8 @@ ________________________________________________________________________________
     and resulting error mesage not displayed in scrollable terminal
 * work on speed-ups
 * implement TimeSlicer template
-  - bug in true noise ?
-  - clean the spaghetti code in distributing polygons among paths its UGLY!
+  - there is a memory leak in Polygons method, causes java.lang.outOfMemory
+    crash
 
 
 
