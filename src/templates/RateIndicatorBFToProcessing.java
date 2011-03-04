@@ -13,21 +13,21 @@ import utils.Utils;
 @SuppressWarnings("serial")
 public class RateIndicatorBFToProcessing extends PApplet {
 
-	public final int imageWidth = 2048;
-	public final int imageHeight = 1025;
+	public static final int imageWidth = 2048;
+	public static final int imageHeight = 1025;
 
-	private static ReadLocations locations;
-	private static ReadLog indicators;
-	private static double bfCutoff;
-	private static List<Double> bayesFactors;
-	private static List<String> combin;
+	private ReadLocations locations;
+	private ReadLog indicators;
+	private double bfCutoff;
+	private List<Double> bayesFactors;
+	private List<String> combin;
 	private PImage mapImage;
 
 	// Borders of the map coordinates
 	// min/max longitude
-	private static float minX, maxX;
+	private float minX, maxX;
 	// min/max latitude
-	private static float minY, maxY;
+	private float minY, maxY;
 
 	public RateIndicatorBFToProcessing() {
 
@@ -83,7 +83,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		// World map in Equirectangular projection
 		mapImage = loadImage(LoadMapBackgroundInEclipse());
-//		 mapImage = loadImage(LoadMapBackgroundFromJar());
+		// mapImage = loadImage(LoadMapBackgroundFromJar());
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons

@@ -17,20 +17,20 @@ import utils.Utils;
 @SuppressWarnings("serial")
 public class DiscreteTreeToProcessing extends PApplet {
 
-	public final int imageWidth = 2048;
+	public static final int imageWidth = 2048;
 	public final int imageHeight = 1025;
 
 	private TreeImporter importer;
-	private static RootedTree tree;
-	private static ReadLocations data;
-	private static String stateAttName;
+	private RootedTree tree;
+	private ReadLocations data;
+	private String stateAttName;
 	private PImage mapImage;
 
 	// Borders of the map coordinates
 	// min/max longitude
-	private static float minX, maxX;
+	private float minX, maxX;
 	// min/max latitude
-	private static float minY, maxY;
+	private float minY, maxY;
 
 	public DiscreteTreeToProcessing() {
 

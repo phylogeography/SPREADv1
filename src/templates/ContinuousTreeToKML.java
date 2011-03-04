@@ -36,20 +36,20 @@ public class ContinuousTreeToKML {
 	// Earths radius in km
 	private static final double EarthRadius = 6371;
 
-	private static RootedTree tree;
-	private static String coordinatesName;
-	private static String HPD;
-	private static String mrsdString;
-	private static int numberOfIntervals;
-	private static double timescaler;
-	private static double rootHeight;
-	private static List<Layer> layers;
-	private static double maxAltMapping;
-	private static String longitudeName;
-	private static String latitudeName;
-	private static double treeHeightMax;
-	private static TreeImporter importer;
-	private static PrintWriter writer;
+	private RootedTree tree;
+	private String coordinatesName;
+	private String HPD;
+	private String mrsdString;
+	private int numberOfIntervals;
+	private double timescaler;
+	private double rootHeight;
+	private List<Layer> layers;
+	private double maxAltMapping;
+	private String longitudeName;
+	private String latitudeName;
+	private double treeHeightMax;
+	private TreeImporter importer;
+	private PrintWriter writer;
 
 	private enum branchesMappingEnum {
 		TIME, RATE, DISTANCE, DEFAULT
@@ -63,13 +63,13 @@ public class ContinuousTreeToKML {
 		DAYS, MONTHS, YEARS
 	}
 
-	private static timescalerEnum timescalerSwitcher;
-	private static branchesMappingEnum branchesColorMapping;
-	private static branchesMappingEnum branchesOpacityMapping;
-	private static branchesMappingEnum branchesWidthMapping;
-	private static branchesMappingEnum branchesAltitudeMapping;
-	private static polygonsMappingEnum polygonsColorMapping;
-	private static polygonsMappingEnum polygonsOpacityMapping;
+	private timescalerEnum timescalerSwitcher;
+	private branchesMappingEnum branchesColorMapping;
+	private branchesMappingEnum branchesOpacityMapping;
+	private branchesMappingEnum branchesWidthMapping;
+	private branchesMappingEnum branchesAltitudeMapping;
+	private polygonsMappingEnum polygonsColorMapping;
+	private polygonsMappingEnum polygonsOpacityMapping;
 
 	public ContinuousTreeToKML() {
 
@@ -118,10 +118,6 @@ public class ContinuousTreeToKML {
 		// start timing
 		time = -System.currentTimeMillis();
 
-		// this is to generate kml output
-		KMLGenerator kmloutput = new KMLGenerator();
-		layers = new ArrayList<Layer>();
-
 		// this is to choose the proper time scale
 		timescaler = Double.NaN;
 		switch (timescalerSwitcher) {
@@ -153,6 +149,10 @@ public class ContinuousTreeToKML {
 				- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
 				numberOfIntervals);
 
+		// this is to generate kml output
+		KMLGenerator kmloutput = new KMLGenerator();
+		layers = new ArrayList<Layer>();
+		
 		// Execute threads
 		final int NTHREDS = 10;
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
@@ -174,7 +174,7 @@ public class ContinuousTreeToKML {
 	// ////////////////
 	// ---BRANCHES---//
 	// ////////////////
-	private static class Branches implements Runnable {
+	private class Branches implements Runnable {
 
 		public void run() {
 
@@ -335,7 +335,7 @@ public class ContinuousTreeToKML {
 	// ////////////////
 	// ---POLYGONS---//
 	// ////////////////
-	private static class Polygons implements Runnable {
+	private class Polygons implements Runnable {
 
 		public void run() {
 

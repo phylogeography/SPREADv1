@@ -36,17 +36,17 @@ public class DiscreteTreeToKML {
 	// Earths radius in km
 	private static final double EarthRadius = 6371;
 
-	private static ReadLocations data;
-	private static RootedTree tree;
-	private static String mrsdString;
-	private static int numberOfIntervals;
-	private static double timescaler;
-	private static String stateAttName;
-	private static double rootHeight;
-	private static List<Layer> layers;
-	private static double maxAltMapping;
-	private static PrintWriter writer;
-	private static TreeImporter importer;
+	private ReadLocations data;
+	private RootedTree tree;
+	private String mrsdString;
+	private int numberOfIntervals;
+	private double timescaler;
+	private String stateAttName;
+	private double rootHeight;
+	private List<Layer> layers;
+	private double maxAltMapping;
+	private PrintWriter writer;
+	private TreeImporter importer;
 
 	private enum branchesMappingEnum {
 		TIME, STATESPROB, DISTANCE, DEFAULT
@@ -60,14 +60,14 @@ public class DiscreteTreeToKML {
 		DAYS, MONTHS, YEARS
 	}
 
-	private static timescalerEnum timescalerSwitcher;
-	private static branchesMappingEnum branchesColorMapping;
-	private static branchesMappingEnum branchesOpacityMapping;
-	private static branchesMappingEnum widthMapping;
-	private static circlesMappingEnum circlesColorMapping;
-	private static circlesMappingEnum circlesOpacityMapping;
-	private static String statesProbString;
-	private static branchesMappingEnum altitudeMapping;
+	private timescalerEnum timescalerSwitcher;
+	private branchesMappingEnum branchesColorMapping;
+	private branchesMappingEnum branchesOpacityMapping;
+	private branchesMappingEnum widthMapping;
+	private circlesMappingEnum circlesColorMapping;
+	private circlesMappingEnum circlesOpacityMapping;
+	private String statesProbString;
+	private branchesMappingEnum altitudeMapping;
 
 	public DiscreteTreeToKML() {
 
@@ -119,10 +119,6 @@ public class DiscreteTreeToKML {
 			// start timing
 			time = -System.currentTimeMillis();
 
-			// this is to generate kml output
-			KMLGenerator kmloutput = new KMLGenerator();
-			layers = new ArrayList<Layer>();
-
 			// this is to choose the proper time scale
 			timescaler = Double.NaN;
 			switch (timescalerSwitcher) {
@@ -152,6 +148,10 @@ public class DiscreteTreeToKML {
 					- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
 					numberOfIntervals);
 
+			// this is to generate kml output
+			KMLGenerator kmloutput = new KMLGenerator();
+			layers = new ArrayList<Layer>();
+
 			// Execute threads
 			final int NTHREDS = 10;
 			ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
@@ -178,7 +178,7 @@ public class DiscreteTreeToKML {
 	// //////////////
 	// ---PLACES---//
 	// //////////////
-	private static class Places implements Runnable {
+	private class Places implements Runnable {
 
 		public void run() {
 
@@ -199,7 +199,7 @@ public class DiscreteTreeToKML {
 	// ////////////////
 	// ---BRANCHES---//
 	// ////////////////
-	private static class Branches implements Runnable {
+	private class Branches implements Runnable {
 
 		public void run() {
 
@@ -371,7 +371,7 @@ public class DiscreteTreeToKML {
 	// ///////////////
 	// ---CIRCLES---//
 	// ///////////////
-	private static class Circles implements Runnable {
+	private class Circles implements Runnable {
 
 		public void run() {
 
@@ -410,7 +410,7 @@ public class DiscreteTreeToKML {
 								blue = 93;
 								break;
 							}
-							
+
 							/**
 							 * Opacity mapping
 							 * 
@@ -471,7 +471,7 @@ public class DiscreteTreeToKML {
 		}// END: run
 	}// END: Circles class
 
-	private static double[][] CountLineagesHoldingState(int numberOfIntervals,
+	private double[][] CountLineagesHoldingState(int numberOfIntervals,
 			double rootHeight) {
 
 		double delta = rootHeight / numberOfIntervals;

@@ -5,7 +5,9 @@ package templates;
 import generator.KMLGenerator;
 
 import java.awt.Color;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,6 +23,7 @@ import contouring.ContourPath;
 import contouring.ContourWithSynder;
 
 import jebl.evolution.graphs.Node;
+import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
@@ -34,62 +37,41 @@ import structure.TimeLine;
 import utils.SpreadDate;
 import utils.Utils;
 
-public class TimeSlicer {
+public class TimeSlicerToKML {
 
-	public static long time;
-	public static String message;
+	public long time;
+	public String message;
 
 	private static final int DayInMillis = 86400000;
 
-	private static RootedTree MccTree;
-	private static TreeImporter treesImporter;
-	private static TreeImporter treeImporter;
-	private static double treeRootHeight;
-	private static String precisionString;
-	private static String locationString;
-	private static String rateString;
-	private static int numberOfIntervals;
-	private static boolean trueNoise;
-	private static String mrsdString;
-	private static double timescaler;
-	private static TimeLine timeLine;
-	private static SimpleDateFormat formatter;
-	private static HashMap<Double, List<Coordinates>> sliceMap;
-	private static double sliceTimeMax;
-	private static double sliceTimeMin;
-	private static List<Layer> layers;
-	private static PrintWriter writer;
-	private static double burnIn;
+	private RootedTree mccTree;
+	private TreeImporter treesImporter;
+	private TreeImporter treeImporter;
+	private double treeRootHeight;
+	private String precisionString;
+	private String locationString;
+	private String rateString;
+	private int numberOfIntervals;
+	private boolean trueNoise;
+	private String mrsdString;
+	private double timescaler;
+	private TimeLine timeLine;
+	private HashMap<Double, List<Coordinates>> sliceMap;
+	private double sliceTimeMax;
+	private double sliceTimeMin;
+	private List<Layer> layers;
+	private PrintWriter writer;
+	private double burnIn;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
 	}
 
-	private static timescalerEnum timescalerSwitcher;
+	private timescalerEnum timescalerSwitcher;
 
-	public static void main(String args[]) throws Exception {
+	public TimeSlicerToKML() {
 
-		// start timing
-		time = -System.currentTimeMillis();
-
-		System.out.println("Importing trees...");
-
-		// this will be parsed from gui
-		treesImporter = new NexusImporter(
-				new FileReader(
-						"/home/filip/Dropbox/Phyleography/data/WNX/WNV_relaxed_geo_gamma.trees"));
-
-		treeImporter = new NexusImporter(
-				new FileReader(
-						"/home/filip/Dropbox/Phyleography/data/WNX/WNV_relaxed_geo_gamma_MCC.tre"));
-
-		precisionString = "precision";
-		locationString = "location";
-		rateString = "rate";
-		numberOfIntervals = 5;// 10
 		trueNoise = false;
-		mrsdString = "2006-12-31";
-		burnIn = 0.5; // 0.998
 
 		// parse combobox choices here
 		timescalerSwitcher = timescalerEnum.YEARS;
@@ -107,18 +89,57 @@ public class TimeSlicer {
 			break;
 		}
 
-		// this is to generate kml output
-		KMLGenerator kmloutput = new KMLGenerator();
-		layers = new ArrayList<Layer>();
+	}// END: TimeSlicerToKML
 
-		MccTree = (RootedTree) treeImporter.importNextTree();
+	public void setMccTreePath(String path) throws FileNotFoundException {
+		treeImporter = new NexusImporter(new FileReader(path));
+	}
 
-		// this is for time calculations
-		treeRootHeight = MccTree.getHeight(MccTree.getRootNode());
+	public void setTreesPath(String path) throws FileNotFoundException {
+		treesImporter = new NexusImporter(new FileReader(path));
+	}
 
-		// this is for mappings
-		sliceTimeMin = Double.MAX_VALUE;
-		sliceTimeMax = -Double.MAX_VALUE;
+	public void setMrsdString(String mrsd) {
+		mrsdString = mrsd;
+	}
+
+	public void setLocationAttName(String name) {
+		locationString = name;
+	}
+
+	public void setRateAttName(String name) {
+		rateString = name;
+	}
+
+	public void setPrecisionAttName(String name) {
+		precisionString = name;
+	}
+
+	public void setNumberOfIntervals(int number) {
+		numberOfIntervals = number;
+	}
+
+	public void setBurnIn(double burnInDouble) {
+		burnIn = burnInDouble;
+	}
+
+	public void setKmlWriterPath(String kmlpath) throws FileNotFoundException {
+		writer = new PrintWriter(kmlpath);
+	}
+
+	public void GenerateKML() throws IOException, ImportException,
+			ParseException {
+
+		// start timing
+		time = -System.currentTimeMillis();
+
+		message = "Importing trees...";
+		System.out.println(message);
+
+		mccTree = (RootedTree) treeImporter.importNextTree();
+
+		// This is for timeLine calculations
+		treeRootHeight = mccTree.getHeight(mccTree.getRootNode());
 
 		// This is a general time span for all of the trees
 		SpreadDate mrsd = new SpreadDate(mrsdString);
@@ -126,15 +147,21 @@ public class TimeSlicer {
 				- (treeRootHeight * DayInMillis * timescaler), mrsd.getTime(),
 				numberOfIntervals);
 
+		// This is a list of all trees
+		List<Tree> forest = treesImporter.importTrees();
+
+		// This is for slice times
 		sliceMap = new HashMap<Double, List<Coordinates>>();
 
-		List<Tree> forest = treesImporter.importTrees();
-		treesImporter = null;
-		System.gc();
+		// This is for mappings
+		sliceTimeMin = Double.MAX_VALUE;
+		sliceTimeMax = -Double.MAX_VALUE;
 
 		message = "Analyzing trees...";
 		System.out.println(message);
-		for (int i = (int) (forest.size() * burnIn); i < forest.size(); i++) {
+
+		int dim = forest.size();
+		for (int i = (int) (dim * burnIn); i < dim; i++) {
 
 			RootedTree currentTree = (RootedTree) forest.get(i);
 
@@ -142,6 +169,10 @@ public class TimeSlicer {
 			analyzeTree(currentTree);
 
 		}
+
+		// this is to generate kml output
+		KMLGenerator kmloutput = new KMLGenerator();
+		layers = new ArrayList<Layer>();
 
 		message = "Generating Polygons...";
 		System.out.println(message);
@@ -151,15 +182,16 @@ public class TimeSlicer {
 		message = "Writing to kml...";
 		System.out.println(message);
 
-		writer = new PrintWriter("/home/filip/Pulpit/output.kml");
+		// writer = new PrintWriter("/home/filip/Pulpit/output.kml");
 		kmloutput.generate(writer, timeLine, layers);
 
 		// stop timing
 		time += System.currentTimeMillis();
 		System.out.println("Finished in: " + time + " msec");
-	}// END: main
 
-	private static void analyzeTree(RootedTree tree) throws ParseException {
+	}// END: GenerateKML
+
+	private void analyzeTree(RootedTree tree) throws ParseException {
 
 		double startTime = timeLine.getStartTime();
 		double endTime = timeLine.getEndTime();
@@ -253,9 +285,9 @@ public class TimeSlicer {
 
 	}// END: analyzeTree
 
-	private static Object[] imputeValue(Object[] location,
-			Object[] parentLocation, double sliceTime, double nodeTime,
-			double parentTime, RootedTree tree, double rate, boolean trueNoise) {
+	private Object[] imputeValue(Object[] location, Object[] parentLocation,
+			double sliceTime, double nodeTime, double parentTime,
+			RootedTree tree, double rate, boolean trueNoise) {
 
 		Object o = tree.getAttribute(precisionString);
 		double treeNormalization = tree.getHeight(tree.getRootNode());
@@ -324,11 +356,12 @@ public class TimeSlicer {
 	// ////////////////
 	// ---POLYGONS---//
 	// ////////////////
-	private static void Polygons() {
+	private void Polygons() {
 
 		try {
 
-			formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd G",
+					Locale.US);
 
 			Set<Double> hostKeys = sliceMap.keySet();
 			Iterator<Double> iterator = hostKeys.iterator();
@@ -403,8 +436,6 @@ public class TimeSlicer {
 				layers.add(polygonsLayer);
 
 				sliceMap.put(sliceTime, null);
-				// sliceMap.remove(sliceTime);
-				System.gc();
 
 			}// END: sliceTime loop
 
@@ -414,5 +445,22 @@ public class TimeSlicer {
 
 		}
 	}// END: Polygons
+
+	private void DiskWritePolygons() throws FileNotFoundException {
+
+		Set<Double> hostKeys = sliceMap.keySet();
+		Iterator<Double> iterator = hostKeys.iterator();
+
+		PrintWriter pri = new PrintWriter("out");
+
+		while (iterator.hasNext()) {
+
+			Double sliceTime = (Double) iterator.next();
+			pri.println(sliceTime);
+
+			List<Coordinates> list = sliceMap.get(sliceTime);
+
+		}
+	}// END: DiskWritePolygons
 
 }// END: TimeSlicer class

@@ -25,15 +25,15 @@ public class RateIndicatorBFToKML {
 
 	public static long time;
 
-	private static ReadLocations locations;
-	private static ReadLog indicators;
-	private static List<Layer> layers;
-	private static PrintWriter writer;
-	private static int numberOfIntervals;
-	private static double maxAltMapping;
-	private static double bfCutoff;
-	private static List<Double> bayesFactors;
-	private static List<String> combin;
+	private ReadLocations locations;
+	private ReadLog indicators;
+	private List<Layer> layers;
+	private PrintWriter writer;
+	private int numberOfIntervals;
+	private double maxAltMapping;
+	private double bfCutoff;
+	private List<Double> bayesFactors;
+	private List<String> combin;
 
 	public RateIndicatorBFToKML() {
 
@@ -100,7 +100,7 @@ public class RateIndicatorBFToKML {
 	// //////////////
 	// ---PLACES---//
 	// //////////////
-	private static class Places implements Runnable {
+	private class Places implements Runnable {
 
 		public void run() {
 
@@ -122,7 +122,7 @@ public class RateIndicatorBFToKML {
 	// /////////////
 	// ---RATES---//
 	// /////////////
-	private static class Rates implements Runnable {
+	private class Rates implements Runnable {
 
 		public void run() {
 
@@ -198,7 +198,7 @@ public class RateIndicatorBFToKML {
 
 		}
 	}// END: Rates
-	
+
 	private void ComputeBFTest() {
 
 		int n = locations.nrow;
@@ -245,6 +245,5 @@ public class RateIndicatorBFToKML {
 			bayesFactors.add(bf);
 		}
 	}// END: ComputeBFTest
-
 
 }// END: RateIndicatorBF

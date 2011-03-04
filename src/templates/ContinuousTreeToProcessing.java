@@ -17,23 +17,23 @@ import utils.Utils;
 @SuppressWarnings("serial")
 public class ContinuousTreeToProcessing extends PApplet {
 
-	public final int imageWidth = 2048;
-	public final int imageHeight = 1025;
+	public static final int imageWidth = 2048;
+	public static final int imageHeight = 1025;
 
-	private static String coordinatesName;
-	private static TreeImporter importer;
-	private static RootedTree tree;
-	private static String longitudeName;
-	private static String latitudeName;
-	private static double treeHeightMax;
-	private static String HPD;
+	private String coordinatesName;
+	private TreeImporter importer;
+	private RootedTree tree;
+	private String longitudeName;
+	private String latitudeName;
+	private double treeHeightMax;
+	private String HPD;
 	private PImage mapImage;
 
 	// Borders of the map coordinates
 	// min/max longitude
-	private static float minX, maxX;
+	private float minX, maxX;
 	// min/max latitude
-	private static float minY, maxY;
+	private float minY, maxY;
 
 	public ContinuousTreeToProcessing() {
 
