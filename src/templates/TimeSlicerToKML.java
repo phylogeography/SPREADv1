@@ -149,7 +149,7 @@ public class TimeSlicerToKML {
 				numberOfIntervals);
 
 		// This is a list of all trees
-		List<Tree> forest = treesImporter.importTrees();
+		// List<Tree> forest = treesImporter.importTrees();
 
 		// This is for slice times
 		sliceMap = new HashMap<Double, List<Coordinates>>();
@@ -165,14 +165,20 @@ public class TimeSlicerToKML {
 		final int NTHREDS = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
 
-		//TODO while loop to read the trees file, skip burn in 
-		int dim = forest.size();
-		for (int i = (int) (dim * burnIn); i < dim; i++) {
+		int readTrees = 0;
+		while (treesImporter.hasTree()) {
 
-			currentTree = (RootedTree) forest.get(i);
-			executor.submit(new AnalyzeTree());
+			currentTree = (RootedTree) treesImporter.importNextTree();
 
+			if (readTrees >= burnIn) {
+				executor.submit(new AnalyzeTree());
+			}
+
+			readTrees++;
 		}
+
+		message = "Analyzed " + (int) (readTrees - burnIn) + " trees";
+		System.out.println(message);
 
 		// Wait until all threads are finished
 		executor.shutdown();
@@ -186,8 +192,8 @@ public class TimeSlicerToKML {
 		message = "Generating Polygons...";
 		System.out.println(message);
 
-//		Utils.printHashMap(sliceMap, false);
-		
+		// Utils.printHashMap(sliceMap, false);
+
 		Polygons();
 
 		message = "Writing to kml...";
@@ -477,21 +483,21 @@ public class TimeSlicerToKML {
 		}
 	}// END: Polygons
 
-//	private void DiskWritePolygons() throws FileNotFoundException {
-//
-//		Set<Double> hostKeys = sliceMap.keySet();
-//		Iterator<Double> iterator = hostKeys.iterator();
-//
-//		PrintWriter pri = new PrintWriter("out");
-//
-//		while (iterator.hasNext()) {
-//
-//			Double sliceTime = (Double) iterator.next();
-//			pri.println(sliceTime);
-//
-//			List<Coordinates> list = sliceMap.get(sliceTime);
-//
-//		}
-//	}// END: DiskWritePolygons
+	// private void DiskWritePolygons() throws FileNotFoundException {
+	//
+	// Set<Double> hostKeys = sliceMap.keySet();
+	// Iterator<Double> iterator = hostKeys.iterator();
+	//
+	// PrintWriter pri = new PrintWriter("out");
+	//
+	// while (iterator.hasNext()) {
+	//
+	// Double sliceTime = (Double) iterator.next();
+	// pri.println(sliceTime);
+	//
+	// List<Coordinates> list = sliceMap.get(sliceTime);
+	//
+	// }
+	// }// END: DiskWritePolygons
 
 }// END: TimeSlicer class
