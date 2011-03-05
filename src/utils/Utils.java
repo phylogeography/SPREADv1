@@ -320,28 +320,39 @@ public class Utils {
 		return coords;
 	}// END: GenerateCircle
 
-	public void PrintHashMap(HashMap<Double, List<Coordinates>> hashMap) {
+	public static void printHashMap(HashMap<Double, List<Coordinates>> hashMap,
+			boolean printValues) {
 
 		Set<Double> hostKeys = hashMap.keySet();
 		Iterator<Double> iterator = hostKeys.iterator();
 
+		int valCount = 1;
 		while (iterator.hasNext()) {
 
 			Double mapKey = (Double) iterator.next();
 
-			System.out.println("===================================");
-			System.out.println(mapKey);
-			System.out.println("===================================");
-
 			List<Coordinates> list = hashMap.get(mapKey);
 
-			for (int i = 0; i < list.size(); i++) {
+			if (printValues) {
 
-				Coordinates coord = list.get(i);
+				System.out.println("===================================");
+				System.out.println(mapKey);
+				System.out.println("===================================");
 
-				System.out.println(coord.getLongitude() + " "
-						+ coord.getLatitude());
+				for (int i = 0; i < list.size(); i++) {
 
+					Coordinates coord = list.get(i);
+
+					System.out.println(coord.getLongitude() + " "
+							+ coord.getLatitude());
+				}
+
+			} else {
+
+				System.out.println(valCount);
+				System.out.println(list);
+				System.out.println("===================================");
+				valCount++;
 			}
 		}
 	}// END: PrintHashMap
