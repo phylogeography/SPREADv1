@@ -162,9 +162,10 @@ public class TimeSlicerToKML {
 		System.out.println(message);
 
 		// Executor for threads
-		final int NTHREDS = 10;
+		final int NTHREDS = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
 
+		//TODO while loop to read the trees file, skip burn in 
 		int dim = forest.size();
 		for (int i = (int) (dim * burnIn); i < dim; i++) {
 
