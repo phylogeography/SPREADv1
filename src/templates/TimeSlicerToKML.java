@@ -1,5 +1,3 @@
-// "/home/filip/Dropbox/Phyleography/data/WNX/WNV_relaxed_geo_gamma.trees"
-
 package templates;
 
 import generator.KMLGenerator;
@@ -17,6 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import contouring.ContourMaker;
 import contouring.ContourPath;
@@ -62,6 +62,7 @@ public class TimeSlicerToKML {
 	private List<Layer> layers;
 	private PrintWriter writer;
 	private double burnIn;
+	private RootedTree currentTree;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -160,14 +161,21 @@ public class TimeSlicerToKML {
 		message = "Analyzing trees...";
 		System.out.println(message);
 
+		// Executor for threads
+		final int NTHREDS = 10;
+		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
+
 		int dim = forest.size();
 		for (int i = (int) (dim * burnIn); i < dim; i++) {
 
-			RootedTree currentTree = (RootedTree) forest.get(i);
+			currentTree = (RootedTree) forest.get(i);
+			executor.submit(new AnalyzeTree());
 
-			// TODO: start separate thread for each tree
-			analyzeTree(currentTree);
+		}
 
+		// Wait until all threads are finished
+		executor.shutdown();
+		while (!executor.isTerminated()) {
 		}
 
 		// this is to generate kml output
@@ -177,12 +185,13 @@ public class TimeSlicerToKML {
 		message = "Generating Polygons...";
 		System.out.println(message);
 
+//		Utils.printHashMap(sliceMap, false);
+		
 		Polygons();
 
 		message = "Writing to kml...";
 		System.out.println(message);
 
-		// writer = new PrintWriter("/home/filip/Pulpit/output.kml");
 		kmloutput.generate(writer, timeLine, layers);
 
 		// stop timing
@@ -191,97 +200,118 @@ public class TimeSlicerToKML {
 
 	}// END: GenerateKML
 
-	private void analyzeTree(RootedTree tree) throws ParseException {
+	private class AnalyzeTree implements Runnable {
 
-		double startTime = timeLine.getStartTime();
-		double endTime = timeLine.getEndTime();
-		double timeSpan = startTime - endTime;
+		public void run() {
 
-		for (Node node : tree.getNodes()) {
+			try {
 
-			if (!tree.isRoot(node)) {
+				double startTime = timeLine.getStartTime();
+				double endTime = timeLine.getEndTime();
+				double timeSpan = startTime - endTime;
 
-				for (int i = numberOfIntervals; i > 0; i--) {
+				for (Node node : currentTree.getNodes()) {
 
-					Node parentNode = tree.getParent(node);
+					if (!currentTree.isRoot(node)) {
 
-					double nodeHeight = tree.getHeight(node);
-					double parentHeight = tree.getHeight(parentNode);
+						for (int i = numberOfIntervals; i > 0; i--) {
 
-					Object[] location = (Object[]) Utils.getArrayNodeAttribute(
-							node, locationString);
-					double latitude = (Double) location[0];
-					double longitude = (Double) location[1];
+							Node parentNode = currentTree.getParent(node);
 
-					Object[] parentLocation = (Object[]) Utils
-							.getArrayNodeAttribute(parentNode, locationString);
-					double parentLatitude = (Double) parentLocation[0];
-					double parentLongitude = (Double) parentLocation[1];
+							double nodeHeight = currentTree.getHeight(node);
+							double parentHeight = currentTree
+									.getHeight(parentNode);
 
-					double rate = Utils
-							.getDoubleNodeAttribute(node, rateString);
+							Object[] location = (Object[]) Utils
+									.getArrayNodeAttribute(node, locationString);
+							double latitude = (Double) location[0];
+							double longitude = (Double) location[1];
 
-					double sliceTime = startTime
-							- (timeSpan / numberOfIntervals) * ((double) i);
+							Object[] parentLocation = (Object[]) Utils
+									.getArrayNodeAttribute(parentNode,
+											locationString);
+							double parentLatitude = (Double) parentLocation[0];
+							double parentLongitude = (Double) parentLocation[1];
 
-					if (sliceTime < sliceTimeMin) {
-						sliceTimeMin = sliceTime;
-					}
+							double rate = Utils.getDoubleNodeAttribute(node,
+									rateString);
 
-					if (sliceTime > sliceTimeMax) {
-						sliceTimeMax = sliceTime;
-					}
+							double sliceTime = startTime
+									- (timeSpan / numberOfIntervals)
+									* ((double) i);
 
-					SpreadDate mrsd0 = new SpreadDate(mrsdString);
-					double parentTime = mrsd0
-							.minus((int) (parentHeight * timescaler));
+							if (sliceTime < sliceTimeMin) {
+								sliceTimeMin = sliceTime;
+							}
 
-					SpreadDate mrsd1 = new SpreadDate(mrsdString);
-					double nodeTime = mrsd1
-							.minus((int) (nodeHeight * timescaler));
+							if (sliceTime > sliceTimeMax) {
+								sliceTimeMax = sliceTime;
+							}
 
-					Object[] imputedLocation = imputeValue(location,
-							parentLocation, sliceTime, nodeTime, parentTime,
-							tree, rate, trueNoise);
+							SpreadDate mrsd0 = new SpreadDate(mrsdString);
+							double parentTime = mrsd0
+									.minus((int) (parentHeight * timescaler));
 
-					// TODO: improve that
-					if (parentTime < sliceTime && sliceTime <= nodeTime) {
+							SpreadDate mrsd1 = new SpreadDate(mrsdString);
+							double nodeTime = mrsd1
+									.minus((int) (nodeHeight * timescaler));
 
-						if (sliceMap.containsKey(sliceTime)) {
+							Object[] imputedLocation = imputeValue(location,
+									parentLocation, sliceTime, nodeTime,
+									parentTime, currentTree, rate, trueNoise);
 
-							sliceMap.get(sliceTime).add(
-									new Coordinates(parentLongitude,
+							// TODO: improve that
+							if (parentTime < sliceTime && sliceTime <= nodeTime) {
+
+								if (sliceMap.containsKey(sliceTime)) {
+
+									sliceMap.get(sliceTime).add(
+											new Coordinates(parentLongitude,
+													parentLatitude, 0.0));
+
+									sliceMap
+											.get(sliceTime)
+											.add(
+													new Coordinates(
+															Double
+																	.valueOf(imputedLocation[1]
+																			.toString()),
+															Double
+																	.valueOf(imputedLocation[0]
+																			.toString()),
+															0.0));
+
+									sliceMap.get(sliceTime).add(
+											new Coordinates(longitude,
+													latitude, 0.0));
+
+								} else {
+
+									List<Coordinates> coords = new ArrayList<Coordinates>();
+
+									coords.add(new Coordinates(parentLongitude,
 											parentLatitude, 0.0));
-							sliceMap.get(sliceTime).add(
-									new Coordinates(Double
+									coords.add(new Coordinates(Double
 											.valueOf(imputedLocation[1]
 													.toString()), Double
 											.valueOf(imputedLocation[0]
 													.toString()), 0.0));
-							sliceMap.get(sliceTime).add(
-									new Coordinates(longitude, latitude, 0.0));
+									coords.add(new Coordinates(longitude,
+											latitude, 0.0));
 
-						} else {
+									sliceMap.put(sliceTime, coords);
 
-							List<Coordinates> coords = new ArrayList<Coordinates>();
-
-							coords.add(new Coordinates(parentLongitude,
-									parentLatitude, 0.0));
-							coords.add(new Coordinates(Double
-									.valueOf(imputedLocation[1].toString()),
-									Double.valueOf(imputedLocation[0]
-											.toString()), 0.0));
-							coords
-									.add(new Coordinates(longitude, latitude,
-											0.0));
-
-							sliceMap.put(sliceTime, coords);
-
-						}// END: key check
+								}// END: key check
+							}
+						}// END: numberOfIntervals loop
 					}
-				}// END: numberOfIntervals loop
+				}// END: node loop
+
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
-		}// END: node loop
+
+		}// END: run
 
 	}// END: analyzeTree
 
@@ -446,21 +476,21 @@ public class TimeSlicerToKML {
 		}
 	}// END: Polygons
 
-	private void DiskWritePolygons() throws FileNotFoundException {
-
-		Set<Double> hostKeys = sliceMap.keySet();
-		Iterator<Double> iterator = hostKeys.iterator();
-
-		PrintWriter pri = new PrintWriter("out");
-
-		while (iterator.hasNext()) {
-
-			Double sliceTime = (Double) iterator.next();
-			pri.println(sliceTime);
-
-			List<Coordinates> list = sliceMap.get(sliceTime);
-
-		}
-	}// END: DiskWritePolygons
+//	private void DiskWritePolygons() throws FileNotFoundException {
+//
+//		Set<Double> hostKeys = sliceMap.keySet();
+//		Iterator<Double> iterator = hostKeys.iterator();
+//
+//		PrintWriter pri = new PrintWriter("out");
+//
+//		while (iterator.hasNext()) {
+//
+//			Double sliceTime = (Double) iterator.next();
+//			pri.println(sliceTime);
+//
+//			List<Coordinates> list = sliceMap.get(sliceTime);
+//
+//		}
+//	}// END: DiskWritePolygons
 
 }// END: TimeSlicer class
