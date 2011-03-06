@@ -40,6 +40,8 @@ public class TimeSlicerToProcessing extends PApplet {
 	private TreeImporter treeImporter;
 	private String precisionString;
 	private String locationString;
+	private String longitudeName;
+	private String latitudeName;
 	private String rateString;
 	private int numberOfIntervals;
 	private boolean trueNoise;
@@ -52,7 +54,8 @@ public class TimeSlicerToProcessing extends PApplet {
 	private double burnIn;
 	private RootedTree currentTree;
 	private Double sliceTime;
-
+	RootedTree tree;
+	
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
 	}
@@ -99,6 +102,9 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	public void setLocationAttName(String name) {
 		locationString = name;
+		// this is for coordinate attribute names
+		longitudeName = (locationString + 2);
+		latitudeName = (locationString + 1);
 	}
 
 	public void setRateAttName(String name) {
@@ -153,7 +159,8 @@ public class TimeSlicerToProcessing extends PApplet {
 		smooth();
 		drawMapBackground();
 		drawPolygons();
-
+		drawBranches();
+		
 	}// END:draw
 
 	private void drawMapBackground() {
@@ -244,6 +251,51 @@ public class TimeSlicerToProcessing extends PApplet {
 		}// END: paths loop
 
 	}// END: drawPolygons()
+	
+	private void drawBranches() {
+
+		double treeHeightMax = Utils.getTreeHeightMax(tree);
+		strokeWeight(2);
+
+		for (Node node : tree.getNodes()) {
+			if (!tree.isRoot(node)) {
+
+				float longitude = (float) Utils.getDoubleNodeAttribute(node,
+						longitudeName);
+
+				float latitude = (float) Utils.getDoubleNodeAttribute(node,
+						latitudeName);
+
+				Node parentNode = tree.getParent(node);
+				float parentLongitude = (float) Utils.getDoubleNodeAttribute(
+						parentNode, longitudeName);
+				float parentLatitude = (float) Utils.getDoubleNodeAttribute(
+						parentNode, latitudeName);
+
+				// Equirectangular projection:
+				float x0 = map(parentLongitude, minX, maxX, 0, width);
+				float y0 = map(parentLatitude, maxY, minY, 0, height);
+
+				float x1 = map(longitude, minX, maxX, 0, width);
+				float y1 = map(latitude, maxY, minY, 0, height);
+
+				/**
+				 * Color mapping
+				 * */
+				double nodeHeight = tree.getHeight(node);
+
+				int red = 255;
+				int green = 0;
+				int blue = (int) Utils
+						.map(nodeHeight, 0, treeHeightMax, 255, 0);
+				int alpha = (int) Utils.map(nodeHeight, 0, treeHeightMax, 100,
+						255);
+
+				stroke(red, green, blue, alpha);
+				line(x0, y0, x1, y1);
+			}
+		}// END: nodes loop
+	}// END: DrawBranches
 
 	private void AnalyzeTrees() throws IOException, ImportException,
 			ParseException {
@@ -251,10 +303,8 @@ public class TimeSlicerToProcessing extends PApplet {
 		System.out.println("Importing trees...");
 
 		// This is a general time span for all of the trees
-		RootedTree mccTree;
-
-		mccTree = (RootedTree) treeImporter.importNextTree();
-		timeLine = GenerateTimeLine(mccTree);
+		tree = (RootedTree) treeImporter.importNextTree();
+		timeLine = GenerateTimeLine(tree);
 		startTime = timeLine.getStartTime();
 		endTime = timeLine.getEndTime();
 
@@ -272,7 +322,6 @@ public class TimeSlicerToProcessing extends PApplet {
 			currentTree = (RootedTree) treesImporter.importNextTree();
 
 			if (readTrees >= burnIn) {
-				// AnalyzeTree(currentTree);
 				executor.submit(new AnalyzeTree());
 			}
 
@@ -284,7 +333,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		while (!executor.isTerminated()) {
 		}
 
-		System.out.println("Analyzed " + (int) (readTrees - burnIn) + " trees");
+		System.out.println("Analyzed " + (int) (readTrees - burnIn) + " trees.");
 
 	}
 
