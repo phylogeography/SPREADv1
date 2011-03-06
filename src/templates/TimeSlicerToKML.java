@@ -54,8 +54,8 @@ public class TimeSlicerToKML {
 	private double timescaler;
 	private TimeLine timeLine;
 	private HashMap<Double, List<Coordinates>> sliceMap;
-	double startTime;
-	double endTime;
+	private double startTime;
+	private double endTime;
 	private List<Layer> layers;
 	private PrintWriter writer;
 	private double burnIn;
@@ -88,7 +88,7 @@ public class TimeSlicerToKML {
 			break;
 		}
 
-	}// END: TimeSlicerToKML
+	}// END: TimeSlicerToKML()
 
 	public void setMccTreePath(String path) throws FileNotFoundException {
 		treeImporter = new NexusImporter(new FileReader(path));
