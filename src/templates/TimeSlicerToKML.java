@@ -162,7 +162,7 @@ public class TimeSlicerToKML {
 
 			if (readTrees >= burnIn) {
 				AnalyzeTree(currentTree);
-//				executor.submit(new AnalyzeTree());
+				executor.submit(new AnalyzeTree());
 			}
 
 			readTrees++;
