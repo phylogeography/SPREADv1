@@ -342,15 +342,18 @@ public class Utils {
 				for (int i = 0; i < list.size(); i++) {
 
 					Coordinates coord = list.get(i);
-
-					System.out.println(coord.getLongitude() + " "
-							+ coord.getLatitude());
+					
+					if (coord == null) {
+						System.out.println("null!");
+//						System.out.println(coord.getLongitude() + " "
+//								+ coord.getLatitude());
+					}
 				}
 
 			} else {
 
 				System.out.println(valCount);
-				System.out.println(list);
+				System.out.println("is null = " + (list == null));
 				System.out.println("===================================");
 				valCount++;
 			}
