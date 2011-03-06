@@ -10,7 +10,6 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -195,7 +194,6 @@ public class TimeSlicerToKML {
 				sliceTime = (Double) iterator.next();
 				// executor.submit(new Polygons());
 				Polygons(sliceTime);
-				polygonsStyleId++;
 			}
 		}
 		executor.shutdown();
@@ -326,14 +324,9 @@ public class TimeSlicerToKML {
 
 			} catch (ParseException e) {
 				e.printStackTrace();
-
-			} catch (ConcurrentModificationException e) {
-
-				run();
 			}
 
 		}// END: run
-
 	}// END: analyzeTree
 
 	private Object[] imputeValue(Object[] location, Object[] parentLocation,
@@ -469,7 +462,7 @@ public class TimeSlicerToKML {
 			}// END: paths loop
 
 			layers.add(polygonsLayer);
-			// polygonsStyleId++;
+			polygonsStyleId++;
 
 		}// END: run
 	}// END: Polygons
@@ -533,6 +526,7 @@ public class TimeSlicerToKML {
 		}// END: paths loop
 
 		layers.add(polygonsLayer);
+		polygonsStyleId++;
 	}// END: Polygons
 
 }// END: TimeSlicer class
