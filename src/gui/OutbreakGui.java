@@ -38,9 +38,10 @@ public class OutbreakGui {
 	private JButton quit = new JButton("Quit", quitIcon);
 
 	// Tabs
-	ContinuousModelTab continuousModelTab;
-	DiscreteModelTab discreteModelTab;
-	RateIndicatorBFTab rateIndicatorBFTab;
+	private ContinuousModelTab continuousModelTab;
+	private DiscreteModelTab discreteModelTab;
+	private RateIndicatorBFTab rateIndicatorBFTab;
+	private  TimeSlicerTab timeSlicerTab; 
 
 	public OutbreakGui() {
 
@@ -49,7 +50,6 @@ public class OutbreakGui {
 		frame.add(tabbedPane);
 		frame.setJMenuBar(mainMenu);
 		frame.addWindowListener(new ListenCloseWdw());
-		//TODO: remove this, add scrolls to each tab
 		JScrollPane scrollPane = new JScrollPane(tabbedPane);
 		frame.add(scrollPane, BorderLayout.CENTER);
 
@@ -66,6 +66,10 @@ public class OutbreakGui {
 		continuousModelTab = new ContinuousModelTab();
 		tabbedPane.add("Continuous Model", continuousModelTab);
 
+		// add Time Slicer tab
+		timeSlicerTab = new TimeSlicerTab();
+		tabbedPane.add("Time Slicer", timeSlicerTab);
+		
 		// add Discrete Model Tab
 		discreteModelTab = new DiscreteModelTab();
 		tabbedPane.add("Discrete Model", discreteModelTab);
@@ -82,6 +86,7 @@ public class OutbreakGui {
 			discreteModelTab.setText(helpText);
 			continuousModelTab.setText(helpText);
 			rateIndicatorBFTab.setText(helpText);
+			timeSlicerTab.setText(helpText);
 		}
 	}
 
