@@ -153,7 +153,7 @@ public class DiscreteTreeToKML {
 			layers = new ArrayList<Layer>();
 
 			// Execute threads
-			final int NTHREDS = 10;
+			final int NTHREDS = Runtime.getRuntime().availableProcessors();
 			ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
 
 			executor.submit(new Places());
