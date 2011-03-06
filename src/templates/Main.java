@@ -1,10 +1,5 @@
 package templates;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.text.ParseException;
-
-import jebl.evolution.io.ImportException;
 
 public class Main {
 
@@ -33,27 +28,22 @@ public class Main {
 			timeSlicerToKML.setRateAttName("rate");
 
 			timeSlicerToKML.setPrecisionAttName("precision");
+			
+			timeSlicerToKML.setTrueNoise(false);
 
 			timeSlicerToKML.setNumberOfIntervals(10);
 
-			timeSlicerToKML.setBurnIn(0.998); // 0.998
+			timeSlicerToKML.setBurnIn(4990); // 4990
 
 			timeSlicerToKML.setKmlWriterPath("/home/filip/Pulpit/output.kml");
 
 			timeSlicerToKML.GenerateKML();
 
-		} catch (FileNotFoundException e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-
-		} catch (ImportException e) {
-			e.printStackTrace();
-
-		} catch (ParseException e) {
-			e.printStackTrace();
 		}
-		
+
 	}
 }

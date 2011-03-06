@@ -41,8 +41,14 @@ ________________________________________________________________________________
 * catch exceptions
   - Runtime exceptions for "attribute missing from node" is not caught
     and resulting error mesage not displayed in scrollable terminal
-* work on speed-ups
 * implement TimeSlicer template
+  - template is organized around HashMap, first trees are being analyzed and values 
+    (List<Coordinates>) collected with keys (sliceTimes). 
+  - if the HashMap already has a key the appropriate list is grown, otherwise new list 
+    is created and added to the collection
+  - the resulting map is then iterated through, and Coordinates are fed to the 
+    contouring algorithm returning paths
+  - resulting paths are used to create polygons and written to the kml file     
   - there is a memory leak in Polygons method, causes java.lang.outOfMemory
     crash
 

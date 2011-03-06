@@ -72,8 +72,6 @@ public class TimeSlicerToKML {
 
 	public TimeSlicerToKML() {
 
-		trueNoise = false;
-
 		// parse combobox choices here
 		timescalerSwitcher = timescalerEnum.YEARS;
 
@@ -122,6 +120,10 @@ public class TimeSlicerToKML {
 
 	public void setBurnIn(double burnInDouble) {
 		burnIn = burnInDouble;
+	}
+	
+	public void setTrueNoise(boolean trueNoiseBoolean){
+		trueNoise = trueNoiseBoolean;
 	}
 
 	public void setKmlWriterPath(String kmlpath) throws FileNotFoundException {
@@ -192,10 +194,11 @@ public class TimeSlicerToKML {
 		synchronized (iterator) {
 			while (iterator.hasNext()) {
 				sliceTime = (Double) iterator.next();
-				// executor.submit(new Polygons());
+//				 executor.submit(new Polygons());
 				Polygons(sliceTime);
 			}
 		}
+			
 		executor.shutdown();
 		while (!executor.isTerminated()) {
 		}
