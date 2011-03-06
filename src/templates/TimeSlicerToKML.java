@@ -140,8 +140,8 @@ public class TimeSlicerToKML {
 		System.out.println(message);
 
 		// This is a general time span for all of the trees
-		RootedTree mccTree = (RootedTree) treeImporter.importNextTree();
-		timeLine = GenerateTimeLine(mccTree);
+		RootedTree tree = (RootedTree) treeImporter.importNextTree();
+		timeLine = GenerateTimeLine(tree);
 		startTime = timeLine.getStartTime();
 		endTime = timeLine.getEndTime();
 
