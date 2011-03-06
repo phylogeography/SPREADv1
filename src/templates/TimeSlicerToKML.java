@@ -121,8 +121,8 @@ public class TimeSlicerToKML {
 	public void setBurnIn(double burnInDouble) {
 		burnIn = burnInDouble;
 	}
-	
-	public void setTrueNoise(boolean trueNoiseBoolean){
+
+	public void setTrueNoise(boolean trueNoiseBoolean) {
 		trueNoise = trueNoiseBoolean;
 	}
 
@@ -161,7 +161,8 @@ public class TimeSlicerToKML {
 			currentTree = (RootedTree) treesImporter.importNextTree();
 
 			if (readTrees >= burnIn) {
-				executor.submit(new AnalyzeTree());
+				AnalyzeTree(currentTree);
+//				executor.submit(new AnalyzeTree());
 			}
 
 			readTrees++;
@@ -194,11 +195,11 @@ public class TimeSlicerToKML {
 		synchronized (iterator) {
 			while (iterator.hasNext()) {
 				sliceTime = (Double) iterator.next();
-//				 executor.submit(new Polygons());
+				// executor.submit(new Polygons());
 				Polygons(sliceTime);
 			}
 		}
-			
+
 		executor.shutdown();
 		while (!executor.isTerminated()) {
 		}
@@ -228,6 +229,99 @@ public class TimeSlicerToKML {
 		return timeLine;
 	}
 
+	// ////////////////////
+	// ---ANALYZE TREE---//
+	// ////////////////////
+	private void AnalyzeTree(RootedTree currentTree) throws ParseException {
+
+		double timeSpan = startTime - endTime;
+
+		for (Node node : currentTree.getNodes()) {
+
+			if (!currentTree.isRoot(node)) {
+
+				for (int i = numberOfIntervals; i > 0; i--) {
+
+					Node parentNode = currentTree.getParent(node);
+
+					double nodeHeight = currentTree.getHeight(node);
+					double parentHeight = currentTree.getHeight(parentNode);
+
+					Object[] location = (Object[]) Utils.getArrayNodeAttribute(
+							node, locationString);
+					double latitude = (Double) location[0];
+					double longitude = (Double) location[1];
+
+					Object[] parentLocation = (Object[]) Utils
+							.getArrayNodeAttribute(parentNode, locationString);
+					double parentLatitude = (Double) parentLocation[0];
+					double parentLongitude = (Double) parentLocation[1];
+
+					double rate = Utils
+							.getDoubleNodeAttribute(node, rateString);
+
+					double sliceTime = startTime
+							- (timeSpan / numberOfIntervals) * ((double) i);
+
+					SpreadDate mrsd0 = new SpreadDate(mrsdString);
+					double parentTime = mrsd0
+							.minus((int) (parentHeight * timescaler));
+
+					SpreadDate mrsd1 = new SpreadDate(mrsdString);
+					double nodeTime = mrsd1
+							.minus((int) (nodeHeight * timescaler));
+
+					Object[] imputedLocation = imputeValue(location,
+							parentLocation, sliceTime, nodeTime, parentTime,
+							currentTree, rate, trueNoise);
+
+					if (parentTime < sliceTime && sliceTime <= nodeTime) {
+
+						if (sliceMap.containsKey(sliceTime)) {
+
+							sliceMap.get(sliceTime).add(
+									new Coordinates(parentLongitude,
+											parentLatitude, 0.0));
+
+							sliceMap.get(sliceTime).add(new Coordinates(
+
+							Double.valueOf(imputedLocation[1].toString()),
+
+							Double.valueOf(imputedLocation[0].toString()),
+
+							0.0));
+
+							sliceMap.get(sliceTime).add(
+									new Coordinates(longitude, latitude, 0.0));
+
+						} else {
+
+							List<Coordinates> coords = new ArrayList<Coordinates>();
+
+							coords.add(new Coordinates(parentLongitude,
+									parentLatitude, 0.0));
+
+							coords.add(new Coordinates(Double
+									.valueOf(imputedLocation[1].toString()),
+									Double.valueOf(imputedLocation[0]
+											.toString()), 0.0));
+
+							coords
+									.add(new Coordinates(longitude, latitude,
+											0.0));
+
+							sliceMap.put(sliceTime, coords);
+
+						}// END: key check
+					}
+				}// END: numberOfIntervals loop
+			}
+		}// END: node loop
+	}
+
+	// ///////////////////////////////
+	// ---CONCURRENT ANALYZE TREE---//
+	// ///////////////////////////////
 	private class AnalyzeTree implements Runnable {
 
 		public void run() {
@@ -400,9 +494,9 @@ public class TimeSlicerToKML {
 		return result;
 	}// END: ImputeValue
 
-	// ////////////////
-	// ---POLYGONS---//
-	// ////////////////
+	// ///////////////////////////
+	// ---CONCURRENT POLYGONS---//
+	// ///////////////////////////
 	private class Polygons implements Runnable {
 
 		public void run() {
@@ -470,6 +564,9 @@ public class TimeSlicerToKML {
 		}// END: run
 	}// END: Polygons
 
+	// ////////////////
+	// ---POLYGONS---//
+	// ////////////////
 	private void Polygons(Double sliceTime) {
 
 		Layer polygonsLayer = new Layer("Time_Slice_"
