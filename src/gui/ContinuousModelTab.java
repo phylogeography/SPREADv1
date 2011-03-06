@@ -47,7 +47,7 @@ public class ContinuousModelTab extends JPanel {
 
 	// Text fields
 	private JTextField coordinatesNameParser = new JTextField("location", 5);
-	private static JTextField HPDParser = new JTextField("95", 2);
+	private JTextField HPDParser = new JTextField("95", 2);
 	private JTextField mrsdStringParser = new JTextField(formatter
 			.format(calendar.getTime()), 8);
 	private JComboBox eraParser;
