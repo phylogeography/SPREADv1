@@ -34,7 +34,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private final int imageWidth = 2048;
 	private final int imageHeight = 1025;
 	private final int DayInMillis = 86400000;
-	private final int NTHREDS;
+	private final int NTHREDS = Runtime.getRuntime().availableProcessors();;
 
 	private TreeImporter treesImporter;
 	private TreeImporter treeImporter;
@@ -55,7 +55,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private RootedTree currentTree;
 	private Double sliceTime;
 	RootedTree tree;
-	
+
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
 	}
@@ -83,8 +83,6 @@ public class TimeSlicerToProcessing extends PApplet {
 			timescaler = 365;
 			break;
 		}
-
-		NTHREDS = Runtime.getRuntime().availableProcessors();
 
 	}// END: TimeSlicerToProcessing()
 
@@ -129,26 +127,28 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	public void setup() {
 
-		minX = -180;
-		maxX = 180;
-
-		minY = -80;
-		maxY = 90;
-
-		width = imageWidth;
-		height = imageHeight;
-
-		size(width, height);
 		try {
+
+			minX = -180;
+			maxX = 180;
+
+			minY = -80;
+			maxY = 90;
+
+			width = imageWidth;
+			height = imageHeight;
+
+			size(width, height);
+
 			AnalyzeTrees();
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		} catch (ImportException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -160,7 +160,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		drawMapBackground();
 		drawPolygons();
 		drawBranches();
-		
+
 	}// END:draw
 
 	private void drawMapBackground() {
@@ -181,7 +181,7 @@ public class TimeSlicerToProcessing extends PApplet {
 			sliceTime = (Double) iterator.next();
 			drawPolygon(sliceTime);
 		}
-	}//END: drawPolygons
+	}// END: drawPolygons
 
 	private void drawPolygon(Double sliceTime) {
 
@@ -203,7 +203,7 @@ public class TimeSlicerToProcessing extends PApplet {
 
 		for (int i = 0; i < list.size(); i++) {
 
-			if (list.get(i) != null) {// TODO NullPointerException
+			if (list.get(i) != null) {// TODO NullPointerException thrown
 
 				x[i] = list.get(i).getLatitude();
 				y[i] = list.get(i).getLongitude();
@@ -252,7 +252,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		}// END: paths loop
 
 	}// END: drawPolygon()
-	
+
 	private void drawBranches() {
 
 		double treeHeightMax = Utils.getTreeHeightMax(tree);
@@ -334,7 +334,8 @@ public class TimeSlicerToProcessing extends PApplet {
 		while (!executor.isTerminated()) {
 		}
 
-		System.out.println("Analyzed " + (int) (readTrees - burnIn) + " trees.");
+		System.out
+				.println("Analyzed " + (int) (readTrees - burnIn) + " trees.");
 
 	}
 
