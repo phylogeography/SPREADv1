@@ -18,7 +18,7 @@ import utils.Utils;
 public class DiscreteTreeToProcessing extends PApplet {
 
 	public static final int imageWidth = 2048;
-	public final int imageHeight = 1025;
+	public static final int imageHeight = 1025;
 
 	private TreeImporter importer;
 	private RootedTree tree;

@@ -20,8 +20,8 @@ public class Main {
 			"/home/filip/Dropbox/Phyleography/data/WNX/WNV_relaxed_geo_gamma.trees"
 
 			);
-
-			timeSlicerToKML.setMrsdString("2006-12-31");
+			
+			timeSlicerToKML.setBurnIn(4990); // 4990
 
 			timeSlicerToKML.setLocationAttName("location");
 
@@ -30,10 +30,10 @@ public class Main {
 			timeSlicerToKML.setPrecisionAttName("precision");
 			
 			timeSlicerToKML.setTrueNoise(false);
+			
+			timeSlicerToKML.setMrsdString("2006-12-31");
 
 			timeSlicerToKML.setNumberOfIntervals(10);
-
-			timeSlicerToKML.setBurnIn(4990); // 4990
 
 			timeSlicerToKML.setKmlWriterPath("/home/filip/Pulpit/output.kml");
 

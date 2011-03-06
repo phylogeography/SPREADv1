@@ -162,9 +162,7 @@ public class ContinuousModelTab extends JPanel {
 		 * Processing pane
 		 * */
 		continuousTreeToProcessing = new ContinuousTreeToProcessing();
-		Dimension rightPanelDimension = new Dimension(
-				continuousTreeToProcessing.imageWidth,
-				continuousTreeToProcessing.imageHeight);
+		Dimension rightPanelDimension = new Dimension(2048, 1025);
 		rightPanel = new JPanel();
 		rightPanel.setSize(rightPanelDimension);
 		rightPanel.setMinimumSize(rightPanelDimension);
