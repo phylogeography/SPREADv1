@@ -182,8 +182,6 @@ public class TimeSlicerToKML {
 
 		// Utils.printHashMap(sliceMap, true);
 
-		// Polygons();
-
 		message = "Iterating through Map...";
 		System.out.println(message);
 		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
@@ -194,9 +192,10 @@ public class TimeSlicerToKML {
 		polygonsStyleId = 1;
 		synchronized (iterator) {
 			while (iterator.hasNext()) {
-				 sliceTime = (Double) iterator.next();
-				executor.submit(new Polygons());
-//				polygonsStyleId++;
+				sliceTime = (Double) iterator.next();
+				// executor.submit(new Polygons());
+				Polygons(sliceTime);
+				polygonsStyleId++;
 			}
 		}
 		executor.shutdown();
@@ -412,7 +411,6 @@ public class TimeSlicerToKML {
 
 		public void run() {
 
-//			Double sliceTime = (Double) iterator.next();
 			Layer polygonsLayer = new Layer("Time_Slice_"
 					+ formatter.format(sliceTime), null);
 
@@ -471,89 +469,70 @@ public class TimeSlicerToKML {
 			}// END: paths loop
 
 			layers.add(polygonsLayer);
-			 polygonsStyleId++;
+			// polygonsStyleId++;
+
+		}// END: run
+	}// END: Polygons
+
+	private void Polygons(Double sliceTime) {
+
+		Layer polygonsLayer = new Layer("Time_Slice_"
+				+ formatter.format(sliceTime), null);
+
+		/**
+		 * Color and Opacity mapping
+		 * */
+		int red = 55;
+		int green = (int) Utils.map(sliceTime, startTime, endTime, 255, 0);
+		int blue = 0;
+		int alpha = (int) Utils.map(sliceTime, startTime, endTime, 100, 255);
+
+		Color col = new Color(red, green, blue, alpha);
+		Style polygonsStyle = new Style(col, 0);
+		polygonsStyle.setId("polygon_style" + polygonsStyleId);
+
+		List<Coordinates> list = sliceMap.get(sliceTime);
+
+		double[] x = new double[list.size()];
+		double[] y = new double[list.size()];
+
+		for (int i = 0; i < list.size(); i++) {
+
+			if (list.get(i) != null) {// TODO NullPointerException
+
+				x[i] = list.get(i).getLatitude();
+				y[i] = list.get(i).getLongitude();
+
+			}
 		}
-	}
 
-	private void Polygons() {
+		ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
+		ContourPath[] paths = contourMaker.getContourPaths(0.8);
 
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd G",
-				Locale.US);
+		int pathCounter = 1;
+		for (ContourPath path : paths) {
 
-		Set<Double> hostKeys = sliceMap.keySet();
-		Iterator<Double> iterator = hostKeys.iterator();
+			double[] latitude = path.getAllX();
+			double[] longitude = path.getAllY();
+			List<Coordinates> coords = new ArrayList<Coordinates>();
 
-		int polygonsStyleId = 1;
+			for (int i = 0; i < latitude.length; i++) {
 
-		while (iterator.hasNext()) {
-
-			message = "Iterating through Map, key " + polygonsStyleId + "...";
-			System.out.println(message);
-
-			Double sliceTime = (Double) iterator.next();
-			Layer polygonsLayer = new Layer("Time_Slice_"
-					+ formatter.format(sliceTime), null);
-			/**
-			 * Color and Opacity mapping
-			 * */
-			int red = 55;
-			int green = (int) Utils.map(sliceTime, startTime, endTime, 255, 0);
-			int blue = 0;
-			int alpha = (int) Utils
-					.map(sliceTime, startTime, endTime, 100, 255);
-
-			Color col = new Color(red, green, blue, alpha);
-			Style polygonsStyle = new Style(col, 0);
-			polygonsStyle.setId("polygon_style" + polygonsStyleId);
-
-			List<Coordinates> list = sliceMap.get(sliceTime);
-
-			double[] x = new double[list.size()];
-			double[] y = new double[list.size()];
-
-			for (int i = 0; i < list.size(); i++) {
-
-				if (list.get(i) != null) {// TODO NullPointerException
-
-					x[i] = list.get(i).getLatitude();
-					y[i] = list.get(i).getLongitude();
-
-				}
+				coords.add(new Coordinates(longitude[i], latitude[i], 0.0));
 			}
 
-			ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
-			ContourPath[] paths = contourMaker.getContourPaths(0.8);
+			polygonsLayer.addItem(new Polygon("HPDRegion_" + pathCounter, // name
+					coords, // List<Coordinates>
+					polygonsStyle, // Style style
+					sliceTime, // double startime
+					0.0 // double duration
+					));
 
-			int pathCounter = 1;
-			for (ContourPath path : paths) {
+			pathCounter++;
 
-				double[] latitude = path.getAllX();
-				double[] longitude = path.getAllY();
-				List<Coordinates> coords = new ArrayList<Coordinates>();
+		}// END: paths loop
 
-				for (int i = 0; i < latitude.length; i++) {
-
-					coords.add(new Coordinates(longitude[i], latitude[i], 0.0));
-				}
-
-				polygonsLayer.addItem(new Polygon("HPDRegion_" + pathCounter, // name
-						coords, // List<Coordinates>
-						polygonsStyle, // Style style
-						sliceTime, // double startime
-						0.0 // double duration
-						));
-
-				pathCounter++;
-
-			}// END: paths loop
-
-			polygonsStyleId++;
-			layers.add(polygonsLayer);
-
-			// sliceMap.put(sliceTime, null);
-
-		}// END: sliceTime loop
-
+		layers.add(polygonsLayer);
 	}// END: Polygons
 
 }// END: TimeSlicer class
