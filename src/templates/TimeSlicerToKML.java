@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +28,6 @@ import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
-import jebl.evolution.trees.Tree;
 import math.MultivariateNormalDistribution;
 import structure.Coordinates;
 import structure.Layer;
@@ -44,10 +44,8 @@ public class TimeSlicerToKML {
 
 	private static final int DayInMillis = 86400000;
 
-	private RootedTree mccTree;
 	private TreeImporter treesImporter;
 	private TreeImporter treeImporter;
-	private double treeRootHeight;
 	private String precisionString;
 	private String locationString;
 	private String rateString;
@@ -57,12 +55,15 @@ public class TimeSlicerToKML {
 	private double timescaler;
 	private TimeLine timeLine;
 	private HashMap<Double, List<Coordinates>> sliceMap;
-	private double sliceTimeMax;
-	private double sliceTimeMin;
+	double startTime;
+	double endTime;
 	private List<Layer> layers;
 	private PrintWriter writer;
 	private double burnIn;
 	private RootedTree currentTree;
+	private SimpleDateFormat formatter;
+	private Double sliceTime;
+	private int polygonsStyleId;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -137,26 +138,14 @@ public class TimeSlicerToKML {
 		message = "Importing trees...";
 		System.out.println(message);
 
-		mccTree = (RootedTree) treeImporter.importNextTree();
-
-		// This is for timeLine calculations
-		treeRootHeight = mccTree.getHeight(mccTree.getRootNode());
-
 		// This is a general time span for all of the trees
-		SpreadDate mrsd = new SpreadDate(mrsdString);
-		timeLine = new TimeLine(mrsd.getTime()
-				- (treeRootHeight * DayInMillis * timescaler), mrsd.getTime(),
-				numberOfIntervals);
-
-		// This is a list of all trees
-		// List<Tree> forest = treesImporter.importTrees();
+		RootedTree mccTree = (RootedTree) treeImporter.importNextTree();
+		timeLine = GenerateTimeLine(mccTree);
+		startTime = timeLine.getStartTime();
+		endTime = timeLine.getEndTime();
 
 		// This is for slice times
 		sliceMap = new HashMap<Double, List<Coordinates>>();
-
-		// This is for mappings
-		sliceTimeMin = Double.MAX_VALUE;
-		sliceTimeMax = -Double.MAX_VALUE;
 
 		message = "Analyzing trees...";
 		System.out.println(message);
@@ -177,28 +166,47 @@ public class TimeSlicerToKML {
 			readTrees++;
 		}
 
-		message = "Analyzed " + (int) (readTrees - burnIn) + " trees";
-		System.out.println(message);
-
 		// Wait until all threads are finished
 		executor.shutdown();
 		while (!executor.isTerminated()) {
 		}
 
+		message = "Analyzed " + (int) (readTrees - burnIn) + " trees";
+		System.out.println(message);
+
 		// this is to generate kml output
-		KMLGenerator kmloutput = new KMLGenerator();
 		layers = new ArrayList<Layer>();
 
 		message = "Generating Polygons...";
 		System.out.println(message);
 
-		// Utils.printHashMap(sliceMap, false);
+		// Utils.printHashMap(sliceMap, true);
 
-		Polygons();
+		// Polygons();
+
+		message = "Iterating through Map...";
+		System.out.println(message);
+		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
+		Set<Double> hostKeys = sliceMap.keySet();
+		Iterator<Double> iterator = hostKeys.iterator();
+		executor = Executors.newFixedThreadPool(NTHREDS);
+
+		polygonsStyleId = 1;
+		synchronized (iterator) {
+			while (iterator.hasNext()) {
+				 sliceTime = (Double) iterator.next();
+				executor.submit(new Polygons());
+//				polygonsStyleId++;
+			}
+		}
+		executor.shutdown();
+		while (!executor.isTerminated()) {
+		}
 
 		message = "Writing to kml...";
 		System.out.println(message);
 
+		KMLGenerator kmloutput = new KMLGenerator();
 		kmloutput.generate(writer, timeLine, layers);
 
 		// stop timing
@@ -207,14 +215,25 @@ public class TimeSlicerToKML {
 
 	}// END: GenerateKML
 
+	private TimeLine GenerateTimeLine(RootedTree mccTree) throws ParseException {
+
+		// This is a general time span for all of the trees
+		double treeRootHeight = mccTree.getHeight(mccTree.getRootNode());
+		SpreadDate mrsd = new SpreadDate(mrsdString);
+		double startTime = mrsd.getTime()
+				- (treeRootHeight * DayInMillis * timescaler);
+		double endTime = mrsd.getTime();
+		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
+
+		return timeLine;
+	}
+
 	private class AnalyzeTree implements Runnable {
 
 		public void run() {
 
 			try {
 
-				double startTime = timeLine.getStartTime();
-				double endTime = timeLine.getEndTime();
 				double timeSpan = startTime - endTime;
 
 				for (Node node : currentTree.getNodes()) {
@@ -247,14 +266,6 @@ public class TimeSlicerToKML {
 									- (timeSpan / numberOfIntervals)
 									* ((double) i);
 
-							if (sliceTime < sliceTimeMin) {
-								sliceTimeMin = sliceTime;
-							}
-
-							if (sliceTime > sliceTimeMax) {
-								sliceTimeMax = sliceTime;
-							}
-
 							SpreadDate mrsd0 = new SpreadDate(mrsdString);
 							double parentTime = mrsd0
 									.minus((int) (parentHeight * timescaler));
@@ -267,7 +278,6 @@ public class TimeSlicerToKML {
 									parentLocation, sliceTime, nodeTime,
 									parentTime, currentTree, rate, trueNoise);
 
-							// TODO: improve that
 							if (parentTime < sliceTime && sliceTime <= nodeTime) {
 
 								if (sliceMap.containsKey(sliceTime)) {
@@ -276,17 +286,16 @@ public class TimeSlicerToKML {
 											new Coordinates(parentLongitude,
 													parentLatitude, 0.0));
 
-									sliceMap
-											.get(sliceTime)
-											.add(
-													new Coordinates(
-															Double
-																	.valueOf(imputedLocation[1]
-																			.toString()),
-															Double
-																	.valueOf(imputedLocation[0]
-																			.toString()),
-															0.0));
+									sliceMap.get(sliceTime).add(
+											new Coordinates(
+
+											Double.valueOf(imputedLocation[1]
+													.toString()),
+
+											Double.valueOf(imputedLocation[0]
+													.toString()),
+
+											0.0));
 
 									sliceMap.get(sliceTime).add(
 											new Coordinates(longitude,
@@ -298,11 +307,13 @@ public class TimeSlicerToKML {
 
 									coords.add(new Coordinates(parentLongitude,
 											parentLatitude, 0.0));
+
 									coords.add(new Coordinates(Double
 											.valueOf(imputedLocation[1]
 													.toString()), Double
 											.valueOf(imputedLocation[0]
 													.toString()), 0.0));
+
 									coords.add(new Coordinates(longitude,
 											latitude, 0.0));
 
@@ -316,6 +327,10 @@ public class TimeSlicerToKML {
 
 			} catch (ParseException e) {
 				e.printStackTrace();
+
+			} catch (ConcurrentModificationException e) {
+
+				run();
 			}
 
 		}// END: run
@@ -393,111 +408,152 @@ public class TimeSlicerToKML {
 	// ////////////////
 	// ---POLYGONS---//
 	// ////////////////
-	private void Polygons() {
+	private class Polygons implements Runnable {
 
-		try {
+		public void run() {
 
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd G",
-					Locale.US);
+//			Double sliceTime = (Double) iterator.next();
+			Layer polygonsLayer = new Layer("Time_Slice_"
+					+ formatter.format(sliceTime), null);
 
-			Set<Double> hostKeys = sliceMap.keySet();
-			Iterator<Double> iterator = hostKeys.iterator();
+			/**
+			 * Color and Opacity mapping
+			 * */
+			int red = 55;
+			int green = (int) Utils.map(sliceTime, startTime, endTime, 255, 0);
+			int blue = 0;
+			int alpha = (int) Utils
+					.map(sliceTime, startTime, endTime, 100, 255);
 
-			int polygonsStyleId = 1;
+			Color col = new Color(red, green, blue, alpha);
+			Style polygonsStyle = new Style(col, 0);
+			polygonsStyle.setId("polygon_style" + polygonsStyleId);
 
-			while (iterator.hasNext()) {
+			List<Coordinates> list = sliceMap.get(sliceTime);
 
-				message = "Iterating through Map, key " + polygonsStyleId
-						+ "...";
-				System.out.println(message);
+			double[] x = new double[list.size()];
+			double[] y = new double[list.size()];
 
-				Double sliceTime = (Double) iterator.next();
-				Layer polygonsLayer = new Layer("Time_Slice_"
-						+ formatter.format(sliceTime), null);
-				/**
-				 * Color and Opacity mapping
-				 * */
-				int red = 55;
-				int green = (int) Utils.map(sliceTime, sliceTimeMin,
-						sliceTimeMax, 255, 0);
-				int blue = 0;
-				int alpha = (int) Utils.map(sliceTime, sliceTimeMin,
-						sliceTimeMax, 100, 255);
+			for (int i = 0; i < list.size(); i++) {
 
-				Color col = new Color(red, green, blue, alpha);
-				Style polygonsStyle = new Style(col, 0);
-				polygonsStyle.setId("polygon_style" + polygonsStyleId);
-
-				// TODO: clean this!
-				List<Coordinates> list = sliceMap.get(sliceTime);
-
-				double[] x = new double[list.size()];
-				double[] y = new double[list.size()];
-
-				for (int i = 0; i < list.size(); i++) {
+				if (list.get(i) != null) {// TODO NullPointerException
 
 					x[i] = list.get(i).getLatitude();
 					y[i] = list.get(i).getLongitude();
 
 				}
+			}
 
-				ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
-				ContourPath[] paths = contourMaker.getContourPaths(0.8);
+			ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
+			ContourPath[] paths = contourMaker.getContourPaths(0.8);
 
-				int pathCounter = 1;
-				for (ContourPath path : paths) {
+			int pathCounter = 1;
+			for (ContourPath path : paths) {
 
-					double[] latitude = path.getAllX();
-					double[] longitude = path.getAllY();
-					List<Coordinates> coords = new ArrayList<Coordinates>();
+				double[] latitude = path.getAllX();
+				double[] longitude = path.getAllY();
+				List<Coordinates> coords = new ArrayList<Coordinates>();
 
-					for (int i = 0; i < latitude.length; i++) {
+				for (int i = 0; i < latitude.length; i++) {
 
-						coords.add(new Coordinates(longitude[i], latitude[i],
-								0.0));
-					}
+					coords.add(new Coordinates(longitude[i], latitude[i], 0.0));
+				}
 
-					polygonsLayer.addItem(new Polygon("HPDRegion_"
-							+ pathCounter, // name
-							coords, // List<Coordinates>
-							polygonsStyle, // Style style
-							sliceTime, // double startime
-							0.0 // double duration
-							));
+				polygonsLayer.addItem(new Polygon("HPDRegion_" + pathCounter, // name
+						coords, // List<Coordinates>
+						polygonsStyle, // Style style
+						sliceTime, // double startime
+						0.0 // double duration
+						));
 
-					pathCounter++;
+				pathCounter++;
 
-				}// END: paths loop
+			}// END: paths loop
 
-				polygonsStyleId++;
-				layers.add(polygonsLayer);
-
-				sliceMap.put(sliceTime, null);
-
-			}// END: sliceTime loop
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
+			layers.add(polygonsLayer);
+			 polygonsStyleId++;
 		}
-	}// END: Polygons
+	}
 
-	// private void DiskWritePolygons() throws FileNotFoundException {
-	//
-	// Set<Double> hostKeys = sliceMap.keySet();
-	// Iterator<Double> iterator = hostKeys.iterator();
-	//
-	// PrintWriter pri = new PrintWriter("out");
-	//
-	// while (iterator.hasNext()) {
-	//
-	// Double sliceTime = (Double) iterator.next();
-	// pri.println(sliceTime);
-	//
-	// List<Coordinates> list = sliceMap.get(sliceTime);
-	//
-	// }
-	// }// END: DiskWritePolygons
+	private void Polygons() {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd G",
+				Locale.US);
+
+		Set<Double> hostKeys = sliceMap.keySet();
+		Iterator<Double> iterator = hostKeys.iterator();
+
+		int polygonsStyleId = 1;
+
+		while (iterator.hasNext()) {
+
+			message = "Iterating through Map, key " + polygonsStyleId + "...";
+			System.out.println(message);
+
+			Double sliceTime = (Double) iterator.next();
+			Layer polygonsLayer = new Layer("Time_Slice_"
+					+ formatter.format(sliceTime), null);
+			/**
+			 * Color and Opacity mapping
+			 * */
+			int red = 55;
+			int green = (int) Utils.map(sliceTime, startTime, endTime, 255, 0);
+			int blue = 0;
+			int alpha = (int) Utils
+					.map(sliceTime, startTime, endTime, 100, 255);
+
+			Color col = new Color(red, green, blue, alpha);
+			Style polygonsStyle = new Style(col, 0);
+			polygonsStyle.setId("polygon_style" + polygonsStyleId);
+
+			List<Coordinates> list = sliceMap.get(sliceTime);
+
+			double[] x = new double[list.size()];
+			double[] y = new double[list.size()];
+
+			for (int i = 0; i < list.size(); i++) {
+
+				if (list.get(i) != null) {// TODO NullPointerException
+
+					x[i] = list.get(i).getLatitude();
+					y[i] = list.get(i).getLongitude();
+
+				}
+			}
+
+			ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
+			ContourPath[] paths = contourMaker.getContourPaths(0.8);
+
+			int pathCounter = 1;
+			for (ContourPath path : paths) {
+
+				double[] latitude = path.getAllX();
+				double[] longitude = path.getAllY();
+				List<Coordinates> coords = new ArrayList<Coordinates>();
+
+				for (int i = 0; i < latitude.length; i++) {
+
+					coords.add(new Coordinates(longitude[i], latitude[i], 0.0));
+				}
+
+				polygonsLayer.addItem(new Polygon("HPDRegion_" + pathCounter, // name
+						coords, // List<Coordinates>
+						polygonsStyle, // Style style
+						sliceTime, // double startime
+						0.0 // double duration
+						));
+
+				pathCounter++;
+
+			}// END: paths loop
+
+			polygonsStyleId++;
+			layers.add(polygonsLayer);
+
+			// sliceMap.put(sliceTime, null);
+
+		}// END: sliceTime loop
+
+	}// END: Polygons
 
 }// END: TimeSlicer class
