@@ -165,6 +165,7 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	private void drawMapBackground() {
 
+		// World map in Equirectangular projection
 		mapImage = loadImage(LoadMapBackgroundInEclipse());
 		// mapImage = loadImage(LoadMapBackgroundFromJar());
 		image(mapImage, 0, 0, width, height);
@@ -180,7 +181,7 @@ public class TimeSlicerToProcessing extends PApplet {
 			sliceTime = (Double) iterator.next();
 			drawPolygon(sliceTime);
 		}
-	}
+	}//END: drawPolygons
 
 	private void drawPolygon(Double sliceTime) {
 
@@ -250,7 +251,7 @@ public class TimeSlicerToProcessing extends PApplet {
 
 		}// END: paths loop
 
-	}// END: drawPolygons()
+	}// END: drawPolygon()
 	
 	private void drawBranches() {
 
