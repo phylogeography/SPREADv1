@@ -79,7 +79,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 		smooth();
 		drawMapBackground();
 		drawPolygons();
-		DrawBranches();
+		drawBranches();
 
 	}// END:draw
 
@@ -95,7 +95,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	// ////////////////
 	// ---BRANCHES---//
 	// ////////////////
-	private void DrawBranches() {
+	private void drawBranches() {
 
 		strokeWeight(2);
 
