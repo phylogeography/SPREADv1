@@ -21,7 +21,7 @@ public class Main {
 
 			);
 			
-			timeSlicerToKML.setBurnIn(500); // 4990
+			timeSlicerToKML.setBurnIn(4990); // 4990
 
 			timeSlicerToKML.setLocationAttName("location");
 

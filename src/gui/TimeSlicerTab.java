@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import templates.TimeSlicerToKML;
+import templates.TimeSlicerToProcessing;
 
 @SuppressWarnings("serial")
 public class TimeSlicerTab extends JPanel {
@@ -44,7 +45,7 @@ public class TimeSlicerTab extends JPanel {
 	private String treesFilename = null;
 
 	// Text fields
-	private JTextField burnInParser = new JTextField("1000", 10);
+	private JTextField burnInParser = new JTextField("4990", 10);
 	private JTextField locationAttNameParser = new JTextField("location", 10);
 	private JTextField rateAttNameParser = new JTextField("rate", 10);
 	private JTextField precisionAttNameParser = new JTextField("precision", 10);
@@ -74,7 +75,7 @@ public class TimeSlicerTab extends JPanel {
 	// Processing pane
 	private JPanel rightPanel;
 
-	// private TimeSlicerToProcessing timeSlicerToProcessing;
+	private TimeSlicerToProcessing timeSlicerToProcessing;
 
 	public TimeSlicerTab() {
 
@@ -177,7 +178,7 @@ public class TimeSlicerTab extends JPanel {
 		/**
 		 * Processing pane
 		 * */
-		// timeSlicerToProcessing = new TimeSlicerToProcessing();
+		timeSlicerToProcessing = new TimeSlicerToProcessing();
 		Dimension rightPanelDimension = new Dimension(2048, 1025);
 		rightPanel = new JPanel();
 		rightPanel.setSize(rightPanelDimension);
@@ -187,7 +188,7 @@ public class TimeSlicerTab extends JPanel {
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
 		rightPanel.setBorder(new TitledBorder(""));
 		rightPanel.setBackground(new Color(255, 255, 255));
-		// rightPanel.add(timeSlicerToProcessing);
+		rightPanel.add(timeSlicerToProcessing);
 		add(rightPanel);
 
 	}
@@ -281,7 +282,7 @@ public class TimeSlicerTab extends JPanel {
 			 * 
 			 * missing/wrong mrsd date
 			 * */
-			
+
 			catch (OutOfMemoryError e00) {
 				textArea.setText("Out of memory error!");
 			}
@@ -311,29 +312,64 @@ public class TimeSlicerTab extends JPanel {
 	private class ListenGenerateProcessing implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
+			try {
+
+				String mrsdString = mrsdStringParser.getText() + " "
+						+ (eraParser.getSelectedIndex() == 0 ? "AD" : "BC");
+
+				timeSlicerToProcessing.setMccTreePath(mccTreeFilename);
+
+				timeSlicerToProcessing.setTreesPath(treesFilename);
+
+				timeSlicerToProcessing.setBurnIn(Integer.valueOf(burnInParser
+						.getText()));
+
+				timeSlicerToProcessing.setLocationAttName(locationAttNameParser
+						.getText());
+
+				timeSlicerToProcessing.setRateAttName(rateAttNameParser
+						.getText());
+
+				timeSlicerToProcessing
+						.setPrecisionAttName(precisionAttNameParser.getText());
+
+				timeSlicerToProcessing.setTrueNoise(trueNoiseParser
+						.isSelected());
+
+				timeSlicerToProcessing.setMrsdString(mrsdString);
+
+				timeSlicerToProcessing.setNumberOfIntervals(Integer
+						.valueOf(numberOfIntervalsParser.getText()));
+
+				timeSlicerToProcessing.init();
+
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
+
 		}// END: actionPerformed
 	}// END: class
 
 	private class ListenSaveProcessingPlot implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-			// try {
-			//
-			// JFileChooser chooser = new JFileChooser();
-			// // System.getProperty("user.dir")
-			// // chooser.setDialogTitle("");
-			//
-			// chooser.showSaveDialog(chooser);
-			// File file = chooser.getSelectedFile();
-			// String plotToSaveFilename = file.getAbsolutePath();
-			//
-			// // continuousTreeToProcessing.save(plotToSaveFilename);
-			//
-			// textArea.setText("Saved " + plotToSaveFilename);
-			//
-			// } catch (Exception e0) {
-			// textArea.setText("Could not save!");
-			// }
+			try {
+
+				JFileChooser chooser = new JFileChooser();
+				// System.getProperty("user.dir")
+				// chooser.setDialogTitle("");
+
+				chooser.showSaveDialog(chooser);
+				File file = chooser.getSelectedFile();
+				String plotToSaveFilename = file.getAbsolutePath();
+
+				timeSlicerToProcessing.save(plotToSaveFilename);
+
+				textArea.setText("Saved " + plotToSaveFilename);
+
+			} catch (Exception e0) {
+				textArea.setText("Could not save!");
+			}
 
 		}// END: actionPerformed
 	}// END: class

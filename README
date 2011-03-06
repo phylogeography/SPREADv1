@@ -49,7 +49,7 @@ ________________________________________________________________________________
   - the resulting map is then iterated through, and Coordinates are fed to the 
     contouring algorithm returning paths
   - resulting paths are used to create polygons and written to the kml file     
-  - concurrent version of Polygons is out of sync with sliceTimes
+  - concurrent version of Polygons is out of sync with sliceTimes and needs work
 
 
 
