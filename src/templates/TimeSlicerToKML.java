@@ -136,8 +136,7 @@ public class TimeSlicerToKML {
 		// start timing
 		time = -System.currentTimeMillis();
 
-		message = "Importing trees...";
-		System.out.println(message);
+		System.out.println("Importing trees...");
 
 		// This is a general time span for all of the trees
 		RootedTree tree = (RootedTree) treeImporter.importNextTree();
@@ -148,8 +147,7 @@ public class TimeSlicerToKML {
 		// This is for slice times
 		sliceMap = new HashMap<Double, List<Coordinates>>();
 
-		message = "Analyzing trees...";
-		System.out.println(message);
+		System.out.println("Analyzing trees...");
 
 		// Executor for threads
 		final int NTHREDS = Runtime.getRuntime().availableProcessors();
@@ -172,19 +170,17 @@ public class TimeSlicerToKML {
 		while (!executor.isTerminated()) {
 		}
 
-		message = "Analyzed " + (int) (readTrees - burnIn) + " trees";
-		System.out.println(message);
+		System.out.println("Analyzed " + (int) (readTrees - burnIn) + " trees");
 
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
 
-		message = "Generating Polygons...";
-		System.out.println(message);
+		System.out.println("Generating Polygons...");
 
 		// Utils.printHashMap(sliceMap, true);
 
-		message = "Iterating through Map...";
-		System.out.println(message);
+		System.out.println("Iterating through Map...");
+
 		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
 		Set<Double> hostKeys = sliceMap.keySet();
 		Iterator<Double> iterator = hostKeys.iterator();
@@ -204,8 +200,7 @@ public class TimeSlicerToKML {
 		while (!executor.isTerminated()) {
 		}
 
-		message = "Writing to kml...";
-		System.out.println(message);
+		System.out.println("Writing to kml...");
 
 		KMLGenerator kmloutput = new KMLGenerator();
 		kmloutput.generate(writer, timeLine, layers);
