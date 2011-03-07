@@ -216,13 +216,13 @@ public class KMLGenerator implements Generator {
 				// Controls how fast the lines should get to their end point (to
 				// be in sync with each other)
 				double speed = 0.1;
-				int d = sliceCount;
+				int j = sliceCount;
 
 				double a = -2 * maxAltitude
 						/ (Math.pow(sliceCount, 2) - sliceCount);
 				double b = 2 * maxAltitude / (sliceCount - 1);
 
-				for (int i = 0; i < sliceCount; i++, d--) {
+				for (int i = 0; i < sliceCount; i++, j--) {
 
 					double startAltitude = a * Math.pow((double) i, 2) + b
 							* (double) i;
@@ -236,7 +236,7 @@ public class KMLGenerator implements Generator {
 									endAltitude),// endCoordinates
 							// TODO improve this timing
 							startTime - (lineSpan / sliceCount)
-									* ((double) d * speed),// startTime
+									* ((double) j * speed),// startTime
 							duration,// duration
 							line.getStartStyle()// Style
 					);
