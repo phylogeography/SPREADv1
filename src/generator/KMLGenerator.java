@@ -222,7 +222,7 @@ public class KMLGenerator implements Generator {
 						/ (Math.pow(sliceCount, 2) - sliceCount);
 				double b = 2 * maxAltitude / (sliceCount - 1);
 
-				for (int i = 0; i < sliceCount; i++) {
+				for (int i = 0; i < sliceCount; i++, d--) {
 
 					double startAltitude = a * Math.pow((double) i, 2) + b
 							* (double) i;
@@ -242,7 +242,6 @@ public class KMLGenerator implements Generator {
 					);
 
 					folder.addFeature(lineSegment);
-					d--;
 
 				}
 
