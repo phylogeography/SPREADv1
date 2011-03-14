@@ -190,9 +190,10 @@ public class TimeSlicerToKML {
 		synchronized (iterator) {
 			while (iterator.hasNext()) {
 				sliceTime = (Double) iterator.next();
-				// TODO sync it with sliceTime to use concurent class
+				// TODO sync it with sliceTime to use concurency
 				// executor.submit(new Polygons());
-				Polygons(sliceTime);
+				Polygons polygons = new Polygons();
+				polygons.run();
 			}
 		}
 
@@ -467,71 +468,6 @@ public class TimeSlicerToKML {
 			polygonsStyleId++;
 
 		}// END: run
-	}// END: Polygons
-
-	// ////////////////
-	// ---POLYGONS---//
-	// ////////////////
-	private void Polygons(Double sliceTime) {
-
-		Layer polygonsLayer = new Layer("Time_Slice_"
-				+ formatter.format(sliceTime), null);
-
-		/**
-		 * Color and Opacity mapping
-		 * */
-		int red = 55;
-		int green = (int) Utils.map(sliceTime, startTime, endTime, 255, 0);
-		int blue = 0;
-		int alpha = (int) Utils.map(sliceTime, startTime, endTime, 100, 255);
-
-		Color col = new Color(red, green, blue, alpha);
-		Style polygonsStyle = new Style(col, 0);
-		polygonsStyle.setId("polygon_style" + polygonsStyleId);
-
-		List<Coordinates> list = sliceMap.get(sliceTime);
-
-		double[] x = new double[list.size()];
-		double[] y = new double[list.size()];
-
-		for (int i = 0; i < list.size(); i++) {
-
-			if (list.get(i) != null) {// TODO NullPointerException thrown
-
-				x[i] = list.get(i).getLatitude();
-				y[i] = list.get(i).getLongitude();
-
-			}
-		}
-
-		ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
-		ContourPath[] paths = contourMaker.getContourPaths(0.8);
-
-		int pathCounter = 1;
-		for (ContourPath path : paths) {
-
-			double[] latitude = path.getAllX();
-			double[] longitude = path.getAllY();
-			List<Coordinates> coords = new ArrayList<Coordinates>();
-
-			for (int i = 0; i < latitude.length; i++) {
-
-				coords.add(new Coordinates(longitude[i], latitude[i], 0.0));
-			}
-
-			polygonsLayer.addItem(new Polygon("HPDRegion_" + pathCounter, // name
-					coords, // List<Coordinates>
-					polygonsStyle, // Style style
-					sliceTime, // double startime
-					0.0 // double duration
-					));
-
-			pathCounter++;
-
-		}// END: paths loop
-
-		layers.add(polygonsLayer);
-		polygonsStyleId++;
 	}// END: Polygons
 
 }// END: TimeSlicer class
