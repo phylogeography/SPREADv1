@@ -21,6 +21,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
@@ -81,13 +82,9 @@ public class ContinuousModelTab extends JPanel {
 		/**
 		 * left tools pane
 		 * */
-		Dimension leftPanelDimension = new Dimension(230, 600);
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));// PAGE_AXIS
-		leftPanel.setSize(leftPanelDimension);
-		leftPanel.setMinimumSize(leftPanelDimension);
-		leftPanel.setMaximumSize(leftPanelDimension);
-		leftPanel.setPreferredSize(leftPanelDimension);
+		leftPanel.setPreferredSize(new Dimension(230, 600));
 
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -153,7 +150,11 @@ public class ContinuousModelTab extends JPanel {
 		textArea = new JTextArea(4, 20);
 		textArea.setEditable(true);
 		JScrollPane scrollPane = new JScrollPane(textArea);
-		scrollPane.setPreferredSize(new Dimension(200, 60));
+		scrollPane.setPreferredSize(new Dimension(200, 70));
+		scrollPane
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane
+				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		panel9.add(scrollPane, BorderLayout.CENTER);
 		leftPanel.add(panel9);
 
@@ -166,12 +167,8 @@ public class ContinuousModelTab extends JPanel {
 		 * Processing pane
 		 * */
 		continuousTreeToProcessing = new ContinuousTreeToProcessing();
-		Dimension rightPanelDimension = new Dimension(2048, 1025);
 		rightPanel = new JPanel();
-		rightPanel.setSize(rightPanelDimension);
-		rightPanel.setMinimumSize(rightPanelDimension);
-		rightPanel.setMaximumSize(rightPanelDimension);
-		rightPanel.setPreferredSize(rightPanelDimension);
+		rightPanel.setPreferredSize(new Dimension(2048, 1025));
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
 		rightPanel.setBorder(new TitledBorder(""));
 		rightPanel.setBackground(new Color(255, 255, 255));
@@ -186,15 +183,15 @@ public class ContinuousModelTab extends JPanel {
 			try {
 
 				JFileChooser chooser = new JFileChooser();
+				chooser.setDialogTitle("Loading tree file...");
 
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
 				treeFilename = file.getAbsolutePath();
-
-				textArea.setText("Opened " + treeFilename);
+				textArea.setText("Opened " + treeFilename + "\n");
 
 			} catch (Exception e1) {
-				textArea.setText("Could not Open!");
+				textArea.setText("Could not Open! \n");
 			}
 		}
 	}
@@ -241,11 +238,11 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToKML.GenerateKML();
 
 						textArea.setText("Finished in: "
-								+ continuousTreeToKML.time + " msec");
+								+ continuousTreeToKML.time + " msec \n");
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						textArea.setText("FUBAR");
+						textArea.setText("FUBAR \n");
 					}
 
 					return null;
@@ -282,11 +279,11 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToProcessing.setHPD(HPDParser.getText()
 								+ "%");
 						continuousTreeToProcessing.init();
-						textArea.setText("Done!");
+						textArea.setText("Done! \n");
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						textArea.setText("FUBAR");
+						textArea.setText("FUBAR \n");
 					}
 
 					return null;
@@ -309,19 +306,17 @@ public class ContinuousModelTab extends JPanel {
 			try {
 
 				JFileChooser chooser = new JFileChooser();
-				// System.getProperty("user.dir")
-				// chooser.setDialogTitle("");
+				chooser.setDialogTitle("Saving as png file...");
 
 				chooser.showSaveDialog(chooser);
 				File file = chooser.getSelectedFile();
 				String plotToSaveFilename = file.getAbsolutePath();
 
 				continuousTreeToProcessing.save(plotToSaveFilename);
-
-				textArea.setText("Saved " + plotToSaveFilename);
+				textArea.setText("Saved " + plotToSaveFilename + "\n");
 
 			} catch (Exception e0) {
-				textArea.setText("Could not save!");
+				textArea.setText("Could not save! \n");
 			}
 
 		}// END: actionPerformed
@@ -332,7 +327,7 @@ public class ContinuousModelTab extends JPanel {
 		if (imgURL != null) {
 			return new ImageIcon(imgURL);
 		} else {
-			textArea.setText("Couldn't find file: " + path);
+			textArea.setText("Couldn't find file: \n" + path + "\n");
 			return null;
 		}
 	}

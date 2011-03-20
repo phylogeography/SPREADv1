@@ -20,6 +20,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
@@ -82,13 +83,10 @@ public class DiscreteModelTab extends JPanel {
 		/**
 		 * left tools pane
 		 * */
-		Dimension leftPanelDimension = new Dimension(230, 600);// 300,600
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));// PAGE_AXIS
-		leftPanel.setSize(leftPanelDimension);
-		leftPanel.setMinimumSize(leftPanelDimension);
-		leftPanel.setMaximumSize(leftPanelDimension);
-		leftPanel.setPreferredSize(leftPanelDimension);
+
+		leftPanel.setPreferredSize(new Dimension(230, 600));
 
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -151,7 +149,11 @@ public class DiscreteModelTab extends JPanel {
 		textArea = new JTextArea(4, 20);
 		textArea.setEditable(true);
 		JScrollPane scrollPane = new JScrollPane(textArea);
-		scrollPane.setPreferredSize(new Dimension(200, 60));
+		scrollPane.setPreferredSize(new Dimension(200, 70));
+		scrollPane
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane
+				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		panel9.add(scrollPane, BorderLayout.CENTER);
 		leftPanel.add(panel9);
 
@@ -164,12 +166,8 @@ public class DiscreteModelTab extends JPanel {
 		 * Processing pane
 		 * */
 		discreteTreeToProcessing = new DiscreteTreeToProcessing();
-		Dimension rightPanelDimension = new Dimension(2048, 1025);
 		rightPanel = new JPanel();
-		rightPanel.setSize(rightPanelDimension);
-		rightPanel.setMinimumSize(rightPanelDimension);
-		rightPanel.setMaximumSize(rightPanelDimension);
-		rightPanel.setPreferredSize(rightPanelDimension);
+		rightPanel.setPreferredSize(new Dimension(2048, 1025));
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
 		rightPanel.setBorder(new TitledBorder(""));
 		rightPanel.setBackground(new Color(255, 255, 255));
@@ -180,17 +178,20 @@ public class DiscreteModelTab extends JPanel {
 
 	private class ListenOpenTree implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+
 			try {
+
 				JFileChooser chooser = new JFileChooser();
+				chooser.setDialogTitle("Loading tree file...");
 
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
 				treeFilename = file.getAbsolutePath();
 
-				textArea.setText("Opened " + treeFilename);
+				textArea.setText("Opened " + treeFilename + "\n");
 
 			} catch (Exception e1) {
-				textArea.setText("Could not Open!");
+				textArea.setText("Could not Open! \n");
 			}
 		}
 	}
@@ -201,14 +202,15 @@ public class DiscreteModelTab extends JPanel {
 			try {
 
 				JFileChooser chooser = new JFileChooser();
+				chooser.setDialogTitle("Loading locations file...");
+
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
 				locationsFilename = file.getAbsolutePath();
-				textArea.setText("Opened " + locationsFilename);
-			}
+				textArea.setText("Opened " + locationsFilename + "\n");
 
-			catch (Exception e1) {
-				textArea.setText("Could not Open!");
+			} catch (Exception e1) {
+				textArea.setText("Could not Open! \n");
 			}
 		}
 	}
@@ -252,7 +254,7 @@ public class DiscreteModelTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						textArea.setText("FUBAR");
+						textArea.setText("FUBAR \n");
 					}
 
 					return null;
@@ -291,7 +293,7 @@ public class DiscreteModelTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						textArea.setText("FUBAR");
+						textArea.setText("FUBAR \n");
 					}
 
 					return null;
@@ -314,19 +316,18 @@ public class DiscreteModelTab extends JPanel {
 			try {
 
 				JFileChooser chooser = new JFileChooser();
+				chooser.setDialogTitle("Saving as png file...");
 				// System.getProperty("user.dir")
-				// chooser.setDialogTitle("");
 
 				chooser.showSaveDialog(chooser);
 				File file = chooser.getSelectedFile();
 				String plotToSaveFilename = file.getAbsolutePath();
 
 				discreteTreeToProcessing.save(plotToSaveFilename);
-
-				textArea.setText("Saved " + plotToSaveFilename);
+				textArea.setText("Saved " + plotToSaveFilename + "\n");
 
 			} catch (Exception e0) {
-				textArea.setText("Could not save!");
+				textArea.setText("Could not save! \n");
 			}
 
 		}// END: actionPerformed
@@ -337,7 +338,7 @@ public class DiscreteModelTab extends JPanel {
 		if (imgURL != null) {
 			return new ImageIcon(imgURL);
 		} else {
-			textArea.setText("Couldn't find file: " + path);
+			textArea.setText("Couldn't find file: " + path + "\n");
 			return null;
 		}
 	}
