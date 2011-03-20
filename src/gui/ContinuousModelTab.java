@@ -1,10 +1,12 @@
 package gui;
 
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -62,15 +65,18 @@ public class ContinuousModelTab extends JPanel {
 	private JButton generateProcessing = new JButton("Plot", processingIcon);
 	private JButton saveProcessingPlot = new JButton("Save", saveIcon);
 
-	// Status Bar for tab
+	// Terminal window for tab
 	private JTextArea textArea;
 
-	// left tools pane
+	// Left tools pane
 	private JPanel leftPanel;
 
 	// Processing pane
 	private JPanel rightPanel;
 	private ContinuousTreeToProcessing continuousTreeToProcessing;
+	
+	// Progress bar
+	private JProgressBar progressBar = new JProgressBar();;
 
 	public ContinuousModelTab() {
 
@@ -138,6 +144,8 @@ public class ContinuousModelTab extends JPanel {
 		panel7.setBorder(new TitledBorder("Generate KML / Plot tree:"));
 		panel7.add(generateKml);
 		panel7.add(generateProcessing);
+		panel7.add(progressBar);
+		panel7.setPreferredSize(new Dimension(230, 80));
 		leftPanel.add(panel7);
 
 		JPanel panel8 = new JPanel();
@@ -172,9 +180,6 @@ public class ContinuousModelTab extends JPanel {
 		rightPanel.setBorder(new TitledBorder(""));
 		rightPanel.setBackground(new Color(255, 255, 255));
 		rightPanel.add(continuousTreeToProcessing);
-		// JScrollPane ProcessingScrollPane = new
-		// JScrollPane(continuousTreeToProcessing);
-		// rightPanel.add(ProcessingScrollPane, BorderLayout.CENTER);
 		add(rightPanel);
 
 	}
@@ -202,7 +207,10 @@ public class ContinuousModelTab extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 
 			try {
-
+				
+//				generateKml.setEnabled(false);
+//				progressBar.setIndeterminate(true);
+				
 				ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
 				String mrsdString = mrsdStringParser.getText() + " "
 						+ (eraParser.getSelectedIndex() == 0 ? "AD" : "BC");
@@ -217,6 +225,7 @@ public class ContinuousModelTab extends JPanel {
 				continuousTreeToKML.setKmlWriterPath(kmlPathParser.getText());
 				continuousTreeToKML.setTreePath(treeFilename);
 				continuousTreeToKML.GenerateKML();
+				
 				textArea.setText("Finished in: " + continuousTreeToKML.time
 						+ " msec");
 			}
