@@ -48,7 +48,8 @@ ________________________________________________________________________________
 * catch exceptions
   - Runtime exceptions for "attribute missing from node" is not caught
     and resulting error mesage not displayed in scrollable terminal
-* implement TimeSlicer template
+* maybe append text in terminal window instead of redrawing?
+* implemented TimeSlicer template
   - template is organized around HashMap, first trees are being analyzed and values 
     (List<Coordinates>) collected with keys (sliceTimes). 
   - if the HashMap already has a key the appropriate list is grown, otherwise new list 

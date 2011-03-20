@@ -48,7 +48,8 @@ public class HeapSort {
      * Sorts an array of indices to vector of comparable objects
      * into increasing order.
      */
-    public static void sort(AbstractList array, int[] indices) {
+    @SuppressWarnings("unchecked")
+	public static void sort(AbstractList array, int[] indices) {
 
         // ensures we are starting with valid indices
         for (int i = 0; i < indices.length; i++) {
@@ -99,7 +100,8 @@ public class HeapSort {
     /**
      * Sorts an array of comparable objects into increasing order.
      */
-    public static void sort(Comparable[] array) {
+    @SuppressWarnings("unchecked")
+	public static void sort(Comparable[] array) {
 
         Comparable temp;
         int j, n = array.length;
@@ -221,7 +223,8 @@ public class HeapSort {
     /**
      * test harness for heapsort algorithm
      */
-    public static void main(String[] args) {
+    @SuppressWarnings("unchecked")
+	public static void main(String[] args) {
 
         int testSize = 100;
 
@@ -282,7 +285,8 @@ public class HeapSort {
      * already in heap form and then puts array[lower] to
      * array[upper] in heap form.
      */
-    private static void adjust(AbstractList<Comparable> array, int[] indices, int lower, int upper) {
+    @SuppressWarnings("unchecked")
+	private static void adjust(AbstractList<Comparable> array, int[] indices, int lower, int upper) {
 
         int j, k;
         int temp;
@@ -310,7 +314,8 @@ public class HeapSort {
      * already in heap form and then puts array[lower] to
      * array[upper] in heap form.
      */
-    private static void adjust(AbstractList array, int lower, int upper) {
+    @SuppressWarnings("unchecked")
+	private static void adjust(AbstractList array, int lower, int upper) {
 
         int j, k;
         Object temp;
@@ -337,7 +342,8 @@ public class HeapSort {
      * already in heap form and then puts array[lower] to
      * array[upper] in heap form.
      */
-    private static void adjust(Comparable[] array, int lower, int upper) {
+    @SuppressWarnings("unchecked")
+	private static void adjust(Comparable[] array, int lower, int upper) {
 
         int j, k;
         Comparable temp;
@@ -364,7 +370,8 @@ public class HeapSort {
      * already in heap form and then puts array[lower] to
      * array[upper] in heap form.
      */
-    private static void adjust(Object[] array, Comparator c, int lower, int upper) {
+    @SuppressWarnings("unchecked")
+	private static void adjust(Object[] array, Comparator c, int lower, int upper) {
 
         int j, k;
         Object temp;
