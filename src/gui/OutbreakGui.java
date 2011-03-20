@@ -15,6 +15,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 public class OutbreakGui {
 
@@ -112,9 +113,15 @@ public class OutbreakGui {
 		frame.setVisible(true);
 	}
 
-	public static void main(String args[]) throws Exception {
-		OutbreakGui gui = new OutbreakGui();
-		gui.launchFrame();
+	public static void main(String args[]) {
+		// Schedule a job for the event-dispatching thread:
+		// creating and showing this application's GUI.
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				OutbreakGui gui = new OutbreakGui();
+				gui.launchFrame();
+			}
+		});
 	}
 
 	private ImageIcon CreateImageIcon(String path) {
