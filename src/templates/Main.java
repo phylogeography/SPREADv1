@@ -33,7 +33,7 @@ public class Main {
 			
 			timeSlicerToKML.setMrsdString("2006-12-31");
 
-			timeSlicerToKML.setNumberOfIntervals(10);
+			timeSlicerToKML.setNumberOfIntervals(100);
 
 			timeSlicerToKML.setKmlWriterPath("/home/filip/Pulpit/output.kml");
 
