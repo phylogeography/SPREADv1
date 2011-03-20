@@ -1,15 +1,11 @@
 package gui;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -25,9 +21,9 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
-import jebl.evolution.io.ImportException;
 import templates.ContinuousTreeToKML;
 import templates.ContinuousTreeToProcessing;
 
@@ -44,7 +40,7 @@ public class ContinuousModelTab extends JPanel {
 	private ImageIcon treeIcon = CreateImageIcon("/icons/tree.png");
 	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
 	private ImageIcon saveIcon = CreateImageIcon("/icons/save.png");
-	
+
 	// Strings for paths
 	private String treeFilename = null;
 
@@ -74,9 +70,9 @@ public class ContinuousModelTab extends JPanel {
 	// Processing pane
 	private JPanel rightPanel;
 	private ContinuousTreeToProcessing continuousTreeToProcessing;
-	
+
 	// Progress bar
-	private JProgressBar progressBar = new JProgressBar();;
+	private JProgressBar progressBar = new JProgressBar();
 
 	public ContinuousModelTab() {
 
@@ -142,10 +138,10 @@ public class ContinuousModelTab extends JPanel {
 
 		JPanel panel7 = new JPanel();
 		panel7.setBorder(new TitledBorder("Generate KML / Plot tree:"));
+		panel7.setPreferredSize(new Dimension(230, 80));
 		panel7.add(generateKml);
 		panel7.add(generateProcessing);
 		panel7.add(progressBar);
-		panel7.setPreferredSize(new Dimension(230, 80));
 		leftPanel.add(panel7);
 
 		JPanel panel8 = new JPanel();
@@ -206,91 +202,106 @@ public class ContinuousModelTab extends JPanel {
 	private class ListenGenerateKml implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-			try {
-				
-//				generateKml.setEnabled(false);
-//				progressBar.setIndeterminate(true);
-				
-				ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
-				String mrsdString = mrsdStringParser.getText() + " "
-						+ (eraParser.getSelectedIndex() == 0 ? "AD" : "BC");
-				continuousTreeToKML.setHPD(HPDParser.getText() + "%");
-				continuousTreeToKML.setCoordinatesName(coordinatesNameParser
-						.getText());
-				continuousTreeToKML.setMaxAltitudeMapping(Double
-						.valueOf(maxAltMappingParser.getText()));
-				continuousTreeToKML.setMrsdString(mrsdString);
-				continuousTreeToKML.setNumberOfIntervals(Integer
-						.valueOf(numberOfIntervalsParser.getText()));
-				continuousTreeToKML.setKmlWriterPath(kmlPathParser.getText());
-				continuousTreeToKML.setTreePath(treeFilename);
-				continuousTreeToKML.GenerateKML();
-				
-				textArea.setText("Finished in: " + continuousTreeToKML.time
-						+ " msec");
-			}
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-			/**
-			 * TODO: catch exception for (missing att from node):
-			 * 
-			 * missing/wrong coord attribute name
-			 * 
-			 * missing/wrong coord HPD name
-			 **/
+				// Executed in background thread
+				public Void doInBackground() {
 
-			/**
-			 * TODO: catch exception for (unparseable date):
-			 * 
-			 * missing/wrong mrsd date
-			 * */
+					try {
 
-			catch (NullPointerException e0) {
-				textArea.setText("Could not generate! Check if: \n"
-						+ "* tree file is loaded \n");
-			}
+						generateKml.setEnabled(false);
+						progressBar.setIndeterminate(true);
 
-			catch (RuntimeException e1) {
-				textArea.setText("Could not generate! Check if: \n"
-						+ "* proper nr of intervals is specified \n"
-						+ "* proper altitude maximum is specified \n");
-			}
+						ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
 
-			catch (FileNotFoundException e2) {
-				textArea.setText("File not found exception! Check if: \n"
-						+ "* proper kml file path is specified \n");
-			} catch (Exception e3) {
-				textArea.setText("FUBAR");
-			}
+						String mrsdString = mrsdStringParser.getText()
+								+ " "
+								+ (eraParser.getSelectedIndex() == 0 ? "AD"
+										: "BC");
 
-		}// END: actionPerformed
-	}// END: ListenGenerate class
+						continuousTreeToKML.setHPD(HPDParser.getText() + "%");
+
+						continuousTreeToKML
+								.setCoordinatesName(coordinatesNameParser
+										.getText());
+
+						continuousTreeToKML.setMaxAltitudeMapping(Double
+								.valueOf(maxAltMappingParser.getText()));
+
+						continuousTreeToKML.setMrsdString(mrsdString);
+
+						continuousTreeToKML.setNumberOfIntervals(Integer
+								.valueOf(numberOfIntervalsParser.getText()));
+
+						continuousTreeToKML.setKmlWriterPath(kmlPathParser
+								.getText());
+
+						continuousTreeToKML.setTreePath(treeFilename);
+
+						continuousTreeToKML.GenerateKML();
+
+						textArea.setText("Finished in: "
+								+ continuousTreeToKML.time + " msec");
+
+					} catch (Exception e) {
+						e.printStackTrace();
+						textArea.setText("FUBAR");
+					}
+
+					return null;
+				}// END: doInBackground()
+
+				// Executed in event dispatch thread
+				public void done() {
+					generateKml.setEnabled(true);
+					progressBar.setIndeterminate(false);
+				}
+			};
+
+			worker.execute();
+		}
+	}// END: ListenGenerateKml
 
 	private class ListenGenerateProcessing implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-			try {
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-				continuousTreeToProcessing.setTreePath(treeFilename);
-				continuousTreeToProcessing
-						.setCoordinatesName(coordinatesNameParser.getText());
-				continuousTreeToProcessing.setHPD(HPDParser.getText() + "%");
-				continuousTreeToProcessing.init();
+				// Executed in background thread
+				public Void doInBackground() {
 
-				// TODO: catch improper coordinate att name
-				// TODO: catch improper HPD specified
-			} catch (NullPointerException e0) {
-				textArea.setText("Could not plot! Check if: \n"
-						+ "* tree file is loaded \n");
+					try {
 
-			} catch (IOException e2) {
-				textArea.setText("FUBAR2");
+						generateProcessing.setEnabled(false);
+						progressBar.setIndeterminate(true);
 
-			} catch (ImportException e3) {
-				textArea.setText("FUBAR3");
-			}
+						continuousTreeToProcessing.setTreePath(treeFilename);
+						continuousTreeToProcessing
+								.setCoordinatesName(coordinatesNameParser
+										.getText());
+						continuousTreeToProcessing.setHPD(HPDParser.getText()
+								+ "%");
+						continuousTreeToProcessing.init();
+						textArea.setText("Done!");
 
-		}// END: actionPerformed
-	}// END: class
+					} catch (Exception e) {
+						e.printStackTrace();
+						textArea.setText("FUBAR");
+					}
+
+					return null;
+				}// END: doInBackground()
+
+				// Executed in event dispatch thread
+				public void done() {
+					generateProcessing.setEnabled(true);
+					progressBar.setIndeterminate(false);
+				}
+			};
+
+			worker.execute();
+		}
+	}// END: ListenGenerateProcessing
 
 	private class ListenSaveProcessingPlot implements ActionListener {
 		public void actionPerformed(ActionEvent e) {

@@ -45,18 +45,14 @@ ________________________________________________________________________________
 * improve GUI looks & feels
   - add indeterminate progress bar + progress messages in terminal 
     to all tabs
+   - set working path after opening first file
+   - set dialog titles
 * catch exceptions
   - Runtime exceptions for "attribute missing from node" is not caught
     and resulting error mesage not displayed in scrollable terminal
 * maybe append text in terminal window instead of redrawing?
-* implemented TimeSlicer template
-  - template is organized around HashMap, first trees are being analyzed and values 
-    (List<Coordinates>) collected with keys (sliceTimes). 
-  - if the HashMap already has a key the appropriate list is grown, otherwise new list 
-    is created and added to the collection
-  - the resulting map is then iterated through, and Coordinates are fed to the 
-    contouring algorithm returning paths
-  - resulting paths are used to create polygons and written to the kml file     
+* TimeSlicer template
+  - Processing button and the thread it starts are out of sync, progress bar doesn't show
   - concurrent version of Polygons is out of sync with sliceTimes and needs work
 
 

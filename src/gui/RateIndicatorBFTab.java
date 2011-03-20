@@ -6,16 +6,17 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
 import templates.RateIndicatorBFToKML;
@@ -30,7 +31,7 @@ public class RateIndicatorBFTab extends JPanel {
 	private ImageIcon locationsIcon = CreateImageIcon("/icons/locations.png");
 	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
 	private ImageIcon saveIcon = CreateImageIcon("/icons/save.png");
-	
+
 	// Strings for paths
 	private String logFilename = null;
 	private String locationsFilename = null;
@@ -59,6 +60,9 @@ public class RateIndicatorBFTab extends JPanel {
 	// Processing pane
 	private JPanel rightPanel;
 	private RateIndicatorBFToProcessing rateIndicatorBFToProcessing;
+
+	// Progress bar
+	private JProgressBar progressBar = new JProgressBar();
 
 	public RateIndicatorBFTab() {
 
@@ -118,8 +122,10 @@ public class RateIndicatorBFTab extends JPanel {
 
 		JPanel panel7 = new JPanel();
 		panel7.setBorder(new TitledBorder("Generate KML / Plot tree:"));
+		panel7.setPreferredSize(new Dimension(230, 80));
 		panel7.add(generateKml);
 		panel7.add(generateProcessing);
+		panel7.add(progressBar);
 		leftPanel.add(panel7);
 
 		JPanel panel8 = new JPanel();
@@ -199,54 +205,102 @@ public class RateIndicatorBFTab extends JPanel {
 
 	private class ListenGenerateKml implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			try {
 
-				RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-				rateIndicatorBFToKML.setLogFilePath(logFilename, Double
-						.parseDouble(burnInParser.getText()));
+				// Executed in background thread
+				public Void doInBackground() {
 
-				rateIndicatorBFToKML.setBfCutoff(Double.valueOf(bfCutoffParser
-						.getText()));
+					try {
 
-				rateIndicatorBFToKML.setLocationFilePath(locationsFilename);
+						generateKml.setEnabled(false);
+						progressBar.setIndeterminate(true);
 
-				rateIndicatorBFToKML.setMaxAltitudeMapping(Double
-						.valueOf(maxAltMappingParser.getText()));
+						RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 
-				rateIndicatorBFToKML.setNumberOfIntervals(Integer
-						.valueOf(numberOfIntervalsParser.getText()));
+						rateIndicatorBFToKML.setLogFilePath(logFilename, Double
+								.parseDouble(burnInParser.getText()));
 
-				rateIndicatorBFToKML.setKmlWriterPath(kmlPathParser.getText());
+						rateIndicatorBFToKML.setBfCutoff(Double
+								.valueOf(bfCutoffParser.getText()));
 
-				rateIndicatorBFToKML.GenerateKML();
+						rateIndicatorBFToKML
+								.setLocationFilePath(locationsFilename);
 
-				textArea.setText("Finished in: " + RateIndicatorBFToKML.time
-						+ " msec");
+						rateIndicatorBFToKML.setMaxAltitudeMapping(Double
+								.valueOf(maxAltMappingParser.getText()));
 
-			} catch (IOException e0) {
+						rateIndicatorBFToKML.setNumberOfIntervals(Integer
+								.valueOf(numberOfIntervalsParser.getText()));
 
-				textArea.setText("Could not generate!");
+						rateIndicatorBFToKML.setKmlWriterPath(kmlPathParser
+								.getText());
 
-			}
+						rateIndicatorBFToKML.GenerateKML();
 
-		}// END: actionPerformed
-	}// END: ListenGenerate class
+						textArea.setText("Finished in: "
+								+ RateIndicatorBFToKML.time + " msec");
+
+					} catch (Exception e) {
+						e.printStackTrace();
+						textArea.setText("FUBAR");
+					}
+
+					return null;
+				}// END: doInBackground()
+
+				// Executed in event dispatch thread
+				public void done() {
+					generateKml.setEnabled(true);
+					progressBar.setIndeterminate(false);
+				}
+			};
+			worker.execute();
+
+		}
+	}// END: ListenGenerateKml
 
 	private class ListenGenerateProcessing implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-			rateIndicatorBFToProcessing.setLogFilePath(logFilename, Double
-					.parseDouble(burnInParser.getText()));
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-			rateIndicatorBFToProcessing.setBfCutoff(Double
-					.valueOf(bfCutoffParser.getText()));
+				// Executed in background thread
+				public Void doInBackground() {
 
-			rateIndicatorBFToProcessing.setLocationFilePath(locationsFilename);
+					try {
 
-			rateIndicatorBFToProcessing.init();
+						generateProcessing.setEnabled(false);
+						progressBar.setIndeterminate(true);
 
-		}// END: actionPerformed
+						rateIndicatorBFToProcessing.setLogFilePath(logFilename,
+								Double.parseDouble(burnInParser.getText()));
+
+						rateIndicatorBFToProcessing.setBfCutoff(Double
+								.valueOf(bfCutoffParser.getText()));
+
+						rateIndicatorBFToProcessing
+								.setLocationFilePath(locationsFilename);
+
+						rateIndicatorBFToProcessing.init();
+
+					} catch (Exception e) {
+						e.printStackTrace();
+						textArea.setText("FUBAR");
+					}
+
+					return null;
+				}// END: doInBackground()
+
+				// Executed in event dispatch thread
+				public void done() {
+					generateProcessing.setEnabled(true);
+					progressBar.setIndeterminate(false);
+				}
+			};
+
+			worker.execute();
+		}
 	}// END: ListenGenerateProcessing
 
 	private class ListenSaveProcessingPlot implements ActionListener {

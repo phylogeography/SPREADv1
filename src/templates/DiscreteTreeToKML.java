@@ -5,11 +5,14 @@ import generator.KMLGenerator;
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import jebl.evolution.graphs.Node;
+import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
@@ -112,7 +115,8 @@ public class DiscreteTreeToKML {
 		data = new ReadLocations(path);
 	}
 
-	public void GenerateKML() {
+	public void GenerateKML() throws IOException, ImportException,
+	ParseException {
 
 		try {
 

@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -18,12 +16,13 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
-import jebl.evolution.io.ImportException;
 import templates.DiscreteTreeToKML;
 import templates.DiscreteTreeToProcessing;
 
@@ -41,7 +40,7 @@ public class DiscreteModelTab extends JPanel {
 	private ImageIcon locationsIcon = CreateImageIcon("/icons/locations.png");
 	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
 	private ImageIcon saveIcon = CreateImageIcon("/icons/save.png");
-	
+
 	// Strings for paths
 	private String treeFilename = null;
 	private String locationsFilename = null;
@@ -62,7 +61,7 @@ public class DiscreteModelTab extends JPanel {
 	private JButton openLocations = new JButton("Open", locationsIcon);
 	private JButton generateProcessing = new JButton("Plot", processingIcon);
 	private JButton saveProcessingPlot = new JButton("Save", saveIcon);
-	
+
 	// Status Bar for tab
 	private JTextArea textArea;
 
@@ -72,6 +71,9 @@ public class DiscreteModelTab extends JPanel {
 	// Processing pane
 	private JPanel rightPanel;
 	private DiscreteTreeToProcessing discreteTreeToProcessing;
+
+	// Progress bar
+	private JProgressBar progressBar = new JProgressBar();;
 
 	public DiscreteModelTab() {
 
@@ -93,7 +95,7 @@ public class DiscreteModelTab extends JPanel {
 		openLocations.addActionListener(new ListenOpenLocations());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
-		
+
 		JPanel panel0 = new JPanel();
 		panel0.setBorder(new TitledBorder("Load tree file:"));
 		panel0.add(openTree);
@@ -134,15 +136,17 @@ public class DiscreteModelTab extends JPanel {
 
 		JPanel panel7 = new JPanel();
 		panel7.setBorder(new TitledBorder("Generate KML / Plot tree:"));
+		panel7.setPreferredSize(new Dimension(230, 80));
 		panel7.add(generateKml);
 		panel7.add(generateProcessing);
+		panel7.add(progressBar);
 		leftPanel.add(panel7);
 
 		JPanel panel8 = new JPanel();
 		panel8.setBorder(new TitledBorder("Save plot:"));
 		panel8.add(saveProcessingPlot);
 		leftPanel.add(panel8);
-		
+
 		JPanel panel9 = new JPanel();
 		textArea = new JTextArea(4, 20);
 		textArea.setEditable(true);
@@ -170,8 +174,6 @@ public class DiscreteModelTab extends JPanel {
 		rightPanel.setBorder(new TitledBorder(""));
 		rightPanel.setBackground(new Color(255, 255, 255));
 		rightPanel.add(discreteTreeToProcessing);
-//		JScrollPane ProcessingScrollPane = new JScrollPane(continuousTreeToProcessing);
-//		rightPanel.add(ProcessingScrollPane, BorderLayout.CENTER);
 		add(rightPanel);
 
 	}
@@ -208,95 +210,104 @@ public class DiscreteModelTab extends JPanel {
 			catch (Exception e1) {
 				textArea.setText("Could not Open!");
 			}
-
 		}
 	}
 
 	private class ListenGenerateKml implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-			try {
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-				DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
-				String mrsdString = mrsdStringParser.getText() + " "
-						+ (eraParser.getSelectedIndex() == 0 ? "AD" : "BC");
+				// Executed in background thread
+				public Void doInBackground() {
 
-				discreteTreeToKML.setLocationFilePath(locationsFilename);
+					try {
 
-				discreteTreeToKML.setStateAttName(stateAttNameParser.getText());
+						generateKml.setEnabled(false);
+						progressBar.setIndeterminate(true);
 
-				discreteTreeToKML.setMaxAltitudeMapping(Double
-						.valueOf(maxAltMappingParser.getText()));
-				discreteTreeToKML.setMrsdString(mrsdString);
-				discreteTreeToKML.setNumberOfIntervals(Integer
-						.valueOf(numberOfIntervalsParser.getText()));
-				discreteTreeToKML.setKmlWriterPath(kmlPathParser.getText());
-				discreteTreeToKML.setTreePath(treeFilename);
-				discreteTreeToKML.GenerateKML();
-				textArea.setText("Finished in: " + discreteTreeToKML.time
-						+ " msec");
+						DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
+						String mrsdString = mrsdStringParser.getText()
+								+ " "
+								+ (eraParser.getSelectedIndex() == 0 ? "AD"
+										: "BC");
 
-				/**
-				 * TODO: catch exception for (missing att from node):
-				 * 
-				 * missing/wrong coord attribute name
-				 * 
-				 * missing/wrong coord HPD name
-				 **/
+						discreteTreeToKML
+								.setLocationFilePath(locationsFilename);
 
-				/**
-				 * TODO: catch exception for (unparseable date):
-				 * 
-				 * missing/wrong mrsd date
-				 * */
+						discreteTreeToKML.setStateAttName(stateAttNameParser
+								.getText());
 
-			} catch (NullPointerException e0) {
-				textArea.setText("Could not generate! Check if: \n"
-						+ "* tree file is loaded \n"
-						+ "* locations file is loaded \n");
-			}
+						discreteTreeToKML.setMaxAltitudeMapping(Double
+								.valueOf(maxAltMappingParser.getText()));
+						discreteTreeToKML.setMrsdString(mrsdString);
+						discreteTreeToKML.setNumberOfIntervals(Integer
+								.valueOf(numberOfIntervalsParser.getText()));
+						discreteTreeToKML.setKmlWriterPath(kmlPathParser
+								.getText());
+						discreteTreeToKML.setTreePath(treeFilename);
+						discreteTreeToKML.GenerateKML();
+						textArea.setText("Finished in: "
+								+ discreteTreeToKML.time + " msec");
 
-			catch (RuntimeException e1) {
-				textArea.setText("Could not generate! Check if: \n"
-						+ "* proper nr of intervals is specified \n"
-						+ "* proper altitude maximum is specified \n");
-			}
+					} catch (Exception e) {
+						e.printStackTrace();
+						textArea.setText("FUBAR");
+					}
 
-			catch (FileNotFoundException e2) {
-				textArea.setText("File not found exception! Check if: \n"
-						+ "* proper kml file path is specified \n");
-			}
+					return null;
+				}// END: doInBackground()
 
-		}// END: actionPerformed
-	}// END: ListenGenerate class
+				// Executed in event dispatch thread
+				public void done() {
+					generateKml.setEnabled(true);
+					progressBar.setIndeterminate(false);
+				}
+			};
+
+			worker.execute();
+		}
+	}// END: ListenGenerateKml
 
 	private class ListenGenerateProcessing implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-			try {
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-				discreteTreeToProcessing.setStateAttName(stateAttNameParser
-						.getText());
-				discreteTreeToProcessing.setLocationFilePath(locationsFilename);
-				discreteTreeToProcessing.setTreePath(treeFilename);
-				discreteTreeToProcessing.init();
+				// Executed in background thread
+				public Void doInBackground() {
 
-				// TODO: catch improper state att name
-			} catch (NullPointerException e0) {
-				textArea.setText("Could not plot! Check if: \n"
-						+ "* tree file is loaded \n"
-						+ "* locations file is loaded");
+					try {
 
-			} catch (IOException e1) {
-				textArea.setText("FUBAR1");
+						generateProcessing.setEnabled(false);
+						progressBar.setIndeterminate(true);
 
-			} catch (ImportException e2) {
-				textArea.setText("FUBAR2");
-			}
+						discreteTreeToProcessing
+								.setStateAttName(stateAttNameParser.getText());
+						discreteTreeToProcessing
+								.setLocationFilePath(locationsFilename);
+						discreteTreeToProcessing.setTreePath(treeFilename);
+						discreteTreeToProcessing.init();
 
-		}// END: actionPerformed
+					} catch (Exception e) {
+						e.printStackTrace();
+						textArea.setText("FUBAR");
+					}
+
+					return null;
+				}// END: doInBackground()
+
+				// Executed in event dispatch thread
+				public void done() {
+					generateProcessing.setEnabled(true);
+					progressBar.setIndeterminate(false);
+				}
+			};
+
+			worker.execute();
+		}
 	}// END: ListenGenerateProcessing
-	
+
 	private class ListenSaveProcessingPlot implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 

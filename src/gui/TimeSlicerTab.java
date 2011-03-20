@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -18,9 +17,11 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
 import templates.TimeSlicerToKML;
@@ -74,8 +75,10 @@ public class TimeSlicerTab extends JPanel {
 
 	// Processing pane
 	private JPanel rightPanel;
-
 	private TimeSlicerToProcessing timeSlicerToProcessing;
+
+	// Progress bar
+	private JProgressBar progressBar = new JProgressBar();;
 
 	public TimeSlicerTab() {
 
@@ -153,8 +156,10 @@ public class TimeSlicerTab extends JPanel {
 
 		JPanel panel10 = new JPanel();
 		panel10.setBorder(new TitledBorder("Generate KML / Plot tree:"));
+		panel10.setPreferredSize(new Dimension(230, 80));
 		panel10.add(generateKml);
 		panel10.add(generateProcessing);
+		panel10.add(progressBar);
 		leftPanel.add(panel10);
 
 		JPanel panel11 = new JPanel();
@@ -234,121 +239,139 @@ public class TimeSlicerTab extends JPanel {
 	private class ListenGenerateKml implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-			try {
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-				TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
-				String mrsdString = mrsdStringParser.getText() + " "
-						+ (eraParser.getSelectedIndex() == 0 ? "AD" : "BC");
+				// Executed in background thread
+				public Void doInBackground() {
 
-				timeSlicerToKML.setMccTreePath(mccTreeFilename);
+					try {
 
-				timeSlicerToKML.setTreesPath(treesFilename);
+						generateKml.setEnabled(false);
+						progressBar.setIndeterminate(true);
 
-				timeSlicerToKML.setBurnIn(Integer.valueOf(burnInParser
-						.getText()));
+						TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
+						String mrsdString = mrsdStringParser.getText()
+								+ " "
+								+ (eraParser.getSelectedIndex() == 0 ? "AD"
+										: "BC");
 
-				timeSlicerToKML.setLocationAttName(locationAttNameParser
-						.getText());
+						timeSlicerToKML.setMccTreePath(mccTreeFilename);
 
-				timeSlicerToKML.setRateAttName(rateAttNameParser.getText());
+						timeSlicerToKML.setTreesPath(treesFilename);
 
-				timeSlicerToKML.setPrecisionAttName(precisionAttNameParser
-						.getText());
+						timeSlicerToKML.setBurnIn(Integer.valueOf(burnInParser
+								.getText()));
 
-				timeSlicerToKML.setTrueNoise(trueNoiseParser.isSelected());
+						timeSlicerToKML
+								.setLocationAttName(locationAttNameParser
+										.getText());
 
-				timeSlicerToKML.setMrsdString(mrsdString);
+						timeSlicerToKML.setRateAttName(rateAttNameParser
+								.getText());
 
-				timeSlicerToKML.setNumberOfIntervals(Integer
-						.valueOf(numberOfIntervalsParser.getText()));
+						timeSlicerToKML
+								.setPrecisionAttName(precisionAttNameParser
+										.getText());
 
-				timeSlicerToKML.setKmlWriterPath(kmlPathParser.getText());
+						timeSlicerToKML.setTrueNoise(trueNoiseParser
+								.isSelected());
 
-				timeSlicerToKML.GenerateKML();
+						timeSlicerToKML.setMrsdString(mrsdString);
 
-				textArea.setText("Finished in: " + timeSlicerToKML.time
-						+ " msec");
-			}
+						timeSlicerToKML.setNumberOfIntervals(Integer
+								.valueOf(numberOfIntervalsParser.getText()));
 
-			/**
-			 * TODO: catch exception for:
-			 * 
-			 * missing/wrong attribute names
-			 * 
-			 **/
+						timeSlicerToKML.setKmlWriterPath(kmlPathParser
+								.getText());
 
-			/**
-			 * TODO: catch exception for (unparseable date):
-			 * 
-			 * missing/wrong mrsd date
-			 * */
+						timeSlicerToKML.GenerateKML();
 
-			catch (OutOfMemoryError e00) {
-				textArea.setText("Out of memory error!");
-			}
+						textArea.setText("Finished in: " + timeSlicerToKML.time
+								+ " msec");
 
-			catch (NullPointerException e0) {
-				textArea.setText("Could not generate! Check if: \n"
-						+ "* tree file is loaded \n");
-			}
+					} catch (Exception e) {
+						e.printStackTrace();
+						textArea.setText("FUBAR");
+					}
 
-			catch (RuntimeException e1) {
-				textArea.setText("Could not generate! Check if: \n"
-						+ "* proper nr of intervals is specified \n");
-			}
+					return null;
+				}// END: doInBackground()
 
-			catch (FileNotFoundException e2) {
-				textArea.setText("File not found exception! Check if: \n"
-						+ "* proper kml file path is specified \n");
-			}
+				// Executed in event dispatch thread
+				public void done() {
+					generateKml.setEnabled(true);
+					progressBar.setIndeterminate(false);
+				}
+			};
+			worker.execute();
 
-			catch (Exception e3) {
-				textArea.setText("FUBAR");
-			}
-
-		}// END: actionPerformed
-	}// END: ListenGenerate class
+		}
+	}// END: ListenGenerateKml
 
 	private class ListenGenerateProcessing implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-			try {
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-				String mrsdString = mrsdStringParser.getText() + " "
-						+ (eraParser.getSelectedIndex() == 0 ? "AD" : "BC");
+				// Executed in background thread
+				public Void doInBackground() {
 
-				timeSlicerToProcessing.setMccTreePath(mccTreeFilename);
+					try {
 
-				timeSlicerToProcessing.setTreesPath(treesFilename);
+						generateProcessing.setEnabled(false);
+						progressBar.setIndeterminate(true);
 
-				timeSlicerToProcessing.setBurnIn(Integer.valueOf(burnInParser
-						.getText()));
+						String mrsdString = mrsdStringParser.getText()
+								+ " "
+								+ (eraParser.getSelectedIndex() == 0 ? "AD"
+										: "BC");
 
-				timeSlicerToProcessing.setLocationAttName(locationAttNameParser
-						.getText());
+						timeSlicerToProcessing.setMccTreePath(mccTreeFilename);
 
-				timeSlicerToProcessing.setRateAttName(rateAttNameParser
-						.getText());
+						timeSlicerToProcessing.setTreesPath(treesFilename);
 
-				timeSlicerToProcessing
-						.setPrecisionAttName(precisionAttNameParser.getText());
+						timeSlicerToProcessing.setBurnIn(Integer
+								.valueOf(burnInParser.getText()));
 
-				timeSlicerToProcessing.setTrueNoise(trueNoiseParser
-						.isSelected());
+						timeSlicerToProcessing
+								.setLocationAttName(locationAttNameParser
+										.getText());
 
-				timeSlicerToProcessing.setMrsdString(mrsdString);
+						timeSlicerToProcessing.setRateAttName(rateAttNameParser
+								.getText());
 
-				timeSlicerToProcessing.setNumberOfIntervals(Integer
-						.valueOf(numberOfIntervalsParser.getText()));
+						timeSlicerToProcessing
+								.setPrecisionAttName(precisionAttNameParser
+										.getText());
 
-				timeSlicerToProcessing.init();
+						timeSlicerToProcessing.setTrueNoise(trueNoiseParser
+								.isSelected());
 
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			}
+						timeSlicerToProcessing.setMrsdString(mrsdString);
 
-		}// END: actionPerformed
-	}// END: class
+						timeSlicerToProcessing.setNumberOfIntervals(Integer
+								.valueOf(numberOfIntervalsParser.getText()));
+
+						timeSlicerToProcessing.init();
+
+					} catch (Exception e) {
+						e.printStackTrace();
+						textArea.setText("FUBAR");
+					}
+
+					return null;
+				}// END: doInBackground()
+
+				// Executed in event dispatch thread
+				public void done() {
+					generateProcessing.setEnabled(true);
+					progressBar.setIndeterminate(false);
+				}
+			};
+			worker.execute();
+
+		}
+	}// END: ListenGenerateProcessing
 
 	private class ListenSaveProcessingPlot implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
