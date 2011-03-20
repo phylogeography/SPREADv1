@@ -189,8 +189,8 @@ public class TimeSlicerToProcessing extends PApplet {
 		 * Color and Opacity mapping
 		 * */
 		int red = 55;
-		int green = (int) Utils.map(sliceTime, startTime, endTime, 255, 0);
-		int blue = 0;
+		int green = 0;
+		int blue = (int) Utils.map(sliceTime, startTime, endTime, 255, 0);
 		int alpha = (int) Utils.map(sliceTime, startTime, endTime, 100, 255);
 
 		stroke(red, green, blue, alpha);
