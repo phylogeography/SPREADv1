@@ -43,17 +43,13 @@ ________________________________________________________________________________
                               TODO
 
 * improve GUI looks & feels
-  - add indeterminate progress bar + progress messages in terminal 
-    to all tabs
    - set working path after opening first file
-   - set dialog titles
-* catch exceptions
-  - Runtime exceptions for "attribute missing from node" is not caught
-    and resulting error mesage not displayed in scrollable terminal
-* maybe append text in terminal window instead of redrawing?
+   - allow for saving panel settings
 * TimeSlicer template
-  - Processing button and the thread it starts are out of sync, progress bar doesn't show
-  - concurrent version of Polygons is out of sync with sliceTimes and needs work
+  - Processing button and the thread it starts are out of sync, progress bar 
+    doesn't show real output
+  - concurrent version of Polygons is out of sync with sliceTimes and needs work,
+    for now we run it sequentially
 
 
 
