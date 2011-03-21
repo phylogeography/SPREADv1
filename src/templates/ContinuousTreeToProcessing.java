@@ -192,8 +192,8 @@ public class ContinuousTreeToProcessing extends PApplet {
 							vertex(XEND, YEND);
 
 						}// END: coordinates loop
-						endShape(CLOSE);
 
+						endShape(CLOSE);
 					}// END: modality loop
 				}
 			}
