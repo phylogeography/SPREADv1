@@ -6,10 +6,13 @@ import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import jebl.evolution.io.ImportException;
 
 import structure.Coordinates;
 import structure.Layer;
@@ -65,7 +68,8 @@ public class RateIndicatorBFToKML {
 		writer = new PrintWriter(kmlpath);
 	}
 
-	public void GenerateKML() throws IOException {
+	public void GenerateKML() throws IOException, ImportException,
+	ParseException {
 
 		// start timing
 		time = -System.currentTimeMillis();
