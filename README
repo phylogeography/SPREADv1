@@ -45,11 +45,10 @@ ________________________________________________________________________________
 * improve GUI looks & feels
    - set working path after opening first file
    - allow for saving panel settings
+   - add "show more" buttons 
 * TimeSlicer template
-  - Processing button and the thread it starts are out of sync, progress bar 
-    doesn't show real output
-  - concurrent version of Polygons is out of sync with sliceTimes and needs work,
-    for now we run it sequentially
+  - concurrent version of Polygons is out of sync with sliceTimes and 
+    needs work, for now we run it sequentially
 
 
 
