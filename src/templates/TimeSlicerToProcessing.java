@@ -31,6 +31,7 @@ import contouring.ContourWithSynder;
 @SuppressWarnings("serial")
 public class TimeSlicerToProcessing extends PApplet {
 
+	private boolean jar = false;
 	private final int imageWidth = 2048;
 	private final int imageHeight = 1025;
 	private final int DayInMillis = 86400000;
@@ -127,30 +128,16 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	public void setup() {
 
-//		try {
+		minX = -180;
+		maxX = 180;
 
-			minX = -180;
-			maxX = 180;
+		minY = -80;
+		maxY = 90;
 
-			minY = -80;
-			maxY = 90;
+		width = imageWidth;
+		height = imageHeight;
 
-			width = imageWidth;
-			height = imageHeight;
-
-			size(width, height);
-
-//			AnalyzeTrees();
-
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//
-//		} catch (ImportException e) {
-//			e.printStackTrace();
-//
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
+		size(width, height);
 
 	}// END:setup
 
@@ -166,7 +153,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		mapImage = loadImage(LoadMapBackground(false));
+		mapImage = loadImage(LoadMapBackground(jar));
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapBackground
