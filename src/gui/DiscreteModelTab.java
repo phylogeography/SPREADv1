@@ -28,37 +28,34 @@ import templates.DiscreteTreeToProcessing;
 public class DiscreteModelTab extends JPanel {
 
 	// Current date
-	private Calendar calendar = Calendar.getInstance();
-	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",
-			Locale.US);
+	private Calendar calendar;
+	private SimpleDateFormat formatter;
 
 	// Icons
-	private ImageIcon nuclearIcon = CreateImageIcon("/icons/nuclear.png");
-	private ImageIcon treeIcon = CreateImageIcon("/icons/tree.png");
-	private ImageIcon locationsIcon = CreateImageIcon("/icons/locations.png");
-	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
-	private ImageIcon saveIcon = CreateImageIcon("/icons/save.png");
+	private ImageIcon nuclearIcon;
+	private ImageIcon treeIcon;
+	private ImageIcon locationsIcon;
+	private ImageIcon processingIcon;
+	private ImageIcon saveIcon;
 
 	// Strings for paths
-	private String treeFilename = null;
-	private String locationsFilename = null;
+	private String treeFilename;
+	private String locationsFilename;
 
 	// Text fields
-	private JTextField stateAttNameParser = new JTextField("states", 5);
-	private JTextField mrsdStringParser = new JTextField(formatter
-			.format(calendar.getTime()), 8);
+	private JTextField stateAttNameParser;
+	private JTextField mrsdStringParser;
 	private JComboBox eraParser;
-	private JTextField numberOfIntervalsParser = new JTextField("100", 5);
-	private JTextField maxAltMappingParser = new JTextField("5000000", 10);
-	private JTextField kmlPathParser = new JTextField(
-			"/home/filip/Pulpit/output.kml", 15);
+	private JTextField numberOfIntervalsParser;
+	private JTextField maxAltMappingParser;
+	private JTextField kmlPathParser;
 
 	// Buttons for tab
-	private JButton generateKml = new JButton("Generate", nuclearIcon);
-	private JButton openTree = new JButton("Open", treeIcon);
-	private JButton openLocations = new JButton("Open", locationsIcon);
-	private JButton generateProcessing = new JButton("Plot", processingIcon);
-	private JButton saveProcessingPlot = new JButton("Save", saveIcon);
+	private JButton generateKml;
+	private JButton openTree;
+	private JButton openLocations;
+	private JButton generateProcessing;
+	private JButton saveProcessingPlot;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -68,18 +65,45 @@ public class DiscreteModelTab extends JPanel {
 	private DiscreteTreeToProcessing discreteTreeToProcessing;
 
 	// Progress bar
-	private JProgressBar progressBar = new JProgressBar();;
+	private JProgressBar progressBar;
 
 	public DiscreteModelTab() {
 
+		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+		calendar = Calendar.getInstance();
+		formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+		// Setup icons
+		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
+		treeIcon = CreateImageIcon("/icons/tree.png");
+		locationsIcon = CreateImageIcon("/icons/locations.png");
+		processingIcon = CreateImageIcon("/icons/processing.png");
+		saveIcon = CreateImageIcon("/icons/save.png");
+
+		// Setup text fields
+		stateAttNameParser = new JTextField("states", 5);
+		mrsdStringParser = new JTextField(formatter.format(calendar.getTime()),
+				8);
+		numberOfIntervalsParser = new JTextField("100", 5);
+		maxAltMappingParser = new JTextField("5000000", 10);
+		kmlPathParser = new JTextField("/home/filip/Pulpit/output.kml", 15);
+
+		// Setup buttons for tab
+		generateKml = new JButton("Generate", nuclearIcon);
+		openTree = new JButton("Open", treeIcon);
+		openLocations = new JButton("Open", locationsIcon);
+		generateProcessing = new JButton("Plot", processingIcon);
+		saveProcessingPlot = new JButton("Save", saveIcon);
+
+		// Setup progress bar
+		progressBar = new JProgressBar();
 
 		/**
 		 * left tools pane
 		 * */
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));// PAGE_AXIS
-
 		leftPanel.setPreferredSize(new Dimension(230, 610));
 
 		openTree.addActionListener(new ListenOpenTree());
