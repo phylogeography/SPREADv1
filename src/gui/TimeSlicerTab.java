@@ -64,7 +64,8 @@ public class TimeSlicerTab extends JPanel {
 
 	// left tools pane
 	private JPanel leftPanel;
-
+	private JPanel tmpPanel;
+	
 	// Processing pane
 	private JPanel rightPanel;
 	private TimeSlicerToProcessing timeSlicerToProcessing;
@@ -119,71 +120,71 @@ public class TimeSlicerTab extends JPanel {
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
 
-		JPanel panel0 = new JPanel();
-		panel0.setBorder(new TitledBorder("Load tree file:"));
-		panel0.add(openTree);
-		leftPanel.add(panel0);
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Load tree file:"));
+		tmpPanel.add(openTree);
+		leftPanel.add(tmpPanel);
 
-		JPanel panel1 = new JPanel();
-		panel1.setBorder(new TitledBorder("Load trees file:"));
-		panel1.add(openTrees);
-		leftPanel.add(panel1);
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Load trees file:"));
+		tmpPanel.add(openTrees);
+		leftPanel.add(tmpPanel);
 
-		JPanel panel2 = new JPanel();
-		panel2.setBorder(new TitledBorder("Specify burn-in:"));
-		panel2.add(burnInParser);
-		leftPanel.add(panel2);
-
-		JPanel panel3 = new JPanel();
-		panel3.setBorder(new TitledBorder("Location attribute name:"));
-		panel3.add(locationAttNameParser);
-		leftPanel.add(panel3);
-
-		JPanel panel4 = new JPanel();
-		panel4.setBorder(new TitledBorder("Rate attribute name:"));
-		panel4.add(rateAttNameParser);
-		leftPanel.add(panel4);
-
-		JPanel panel5 = new JPanel();
-		panel5.setBorder(new TitledBorder("Precision attribute name:"));
-		panel5.add(precisionAttNameParser);
-		leftPanel.add(panel5);
-
-		JPanel panel6 = new JPanel();
-		panel6.setBorder(new TitledBorder("Use true noise:"));
-		panel6.add(trueNoiseParser);
-		leftPanel.add(panel6);
-
-		JPanel panel7 = new JPanel();
-		panel7.setBorder(new TitledBorder("Most recent sampling date:"));
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
-		panel7.add(mrsdStringParser);
-		panel7.add(eraParser);
-		leftPanel.add(panel7);
+		tmpPanel.add(mrsdStringParser);
+		tmpPanel.add(eraParser);
+		leftPanel.add(tmpPanel);
 
-		JPanel panel8 = new JPanel();
-		panel8.setBorder(new TitledBorder("Number of intervals:"));
-		panel8.add(numberOfIntervalsParser);
-		leftPanel.add(panel8);
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
+		tmpPanel.add(burnInParser);
+		leftPanel.add(tmpPanel);
 
-		JPanel panel9 = new JPanel();
-		panel9.setBorder(new TitledBorder("KML name:"));
-		panel9.add(kmlPathParser);
-		leftPanel.add(panel9);
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Location attribute name:"));
+		tmpPanel.add(locationAttNameParser);
+		leftPanel.add(tmpPanel);
 
-		JPanel panel10 = new JPanel();
-		panel10.setBorder(new TitledBorder("Generate KML / Plot tree:"));
-		panel10.setPreferredSize(new Dimension(230, 90));
-		panel10.add(generateKml);
-		panel10.add(generateProcessing);
-		panel10.add(progressBar);
-		leftPanel.add(panel10);
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Rate attribute name:"));
+		tmpPanel.add(rateAttNameParser);
+		leftPanel.add(tmpPanel);
 
-		JPanel panel11 = new JPanel();
-		panel11.setBorder(new TitledBorder("Save plot:"));
-		panel11.add(saveProcessingPlot);
-		leftPanel.add(panel11);
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Precision attribute name:"));
+		tmpPanel.add(precisionAttNameParser);
+		leftPanel.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Use true noise:"));
+		tmpPanel.add(trueNoiseParser);
+		leftPanel.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
+		tmpPanel.add(numberOfIntervalsParser);
+		leftPanel.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("KML name:"));
+		tmpPanel.add(kmlPathParser);
+		leftPanel.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
+		tmpPanel.setPreferredSize(new Dimension(230, 100));
+		tmpPanel.add(generateKml);
+		tmpPanel.add(generateProcessing);
+		tmpPanel.add(progressBar);
+		leftPanel.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Save plot:"));
+		tmpPanel.add(saveProcessingPlot);
+		leftPanel.add(tmpPanel);
 
 		JPanel leftPanelContainer = new JPanel();
 		leftPanelContainer.setLayout(new BorderLayout());
