@@ -59,7 +59,7 @@ public class ContinuousModelTab extends JPanel {
 	// Left tools pane
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
-	
+
 	// Processing pane
 	private JPanel rightPanel;
 	private ContinuousTreeToProcessing continuousTreeToProcessing;
@@ -87,8 +87,7 @@ public class ContinuousModelTab extends JPanel {
 				8);
 		numberOfIntervalsParser = new JTextField("100", 5);
 		maxAltMappingParser = new JTextField("5000000", 5);
-		kmlPathParser = new JTextField(
-				"/home/filip/Pulpit/output.kml", 15);
+		kmlPathParser = new JTextField("/home/filip/Pulpit/output.kml", 15);
 
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
@@ -96,9 +95,9 @@ public class ContinuousModelTab extends JPanel {
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
 
-		//Setup progress bar
+		// Setup progress bar
 		progressBar = new JProgressBar();
-		
+
 		/**
 		 * left tools pane
 		 * */
@@ -123,7 +122,7 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel.add(mrsdStringParser);
 		tmpPanel.add(eraParser);
 		leftPanel.add(tmpPanel);
-		
+
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Coordinate attribute name:"));
 		tmpPanel.add(coordinatesNameParser);
@@ -190,8 +189,13 @@ public class ContinuousModelTab extends JPanel {
 
 			try {
 
+				String[] treeFiles = new String[] { "tre", "tree" };
+
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Loading tree file...");
+				chooser.setMultiSelectionEnabled(false);
+				chooser.addChoosableFileFilter(new SimpleFileFilter(treeFiles,
+						"Tree files (*.tree, *.tre)"));
 
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
