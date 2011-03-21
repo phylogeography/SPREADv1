@@ -45,6 +45,7 @@ public class OutbreakGui {
 	private DiscreteModelTab discreteModelTab;
 	private RateIndicatorBFTab rateIndicatorBFTab;
 	private TimeSlicerTab timeSlicerTab;
+	private TerminalTab terminalTab;
 
 	public OutbreakGui() {
 
@@ -82,25 +83,24 @@ public class OutbreakGui {
 		// add Discrete Model Tab
 		rateIndicatorBFTab = new RateIndicatorBFTab();
 		tabbedPane.add("Rate Indicator BF test", rateIndicatorBFTab);
-
+		
+		// add Terminal Tab
+		terminalTab = new TerminalTab();
+		tabbedPane.add("Terminal", terminalTab);
+		
 	}
 
 	private class ListenMenuHelp implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			String helpText = "TODO \n";
-			discreteModelTab.setText(helpText);
-			continuousModelTab.setText(helpText);
-			rateIndicatorBFTab.setText(helpText);
-			timeSlicerTab.setText(helpText);
+			terminalTab.setText(helpText);
+
 		}
 	}
 
 	private class ListenMenuClearTerminals implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			discreteModelTab.clearTerminal();
-			continuousModelTab.clearTerminal();
-			rateIndicatorBFTab.clearTerminal();
-			timeSlicerTab.clearTerminal();
+			terminalTab.clearTerminal();
 		}
 	}
 
