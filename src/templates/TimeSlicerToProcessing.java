@@ -127,7 +127,7 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	public void setup() {
 
-		try {
+//		try {
 
 			minX = -180;
 			maxX = 180;
@@ -140,17 +140,17 @@ public class TimeSlicerToProcessing extends PApplet {
 
 			size(width, height);
 
-			AnalyzeTrees();
+//			AnalyzeTrees();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-
-		} catch (ImportException e) {
-			e.printStackTrace();
-
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//
+//		} catch (ImportException e) {
+//			e.printStackTrace();
+//
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
 
 	}// END:setup
 
@@ -297,7 +297,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		}// END: nodes loop
 	}// END: DrawBranches
 
-	private void AnalyzeTrees() throws IOException, ImportException,
+	public void AnalyzeTrees() throws IOException, ImportException,
 			ParseException {
 
 		System.out.println("Importing trees...");
