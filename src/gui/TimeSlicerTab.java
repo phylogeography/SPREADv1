@@ -53,7 +53,7 @@ public class TimeSlicerTab extends JPanel {
 	private JComboBox eraParser;
 	private JTextField numberOfIntervalsParser = new JTextField("10", 5);
 	private JTextField kmlPathParser = new JTextField(
-			"/home/filip/Pulpit/output.kml", 17);
+			"/home/filip/Pulpit/output.kml", 15);
 
 	// Buttons for tab
 	private JButton generateKml = new JButton("Generate", nuclearIcon);
@@ -84,7 +84,7 @@ public class TimeSlicerTab extends JPanel {
 		 * */
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));// PAGE_AXIS
-		leftPanel.setPreferredSize(new Dimension(230, 800));
+		leftPanel.setPreferredSize(new Dimension(230, 810));
 
 		openTree.addActionListener(new ListenOpenTree());
 		openTrees.addActionListener(new ListenOpenTrees());
@@ -147,7 +147,7 @@ public class TimeSlicerTab extends JPanel {
 
 		JPanel panel10 = new JPanel();
 		panel10.setBorder(new TitledBorder("Generate KML / Plot tree:"));
-		panel10.setPreferredSize(new Dimension(230, 80));
+		panel10.setPreferredSize(new Dimension(230, 90));
 		panel10.add(generateKml);
 		panel10.add(generateProcessing);
 		panel10.add(progressBar);
@@ -264,9 +264,6 @@ public class TimeSlicerTab extends JPanel {
 								.getText());
 
 						timeSlicerToKML.GenerateKML();
-
-						System.out.println("Finished in: "
-								+ timeSlicerToKML.time + " msec \n");
 
 					} catch (Exception e) {
 						e.printStackTrace();
