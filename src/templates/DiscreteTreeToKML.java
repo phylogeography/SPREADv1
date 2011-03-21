@@ -118,7 +118,6 @@ public class DiscreteTreeToKML {
 	public void GenerateKML() throws IOException, ImportException,
 	ParseException {
 
-		try {
 
 			// start timing
 			time = -System.currentTimeMillis();
@@ -174,9 +173,6 @@ public class DiscreteTreeToKML {
 			// stop timing
 			time += System.currentTimeMillis();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}// END: GenerateKML
 
 	// //////////////
