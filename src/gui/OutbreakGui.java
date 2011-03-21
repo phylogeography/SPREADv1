@@ -55,40 +55,37 @@ public class OutbreakGui {
 		// Setup Look & Feel
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
-		
+
 		// Setup icons
 		quitIcon = CreateImageIcon("/icons/close.png");
 		helpIcon = CreateImageIcon("/icons/help.png");
 		clearIcon = CreateImageIcon("/icons/clear.png");
-		
-		// Setup Tabbed Pane
-		tabbedPane = new JTabbedPane();
 
 		// Setup Main Frame
 		frame = new JFrame("TestlabOutbreak");
 		frame.getContentPane().setLayout(new BorderLayout());
-		frame.add(tabbedPane);
-		frame.setJMenuBar(mainMenu);
 		frame.addWindowListener(new ListenCloseWdw());
-		JScrollPane scrollPane = new JScrollPane(tabbedPane);
-		frame.add(scrollPane, BorderLayout.CENTER);
 
-		// Setup Main Menu
-		separator = new JSeparator(JSeparator.VERTICAL);
-		separator.setOpaque(true);
+		// Setup Main Menu buttons
 		help = new JButton("Help", helpIcon);
 		quit = new JButton("Quit", quitIcon);
 		clear = new JButton("Clear Terminal", clearIcon);
 
+		// Add Main Menu buttons listeners
+		quit.addActionListener(new ListenMenuQuit());
+		help.addActionListener(new ListenMenuHelp());
+		clear.addActionListener(new ListenMenuClearTerminal());
+
+		// Setup Main Menu
+		separator = new JSeparator(JSeparator.VERTICAL);
+		separator.setOpaque(true);
 		mainMenu.add(separator);
 		mainMenu.add(clear);
 		mainMenu.add(help);
 		mainMenu.add(quit);
 
-		// Add Menu buttons listeners
-		quit.addActionListener(new ListenMenuQuit());
-		help.addActionListener(new ListenMenuHelp());
-		clear.addActionListener(new ListenMenuClearTerminal());
+		// Setup Tabbed Pane
+		tabbedPane = new JTabbedPane();
 
 		// add Continuous Model Tab
 		continuousModelTab = new ContinuousModelTab();
@@ -110,6 +107,10 @@ public class OutbreakGui {
 		terminalTab = new TerminalTab();
 		tabbedPane.add("Terminal", terminalTab);
 
+		frame.setJMenuBar(mainMenu);
+		frame.add(tabbedPane);
+		JScrollPane scrollPane = new JScrollPane(tabbedPane);
+		frame.add(scrollPane, BorderLayout.CENTER);
 	}
 
 	private class ListenMenuHelp implements ActionListener {
