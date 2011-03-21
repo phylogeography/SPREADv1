@@ -170,9 +170,14 @@ public class RateIndicatorBFTab extends JPanel {
 
 			try {
 
+				String[] logFiles = new String[] { "log" };
+				
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Opening log file...");
-
+				chooser.setMultiSelectionEnabled(false);
+				chooser.addChoosableFileFilter(new SimpleFileFilter(logFiles,
+						"Log files (*.log)"));
+				
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
 				logFilename = file.getAbsolutePath();
