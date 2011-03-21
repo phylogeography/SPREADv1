@@ -13,6 +13,7 @@ import utils.Utils;
 @SuppressWarnings("serial")
 public class RateIndicatorBFToProcessing extends PApplet {
 
+	private boolean jar = false;
 	private final int imageWidth = 2048;
 	private final int imageHeight = 1025;
 
@@ -82,7 +83,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		mapImage = loadImage(LoadMapBackground(false));
+		mapImage = loadImage(LoadMapBackground(jar));
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons
