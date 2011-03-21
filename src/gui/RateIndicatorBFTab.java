@@ -24,30 +24,29 @@ import templates.RateIndicatorBFToProcessing;
 public class RateIndicatorBFTab extends JPanel {
 
 	// Icons
-	private ImageIcon nuclearIcon = CreateImageIcon("/icons/nuclear.png");
-	private ImageIcon logIcon = CreateImageIcon("/icons/log.png");
-	private ImageIcon locationsIcon = CreateImageIcon("/icons/locations.png");
-	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
-	private ImageIcon saveIcon = CreateImageIcon("/icons/save.png");
+	private ImageIcon nuclearIcon;
+	private ImageIcon logIcon;
+	private ImageIcon locationsIcon;
+	private ImageIcon processingIcon;
+	private ImageIcon saveIcon;
 
 	// Strings for paths
 	private String logFilename = null;
 	private String locationsFilename = null;
 
 	// Text fields
-	private JTextField burnInParser = new JTextField("0.1", 5);
-	private JTextField numberOfIntervalsParser = new JTextField("100", 5);
-	private JTextField maxAltMappingParser = new JTextField("500000", 10);
-	private JTextField bfCutoffParser = new JTextField("3.0", 5);
-	private JTextField kmlPathParser = new JTextField(
-			"/home/filip/Pulpit/output.kml", 15);
+	private JTextField burnInParser;
+	private JTextField numberOfIntervalsParser;
+	private JTextField maxAltMappingParser;
+	private JTextField bfCutoffParser;
+	private JTextField kmlPathParser;
 
 	// Buttons for tab
-	private JButton openLog = new JButton("Open", logIcon);
-	private JButton openLocations = new JButton("Open", locationsIcon);
-	private JButton generateKml = new JButton("Generate", nuclearIcon);
-	private JButton generateProcessing = new JButton("Plot", processingIcon);
-	private JButton saveProcessingPlot = new JButton("Save", saveIcon);
+	private JButton openLog;
+	private JButton openLocations;
+	private JButton generateKml;
+	private JButton generateProcessing;
+	private JButton saveProcessingPlot;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -61,7 +60,29 @@ public class RateIndicatorBFTab extends JPanel {
 
 	public RateIndicatorBFTab() {
 
+		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+
+		// Setup icons
+		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
+		logIcon = CreateImageIcon("/icons/log.png");
+		locationsIcon = CreateImageIcon("/icons/locations.png");
+		processingIcon = CreateImageIcon("/icons/processing.png");
+		saveIcon = CreateImageIcon("/icons/save.png");
+
+		// Setup text fields
+		burnInParser = new JTextField("0.1", 5);
+		numberOfIntervalsParser = new JTextField("100", 5);
+		maxAltMappingParser = new JTextField("500000", 10);
+		bfCutoffParser = new JTextField("3.0", 5);
+		kmlPathParser = new JTextField("/home/filip/Pulpit/output.kml", 15);
+
+		// Setup buttons for tab
+		openLog = new JButton("Open", logIcon);
+		openLocations = new JButton("Open", locationsIcon);
+		generateKml = new JButton("Generate", nuclearIcon);
+		generateProcessing = new JButton("Plot", processingIcon);
+		saveProcessingPlot = new JButton("Save", saveIcon);
 
 		/**
 		 * left tools pane
