@@ -40,7 +40,7 @@ public class RateIndicatorBFTab extends JPanel {
 	private JTextField maxAltMappingParser = new JTextField("500000", 10);
 	private JTextField bfCutoffParser = new JTextField("3.0", 5);
 	private JTextField kmlPathParser = new JTextField(
-			"/home/filip/Pulpit/output.kml", 17);
+			"/home/filip/Pulpit/output.kml", 15);
 
 	// Buttons for tab
 	private JButton openLog = new JButton("Open", logIcon);
@@ -68,7 +68,7 @@ public class RateIndicatorBFTab extends JPanel {
 		 * */
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));// PAGE_AXIS
-		leftPanel.setPreferredSize(new Dimension(230, 600));
+		leftPanel.setPreferredSize(new Dimension(230, 610));
 
 		openLog.addActionListener(new ListenOpenLog());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -113,7 +113,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 		JPanel panel7 = new JPanel();
 		panel7.setBorder(new TitledBorder("Generate KML / Plot tree:"));
-		panel7.setPreferredSize(new Dimension(230, 80));
+		panel7.setPreferredSize(new Dimension(230, 90));
 		panel7.add(generateKml);
 		panel7.add(generateProcessing);
 		panel7.add(progressBar);
