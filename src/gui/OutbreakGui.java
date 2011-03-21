@@ -78,7 +78,7 @@ public class OutbreakGui {
 		separator.setOpaque(true);
 		help = new JButton("Help", helpIcon);
 		quit = new JButton("Quit", quitIcon);
-		clear = new JButton("Clear Terminals", clearIcon);
+		clear = new JButton("Clear Terminal", clearIcon);
 
 		mainMenu.add(separator);
 		mainMenu.add(clear);
@@ -88,7 +88,7 @@ public class OutbreakGui {
 		// Add Menu buttons listeners
 		quit.addActionListener(new ListenMenuQuit());
 		help.addActionListener(new ListenMenuHelp());
-		clear.addActionListener(new ListenMenuClearTerminals());
+		clear.addActionListener(new ListenMenuClearTerminal());
 
 		// add Continuous Model Tab
 		continuousModelTab = new ContinuousModelTab();
@@ -120,7 +120,7 @@ public class OutbreakGui {
 		}
 	}
 
-	private class ListenMenuClearTerminals implements ActionListener {
+	private class ListenMenuClearTerminal implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			terminalTab.clearTerminal();
 		}
