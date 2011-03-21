@@ -16,6 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class OutbreakGui {
 
@@ -28,17 +30,17 @@ public class OutbreakGui {
 	private ImageIcon clearIcon = CreateImageIcon("/icons/clear.png");
 
 	// Frame
-	private JFrame frame = new JFrame("TestlabOutbreak");
-	private JTabbedPane tabbedPane = new JTabbedPane();
+	private JFrame frame;
+	private JTabbedPane tabbedPane;
 
 	// Menubar
 	private JMenuBar mainMenu = new JMenuBar();
 
 	// Buttons with options
-	private JSeparator separator = new JSeparator(JSeparator.VERTICAL);
-	private JButton help = new JButton("Help", helpIcon);
-	private JButton quit = new JButton("Quit", quitIcon);
-	private JButton clear = new JButton("Clear Terminals", clearIcon);
+	private JSeparator separator;
+	private JButton help;
+	private JButton quit;
+	private JButton clear;
 
 	// Tabs
 	private ContinuousModelTab continuousModelTab;
@@ -47,9 +49,17 @@ public class OutbreakGui {
 	private TimeSlicerTab timeSlicerTab;
 	private TerminalTab terminalTab;
 
-	public OutbreakGui() {
+	public OutbreakGui() throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException, UnsupportedLookAndFeelException {
+
+		// Setup Look & Feel
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+		// Setup Tabbed Pane
+		tabbedPane = new JTabbedPane();
 
 		// Setup Main Frame
+		frame = new JFrame("TestlabOutbreak");
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.add(tabbedPane);
 		frame.setJMenuBar(mainMenu);
@@ -58,6 +68,12 @@ public class OutbreakGui {
 		frame.add(scrollPane, BorderLayout.CENTER);
 
 		// Setup Main Menu
+		separator = new JSeparator(JSeparator.VERTICAL);
+		separator.setOpaque(true);
+		help = new JButton("Help", helpIcon);
+		quit = new JButton("Quit", quitIcon);
+		clear = new JButton("Clear Terminals", clearIcon);
+
 		mainMenu.add(separator);
 		mainMenu.add(clear);
 		mainMenu.add(help);
@@ -83,11 +99,11 @@ public class OutbreakGui {
 		// add Discrete Model Tab
 		rateIndicatorBFTab = new RateIndicatorBFTab();
 		tabbedPane.add("Rate Indicator BF test", rateIndicatorBFTab);
-		
+
 		// add Terminal Tab
 		terminalTab = new TerminalTab();
 		tabbedPane.add("Terminal", terminalTab);
-		
+
 	}
 
 	private class ListenMenuHelp implements ActionListener {
@@ -128,15 +144,35 @@ public class OutbreakGui {
 	}
 
 	public static void main(String args[]) {
-		// Schedule a job for the Event Dispatching Thread:
-		// creating and showing application's GUI
+
+		// Start application's GUI from Event Dispatching Thread
 		SwingUtilities.invokeLater(new Runnable() {
+
 			public void run() {
-				OutbreakGui gui = new OutbreakGui();
-				gui.launchFrame();
+
+				OutbreakGui gui;
+
+				try {
+
+					gui = new OutbreakGui();
+					gui.launchFrame();
+
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+
+				} catch (UnsupportedLookAndFeelException e) {
+					e.printStackTrace();
+
+				}
 			}
 		});
-	}
+	}// END: main
 
 	private ImageIcon CreateImageIcon(String path) {
 		java.net.URL imgURL = this.getClass().getResource(path);
