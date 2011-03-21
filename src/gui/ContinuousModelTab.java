@@ -246,11 +246,11 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToKML.GenerateKML();
 
 						System.out.println("Finished in: "
-								+ continuousTreeToKML.time + " msec");
+								+ continuousTreeToKML.time + " msec \n");
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.err.println("FUBAR");
+						System.err.println("FUBAR \n");
 					}
 
 					return null;
