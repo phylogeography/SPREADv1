@@ -59,7 +59,8 @@ public class DiscreteModelTab extends JPanel {
 
 	// left tools pane
 	private JPanel leftPanel;
-
+	private JPanel tmpPanel;
+	
 	// Processing pane
 	private JPanel rightPanel;
 	private DiscreteTreeToProcessing discreteTreeToProcessing;
@@ -86,7 +87,7 @@ public class DiscreteModelTab extends JPanel {
 		mrsdStringParser = new JTextField(formatter.format(calendar.getTime()),
 				8);
 		numberOfIntervalsParser = new JTextField("100", 5);
-		maxAltMappingParser = new JTextField("5000000", 10);
+		maxAltMappingParser = new JTextField("5000000", 5);
 		kmlPathParser = new JTextField("/home/filip/Pulpit/output.kml", 15);
 
 		// Setup buttons for tab
@@ -112,56 +113,56 @@ public class DiscreteModelTab extends JPanel {
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
 
-		JPanel panel0 = new JPanel();
-		panel0.setBorder(new TitledBorder("Load tree file:"));
-		panel0.add(openTree);
-		leftPanel.add(panel0);
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Load tree file:"));
+		tmpPanel.add(openTree);
+		leftPanel.add(tmpPanel);
 
-		JPanel panel1 = new JPanel();
-		panel1.setBorder(new TitledBorder("Load locations file:"));
-		panel1.add(openLocations);
-		leftPanel.add(panel1);
-
-		JPanel panel2 = new JPanel();
-		panel2.setBorder(new TitledBorder("State attribute name:"));
-		panel2.add(stateAttNameParser);
-		leftPanel.add(panel2);
-
-		JPanel panel3 = new JPanel();
-		panel3.setBorder(new TitledBorder("Most recent sampling date:"));
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Load locations file:"));
+		tmpPanel.add(openLocations);
+		leftPanel.add(tmpPanel);
+		
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
-		panel3.add(mrsdStringParser);
-		panel3.add(eraParser);
-		leftPanel.add(panel3);
+		tmpPanel.add(mrsdStringParser);
+		tmpPanel.add(eraParser);
+		leftPanel.add(tmpPanel);
 
-		JPanel panel4 = new JPanel();
-		panel4.setBorder(new TitledBorder("Number of intervals:"));
-		panel4.add(numberOfIntervalsParser);
-		leftPanel.add(panel4);
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("State attribute name:"));
+		tmpPanel.add(stateAttNameParser);
+		leftPanel.add(tmpPanel);
 
-		JPanel panel5 = new JPanel();
-		panel5.setBorder(new TitledBorder("Maximal altitude:"));
-		panel5.add(maxAltMappingParser);
-		leftPanel.add(panel5);
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
+		tmpPanel.add(numberOfIntervalsParser);
+		leftPanel.add(tmpPanel);
 
-		JPanel panel6 = new JPanel();
-		panel6.setBorder(new TitledBorder("KML name:"));
-		panel6.add(kmlPathParser);
-		leftPanel.add(panel6);
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Maximal altitude:"));
+		tmpPanel.add(maxAltMappingParser);
+		leftPanel.add(tmpPanel);
 
-		JPanel panel7 = new JPanel();
-		panel7.setBorder(new TitledBorder("Generate KML / Plot tree:"));
-		panel7.setPreferredSize(new Dimension(230, 90));
-		panel7.add(generateKml);
-		panel7.add(generateProcessing);
-		panel7.add(progressBar);
-		leftPanel.add(panel7);
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("KML name:"));
+		tmpPanel.add(kmlPathParser);
+		leftPanel.add(tmpPanel);
 
-		JPanel panel8 = new JPanel();
-		panel8.setBorder(new TitledBorder("Save plot:"));
-		panel8.add(saveProcessingPlot);
-		leftPanel.add(panel8);
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
+		tmpPanel.setPreferredSize(new Dimension(230, 100));
+		tmpPanel.add(generateKml);
+		tmpPanel.add(generateProcessing);
+		tmpPanel.add(progressBar);
+		leftPanel.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Save plot:"));
+		tmpPanel.add(saveProcessingPlot);
+		leftPanel.add(tmpPanel);
 
 		JPanel leftPanelContainer = new JPanel();
 		leftPanelContainer.setLayout(new BorderLayout());
