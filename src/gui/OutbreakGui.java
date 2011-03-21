@@ -15,6 +15,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -109,8 +110,11 @@ public class OutbreakGui {
 
 		frame.setJMenuBar(mainMenu);
 		frame.add(tabbedPane);
-		JScrollPane scrollPane = new JScrollPane(tabbedPane);
+		JScrollPane scrollPane = new JScrollPane(tabbedPane,
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		frame.add(scrollPane, BorderLayout.CENTER);
+		frame.pack();
 	}
 
 	private class ListenMenuHelp implements ActionListener {
