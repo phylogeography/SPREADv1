@@ -93,8 +93,7 @@ public class TimeSlicerTab extends JPanel {
 		mrsdStringParser = new JTextField(formatter.format(calendar.getTime()),
 				8);
 		numberOfIntervalsParser = new JTextField("10", 5);
-		kmlPathParser = new JTextField(
-				"/home/filip/Pulpit/output.kml", 15);
+		kmlPathParser = new JTextField("/home/filip/Pulpit/output.kml", 15);
 
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
@@ -356,7 +355,9 @@ public class TimeSlicerTab extends JPanel {
 						timeSlicerToProcessing.setNumberOfIntervals(Integer
 								.valueOf(numberOfIntervalsParser.getText()));
 
+						timeSlicerToProcessing.AnalyzeTrees();
 						timeSlicerToProcessing.init();
+						System.out.println("Done! \n");
 
 					} catch (Exception e) {
 						e.printStackTrace();
