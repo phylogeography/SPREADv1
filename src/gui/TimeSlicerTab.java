@@ -29,41 +29,38 @@ import templates.TimeSlicerToProcessing;
 public class TimeSlicerTab extends JPanel {
 
 	// Current date
-	private Calendar calendar = Calendar.getInstance();
-	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",
-			Locale.US);
+	private Calendar calendar;
+	private SimpleDateFormat formatter;
 
 	// Icons
-	private ImageIcon nuclearIcon = CreateImageIcon("/icons/nuclear.png");
-	private ImageIcon treeIcon = CreateImageIcon("/icons/tree.png");
-	private ImageIcon processingIcon = CreateImageIcon("/icons/processing.png");
-	private ImageIcon saveIcon = CreateImageIcon("/icons/save.png");
+	private ImageIcon nuclearIcon;
+	private ImageIcon treeIcon;
+	private ImageIcon processingIcon;
+	private ImageIcon saveIcon;
 
 	// Strings for paths
-	private String mccTreeFilename = null;
-	private String treesFilename = null;
+	private String mccTreeFilename;
+	private String treesFilename;
 
 	// Text fields
-	private JTextField burnInParser = new JTextField("4990", 10);
-	private JTextField locationAttNameParser = new JTextField("location", 10);
-	private JTextField rateAttNameParser = new JTextField("rate", 10);
-	private JTextField precisionAttNameParser = new JTextField("precision", 10);
-	private JTextField mrsdStringParser = new JTextField(formatter
-			.format(calendar.getTime()), 8);
+	private JTextField burnInParser;
+	private JTextField locationAttNameParser;
+	private JTextField rateAttNameParser;
+	private JTextField precisionAttNameParser;
+	private JTextField mrsdStringParser;
 	private JComboBox eraParser;
-	private JTextField numberOfIntervalsParser = new JTextField("10", 5);
-	private JTextField kmlPathParser = new JTextField(
-			"/home/filip/Pulpit/output.kml", 15);
+	private JTextField numberOfIntervalsParser;
+	private JTextField kmlPathParser;
 
 	// Buttons for tab
-	private JButton generateKml = new JButton("Generate", nuclearIcon);
-	private JButton openTree = new JButton("Open", treeIcon);
-	private JButton openTrees = new JButton("Open");
-	private JButton generateProcessing = new JButton("Plot", processingIcon);
-	private JButton saveProcessingPlot = new JButton("Save", saveIcon);
+	private JButton generateKml;
+	private JButton openTree;
+	private JButton openTrees;
+	private JButton generateProcessing;
+	private JButton saveProcessingPlot;
 
 	// checkbox
-	private JCheckBox trueNoiseParser = new JCheckBox();
+	private JCheckBox trueNoiseParser;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -73,11 +70,42 @@ public class TimeSlicerTab extends JPanel {
 	private TimeSlicerToProcessing timeSlicerToProcessing;
 
 	// Progress bar
-	private JProgressBar progressBar = new JProgressBar();;
+	private JProgressBar progressBar;
 
 	public TimeSlicerTab() {
 
+		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+		calendar = Calendar.getInstance();
+		formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+		// Setup icons
+		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
+		treeIcon = CreateImageIcon("/icons/tree.png");
+		processingIcon = CreateImageIcon("/icons/processing.png");
+		saveIcon = CreateImageIcon("/icons/save.png");
+
+		// Setup text fields
+		burnInParser = new JTextField("4990", 10);
+		locationAttNameParser = new JTextField("location", 10);
+		rateAttNameParser = new JTextField("rate", 10);
+		precisionAttNameParser = new JTextField("precision", 10);
+		mrsdStringParser = new JTextField(formatter.format(calendar.getTime()),
+				8);
+		numberOfIntervalsParser = new JTextField("10", 5);
+		kmlPathParser = new JTextField(
+				"/home/filip/Pulpit/output.kml", 15);
+
+		// Setup buttons for tab
+		generateKml = new JButton("Generate", nuclearIcon);
+		openTree = new JButton("Open", treeIcon);
+		openTrees = new JButton("Open");
+		generateProcessing = new JButton("Plot", processingIcon);
+		saveProcessingPlot = new JButton("Save", saveIcon);
+
+		// Setup progress bar & checkbox
+		progressBar = new JProgressBar();
+		trueNoiseParser = new JCheckBox();
 
 		/**
 		 * left tools pane
