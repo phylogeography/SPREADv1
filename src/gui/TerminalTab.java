@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.io.PrintStream;
 
 import javax.swing.BoxLayout;
@@ -23,10 +22,11 @@ public class TerminalTab extends JPanel {
 		// Setup text area
 		textArea = new JTextArea(4, 20);
 		textArea.setEditable(true);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
 		JScrollPane scrollPane = new JScrollPane(textArea,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setPreferredSize(new Dimension(200, 70));
 		add(scrollPane, BorderLayout.CENTER);
 
 		// Redirect streams
