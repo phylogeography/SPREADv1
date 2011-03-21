@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -149,14 +150,16 @@ public class ContinuousModelTab extends JPanel {
 		JPanel panel9 = new JPanel();
 		textArea = new JTextArea(4, 20);
 		textArea.setEditable(true);
-		JScrollPane scrollPane = new JScrollPane(textArea);
+		JScrollPane scrollPane = new JScrollPane(textArea,
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setPreferredSize(new Dimension(200, 70));
-		scrollPane
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		panel9.add(scrollPane, BorderLayout.CENTER);
 		leftPanel.add(panel9);
+
+		// Redirect streams
+		System.setOut(new PrintStream(new JTextAreaOutputStream(textArea)));
+		System.setErr(new PrintStream(new JTextAreaOutputStream(textArea)));
 
 		JPanel leftPanelContainer = new JPanel();
 		leftPanelContainer.setLayout(new BorderLayout());
@@ -188,10 +191,10 @@ public class ContinuousModelTab extends JPanel {
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
 				treeFilename = file.getAbsolutePath();
-				textArea.setText("Opened " + treeFilename + "\n");
+				textArea.append("Opened " + treeFilename + "\n");
 
 			} catch (Exception e1) {
-				textArea.setText("Could not Open! \n");
+				textArea.append("Could not Open! \n");
 			}
 		}
 	}
@@ -237,12 +240,12 @@ public class ContinuousModelTab extends JPanel {
 
 						continuousTreeToKML.GenerateKML();
 
-						textArea.setText("Finished in: "
+						textArea.append("Finished in: "
 								+ continuousTreeToKML.time + " msec \n");
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						textArea.setText("FUBAR \n");
+						textArea.append("FUBAR \n");
 					}
 
 					return null;
@@ -279,11 +282,11 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToProcessing.setHPD(HPDParser.getText()
 								+ "%");
 						continuousTreeToProcessing.init();
-						textArea.setText("Done! \n");
+						textArea.append("Done! \n");
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						textArea.setText("FUBAR \n");
+						textArea.append("FUBAR \n");
 					}
 
 					return null;
@@ -313,10 +316,10 @@ public class ContinuousModelTab extends JPanel {
 				String plotToSaveFilename = file.getAbsolutePath();
 
 				continuousTreeToProcessing.save(plotToSaveFilename);
-				textArea.setText("Saved " + plotToSaveFilename + "\n");
+				textArea.append("Saved " + plotToSaveFilename + "\n");
 
 			} catch (Exception e0) {
-				textArea.setText("Could not save! \n");
+				textArea.append("Could not save! \n");
 			}
 
 		}// END: actionPerformed
@@ -327,13 +330,17 @@ public class ContinuousModelTab extends JPanel {
 		if (imgURL != null) {
 			return new ImageIcon(imgURL);
 		} else {
-			textArea.setText("Couldn't find file: \n" + path + "\n");
+			textArea.append("Couldn't find file: \n" + path + "\n");
 			return null;
 		}
 	}
 
 	public void setText(String text) {
-		textArea.setText(text);
+		textArea.append(text);
+	}
+	
+	public void clearTerminal() {
+		textArea.setText("");
 	}
 
 }// END class
