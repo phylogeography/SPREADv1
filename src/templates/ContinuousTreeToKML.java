@@ -325,6 +325,8 @@ public class ContinuousTreeToKML {
 
 			} catch (ParseException e) {
 				e.printStackTrace();
+				System.err.println("ContinuousTreeToKML.Branches");
+				throw new RuntimeException("FUBAR", e);
 			}
 
 		}// END: run
@@ -442,8 +444,10 @@ public class ContinuousTreeToKML {
 
 				layers.add(polygonsLayer);
 
-			} catch (Exception e) {
+			} catch (ParseException e) {
 				e.printStackTrace();
+				System.err.println("ContinuousTreeToKML.Polygons");
+				throw new RuntimeException("FUBAR", e);
 			}
 
 		}// END: run
