@@ -56,7 +56,8 @@ public class OutbreakGui {
 		// Setup Look & Feel
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
-
+		Toolkit.getDefaultToolkit().setDynamicLayout(true);
+		
 		// Setup icons
 		quitIcon = CreateImageIcon("/icons/close.png");
 		helpIcon = CreateImageIcon("/icons/help.png");
