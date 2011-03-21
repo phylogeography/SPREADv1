@@ -82,8 +82,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		mapImage = loadImage(LoadMapBackgroundInEclipse());
-		// mapImage = loadImage(LoadMapBackgroundFromJar());
+		mapImage = loadImage(LoadMapBackground(false));
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons
@@ -219,17 +218,18 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		}
 	}// END: ComputeBFTest
 
-	@SuppressWarnings("all")
-	private String LoadMapBackgroundFromJar() {
-		String imgPathFromJar = "jar:"
-				+ this.getClass().getResource("world_map.png").getPath();
-		return imgPathFromJar;
-	}
+	private String LoadMapBackground(boolean fromJar) {
 
-	@SuppressWarnings("all")
-	private String LoadMapBackgroundInEclipse() {
-		String imgPathFromJar = this.getClass().getResource("world_map.png")
-				.getPath();
+		String imgPathFromJar;
+
+		if (fromJar) {
+			imgPathFromJar = "jar:"
+					+ this.getClass().getResource("world_map.png").getPath();
+		} else {
+			imgPathFromJar = this.getClass().getResource("world_map.png")
+					.getPath();
+		}
+
 		return imgPathFromJar;
 	}
 
