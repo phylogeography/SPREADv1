@@ -60,7 +60,7 @@ public class DiscreteModelTab extends JPanel {
 	// left tools pane
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
-	
+
 	// Processing pane
 	private JPanel rightPanel;
 	private DiscreteTreeToProcessing discreteTreeToProcessing;
@@ -122,7 +122,7 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel.setBorder(new TitledBorder("Load locations file:"));
 		tmpPanel.add(openLocations);
 		leftPanel.add(tmpPanel);
-		
+
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
 		String era[] = { "AD", "BC" };
@@ -188,8 +188,13 @@ public class DiscreteModelTab extends JPanel {
 
 			try {
 
+				String[] treeFiles = new String[] { "tre", "tree" };
+
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Loading tree file...");
+				chooser.setMultiSelectionEnabled(false);
+				chooser.addChoosableFileFilter(new SimpleFileFilter(treeFiles,
+						"Tree files (*.tree, *.tre)"));
 
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
