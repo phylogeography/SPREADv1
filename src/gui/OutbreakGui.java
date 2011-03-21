@@ -22,12 +22,12 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class OutbreakGui {
 
 	// Dimension
-	Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	Dimension dimension;
 
 	// Icons
-	private ImageIcon quitIcon = CreateImageIcon("/icons/close.png");
-	private ImageIcon helpIcon = CreateImageIcon("/icons/help.png");
-	private ImageIcon clearIcon = CreateImageIcon("/icons/clear.png");
+	private ImageIcon quitIcon;
+	private ImageIcon helpIcon;
+	private ImageIcon clearIcon;
 
 	// Frame
 	private JFrame frame;
@@ -54,7 +54,13 @@ public class OutbreakGui {
 
 		// Setup Look & Feel
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
+		dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		// Setup icons
+		quitIcon = CreateImageIcon("/icons/close.png");
+		helpIcon = CreateImageIcon("/icons/help.png");
+		clearIcon = CreateImageIcon("/icons/clear.png");
+		
 		// Setup Tabbed Pane
 		tabbedPane = new JTabbedPane();
 
