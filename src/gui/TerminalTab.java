@@ -17,8 +17,10 @@ public class TerminalTab extends JPanel {
 
 	public TerminalTab() {
 
+		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
+		// Setup text area
 		textArea = new JTextArea(4, 20);
 		textArea.setEditable(true);
 		JScrollPane scrollPane = new JScrollPane(textArea,
