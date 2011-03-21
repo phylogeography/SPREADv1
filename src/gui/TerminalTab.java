@@ -24,8 +24,8 @@ public class TerminalTab extends JPanel {
 		textArea = new JTextArea(4, 20);
 		textArea.setEditable(true);
 		JScrollPane scrollPane = new JScrollPane(textArea,
-				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setPreferredSize(new Dimension(200, 70));
 		add(scrollPane, BorderLayout.CENTER);
 
