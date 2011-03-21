@@ -35,6 +35,7 @@ public class TimeSlicerTab extends JPanel {
 	// Icons
 	private ImageIcon nuclearIcon;
 	private ImageIcon treeIcon;
+	private ImageIcon treesIcon;
 	private ImageIcon processingIcon;
 	private ImageIcon saveIcon;
 
@@ -65,7 +66,7 @@ public class TimeSlicerTab extends JPanel {
 	// left tools pane
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
-	
+
 	// Processing pane
 	private JPanel rightPanel;
 	private TimeSlicerToProcessing timeSlicerToProcessing;
@@ -83,6 +84,7 @@ public class TimeSlicerTab extends JPanel {
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 		treeIcon = CreateImageIcon("/icons/tree.png");
+		treesIcon = CreateImageIcon("/icons/trees.png");
 		processingIcon = CreateImageIcon("/icons/processing.png");
 		saveIcon = CreateImageIcon("/icons/save.png");
 
@@ -99,7 +101,7 @@ public class TimeSlicerTab extends JPanel {
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
 		openTree = new JButton("Open", treeIcon);
-		openTrees = new JButton("Open");
+		openTrees = new JButton("Open", treesIcon);
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
 
@@ -210,8 +212,13 @@ public class TimeSlicerTab extends JPanel {
 
 			try {
 
+				String[] treeFiles = new String[] { "tre", "tree" };
+
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Opening tree file...");
+				chooser.setMultiSelectionEnabled(false);
+				chooser.addChoosableFileFilter(new SimpleFileFilter(treeFiles,
+						"Tree files (*.tree, *.tre)"));
 
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
@@ -229,8 +236,13 @@ public class TimeSlicerTab extends JPanel {
 
 			try {
 
+				String[] treesFiles = new String[] { "trees" };
+
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Loading trees file...");
+				chooser.setMultiSelectionEnabled(false);
+				chooser.addChoosableFileFilter(new SimpleFileFilter(treesFiles,
+						"Tree files (*.trees)"));
 
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
