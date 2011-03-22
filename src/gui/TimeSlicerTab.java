@@ -28,6 +28,8 @@ import templates.TimeSlicerToProcessing;
 @SuppressWarnings("serial")
 public class TimeSlicerTab extends JPanel {
 
+	String kmlPath = "/home/filip/Pulpit/output.kml";
+	
 	// Current date
 	private Calendar calendar;
 	private SimpleDateFormat formatter;
@@ -98,7 +100,7 @@ public class TimeSlicerTab extends JPanel {
 				8);
 		numberOfIntervalsParser = new JTextField("10", 5);
 		maxAltMappingParser = new JTextField("500000", 5);
-		kmlPathParser = new JTextField("/home/filip/Pulpit/output.kml", 15);
+		kmlPathParser = new JTextField(kmlPath, 15);
 
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
