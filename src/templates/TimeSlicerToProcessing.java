@@ -320,10 +320,14 @@ public class TimeSlicerToProcessing extends PApplet {
 		while (!executor.isTerminated()) {
 		}
 
-		System.out
-				.println("Analyzed " + (int) (readTrees - burnIn) + " trees.");
+		if ((readTrees - burnIn) <= 0.0) {
+			throw new RuntimeException("Burnt too many trees!");
+		} else {
+			System.out.println("Analyzed " + (int) (readTrees - burnIn)
+					+ " trees");
+		}
 
-	}
+	}// END: AnalyzeTrees
 
 	// ///////////////////////////////
 	// ---CONCURRENT ANALYZE TREE---//
