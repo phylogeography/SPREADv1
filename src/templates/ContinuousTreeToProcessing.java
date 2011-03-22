@@ -18,6 +18,7 @@ import utils.Utils;
 public class ContinuousTreeToProcessing extends PApplet {
 
 	private boolean jar = false;
+	
 	private final int imageWidth = 2048;
 	private final int imageHeight = 1025;
 
