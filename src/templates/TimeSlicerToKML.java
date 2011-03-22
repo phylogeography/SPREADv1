@@ -208,7 +208,7 @@ public class TimeSlicerToKML {
 
 		// stop timing
 		time += System.currentTimeMillis();
-		System.out.println("Finished in: " + time + " msec");
+		System.out.println("Finished in: " + time + " msec \n");
 
 	}// END: GenerateKML
 
