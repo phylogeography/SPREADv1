@@ -13,7 +13,7 @@ import utils.Utils;
 @SuppressWarnings("serial")
 public class RateIndicatorBFToProcessing extends PApplet {
 
-	private boolean jar = false;
+	private boolean jar = true;
 	private final int imageWidth = 2048;
 	private final int imageHeight = 1025;
 
