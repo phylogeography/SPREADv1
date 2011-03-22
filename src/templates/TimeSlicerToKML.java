@@ -30,6 +30,7 @@ import jebl.evolution.trees.RootedTree;
 import math.MultivariateNormalDistribution;
 import structure.Coordinates;
 import structure.Layer;
+import structure.Line;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
@@ -47,6 +48,8 @@ public class TimeSlicerToKML {
 	private TreeImporter treeImporter;
 	private String precisionString;
 	private String locationString;
+	private String longitudeName;
+	private String latitudeName;
 	private String rateString;
 	private int numberOfIntervals;
 	private boolean trueNoise;
@@ -58,11 +61,13 @@ public class TimeSlicerToKML {
 	private double endTime;
 	private List<Layer> layers;
 	private PrintWriter writer;
-	private double burnIn;
+	private int burnIn;
 	private RootedTree currentTree;
 	private SimpleDateFormat formatter;
 	private Double sliceTime;
 	private int polygonsStyleId;
+	private RootedTree tree;
+	private double maxAltMapping;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -104,6 +109,9 @@ public class TimeSlicerToKML {
 
 	public void setLocationAttName(String name) {
 		locationString = name;
+		// this is for coordinate attribute names
+		longitudeName = (locationString + 2);
+		latitudeName = (locationString + 1);
 	}
 
 	public void setRateAttName(String name) {
@@ -118,7 +126,11 @@ public class TimeSlicerToKML {
 		numberOfIntervals = number;
 	}
 
-	public void setBurnIn(double burnInDouble) {
+	public void setMaxAltitudeMapping(double max) {
+		maxAltMapping = max;
+	}
+
+	public void setBurnIn(int burnInDouble) {
 		burnIn = burnInDouble;
 	}
 
@@ -139,7 +151,7 @@ public class TimeSlicerToKML {
 		System.out.println("Importing trees...");
 
 		// This is a general time span for all of the trees
-		RootedTree tree = (RootedTree) treeImporter.importNextTree();
+		tree = (RootedTree) treeImporter.importNextTree();
 		timeLine = GenerateTimeLine(tree);
 		startTime = timeLine.getStartTime();
 		endTime = timeLine.getEndTime();
@@ -177,8 +189,6 @@ public class TimeSlicerToKML {
 
 		System.out.println("Generating Polygons...");
 
-		// Utils.printHashMap(sliceMap, true);
-
 		System.out.println("Iterating through Map...");
 
 		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
@@ -196,6 +206,8 @@ public class TimeSlicerToKML {
 				polygons.run();
 			}
 		}
+
+		executor.submit(new Branches());
 
 		executor.shutdown();
 		while (!executor.isTerminated()) {
@@ -246,6 +258,7 @@ public class TimeSlicerToKML {
 							Node parentNode = currentTree.getParent(node);
 
 							double nodeHeight = currentTree.getHeight(node);
+							//TODO: throws NullPointerException
 							double parentHeight = currentTree
 									.getHeight(parentNode);
 
@@ -332,6 +345,7 @@ public class TimeSlicerToKML {
 			} catch (RuntimeException e) {
 				e.printStackTrace();
 			}
+
 		}// END: run
 	}// END: AnalyzeTree
 
@@ -343,6 +357,7 @@ public class TimeSlicerToKML {
 		double treeNormalization = tree.getHeight(tree.getRootNode());
 
 		Object[] array = (Object[]) o;
+
 		int dim = (int) Math.sqrt(1 + 8 * array.length) / 2;
 		double[][] precision = new double[dim][dim];
 		int c = 0;
@@ -472,5 +487,95 @@ public class TimeSlicerToKML {
 
 		}// END: run
 	}// END: Polygons
+
+	// ///////////////////////////
+	// ---CONCURRENT BRANCHES---//
+	// ///////////////////////////
+	private class Branches implements Runnable {
+
+		public void run() {
+
+			try {
+
+				// This is for mappings
+				double treeHeightMax = Utils.getTreeHeightMax(tree);
+
+				// this is for Branches folder:
+				String branchesDescription = null;
+				Layer branchesLayer = new Layer("Branches", branchesDescription);
+
+				int branchStyleId = 1;
+				for (Node node : tree.getNodes()) {
+
+					if (!tree.isRoot(node)) {
+
+						double longitude = (Double) node
+								.getAttribute(longitudeName);
+						double latitude = (Double) node
+								.getAttribute(latitudeName);
+
+						Node parentNode = tree.getParent(node);
+						double parentLongitude = (Double) parentNode
+								.getAttribute(longitudeName);
+						double parentLatitude = (Double) parentNode
+								.getAttribute(latitudeName);
+
+						/**
+						 * Mapping
+						 * */
+						double nodeHeight = tree.getHeight(node);
+
+						double maxAltitude = Utils.map(nodeHeight, 0,
+								treeHeightMax, 0, maxAltMapping);
+
+						int red = 255;
+						int green = 0;
+						int blue = (int) Utils.map(nodeHeight, 0,
+								treeHeightMax, 255, 0);
+						int alpha = (int) Utils.map(nodeHeight, 0,
+								treeHeightMax, 100, 255);
+
+						Color col = new Color(red, green, blue, alpha);
+
+						double width = Utils.map(nodeHeight, 0, treeHeightMax,
+								3.5, 10.0);
+
+						Style linesStyle = new Style(col, width);
+						linesStyle.setId("branch_style" + branchStyleId);
+						branchStyleId++;
+
+						SpreadDate mrsd = new SpreadDate(mrsdString);
+						int days = (int) (nodeHeight * timescaler);
+						double startTime = mrsd.minus(days);
+
+						branchesLayer
+								.addItem(new Line((parentLongitude + ","
+										+ parentLatitude + ":" + longitude
+										+ "," + latitude), // name
+										new Coordinates(parentLongitude,
+												parentLatitude), // startCoords
+										startTime, // double startime
+										linesStyle, // style startstyle
+										new Coordinates(longitude, latitude), // endCoords
+										0.0, // double endtime
+										linesStyle, // style endstyle
+										maxAltitude, // double maxAltitude
+										0.0) // double duration
+								);
+
+					}
+				}// END: node loop
+
+				layers.add(branchesLayer);
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+			}
+
+		}// END: run
+	}// END: Branches class
 
 }// END: TimeSlicer class
