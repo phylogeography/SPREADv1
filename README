@@ -43,7 +43,6 @@ ________________________________________________________________________________
                               TODO
 
 * improve GUI looks & feels
-   - set working path after opening first file
    - allow for saving panel settings
    - hide some options with "show more" buttons 
 * TimeSlicer template
