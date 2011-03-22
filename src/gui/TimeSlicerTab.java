@@ -396,6 +396,9 @@ public class TimeSlicerTab extends JPanel {
 						timeSlicerToProcessing.setTrueNoise(trueNoiseParser
 								.isSelected());
 
+						timeSlicerToProcessing.setImpute(imputeParser
+								.isSelected());
+
 						timeSlicerToProcessing.setMrsdString(mrsdString);
 
 						timeSlicerToProcessing.setNumberOfIntervals(Integer

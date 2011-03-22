@@ -46,6 +46,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private String rateString;
 	private int numberOfIntervals;
 	private boolean trueNoise;
+	private boolean impute;
 	private String mrsdString;
 	private double timescaler;
 	private TimeLine timeLine;
@@ -124,6 +125,10 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	public void setTrueNoise(boolean trueNoiseBoolean) {
 		trueNoise = trueNoiseBoolean;
+	}
+
+	public void setImpute(boolean imputeBoolean) {
+		impute = imputeBoolean;
 	}
 
 	public void setup() {
@@ -378,10 +383,6 @@ public class TimeSlicerToProcessing extends PApplet {
 							double nodeTime = mrsd1
 									.minus((int) (nodeHeight * timescaler));
 
-							Object[] imputedLocation = imputeValue(location,
-									parentLocation, sliceTime, nodeTime,
-									parentTime, currentTree, rate, trueNoise);
-
 							if (parentTime < sliceTime && sliceTime <= nodeTime) {
 
 								if (sliceMap.containsKey(sliceTime)) {
@@ -389,17 +390,30 @@ public class TimeSlicerToProcessing extends PApplet {
 									sliceMap.get(sliceTime).add(
 											new Coordinates(parentLongitude,
 													parentLatitude, 0.0));
+									if (impute) {
 
-									sliceMap.get(sliceTime).add(
-											new Coordinates(
+										Object[] imputedLocation = imputeValue(
+												location, parentLocation,
+												sliceTime, nodeTime,
+												parentTime, currentTree, rate,
+												trueNoise);
 
-											Double.valueOf(imputedLocation[1]
-													.toString()),
+										sliceMap
+												.get(sliceTime)
+												.add(
+														new Coordinates(
 
-											Double.valueOf(imputedLocation[0]
-													.toString()),
+																Double
+																		.valueOf(imputedLocation[1]
+																				.toString()),
 
-											0.0));
+																Double
+																		.valueOf(imputedLocation[0]
+																				.toString()),
+
+																0.0));
+
+									}
 
 									sliceMap.get(sliceTime).add(
 											new Coordinates(longitude,
@@ -412,11 +426,21 @@ public class TimeSlicerToProcessing extends PApplet {
 									coords.add(new Coordinates(parentLongitude,
 											parentLatitude, 0.0));
 
-									coords.add(new Coordinates(Double
-											.valueOf(imputedLocation[1]
-													.toString()), Double
-											.valueOf(imputedLocation[0]
-													.toString()), 0.0));
+									if (impute) {
+
+										Object[] imputedLocation = imputeValue(
+												location, parentLocation,
+												sliceTime, nodeTime,
+												parentTime, currentTree, rate,
+												trueNoise);
+
+										coords.add(new Coordinates(Double
+												.valueOf(imputedLocation[1]
+														.toString()), Double
+												.valueOf(imputedLocation[0]
+														.toString()), 0.0));
+
+									}
 
 									coords.add(new Coordinates(longitude,
 											latitude, 0.0));
