@@ -116,62 +116,61 @@ public class DiscreteTreeToKML {
 	}
 
 	public void GenerateKML() throws IOException, ImportException,
-	ParseException {
+			ParseException, RuntimeException {
 
+		// start timing
+		time = -System.currentTimeMillis();
 
-			// start timing
-			time = -System.currentTimeMillis();
+		// this is to choose the proper time scale
+		timescaler = Double.NaN;
+		switch (timescalerSwitcher) {
+		case DAYS:
+			timescaler = 1;
+			break;
+		case MONTHS:
+			timescaler = 30;
+		case YEARS:
+			timescaler = 365;
+			break;
+		}
 
-			// this is to choose the proper time scale
-			timescaler = Double.NaN;
-			switch (timescalerSwitcher) {
-			case DAYS:
-				timescaler = 1;
-				break;
-			case MONTHS:
-				timescaler = 30;
-			case YEARS:
-				timescaler = 365;
-				break;
-			}
+		tree = (RootedTree) importer.importNextTree();
 
-			tree = (RootedTree) importer.importNextTree();
+		// this is for time calculations
+		rootHeight = tree.getHeight(tree.getRootNode());
 
-			// this is for time calculations
-			rootHeight = tree.getHeight(tree.getRootNode());
+		// this is for states.prob attribute name
+		StringBuilder statesProbStringBuilder = new StringBuilder();
+		statesProbString = statesProbStringBuilder.append(stateAttName).append(
+				".prob").toString();
 
-			// this is for states.prob attribute name
-			StringBuilder statesProbStringBuilder = new StringBuilder();
-			statesProbString = statesProbStringBuilder.append(stateAttName)
-					.append(".prob").toString();
+		// This is a general time span for the tree
+		SpreadDate mrsd = new SpreadDate(mrsdString);
+		TimeLine timeLine = new TimeLine(mrsd.getTime()
+				- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
+				numberOfIntervals);
 
-			// This is a general time span for the tree
-			SpreadDate mrsd = new SpreadDate(mrsdString);
-			TimeLine timeLine = new TimeLine(mrsd.getTime()
-					- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
-					numberOfIntervals);
+		// this is to generate kml output
+		KMLGenerator kmloutput = new KMLGenerator();
+		layers = new ArrayList<Layer>();
 
-			// this is to generate kml output
-			KMLGenerator kmloutput = new KMLGenerator();
-			layers = new ArrayList<Layer>();
+		// Execute threads
+		final int NTHREDS = Runtime.getRuntime().availableProcessors();
+		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
 
-			// Execute threads
-			final int NTHREDS = Runtime.getRuntime().availableProcessors();
-			ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
+		executor.submit(new Places());
+		executor.submit(new Branches());
+		executor.submit(new Circles());
+		executor.shutdown();
+		// Wait until all threads are finished
+		while (!executor.isTerminated()) {
+		}
 
-			executor.submit(new Places());
-			executor.submit(new Branches());
-			executor.submit(new Circles());
-			executor.shutdown();
-			// Wait until all threads are finished
-			while (!executor.isTerminated()) {
-			}
+		// generate kml
+		kmloutput.generate(writer, timeLine, layers);
 
-			// generate kml
-			kmloutput.generate(writer, timeLine, layers);
-
-			// stop timing
-			time += System.currentTimeMillis();
+		// stop timing
+		time += System.currentTimeMillis();
 
 	}// END: GenerateKML
 
@@ -359,10 +358,11 @@ public class DiscreteTreeToKML {
 
 				layers.add(branchesLayer);
 
-			} catch (Exception e) {
-
+			} catch (ParseException e) {
 				e.printStackTrace();
 
+			} catch (RuntimeException e) {
+				e.printStackTrace();
 			}
 
 		}// END: run
@@ -462,10 +462,11 @@ public class DiscreteTreeToKML {
 
 				layers.add(circlesLayer);
 
-			} catch (Exception e) {
-
+			} catch (ParseException e) {
 				e.printStackTrace();
 
+			} catch (RuntimeException e) {
+				e.printStackTrace();
 			}
 
 		}// END: run
