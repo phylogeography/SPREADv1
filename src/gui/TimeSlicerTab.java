@@ -28,8 +28,6 @@ import templates.TimeSlicerToProcessing;
 @SuppressWarnings("serial")
 public class TimeSlicerTab extends JPanel {
 
-	String kmlPath = "/home/filip/Pulpit/output.kml";
-	
 	// Current date
 	private Calendar calendar;
 	private SimpleDateFormat formatter;
@@ -44,6 +42,7 @@ public class TimeSlicerTab extends JPanel {
 	// Strings for paths
 	private String mccTreeFilename;
 	private String treesFilename;
+	private String workingDirectory;
 
 	// Text fields
 	private JTextField burnInParser;
@@ -100,7 +99,7 @@ public class TimeSlicerTab extends JPanel {
 				8);
 		numberOfIntervalsParser = new JTextField("10", 5);
 		maxAltMappingParser = new JTextField("500000", 5);
-		kmlPathParser = new JTextField(kmlPath, 15);
+		kmlPathParser = new JTextField("output.kml", 15);
 
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
@@ -143,7 +142,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.add(mrsdStringParser);
 		tmpPanel.add(eraParser);
 		leftPanel.add(tmpPanel);
-		
+
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Use true noise:"));
 		tmpPanel.add(trueNoiseParser);
@@ -173,7 +172,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
 		leftPanel.add(tmpPanel);
-		
+
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude:"));
 		tmpPanel.add(maxAltMappingParser);
@@ -233,6 +232,10 @@ public class TimeSlicerTab extends JPanel {
 				File file = chooser.getSelectedFile();
 				mccTreeFilename = file.getAbsolutePath();
 				System.out.println("Opened " + mccTreeFilename + "\n");
+
+				workingDirectory = chooser.getCurrentDirectory().toString();
+				System.out.println("Setted working directory to "
+						+ workingDirectory + "\n");
 
 			} catch (Exception e1) {
 				System.err.println("Could not Open! \n");
@@ -309,9 +312,9 @@ public class TimeSlicerTab extends JPanel {
 						timeSlicerToKML.setNumberOfIntervals(Integer
 								.valueOf(numberOfIntervalsParser.getText()));
 
-						timeSlicerToKML.setKmlWriterPath(kmlPathParser
-								.getText());
-						
+						timeSlicerToKML.setKmlWriterPath(workingDirectory
+								.concat("/").concat(kmlPathParser.getText()));
+
 						timeSlicerToKML.setMaxAltitudeMapping(Double
 								.valueOf(maxAltMappingParser.getText()));
 

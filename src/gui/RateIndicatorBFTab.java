@@ -23,8 +23,6 @@ import templates.RateIndicatorBFToProcessing;
 @SuppressWarnings("serial")
 public class RateIndicatorBFTab extends JPanel {
 
-	private String defaultKmlPath = "/home/filip/Pulpit/output.kml";
-	
 	// Icons
 	private ImageIcon nuclearIcon;
 	private ImageIcon logIcon;
@@ -35,6 +33,7 @@ public class RateIndicatorBFTab extends JPanel {
 	// Strings for paths
 	private String logFilename;
 	private String locationsFilename;
+	private String workingDirectory;
 
 	// Text fields
 	private JTextField burnInParser;
@@ -53,7 +52,7 @@ public class RateIndicatorBFTab extends JPanel {
 	// left tools pane
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
-	
+
 	// Processing pane
 	private JPanel rightPanel;
 	private RateIndicatorBFToProcessing rateIndicatorBFToProcessing;
@@ -78,7 +77,7 @@ public class RateIndicatorBFTab extends JPanel {
 		numberOfIntervalsParser = new JTextField("100", 5);
 		maxAltMappingParser = new JTextField("500000", 5);
 		bfCutoffParser = new JTextField("3.0", 5);
-		kmlPathParser = new JTextField(defaultKmlPath, 15);
+		kmlPathParser = new JTextField("output.kml", 15);
 
 		// Setup buttons for tab
 		openLog = new JButton("Open", logIcon);
@@ -173,17 +172,21 @@ public class RateIndicatorBFTab extends JPanel {
 			try {
 
 				String[] logFiles = new String[] { "log" };
-				
+
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Opening log file...");
 				chooser.setMultiSelectionEnabled(false);
 				chooser.addChoosableFileFilter(new SimpleFileFilter(logFiles,
 						"Log files (*.log)"));
-				
+
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
 				logFilename = file.getAbsolutePath();
 				System.out.println("Opened " + logFilename + "\n");
+
+				workingDirectory = chooser.getCurrentDirectory().toString();
+				System.out.println("Setted working directory to "
+						+ workingDirectory + "\n");
 
 			} catch (Exception e1) {
 				System.err.println("Could not Open! \n");
@@ -240,8 +243,8 @@ public class RateIndicatorBFTab extends JPanel {
 						rateIndicatorBFToKML.setNumberOfIntervals(Integer
 								.valueOf(numberOfIntervalsParser.getText()));
 
-						rateIndicatorBFToKML.setKmlWriterPath(kmlPathParser
-								.getText());
+						rateIndicatorBFToKML.setKmlWriterPath(workingDirectory
+								.concat("/").concat(kmlPathParser.getText()));
 
 						rateIndicatorBFToKML.GenerateKML();
 

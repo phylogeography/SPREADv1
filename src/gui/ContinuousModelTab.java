@@ -28,8 +28,6 @@ import templates.ContinuousTreeToProcessing;
 @SuppressWarnings("serial")
 public class ContinuousModelTab extends JPanel {
 
-	private String defaultKmlPath = "/home/filip/Pulpit/output.kml";
-	
 	// Current date
 	private Calendar calendar;
 	private SimpleDateFormat formatter;
@@ -42,6 +40,7 @@ public class ContinuousModelTab extends JPanel {
 
 	// Strings for paths
 	private String treeFilename;
+	private String workingDirectory;
 
 	// Text fields
 	private JTextField coordinatesNameParser;
@@ -89,7 +88,7 @@ public class ContinuousModelTab extends JPanel {
 				8);
 		numberOfIntervalsParser = new JTextField("100", 5);
 		maxAltMappingParser = new JTextField("5000000", 5);
-		kmlPathParser = new JTextField(defaultKmlPath, 15);
+		kmlPathParser = new JTextField("output.kml", 15);
 
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
@@ -204,6 +203,10 @@ public class ContinuousModelTab extends JPanel {
 				treeFilename = file.getAbsolutePath();
 				System.out.println("Opened " + treeFilename + "\n");
 
+				workingDirectory = chooser.getCurrentDirectory().toString();
+				System.out.println("Setted working directory to "
+						+ workingDirectory + "\n");
+
 			} catch (Exception e1) {
 				System.err.println("Could not Open! \n");
 			}
@@ -244,8 +247,10 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToKML.setNumberOfIntervals(Integer
 								.valueOf(numberOfIntervalsParser.getText()));
 
-						continuousTreeToKML.setKmlWriterPath(kmlPathParser
-								.getText());
+						continuousTreeToKML.setKmlWriterPath(
+
+						workingDirectory.concat("/").concat(
+								kmlPathParser.getText()));
 
 						continuousTreeToKML.setTreePath(treeFilename);
 

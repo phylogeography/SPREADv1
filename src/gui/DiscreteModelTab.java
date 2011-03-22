@@ -27,8 +27,6 @@ import templates.DiscreteTreeToProcessing;
 @SuppressWarnings("serial")
 public class DiscreteModelTab extends JPanel {
 
-	private String defaultKmlPath = "/home/filip/Pulpit/output.kml";
-	
 	// Current date
 	private Calendar calendar;
 	private SimpleDateFormat formatter;
@@ -43,6 +41,7 @@ public class DiscreteModelTab extends JPanel {
 	// Strings for paths
 	private String treeFilename;
 	private String locationsFilename;
+	private String workingDirectory;
 
 	// Text fields
 	private JTextField stateAttNameParser;
@@ -90,7 +89,7 @@ public class DiscreteModelTab extends JPanel {
 				8);
 		numberOfIntervalsParser = new JTextField("100", 5);
 		maxAltMappingParser = new JTextField("5000000", 5);
-		kmlPathParser = new JTextField(defaultKmlPath, 15);
+		kmlPathParser = new JTextField("output.kml", 15);
 
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
@@ -204,6 +203,10 @@ public class DiscreteModelTab extends JPanel {
 
 				System.out.println("Opened " + treeFilename + "\n");
 
+				workingDirectory = chooser.getCurrentDirectory().toString();
+				System.out.println("Setted working directory to "
+						+ workingDirectory + "\n");
+
 			} catch (Exception e1) {
 				System.err.println("Could not Open! \n");
 			}
@@ -243,6 +246,7 @@ public class DiscreteModelTab extends JPanel {
 						progressBar.setIndeterminate(true);
 
 						DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
+
 						String mrsdString = mrsdStringParser.getText()
 								+ " "
 								+ (eraParser.getSelectedIndex() == 0 ? "AD"
@@ -256,15 +260,21 @@ public class DiscreteModelTab extends JPanel {
 
 						discreteTreeToKML.setMaxAltitudeMapping(Double
 								.valueOf(maxAltMappingParser.getText()));
+
 						discreteTreeToKML.setMrsdString(mrsdString);
+
 						discreteTreeToKML.setNumberOfIntervals(Integer
 								.valueOf(numberOfIntervalsParser.getText()));
-						discreteTreeToKML.setKmlWriterPath(kmlPathParser
-								.getText());
+
+						discreteTreeToKML.setKmlWriterPath(workingDirectory
+								.concat("/").concat(kmlPathParser.getText()));
+
 						discreteTreeToKML.setTreePath(treeFilename);
+
 						discreteTreeToKML.GenerateKML();
+
 						System.out.println("Finished in: "
-								+ discreteTreeToKML.time + " msec");
+								+ discreteTreeToKML.time + " msec \n");
 
 					} catch (Exception e) {
 						e.printStackTrace();
