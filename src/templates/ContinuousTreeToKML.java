@@ -113,7 +113,7 @@ public class ContinuousTreeToKML {
 	}
 
 	public void GenerateKML() throws IOException, ImportException,
-			ParseException {
+			ParseException, RuntimeException {
 
 		// start timing
 		time = -System.currentTimeMillis();
@@ -152,7 +152,7 @@ public class ContinuousTreeToKML {
 		// this is to generate kml output
 		KMLGenerator kmloutput = new KMLGenerator();
 		layers = new ArrayList<Layer>();
-		
+
 		// Execute threads
 		final int NTHREDS = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
@@ -325,8 +325,9 @@ public class ContinuousTreeToKML {
 
 			} catch (ParseException e) {
 				e.printStackTrace();
-				System.err.println("ContinuousTreeToKML.Branches");
-				throw new RuntimeException("FUBAR", e);
+				
+			} catch (RuntimeException e) {
+				e.printStackTrace();
 			}
 
 		}// END: run
@@ -446,8 +447,9 @@ public class ContinuousTreeToKML {
 
 			} catch (ParseException e) {
 				e.printStackTrace();
-				System.err.println("ContinuousTreeToKML.Polygons");
-				throw new RuntimeException("FUBAR", e);
+
+			} catch (RuntimeException e) {
+				e.printStackTrace();
 			}
 
 		}// END: run
