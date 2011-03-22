@@ -223,6 +223,7 @@ public class TimeSlicerToKML {
 		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
 
 		return timeLine;
+
 	}// END: GenerateTimeLine
 
 	// ///////////////////////////////
@@ -327,8 +328,10 @@ public class TimeSlicerToKML {
 
 			} catch (ParseException e) {
 				e.printStackTrace();
-			}
 
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+			}
 		}// END: run
 	}// END: AnalyzeTree
 
