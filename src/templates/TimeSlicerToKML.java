@@ -182,7 +182,12 @@ public class TimeSlicerToKML {
 		while (!executor.isTerminated()) {
 		}
 
-		System.out.println("Analyzed " + (int) (readTrees - burnIn) + " trees");
+		if ((readTrees - burnIn) <= 0.0) {
+			throw new RuntimeException("Burnt too many trees!");
+		} else {
+			System.out.println("Analyzed " + (int) (readTrees - burnIn)
+					+ " trees");
+		}
 
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
@@ -258,7 +263,7 @@ public class TimeSlicerToKML {
 							Node parentNode = currentTree.getParent(node);
 
 							double nodeHeight = currentTree.getHeight(node);
-							//TODO: throws NullPointerException
+							// TODO: throws NullPointerException
 							double parentHeight = currentTree
 									.getHeight(parentNode);
 
@@ -343,6 +348,9 @@ public class TimeSlicerToKML {
 				e.printStackTrace();
 
 			} catch (RuntimeException e) {
+				e.printStackTrace();
+			
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
