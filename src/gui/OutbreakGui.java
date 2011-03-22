@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -57,7 +58,12 @@ public class OutbreakGui {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		Toolkit.getDefaultToolkit().setDynamicLayout(true);
-		
+
+		// Mac stuff
+		System.setProperty("apple.awt.showGrowBox", "true");
+		System.setProperty("apple.awt.brushMetalLook", "true");
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
+
 		// Setup icons
 		quitIcon = CreateImageIcon("/icons/close.png");
 		helpIcon = CreateImageIcon("/icons/help.png");
@@ -115,6 +121,8 @@ public class OutbreakGui {
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		frame.add(scrollPane, BorderLayout.CENTER);
+		frame.getContentPane().add(Box.createVerticalStrut(15),
+				BorderLayout.SOUTH);
 		frame.pack();
 	}
 
