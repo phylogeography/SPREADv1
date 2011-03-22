@@ -90,7 +90,7 @@ public class TimeSlicerToKML {
 
 	}// END: TimeSlicerToKML()
 
-	public void setMccTreePath(String path) throws FileNotFoundException {
+	public void setTreePath(String path) throws FileNotFoundException {
 		treeImporter = new NexusImporter(new FileReader(path));
 	}
 

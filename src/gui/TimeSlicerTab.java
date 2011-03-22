@@ -274,7 +274,7 @@ public class TimeSlicerTab extends JPanel {
 								+ (eraParser.getSelectedIndex() == 0 ? "AD"
 										: "BC");
 
-						timeSlicerToKML.setMccTreePath(mccTreeFilename);
+						timeSlicerToKML.setTreePath(mccTreeFilename);
 
 						timeSlicerToKML.setTreesPath(treesFilename);
 
