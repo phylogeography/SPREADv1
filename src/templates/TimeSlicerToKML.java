@@ -131,7 +131,7 @@ public class TimeSlicerToKML {
 	}
 
 	public void GenerateKML() throws IOException, ImportException,
-			ParseException {
+			ParseException, RuntimeException {
 
 		// start timing
 		time = -System.currentTimeMillis();
