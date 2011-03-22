@@ -52,6 +52,7 @@ public class TimeSlicerTab extends JPanel {
 	private JComboBox eraParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField kmlPathParser;
+	private JTextField maxAltMappingParser;
 
 	// Buttons for tab
 	private JButton generateKml;
@@ -96,6 +97,7 @@ public class TimeSlicerTab extends JPanel {
 		mrsdStringParser = new JTextField(formatter.format(calendar.getTime()),
 				8);
 		numberOfIntervalsParser = new JTextField("10", 5);
+		maxAltMappingParser = new JTextField("500000", 5);
 		kmlPathParser = new JTextField("/home/filip/Pulpit/output.kml", 15);
 
 		// Setup buttons for tab
@@ -114,7 +116,7 @@ public class TimeSlicerTab extends JPanel {
 		 * */
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));// PAGE_AXIS
-		leftPanel.setPreferredSize(new Dimension(230, 810));
+		leftPanel.setPreferredSize(new Dimension(230, 870));
 
 		openTree.addActionListener(new ListenOpenTree());
 		openTrees.addActionListener(new ListenOpenTrees());
@@ -139,6 +141,11 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.add(mrsdStringParser);
 		tmpPanel.add(eraParser);
 		leftPanel.add(tmpPanel);
+		
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Use true noise:"));
+		tmpPanel.add(trueNoiseParser);
+		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
@@ -161,13 +168,13 @@ public class TimeSlicerTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setBorder(new TitledBorder("Use true noise:"));
-		tmpPanel.add(trueNoiseParser);
-		leftPanel.add(tmpPanel);
-
-		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
+		leftPanel.add(tmpPanel);
+		
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Maximal altitude:"));
+		tmpPanel.add(maxAltMappingParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -302,6 +309,9 @@ public class TimeSlicerTab extends JPanel {
 
 						timeSlicerToKML.setKmlWriterPath(kmlPathParser
 								.getText());
+						
+						timeSlicerToKML.setMaxAltitudeMapping(Double
+								.valueOf(maxAltMappingParser.getText()));
 
 						timeSlicerToKML.GenerateKML();
 
