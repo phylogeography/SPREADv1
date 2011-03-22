@@ -69,7 +69,7 @@ public class RateIndicatorBFToKML {
 	}
 
 	public void GenerateKML() throws IOException, ImportException,
-	ParseException {
+			ParseException, RuntimeException {
 
 		// start timing
 		time = -System.currentTimeMillis();
@@ -199,7 +199,6 @@ public class RateIndicatorBFToKML {
 			}
 
 			layers.add(ratesLayer);
-
 		}
 	}// END: Rates
 
