@@ -23,6 +23,8 @@ import templates.RateIndicatorBFToProcessing;
 @SuppressWarnings("serial")
 public class RateIndicatorBFTab extends JPanel {
 
+	private String defaultKmlPath = "/home/filip/Pulpit/output.kml";
+	
 	// Icons
 	private ImageIcon nuclearIcon;
 	private ImageIcon logIcon;
@@ -76,7 +78,7 @@ public class RateIndicatorBFTab extends JPanel {
 		numberOfIntervalsParser = new JTextField("100", 5);
 		maxAltMappingParser = new JTextField("500000", 5);
 		bfCutoffParser = new JTextField("3.0", 5);
-		kmlPathParser = new JTextField("/home/filip/Pulpit/output.kml", 15);
+		kmlPathParser = new JTextField(defaultKmlPath, 15);
 
 		// Setup buttons for tab
 		openLog = new JButton("Open", logIcon);
