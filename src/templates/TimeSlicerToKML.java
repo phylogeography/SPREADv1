@@ -40,7 +40,6 @@ import utils.Utils;
 public class TimeSlicerToKML {
 
 	public long time;
-	public String message;
 
 	private static final int DayInMillis = 86400000;
 
@@ -53,6 +52,7 @@ public class TimeSlicerToKML {
 	private String rateString;
 	private int numberOfIntervals;
 	private boolean trueNoise;
+	private boolean impute;
 	private String mrsdString;
 	private double timescaler;
 	private TimeLine timeLine;
@@ -136,6 +136,10 @@ public class TimeSlicerToKML {
 
 	public void setTrueNoise(boolean trueNoiseBoolean) {
 		trueNoise = trueNoiseBoolean;
+	}
+
+	public void setImpute(boolean imputeBoolean) {
+		impute = imputeBoolean;
 	}
 
 	public void setKmlWriterPath(String kmlpath) throws FileNotFoundException {
@@ -293,45 +297,63 @@ public class TimeSlicerToKML {
 							double nodeTime = mrsd1
 									.minus((int) (nodeHeight * timescaler));
 
-							Object[] imputedLocation = imputeValue(location,
-									parentLocation, sliceTime, nodeTime,
-									parentTime, currentTree, rate, trueNoise);
-
 							if (parentTime < sliceTime && sliceTime <= nodeTime) {
 
+								// if there is an entry grow it:
 								if (sliceMap.containsKey(sliceTime)) {
 
 									sliceMap.get(sliceTime).add(
 											new Coordinates(parentLongitude,
 													parentLatitude, 0.0));
 
-									sliceMap.get(sliceTime).add(
-											new Coordinates(
+									if (impute) {
 
-											Double.valueOf(imputedLocation[1]
-													.toString()),
+										Object[] imputedLocation = imputeValue(
+												location, parentLocation,
+												sliceTime, nodeTime,
+												parentTime, currentTree, rate,
+												trueNoise);
 
-											Double.valueOf(imputedLocation[0]
-													.toString()),
+										sliceMap
+												.get(sliceTime)
+												.add(
+														new Coordinates(
+																Double
+																		.valueOf(imputedLocation[1]
+																				.toString()),
 
-											0.0));
+																Double
+																		.valueOf(imputedLocation[0]
+																				.toString()),
+																0.0));
+									}
 
 									sliceMap.get(sliceTime).add(
 											new Coordinates(longitude,
 													latitude, 0.0));
 
-								} else {
+								} else { // if no entry to grow add it:
 
 									List<Coordinates> coords = new ArrayList<Coordinates>();
 
 									coords.add(new Coordinates(parentLongitude,
 											parentLatitude, 0.0));
 
-									coords.add(new Coordinates(Double
-											.valueOf(imputedLocation[1]
-													.toString()), Double
-											.valueOf(imputedLocation[0]
-													.toString()), 0.0));
+									if (impute) {
+
+										Object[] imputedLocation = imputeValue(
+												location, parentLocation,
+												sliceTime, nodeTime,
+												parentTime, currentTree, rate,
+												trueNoise);
+
+										coords.add(new Coordinates(Double
+												.valueOf(imputedLocation[1]
+														.toString()), Double
+												.valueOf(imputedLocation[0]
+														.toString()), 0.0));
+
+									}
 
 									coords.add(new Coordinates(longitude,
 											latitude, 0.0));
@@ -349,7 +371,7 @@ public class TimeSlicerToKML {
 
 			} catch (RuntimeException e) {
 				e.printStackTrace();
-			
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

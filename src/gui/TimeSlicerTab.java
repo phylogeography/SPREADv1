@@ -62,8 +62,9 @@ public class TimeSlicerTab extends JPanel {
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
 
-	// checkbox
+	// checkboxes
 	private JCheckBox trueNoiseParser;
+	private JCheckBox imputeParser;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -108,9 +109,10 @@ public class TimeSlicerTab extends JPanel {
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
 
-		// Setup progress bar & checkbox
+		// Setup progress bar & checkboxes
 		progressBar = new JProgressBar();
 		trueNoiseParser = new JCheckBox();
+		imputeParser = new JCheckBox();
 
 		/**
 		 * left tools pane
@@ -124,6 +126,7 @@ public class TimeSlicerTab extends JPanel {
 		generateKml.addActionListener(new ListenGenerateKml());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
+		imputeParser.addActionListener(new listenImputeParser());
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Load tree file:"));
@@ -144,8 +147,10 @@ public class TimeSlicerTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setBorder(new TitledBorder("Use true noise:"));
+		tmpPanel.setBorder(new TitledBorder("Impute / Use true noise:"));
+		tmpPanel.add(imputeParser);
 		tmpPanel.add(trueNoiseParser);
+		trueNoiseParser.setEnabled(false);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -213,6 +218,17 @@ public class TimeSlicerTab extends JPanel {
 		rightPanel.add(timeSlicerToProcessing);
 		add(rightPanel);
 
+	}
+
+	private class listenImputeParser implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+			if (imputeParser.isSelected()) {
+				trueNoiseParser.setEnabled(true);
+			} else {
+				trueNoiseParser.setEnabled(false);
+			}
+		}
 	}
 
 	private class ListenOpenTree implements ActionListener {
@@ -306,6 +322,8 @@ public class TimeSlicerTab extends JPanel {
 
 						timeSlicerToKML.setTrueNoise(trueNoiseParser
 								.isSelected());
+
+						timeSlicerToKML.setImpute(imputeParser.isSelected());
 
 						timeSlicerToKML.setMrsdString(mrsdString);
 
