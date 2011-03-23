@@ -177,7 +177,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		}
 	}// END: drawPolygons
 
-	private void drawPolygon(Double sliceTime) {
+	private void drawPolygon(Double sliceTime) throws OutOfMemoryError{
 
 		/**
 		 * Color and Opacity mapping

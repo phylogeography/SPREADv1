@@ -143,13 +143,13 @@ public class TimeSlicerToKML {
 	public void setKmlWriterPath(String kmlpath) throws FileNotFoundException {
 		writer = new PrintWriter(kmlpath);
 	}
-	
+
 	public void setMaxAltitudeMapping(double max) {
 		maxAltMapping = max;
 	}
 
 	public void GenerateKML() throws IOException, ImportException,
-			ParseException, RuntimeException {
+			ParseException, RuntimeException, OutOfMemoryError {
 
 		// start timing
 		time = -System.currentTimeMillis();
@@ -225,7 +225,7 @@ public class TimeSlicerToKML {
 		}
 
 		executor.submit(new Branches());
-		
+
 		executor.shutdown();
 		while (!executor.isTerminated()) {
 		}
@@ -430,7 +430,7 @@ public class TimeSlicerToKML {
 
 		}// END: run
 	}// END: Polygons
-	
+
 	// ///////////////////////////
 	// ---CONCURRENT BRANCHES---//
 	// ///////////////////////////
@@ -525,6 +525,12 @@ public class TimeSlicerToKML {
 			RootedTree tree, double rate, boolean trueNoise) {
 
 		Object o = tree.getAttribute(precisionString);
+
+		if (o == null) {
+			throw new RuntimeException("Attribute " + precisionString
+					+ " missing from the tree. \n");
+		}
+
 		double treeNormalization = tree.getHeight(tree.getRootNode());
 
 		Object[] array = (Object[]) o;

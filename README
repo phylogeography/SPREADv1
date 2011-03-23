@@ -46,10 +46,8 @@ ________________________________________________________________________________
    - allow for saving panel settings
    - hide some options with "show more" buttons 
 * TimeSlicer template
-  - concurrent version of Polygons is out of sync with sliceTimes and 
-    needs work, for now we run it sequentially
-  - rate & precision attributes only needed when using impute, 
-    add options to impute listener to take care of that
+  - give the concurrent implementation of AnalyzeTree another try. This might        
+    be achieveable with ConcurrentHashMap class  
 
 
 
