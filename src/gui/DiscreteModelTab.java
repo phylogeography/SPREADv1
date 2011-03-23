@@ -278,7 +278,7 @@ public class DiscreteModelTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.err.println("FUBAR \n");
+						System.err.println("I went tits up :( \n");
 					}
 
 					return null;
@@ -317,7 +317,7 @@ public class DiscreteModelTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.err.println("FUBAR \n");
+						System.err.println("I went tits up :( \n");
 					}
 
 					return null;

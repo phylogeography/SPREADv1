@@ -13,12 +13,11 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import structure.Coordinates;
 import utils.Utils;
+import utils.JarSetter;
 
 @SuppressWarnings("serial")
 public class ContinuousTreeToProcessing extends PApplet {
 
-	private boolean jar = false;
-	
 	private final int imageWidth = 2048;
 	private final int imageHeight = 1025;
 
@@ -88,7 +87,8 @@ public class ContinuousTreeToProcessing extends PApplet {
 	private void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		mapImage = loadImage(LoadMapBackground(jar));
+		JarSetter jarSetter = new JarSetter();
+		mapImage = loadImage(LoadMapBackground(jarSetter.getJarBoolean()));
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons
@@ -204,17 +204,16 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 	private String LoadMapBackground(boolean fromJar) {
 
-		String imgPathFromJar;
+		String imgPath;
 
 		if (fromJar) {
-			imgPathFromJar = "jar:"
+			imgPath = "jar:"
 					+ this.getClass().getResource("world_map.png").getPath();
 		} else {
-			imgPathFromJar = this.getClass().getResource("world_map.png")
-					.getPath();
+			imgPath = this.getClass().getResource("world_map.png").getPath();
 		}
 
-		return imgPathFromJar;
+		return imgPath;
 	}
 
 }// END: PlotOnMap class

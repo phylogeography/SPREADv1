@@ -10,11 +10,12 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,33 +42,36 @@ public class TimeSlicerToKML {
 
 	public long time;
 
-	private static final int DayInMillis = 86400000;
+	private final int DayInMillis = 86400000;
 
-	private TreeImporter treesImporter;
 	private TreeImporter treeImporter;
-	private String precisionString;
+	private RootedTree tree;
+	private double maxAltMapping;
+	private TreeImporter treesImporter;
+	private RootedTree currentTree;
+
+	private String mrsdString;
+	private double timescaler;
+	private int numberOfIntervals;
+	private int burnIn;
+	private boolean impute;
+	private boolean useTrueNoise;
 	private String locationString;
 	private String longitudeName;
 	private String latitudeName;
 	private String rateString;
-	private int numberOfIntervals;
-	private boolean trueNoise;
-	private boolean impute;
-	private String mrsdString;
-	private double timescaler;
+	private String precisionString;
+	private List<Layer> layers;
+	private int polygonsStyleId;
+	private SimpleDateFormat formatter;
+	private PrintWriter writer;
+
+	private Double sliceTime;
 	private TimeLine timeLine;
-	private HashMap<Double, List<Coordinates>> sliceMap;
 	private double startTime;
 	private double endTime;
-	private List<Layer> layers;
-	private PrintWriter writer;
-	private int burnIn;
-	private RootedTree currentTree;
-	private SimpleDateFormat formatter;
-	private Double sliceTime;
-	private int polygonsStyleId;
-	private RootedTree tree;
-	private double maxAltMapping;
+
+	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -92,8 +96,7 @@ public class TimeSlicerToKML {
 			timescaler = 365;
 			break;
 		}
-
-	}// END: TimeSlicerToKML()
+	}
 
 	public void setTreePath(String path) throws FileNotFoundException {
 		treeImporter = new NexusImporter(new FileReader(path));
@@ -107,9 +110,24 @@ public class TimeSlicerToKML {
 		mrsdString = mrsd;
 	}
 
+	public void setNumberOfIntervals(int number) {
+		numberOfIntervals = number;
+	}
+
+	public void setBurnIn(int burnInDouble) {
+		burnIn = burnInDouble;
+	}
+
+	public void setImpute(boolean imputeBoolean) {
+		impute = imputeBoolean;
+	}
+
+	public void setTrueNoise(boolean trueNoiseBoolean) {
+		useTrueNoise = trueNoiseBoolean;
+	}
+
 	public void setLocationAttName(String name) {
 		locationString = name;
-		// this is for coordinate attribute names
 		longitudeName = (locationString + 2);
 		latitudeName = (locationString + 1);
 	}
@@ -122,28 +140,12 @@ public class TimeSlicerToKML {
 		precisionString = name;
 	}
 
-	public void setNumberOfIntervals(int number) {
-		numberOfIntervals = number;
-	}
-
-	public void setMaxAltitudeMapping(double max) {
-		maxAltMapping = max;
-	}
-
-	public void setBurnIn(int burnInDouble) {
-		burnIn = burnInDouble;
-	}
-
-	public void setTrueNoise(boolean trueNoiseBoolean) {
-		trueNoise = trueNoiseBoolean;
-	}
-
-	public void setImpute(boolean imputeBoolean) {
-		impute = imputeBoolean;
-	}
-
 	public void setKmlWriterPath(String kmlpath) throws FileNotFoundException {
 		writer = new PrintWriter(kmlpath);
+	}
+	
+	public void setMaxAltitudeMapping(double max) {
+		maxAltMapping = max;
 	}
 
 	public void GenerateKML() throws IOException, ImportException,
@@ -153,17 +155,12 @@ public class TimeSlicerToKML {
 		time = -System.currentTimeMillis();
 
 		System.out.println("Importing trees...");
-
-		// This is a general time span for all of the trees
 		tree = (RootedTree) treeImporter.importNextTree();
-		timeLine = GenerateTimeLine(tree);
-		startTime = timeLine.getStartTime();
-		endTime = timeLine.getEndTime();
-
-		// This is for slice times
-		sliceMap = new HashMap<Double, List<Coordinates>>();
 
 		System.out.println("Analyzing trees...");
+
+		// This is for collecting coordinates into polygons
+		slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
 
 		// Executor for threads
 		final int NTHREDS = Runtime.getRuntime().availableProcessors();
@@ -173,17 +170,16 @@ public class TimeSlicerToKML {
 		while (treesImporter.hasTree()) {
 
 			currentTree = (RootedTree) treesImporter.importNextTree();
+			synchronized (this) {
+				if (readTrees >= burnIn) {
 
-			if (readTrees >= burnIn) {
-				executor.submit(new AnalyzeTree());
+					// executor.submit(new AnalyzeTree());
+					AnalyzeTree analyzeTree = new AnalyzeTree();
+					analyzeTree.run();
+				}
+
+				readTrees++;
 			}
-
-			readTrees++;
-		}
-
-		// Wait until all threads are finished
-		executor.shutdown();
-		while (!executor.isTerminated()) {
 		}
 
 		if ((readTrees - burnIn) <= 0.0) {
@@ -193,31 +189,43 @@ public class TimeSlicerToKML {
 					+ " trees");
 		}
 
+		// Wait until all threads are finished
+		executor.shutdown();
+		while (!executor.isTerminated()) {
+		}
+
+		// Utils.printHashMap(slicesMap, true);
+
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
-
-		System.out.println("Generating Polygons...");
-
-		System.out.println("Iterating through Map...");
-
-		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
-		Set<Double> hostKeys = sliceMap.keySet();
+		Set<Double> hostKeys = slicesMap.keySet();
 		Iterator<Double> iterator = hostKeys.iterator();
 		executor = Executors.newFixedThreadPool(NTHREDS);
+		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
+		timeLine = GenerateTimeLine(tree);
+		startTime = timeLine.getStartTime();
+		endTime = timeLine.getEndTime();
+
+		System.out.println("Generating Polygons...");
+		System.out.println("Iterating through Map...");
 
 		polygonsStyleId = 1;
 		synchronized (iterator) {
 			while (iterator.hasNext()) {
+
+				System.out.println("Key " + polygonsStyleId + "...");
+
 				sliceTime = (Double) iterator.next();
-				// TODO sync it with sliceTime to use concurency
+
 				// executor.submit(new Polygons());
 				Polygons polygons = new Polygons();
 				polygons.run();
+
 			}
 		}
 
 		executor.submit(new Branches());
-
+		
 		executor.shutdown();
 		while (!executor.isTerminated()) {
 		}
@@ -233,41 +241,23 @@ public class TimeSlicerToKML {
 
 	}// END: GenerateKML
 
-	private TimeLine GenerateTimeLine(RootedTree mccTree) throws ParseException {
-
-		// This is a general time span for all of the trees
-		double treeRootHeight = mccTree.getHeight(mccTree.getRootNode());
-		SpreadDate mrsd = new SpreadDate(mrsdString);
-		double startTime = mrsd.getTime()
-				- (treeRootHeight * DayInMillis * timescaler);
-		double endTime = mrsd.getTime();
-		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
-
-		return timeLine;
-
-	}// END: GenerateTimeLine
-
-	// ///////////////////////////////
-	// ---CONCURRENT ANALYZE TREE---//
-	// ///////////////////////////////
 	private class AnalyzeTree implements Runnable {
 
 		public void run() {
 
 			try {
 
-				double timeSpan = startTime - endTime;
+				double treeRootHeight = tree.getHeight(tree.getRootNode());
 
 				for (Node node : currentTree.getNodes()) {
 
 					if (!currentTree.isRoot(node)) {
 
-						for (int i = numberOfIntervals; i > 0; i--) {
+						for (int i = 0; i <= numberOfIntervals; i++) {
 
 							Node parentNode = currentTree.getParent(node);
 
 							double nodeHeight = currentTree.getHeight(node);
-							// TODO: throws NullPointerException
 							double parentHeight = currentTree
 									.getHeight(parentNode);
 
@@ -282,57 +272,53 @@ public class TimeSlicerToKML {
 							double parentLatitude = (Double) parentLocation[0];
 							double parentLongitude = (Double) parentLocation[1];
 
-							double rate = Utils.getDoubleNodeAttribute(node,
-									rateString);
-
-							double sliceTime = startTime
-									- (timeSpan / numberOfIntervals)
+							double sliceHeight = treeRootHeight
+									- (treeRootHeight / numberOfIntervals)
 									* ((double) i);
 
-							SpreadDate mrsd0 = new SpreadDate(mrsdString);
-							double parentTime = mrsd0
-									.minus((int) (parentHeight * timescaler));
+							if (nodeHeight < sliceHeight
+									&& sliceHeight <= parentHeight) {
 
-							SpreadDate mrsd1 = new SpreadDate(mrsdString);
-							double nodeTime = mrsd1
-									.minus((int) (nodeHeight * timescaler));
+								SpreadDate mrsd = new SpreadDate(mrsdString);
+								double sliceTime = mrsd
+										.minus((int) (sliceHeight * timescaler));
 
-							if (parentTime < sliceTime && sliceTime <= nodeTime) {
+								if (slicesMap.containsKey(sliceTime)) {
 
-								// if there is an entry grow it:
-								if (sliceMap.containsKey(sliceTime)) {
-
-									sliceMap.get(sliceTime).add(
+									slicesMap.get(sliceTime).add(
 											new Coordinates(parentLongitude,
 													parentLatitude, 0.0));
 
 									if (impute) {
 
+										double rate = Utils
+												.getDoubleNodeAttribute(node,
+														rateString);
+
 										Object[] imputedLocation = imputeValue(
 												location, parentLocation,
-												sliceTime, nodeTime,
-												parentTime, currentTree, rate,
-												trueNoise);
+												sliceHeight, nodeHeight,
+												parentHeight, currentTree,
+												rate, useTrueNoise);
 
-										sliceMap
+										slicesMap
 												.get(sliceTime)
 												.add(
 														new Coordinates(
 																Double
 																		.valueOf(imputedLocation[1]
 																				.toString()),
-
 																Double
 																		.valueOf(imputedLocation[0]
 																				.toString()),
 																0.0));
 									}
 
-									sliceMap.get(sliceTime).add(
+									slicesMap.get(sliceTime).add(
 											new Coordinates(longitude,
 													latitude, 0.0));
 
-								} else { // if no entry to grow add it:
+								} else {
 
 									List<Coordinates> coords = new ArrayList<Coordinates>();
 
@@ -341,36 +327,33 @@ public class TimeSlicerToKML {
 
 									if (impute) {
 
+										double rate = Utils
+												.getDoubleNodeAttribute(node,
+														rateString);
+
 										Object[] imputedLocation = imputeValue(
 												location, parentLocation,
-												sliceTime, nodeTime,
-												parentTime, currentTree, rate,
-												trueNoise);
+												sliceHeight, nodeHeight,
+												parentHeight, currentTree,
+												rate, useTrueNoise);
 
 										coords.add(new Coordinates(Double
 												.valueOf(imputedLocation[1]
 														.toString()), Double
 												.valueOf(imputedLocation[0]
 														.toString()), 0.0));
-
 									}
 
 									coords.add(new Coordinates(longitude,
 											latitude, 0.0));
 
-									sliceMap.put(sliceTime, coords);
+									slicesMap.putIfAbsent(sliceTime, coords);
 
 								}// END: key check
-							}
+							}// END: sliceTime check
 						}// END: numberOfIntervals loop
 					}
 				}// END: node loop
-
-			} catch (ParseException e) {
-				e.printStackTrace();
-
-			} catch (RuntimeException e) {
-				e.printStackTrace();
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -378,75 +361,6 @@ public class TimeSlicerToKML {
 
 		}// END: run
 	}// END: AnalyzeTree
-
-	private Object[] imputeValue(Object[] location, Object[] parentLocation,
-			double sliceTime, double nodeTime, double parentTime,
-			RootedTree tree, double rate, boolean trueNoise) {
-
-		Object o = tree.getAttribute(precisionString);
-		double treeNormalization = tree.getHeight(tree.getRootNode());
-
-		Object[] array = (Object[]) o;
-
-		int dim = (int) Math.sqrt(1 + 8 * array.length) / 2;
-		double[][] precision = new double[dim][dim];
-		int c = 0;
-		for (int i = 0; i < dim; i++) {
-			for (int j = i; j < dim; j++) {
-				precision[j][i] = precision[i][j] = ((Double) array[c++])
-						* treeNormalization;
-			}
-		}
-
-		dim = location.length;
-		double[] nodeValue = new double[2];
-		double[] parentValue = new double[2];
-
-		for (int i = 0; i < dim; i++) {
-
-			nodeValue[i] = Double.parseDouble(location[i].toString());
-			parentValue[i] = Double.parseDouble(parentLocation[i].toString());
-
-		}
-
-		final double scaledTimeChild = (sliceTime - nodeTime) * rate;
-		final double scaledTimeParent = (parentTime - sliceTime) * rate;
-		final double scaledWeightTotal = 1.0 / scaledTimeChild + 1.0
-				/ scaledTimeParent;
-
-		if (scaledTimeChild == 0)
-			return location;
-
-		if (scaledTimeParent == 0)
-			return parentLocation;
-
-		// Find mean value, weighted average
-		double[] mean = new double[dim];
-		double[][] scaledPrecision = new double[dim][dim];
-
-		for (int i = 0; i < dim; i++) {
-			mean[i] = (nodeValue[i] / scaledTimeChild + parentValue[i]
-					/ scaledTimeParent)
-					/ scaledWeightTotal;
-
-			if (trueNoise) {
-				for (int j = i; j < dim; j++)
-					scaledPrecision[j][i] = scaledPrecision[i][j] = precision[i][j]
-							* scaledWeightTotal;
-			}
-		}
-
-		if (trueNoise) {
-			mean = MultivariateNormalDistribution
-					.nextMultivariateNormalPrecision(mean, scaledPrecision);
-		}
-
-		Object[] result = new Object[dim];
-		for (int i = 0; i < dim; i++)
-			result[i] = mean[i];
-
-		return result;
-	}// END: ImputeValue
 
 	// ///////////////////////////
 	// ---CONCURRENT POLYGONS---//
@@ -471,19 +385,16 @@ public class TimeSlicerToKML {
 			Style polygonsStyle = new Style(col, 0);
 			polygonsStyle.setId("polygon_style" + polygonsStyleId);
 
-			List<Coordinates> list = sliceMap.get(sliceTime);
+			List<Coordinates> list = slicesMap.get(sliceTime);
 
 			double[] x = new double[list.size()];
 			double[] y = new double[list.size()];
 
 			for (int i = 0; i < list.size(); i++) {
 
-				if (list.get(i) != null) {// TODO NullPointerException thrown
+				x[i] = list.get(i).getLatitude();
+				y[i] = list.get(i).getLongitude();
 
-					x[i] = list.get(i).getLatitude();
-					y[i] = list.get(i).getLongitude();
-
-				}
 			}
 
 			ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
@@ -497,6 +408,8 @@ public class TimeSlicerToKML {
 				List<Coordinates> coords = new ArrayList<Coordinates>();
 
 				for (int i = 0; i < latitude.length; i++) {
+
+					// System.out.println(longitude[i] + " " + latitude[i]);
 
 					coords.add(new Coordinates(longitude[i], latitude[i], 0.0));
 				}
@@ -517,7 +430,7 @@ public class TimeSlicerToKML {
 
 		}// END: run
 	}// END: Polygons
-
+	
 	// ///////////////////////////
 	// ---CONCURRENT BRANCHES---//
 	// ///////////////////////////
@@ -527,7 +440,6 @@ public class TimeSlicerToKML {
 
 			try {
 
-				// This is for mappings
 				double treeHeightMax = Utils.getTreeHeightMax(tree);
 
 				// this is for Branches folder:
@@ -608,4 +520,87 @@ public class TimeSlicerToKML {
 		}// END: run
 	}// END: Branches class
 
-}// END: TimeSlicer class
+	private Object[] imputeValue(Object[] location, Object[] parentLocation,
+			double sliceTime, double nodeTime, double parentTime,
+			RootedTree tree, double rate, boolean trueNoise) {
+
+		Object o = tree.getAttribute(precisionString);
+		double treeNormalization = tree.getHeight(tree.getRootNode());
+
+		Object[] array = (Object[]) o;
+
+		int dim = (int) Math.sqrt(1 + 8 * array.length) / 2;
+		double[][] precision = new double[dim][dim];
+		int c = 0;
+		for (int i = 0; i < dim; i++) {
+			for (int j = i; j < dim; j++) {
+				precision[j][i] = precision[i][j] = ((Double) array[c++])
+						* treeNormalization;
+			}
+		}
+
+		dim = location.length;
+		double[] nodeValue = new double[2];
+		double[] parentValue = new double[2];
+
+		for (int i = 0; i < dim; i++) {
+
+			nodeValue[i] = Double.parseDouble(location[i].toString());
+			parentValue[i] = Double.parseDouble(parentLocation[i].toString());
+
+		}
+
+		final double scaledTimeChild = (sliceTime - nodeTime) * rate;
+		final double scaledTimeParent = (parentTime - sliceTime) * rate;
+		final double scaledWeightTotal = (1.0 / scaledTimeChild)
+				+ (1.0 / scaledTimeParent);
+
+		if (scaledTimeChild == 0)
+			return location;
+
+		if (scaledTimeParent == 0)
+			return parentLocation;
+
+		// Find mean value, weighted average
+		double[] mean = new double[dim];
+		double[][] scaledPrecision = new double[dim][dim];
+
+		for (int i = 0; i < dim; i++) {
+			mean[i] = (nodeValue[i] / scaledTimeChild + parentValue[i]
+					/ scaledTimeParent)
+					/ scaledWeightTotal;
+
+			if (trueNoise) {
+				for (int j = i; j < dim; j++)
+					scaledPrecision[j][i] = scaledPrecision[i][j] = precision[i][j]
+							* scaledWeightTotal;
+			}
+		}
+
+		if (trueNoise) {
+			mean = MultivariateNormalDistribution
+					.nextMultivariateNormalPrecision(mean, scaledPrecision);
+		}
+
+		Object[] result = new Object[dim];
+		for (int i = 0; i < dim; i++)
+			result[i] = mean[i];
+
+		return result;
+	}// END: ImputeValue
+
+	private TimeLine GenerateTimeLine(RootedTree tree) throws ParseException {
+
+		// This is a general time span for all of the trees
+		double treeRootHeight = tree.getHeight(tree.getRootNode());
+		SpreadDate mrsd = new SpreadDate(mrsdString);
+		double startTime = mrsd.getTime()
+				- (treeRootHeight * DayInMillis * timescaler);
+		double endTime = mrsd.getTime();
+		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
+
+		return timeLine;
+
+	}// END: GenerateTimeLine
+
+}// END: class

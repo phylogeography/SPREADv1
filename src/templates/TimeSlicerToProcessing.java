@@ -5,10 +5,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,6 +23,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import structure.Coordinates;
 import structure.TimeLine;
+import utils.JarSetter;
 import utils.SpreadDate;
 import utils.Utils;
 import contouring.ContourMaker;
@@ -31,7 +33,6 @@ import contouring.ContourWithSynder;
 @SuppressWarnings("serial")
 public class TimeSlicerToProcessing extends PApplet {
 
-	private boolean jar = false;
 	private final int imageWidth = 2048;
 	private final int imageHeight = 1025;
 	private final int DayInMillis = 86400000;
@@ -45,18 +46,19 @@ public class TimeSlicerToProcessing extends PApplet {
 	private String latitudeName;
 	private String rateString;
 	private int numberOfIntervals;
-	private boolean trueNoise;
+	private boolean useTrueNoise;
 	private boolean impute;
 	private String mrsdString;
 	private double timescaler;
 	private TimeLine timeLine;
-	private HashMap<Double, List<Coordinates>> sliceMap;
 	private double startTime;
 	private double endTime;
 	private double burnIn;
 	private RootedTree currentTree;
 	private Double sliceTime;
 	RootedTree tree;
+
+	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -124,7 +126,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	}
 
 	public void setTrueNoise(boolean trueNoiseBoolean) {
-		trueNoise = trueNoiseBoolean;
+		useTrueNoise = trueNoiseBoolean;
 	}
 
 	public void setImpute(boolean imputeBoolean) {
@@ -158,14 +160,15 @@ public class TimeSlicerToProcessing extends PApplet {
 	private void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		mapImage = loadImage(LoadMapBackground(jar));
+		JarSetter jarSetter = new JarSetter();
+		mapImage = loadImage(LoadMapBackground(jarSetter.getJarBoolean()));
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapBackground
 
 	private void drawPolygons() {
 
-		Set<Double> hostKeys = sliceMap.keySet();
+		Set<Double> hostKeys = slicesMap.keySet();
 		Iterator<Double> iterator = hostKeys.iterator();
 
 		while (iterator.hasNext()) {
@@ -187,25 +190,22 @@ public class TimeSlicerToProcessing extends PApplet {
 		stroke(red, green, blue, alpha);
 		fill(red, green, blue, alpha);
 
-		List<Coordinates> list = sliceMap.get(sliceTime);
+		List<Coordinates> list = slicesMap.get(sliceTime);
 
 		double[] x = new double[list.size()];
 		double[] y = new double[list.size()];
 
 		for (int i = 0; i < list.size(); i++) {
 
-			if (list.get(i) != null) {// TODO NullPointerException thrown
+			x[i] = list.get(i).getLatitude();
+			y[i] = list.get(i).getLongitude();
 
-				x[i] = list.get(i).getLatitude();
-				y[i] = list.get(i).getLongitude();
-
-			}
 		}
 
 		ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
 		ContourPath[] paths = contourMaker.getContourPaths(0.8);
 
-		int pathCounter = 1;
+//		int pathCounter = 1;
 		for (ContourPath path : paths) {
 
 			double[] latitude = path.getAllX();
@@ -238,7 +238,7 @@ public class TimeSlicerToProcessing extends PApplet {
 			}// END: coordinates loop
 			endShape(CLOSE);
 
-			pathCounter++;
+//			pathCounter++;
 
 		}// END: paths loop
 
@@ -301,7 +301,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		endTime = timeLine.getEndTime();
 
 		// This is for slice times
-		sliceMap = new HashMap<Double, List<Coordinates>>();
+		slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
 
 		System.out.println("Analyzing trees...");
 
@@ -314,7 +314,10 @@ public class TimeSlicerToProcessing extends PApplet {
 			currentTree = (RootedTree) treesImporter.importNextTree();
 
 			if (readTrees >= burnIn) {
-				executor.submit(new AnalyzeTree());
+
+				// executor.submit(new AnalyzeTree());
+				AnalyzeTree analyzeTree = new AnalyzeTree();
+				analyzeTree.run();
 			}
 
 			readTrees++;
@@ -343,13 +346,13 @@ public class TimeSlicerToProcessing extends PApplet {
 
 			try {
 
-				double timeSpan = startTime - endTime;
+				double treeRootHeight = tree.getHeight(tree.getRootNode());
 
 				for (Node node : currentTree.getNodes()) {
 
 					if (!currentTree.isRoot(node)) {
 
-						for (int i = numberOfIntervals; i > 0; i--) {
+						for (int i = 0; i <= numberOfIntervals; i++) {
 
 							Node parentNode = currentTree.getParent(node);
 
@@ -368,54 +371,49 @@ public class TimeSlicerToProcessing extends PApplet {
 							double parentLatitude = (Double) parentLocation[0];
 							double parentLongitude = (Double) parentLocation[1];
 
-							double rate = Utils.getDoubleNodeAttribute(node,
-									rateString);
-
-							double sliceTime = startTime
-									- (timeSpan / numberOfIntervals)
+							double sliceHeight = treeRootHeight
+									- (treeRootHeight / numberOfIntervals)
 									* ((double) i);
 
-							SpreadDate mrsd0 = new SpreadDate(mrsdString);
-							double parentTime = mrsd0
-									.minus((int) (parentHeight * timescaler));
+							if (nodeHeight < sliceHeight
+									&& sliceHeight <= parentHeight) {
 
-							SpreadDate mrsd1 = new SpreadDate(mrsdString);
-							double nodeTime = mrsd1
-									.minus((int) (nodeHeight * timescaler));
+								SpreadDate mrsd = new SpreadDate(mrsdString);
+								double sliceTime = mrsd
+										.minus((int) (sliceHeight * timescaler));
 
-							if (parentTime < sliceTime && sliceTime <= nodeTime) {
+								if (slicesMap.containsKey(sliceTime)) {
 
-								if (sliceMap.containsKey(sliceTime)) {
-
-									sliceMap.get(sliceTime).add(
+									slicesMap.get(sliceTime).add(
 											new Coordinates(parentLongitude,
 													parentLatitude, 0.0));
+
 									if (impute) {
+
+										double rate = Utils
+												.getDoubleNodeAttribute(node,
+														rateString);
 
 										Object[] imputedLocation = imputeValue(
 												location, parentLocation,
-												sliceTime, nodeTime,
-												parentTime, currentTree, rate,
-												trueNoise);
+												sliceHeight, nodeHeight,
+												parentHeight, currentTree,
+												rate, useTrueNoise);
 
-										sliceMap
+										slicesMap
 												.get(sliceTime)
 												.add(
 														new Coordinates(
-
 																Double
 																		.valueOf(imputedLocation[1]
 																				.toString()),
-
 																Double
 																		.valueOf(imputedLocation[0]
 																				.toString()),
-
 																0.0));
-
 									}
 
-									sliceMap.get(sliceTime).add(
+									slicesMap.get(sliceTime).add(
 											new Coordinates(longitude,
 													latitude, 0.0));
 
@@ -428,37 +426,40 @@ public class TimeSlicerToProcessing extends PApplet {
 
 									if (impute) {
 
+										double rate = Utils
+												.getDoubleNodeAttribute(node,
+														rateString);
+
 										Object[] imputedLocation = imputeValue(
 												location, parentLocation,
-												sliceTime, nodeTime,
-												parentTime, currentTree, rate,
-												trueNoise);
+												sliceHeight, nodeHeight,
+												parentHeight, currentTree,
+												rate, useTrueNoise);
 
 										coords.add(new Coordinates(Double
 												.valueOf(imputedLocation[1]
 														.toString()), Double
 												.valueOf(imputedLocation[0]
 														.toString()), 0.0));
-
 									}
 
 									coords.add(new Coordinates(longitude,
 											latitude, 0.0));
 
-									sliceMap.put(sliceTime, coords);
+									slicesMap.putIfAbsent(sliceTime, coords);
 
 								}// END: key check
-							}
+							}// END: sliceTime check
 						}// END: numberOfIntervals loop
 					}
 				}// END: node loop
 
-			} catch (ParseException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 		}// END: run
-	}// END: analyzeTree
+	}// END: AnalyzeTree
 
 	private Object[] imputeValue(Object[] location, Object[] parentLocation,
 			double sliceTime, double nodeTime, double parentTime,

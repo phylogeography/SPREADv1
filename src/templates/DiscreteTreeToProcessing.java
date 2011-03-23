@@ -11,13 +11,13 @@ import jebl.evolution.trees.RootedTree;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
+import utils.JarSetter;
 import utils.ReadLocations;
 import utils.Utils;
 
 @SuppressWarnings("serial")
 public class DiscreteTreeToProcessing extends PApplet {
 
-	private boolean jar = false;
 	private final int imageWidth = 2048;
 	private final int imageHeight = 1025;
 
@@ -83,7 +83,8 @@ public class DiscreteTreeToProcessing extends PApplet {
 	void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		mapImage = loadImage(LoadMapBackground(jar));
+		JarSetter jarSetter = new JarSetter();
+		mapImage = loadImage(LoadMapBackground(jarSetter.getJarBoolean()));
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons

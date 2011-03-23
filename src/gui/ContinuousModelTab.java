@@ -261,7 +261,7 @@ public class ContinuousModelTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.err.println("FUBAR \n");
+						System.err.println("I went tits up :( \n");
 					}
 
 					return null;
@@ -302,7 +302,7 @@ public class ContinuousModelTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.err.println("FUBAR \n");
+						System.err.println("I went tits up :( \n");
 					}
 
 					return null;

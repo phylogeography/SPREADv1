@@ -2,7 +2,7 @@ package utils;
 
 public class JarSetter {
 
-	private final boolean jar = true;
+	private final boolean jar = false;
 
 	public JarSetter() {
 	}

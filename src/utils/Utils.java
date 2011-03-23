@@ -1,16 +1,16 @@
 package utils;
 
-import jebl.evolution.graphs.Node;
-import jebl.evolution.trees.RootedTree;
-
 import java.awt.Color;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+
+import jebl.evolution.graphs.Node;
+import jebl.evolution.trees.RootedTree;
 
 import org.boehn.kmlframework.kml.Point;
 
@@ -320,10 +320,10 @@ public class Utils {
 		return coords;
 	}// END: GenerateCircle
 
-	public static void printHashMap(HashMap<Double, List<Coordinates>> hashMap,
+	public static void printHashMap(ConcurrentMap<Double,List<Coordinates>> slicesMap,
 			boolean printValues) {
 
-		Set<Double> hostKeys = hashMap.keySet();
+		Set<Double> hostKeys = slicesMap.keySet();
 		Iterator<Double> iterator = hostKeys.iterator();
 
 		int valCount = 1;
@@ -331,7 +331,7 @@ public class Utils {
 
 			Double mapKey = (Double) iterator.next();
 
-			List<Coordinates> list = hashMap.get(mapKey);
+			List<Coordinates> list = slicesMap.get(mapKey);
 
 			if (printValues) {
 
@@ -343,16 +343,17 @@ public class Utils {
 
 					Coordinates coord = list.get(i);
 					
+					System.out.println(coord.getLongitude() + " "
+							+ coord.getLatitude());
+					
 					if (coord == null) {
 						System.out.println("null!");
-//						System.out.println(coord.getLongitude() + " "
-//								+ coord.getLatitude());
 					}
 				}
 
 			} else {
 
-				System.out.println(valCount);
+				System.out.println(mapKey);
 				System.out.println("is null = " + (list == null));
 				System.out.println("===================================");
 				valCount++;

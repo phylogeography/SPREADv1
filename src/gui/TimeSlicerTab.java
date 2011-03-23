@@ -152,17 +152,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.add(trueNoiseParser);
 		trueNoiseParser.setEnabled(false);
 		leftPanel.add(tmpPanel);
-
-		tmpPanel = new JPanel();
-		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
-		tmpPanel.add(burnInParser);
-		leftPanel.add(tmpPanel);
-
-		tmpPanel = new JPanel();
-		tmpPanel.setBorder(new TitledBorder("Location attribute name:"));
-		tmpPanel.add(locationAttNameParser);
-		leftPanel.add(tmpPanel);
-
+		
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Rate attribute name:"));
 		tmpPanel.add(rateAttNameParser);
@@ -171,6 +161,19 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Precision attribute name:"));
 		tmpPanel.add(precisionAttNameParser);
+		leftPanel.add(tmpPanel);
+
+		rateAttNameParser.setEnabled(false);
+		precisionAttNameParser.setEnabled(false);
+		
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
+		tmpPanel.add(burnInParser);
+		leftPanel.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setBorder(new TitledBorder("Location attribute name:"));
+		tmpPanel.add(locationAttNameParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -225,8 +228,14 @@ public class TimeSlicerTab extends JPanel {
 
 			if (imputeParser.isSelected()) {
 				trueNoiseParser.setEnabled(true);
+				rateAttNameParser.setEnabled(true);
+				precisionAttNameParser.setEnabled(true);
+
 			} else {
 				trueNoiseParser.setEnabled(false);
+				rateAttNameParser.setEnabled(false);
+				precisionAttNameParser.setEnabled(false);
+
 			}
 		}
 	}
@@ -340,7 +349,7 @@ public class TimeSlicerTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.err.println("FUBAR \n");
+						System.err.println("I went tits up :( \n");
 					}
 
 					return null;
@@ -410,7 +419,7 @@ public class TimeSlicerTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.err.println("FUBAR \n");
+						System.err.println("I went tits up :( \n");
 					}
 
 					return null;
