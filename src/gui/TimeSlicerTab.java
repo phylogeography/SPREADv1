@@ -419,7 +419,6 @@ public class TimeSlicerTab extends JPanel {
 
 						timeSlicerToProcessing.AnalyzeTrees();
 						timeSlicerToProcessing.init();
-						System.out.println("Done! \n");
 
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -437,6 +436,7 @@ public class TimeSlicerTab extends JPanel {
 				public void done() {
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
+					System.out.println("Done! \n");
 				}
 			};
 
