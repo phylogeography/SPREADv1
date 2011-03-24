@@ -420,11 +420,14 @@ public class TimeSlicerTab extends JPanel {
 						timeSlicerToProcessing.AnalyzeTrees();
 						timeSlicerToProcessing.init();
 
-					} catch (Exception e) {
+						wait(1000);
+						System.out.println("Done! \n");
+
+					} catch (OutOfMemoryError e) {
 						e.printStackTrace();
 						System.err.println("I went tits up :( \n");
 
-					} catch (OutOfMemoryError e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 						System.err.println("I went tits up :( \n");
 					}
@@ -434,10 +437,11 @@ public class TimeSlicerTab extends JPanel {
 
 				// Executed in event dispatch thread
 				public void done() {
+
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
-					System.out.println("Done! \n");
-				}
+
+				}// END: done
 			};
 
 			worker.execute();

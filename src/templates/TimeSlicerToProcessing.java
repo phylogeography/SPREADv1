@@ -177,7 +177,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		}
 	}// END: drawPolygons
 
-	private void drawPolygon(Double sliceTime)  {
+	private void drawPolygon(Double sliceTime) throws OutOfMemoryError{
 
 		/**
 		 * Color and Opacity mapping
@@ -205,7 +205,6 @@ public class TimeSlicerToProcessing extends PApplet {
 		ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
 		ContourPath[] paths = contourMaker.getContourPaths(0.8);
 
-//		int pathCounter = 1;
 		for (ContourPath path : paths) {
 
 			double[] latitude = path.getAllX();
@@ -237,8 +236,6 @@ public class TimeSlicerToProcessing extends PApplet {
 
 			}// END: coordinates loop
 			endShape(CLOSE);
-
-//			pathCounter++;
 
 		}// END: paths loop
 
