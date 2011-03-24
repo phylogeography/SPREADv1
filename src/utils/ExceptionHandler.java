@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
 	public void uncaughtException(final Thread t, final Throwable e) {
+		
 		if (SwingUtilities.isEventDispatchThread()) {
 			showException(t, e);
 		} else {
@@ -28,6 +29,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
 	private void logException(Thread t, Throwable e) {
 		// TODO: start a thread that logs it
+		e.printStackTrace();
 	}
 
 }
