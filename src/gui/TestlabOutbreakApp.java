@@ -13,10 +13,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -116,14 +114,15 @@ public class TestlabOutbreakApp {
 		tabbedPane.add("Terminal", terminalTab);
 
 		frame.setJMenuBar(mainMenu);
-		frame.add(tabbedPane);
-		JScrollPane scrollPane = new JScrollPane(tabbedPane,
-				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		frame.add(scrollPane, BorderLayout.CENTER);
+		frame.add(tabbedPane, BorderLayout.CENTER);
+//		JScrollPane scrollPane = new JScrollPane(tabbedPane,
+//				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+//				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//		frame.add(scrollPane, BorderLayout.CENTER);
 		frame.getContentPane().add(Box.createVerticalStrut(15),
 				BorderLayout.SOUTH);
 		frame.pack();
+		
 	}
 
 	private class ListenMenuHelp implements ActionListener {

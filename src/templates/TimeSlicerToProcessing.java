@@ -23,7 +23,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import structure.Coordinates;
 import structure.TimeLine;
-import utils.JarSetter;
+import utils.Setter;
 import utils.SpreadDate;
 import utils.Utils;
 import contouring.ContourMaker;
@@ -160,7 +160,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		JarSetter jarSetter = new JarSetter();
+		Setter jarSetter = new Setter();
 		mapImage = loadImage(LoadMapBackground(jarSetter.getJarBoolean()));
 		image(mapImage, 0, 0, width, height);
 

@@ -13,7 +13,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import structure.Coordinates;
 import utils.Utils;
-import utils.JarSetter;
+import utils.Setter;
 
 @SuppressWarnings("serial")
 public class ContinuousTreeToProcessing extends PApplet {
@@ -87,7 +87,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	private void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		JarSetter jarSetter = new JarSetter();
+		Setter jarSetter = new Setter();
 		mapImage = loadImage(LoadMapBackground(jarSetter.getJarBoolean()));
 		image(mapImage, 0, 0, width, height);
 

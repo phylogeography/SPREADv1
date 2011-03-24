@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,8 +17,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import templates.ContinuousTreeToKML;
@@ -62,7 +64,6 @@ public class ContinuousModelTab extends JPanel {
 	private JPanel tmpPanel;
 
 	// Processing pane
-	private JPanel rightPanel;
 	private ContinuousTreeToProcessing continuousTreeToProcessing;
 
 	// Progress bar
@@ -72,6 +73,7 @@ public class ContinuousModelTab extends JPanel {
 
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+
 		calendar = Calendar.getInstance();
 		formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
@@ -104,7 +106,7 @@ public class ContinuousModelTab extends JPanel {
 		 * */
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-		leftPanel.setPreferredSize(new Dimension(230, 610));
+		leftPanel.setPreferredSize(new Dimension(230, 800));
 
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -130,7 +132,6 @@ public class ContinuousModelTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setOpaque(false);
 		JLabel tmplabel = new JLabel("%");
 		tmpPanel.setBorder(new TitledBorder("HPD:"));
 		tmpPanel.add(HPDParser);
@@ -155,7 +156,6 @@ public class ContinuousModelTab extends JPanel {
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
-		tmpPanel.setPreferredSize(new Dimension(230, 90));
 		tmpPanel.add(generateKml);
 		tmpPanel.add(generateProcessing);
 		tmpPanel.add(progressBar);
@@ -166,22 +166,22 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel.add(saveProcessingPlot);
 		leftPanel.add(tmpPanel);
 
-		JPanel leftPanelContainer = new JPanel();
-		leftPanelContainer.setLayout(new BorderLayout());
-		leftPanelContainer.add(leftPanel, BorderLayout.NORTH);
-		add(leftPanelContainer);
+		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+//		leftScrollPane.setViewportBorder(new Border());
+		add(leftScrollPane);
 
 		/**
 		 * Processing pane
 		 * */
 		continuousTreeToProcessing = new ContinuousTreeToProcessing();
-		rightPanel = new JPanel();
-		rightPanel.setPreferredSize(new Dimension(2048, 1025));
-		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
-		rightPanel.setBorder(new TitledBorder(""));
-		rightPanel.setBackground(new Color(255, 255, 255));
-		rightPanel.add(continuousTreeToProcessing);
-		add(rightPanel);
+		continuousTreeToProcessing.setPreferredSize(new Dimension(2048, 1025));
+		JScrollPane rightScrollPane = new JScrollPane(
+				continuousTreeToProcessing,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		add(rightScrollPane, BorderLayout.CENTER);
 
 	}
 
@@ -298,7 +298,6 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToProcessing.setHPD(HPDParser.getText()
 								+ "%");
 						continuousTreeToProcessing.init();
-						System.out.println("Done! \n");
 
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -312,6 +311,7 @@ public class ContinuousModelTab extends JPanel {
 				public void done() {
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
+					System.out.println("Finished. \n");
 				}
 			};
 

@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -54,11 +54,10 @@ public class RateIndicatorBFTab extends JPanel {
 	private JPanel tmpPanel;
 
 	// Processing pane
-	private JPanel rightPanel;
 	private RateIndicatorBFToProcessing rateIndicatorBFToProcessing;
 
 	// Progress bar
-	private JProgressBar progressBar = new JProgressBar();
+	private JProgressBar progressBar;
 
 	public RateIndicatorBFTab() {
 
@@ -86,6 +85,9 @@ public class RateIndicatorBFTab extends JPanel {
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
 
+		// Setup progress bar
+		progressBar = new JProgressBar();
+		
 		/**
 		 * left tools pane
 		 * */
@@ -147,23 +149,22 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel.add(saveProcessingPlot);
 		leftPanel.add(tmpPanel);
 
-		JPanel leftPanelContainer = new JPanel();
-		leftPanelContainer.setLayout(new BorderLayout());
-		leftPanelContainer.add(leftPanel, BorderLayout.NORTH);
-		add(leftPanelContainer);
-
+//		JPanel leftPanelContainer = new JPanel();
+//		leftPanelContainer.setLayout(new BorderLayout());
+//		leftPanelContainer.add(leftPanel, BorderLayout.NORTH);
+//		add(leftPanelContainer);
+		add(leftPanel);
+		
 		/**
 		 * Processing pane
 		 * */
 		rateIndicatorBFToProcessing = new RateIndicatorBFToProcessing();
-		rightPanel = new JPanel();
-		rightPanel.setPreferredSize(new Dimension(2048, 1025));
-		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
-		rightPanel.setBorder(new TitledBorder(""));
-		rightPanel.setBackground(new Color(255, 255, 255));
-		rightPanel.add(rateIndicatorBFToProcessing);
-		add(rightPanel);
+		rateIndicatorBFToProcessing.setPreferredSize(new Dimension(2048, 1025));
+		JScrollPane rightScrollPane = new JScrollPane(rateIndicatorBFToProcessing, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		add(rightScrollPane, BorderLayout.CENTER);
 
+		
+		
 	}
 
 	private class ListenOpenLog implements ActionListener {
@@ -306,6 +307,7 @@ public class RateIndicatorBFTab extends JPanel {
 				public void done() {
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
+					System.out.println("Finished. \n");
 				}
 			};
 

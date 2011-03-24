@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -63,7 +63,6 @@ public class DiscreteModelTab extends JPanel {
 	private JPanel tmpPanel;
 
 	// Processing pane
-	private JPanel rightPanel;
 	private DiscreteTreeToProcessing discreteTreeToProcessing;
 
 	// Progress bar
@@ -105,9 +104,9 @@ public class DiscreteModelTab extends JPanel {
 		 * left tools pane
 		 * */
 		leftPanel = new JPanel();
-		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));// PAGE_AXIS
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		leftPanel.setPreferredSize(new Dimension(230, 610));
-
+		
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
 		openLocations.addActionListener(new ListenOpenLocations());
@@ -154,7 +153,7 @@ public class DiscreteModelTab extends JPanel {
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
-		tmpPanel.setPreferredSize(new Dimension(230, 100));
+//		tmpPanel.setPreferredSize(new Dimension(230, 100));
 		tmpPanel.add(generateKml);
 		tmpPanel.add(generateProcessing);
 		tmpPanel.add(progressBar);
@@ -165,22 +164,20 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel.add(saveProcessingPlot);
 		leftPanel.add(tmpPanel);
 
-		JPanel leftPanelContainer = new JPanel();
-		leftPanelContainer.setLayout(new BorderLayout());
-		leftPanelContainer.add(leftPanel, BorderLayout.NORTH);
-		add(leftPanelContainer);
+//		JPanel leftPanelContainer = new JPanel();
+//		leftPanelContainer.setLayout(new BorderLayout());
+//		leftPanelContainer.add(leftPanel, BorderLayout.NORTH);
+//		add(leftPanelContainer);
 
+		add(leftPanel);
+		
 		/**
 		 * Processing pane
 		 * */
 		discreteTreeToProcessing = new DiscreteTreeToProcessing();
-		rightPanel = new JPanel();
-		rightPanel.setPreferredSize(new Dimension(2048, 1025));
-		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
-		rightPanel.setBorder(new TitledBorder(""));
-		rightPanel.setBackground(new Color(255, 255, 255));
-		rightPanel.add(discreteTreeToProcessing);
-		add(rightPanel);
+		discreteTreeToProcessing.setPreferredSize(new Dimension(2048, 1025));
+		JScrollPane rightScrollPane = new JScrollPane(discreteTreeToProcessing, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		add(rightScrollPane, BorderLayout.CENTER);
 
 	}
 
@@ -327,6 +324,7 @@ public class DiscreteModelTab extends JPanel {
 				public void done() {
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
+					System.out.println("Finished. \n");
 				}
 			};
 

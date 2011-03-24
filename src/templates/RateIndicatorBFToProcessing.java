@@ -6,7 +6,7 @@ import java.util.List;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
-import utils.JarSetter;
+import utils.Setter;
 import utils.ReadLocations;
 import utils.ReadLog;
 import utils.Utils;
@@ -83,7 +83,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		JarSetter jarSetter = new JarSetter();
+		Setter jarSetter = new Setter();
 		mapImage = loadImage(LoadMapBackground(jarSetter.getJarBoolean()));
 		image(mapImage, 0, 0, width, height);
 

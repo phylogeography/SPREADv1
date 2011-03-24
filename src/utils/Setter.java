@@ -1,10 +1,10 @@
 package utils;
 
-public class JarSetter {
+public class Setter {
 
 	private final boolean jar = false;
 
-	public JarSetter() {
+	public Setter() {
 	}
 
 	public boolean getJarBoolean() {

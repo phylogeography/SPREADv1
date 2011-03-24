@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +17,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -71,7 +71,6 @@ public class TimeSlicerTab extends JPanel {
 	private JPanel tmpPanel;
 
 	// Processing pane
-	private JPanel rightPanel;
 	private TimeSlicerToProcessing timeSlicerToProcessing;
 
 	// Progress bar
@@ -119,7 +118,7 @@ public class TimeSlicerTab extends JPanel {
 		 * */
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));// PAGE_AXIS
-		leftPanel.setPreferredSize(new Dimension(230, 870));
+		leftPanel.setPreferredSize(new Dimension(230, 610));
 
 		openTree.addActionListener(new ListenOpenTree());
 		openTrees.addActionListener(new ListenOpenTrees());
@@ -204,22 +203,18 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.add(saveProcessingPlot);
 		leftPanel.add(tmpPanel);
 
-		JPanel leftPanelContainer = new JPanel();
-		leftPanelContainer.setLayout(new BorderLayout());
-		leftPanelContainer.add(leftPanel, BorderLayout.NORTH);
-		add(leftPanelContainer);
+//		JPanel leftPanelContainer = new JPanel();
+//		leftPanelContainer.setLayout(new BorderLayout());
+//		leftPanelContainer.add(leftPanel, BorderLayout.NORTH);
+		add(leftPanel);
 
 		/**
 		 * Processing pane
 		 * */
 		timeSlicerToProcessing = new TimeSlicerToProcessing();
-		rightPanel = new JPanel();
-		rightPanel.setPreferredSize(new Dimension(2048, 1025));
-		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
-		rightPanel.setBorder(new TitledBorder(""));
-		rightPanel.setBackground(new Color(255, 255, 255));
-		rightPanel.add(timeSlicerToProcessing);
-		add(rightPanel);
+		timeSlicerToProcessing.setPreferredSize(new Dimension(2048, 1025));
+		JScrollPane rightScrollPane = new JScrollPane(timeSlicerToProcessing, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		add(rightScrollPane, BorderLayout.CENTER);
 
 	}
 
@@ -420,9 +415,6 @@ public class TimeSlicerTab extends JPanel {
 						timeSlicerToProcessing.AnalyzeTrees();
 						timeSlicerToProcessing.init();
 
-						wait(1000);
-						System.out.println("Done! \n");
-
 					} catch (OutOfMemoryError e) {
 						e.printStackTrace();
 						System.err.println("I went tits up :( \n");
@@ -440,7 +432,7 @@ public class TimeSlicerTab extends JPanel {
 
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
-
+					System.out.println("Done! \n");
 				}// END: done
 			};
 
