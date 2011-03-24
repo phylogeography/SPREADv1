@@ -27,6 +27,10 @@ import templates.DiscreteTreeToProcessing;
 @SuppressWarnings("serial")
 public class DiscreteModelTab extends JPanel {
 
+	// Sizing constants
+	private final int leftPanelWidth = 230;
+	private final int leftPanelHeight = 610;
+	
 	// Current date
 	private Calendar calendar;
 	private SimpleDateFormat formatter;
@@ -88,7 +92,7 @@ public class DiscreteModelTab extends JPanel {
 				8);
 		numberOfIntervalsParser = new JTextField("100", 5);
 		maxAltMappingParser = new JTextField("5000000", 5);
-		kmlPathParser = new JTextField("output.kml", 15);
+		kmlPathParser = new JTextField("output.kml", 10);
 
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
@@ -105,7 +109,8 @@ public class DiscreteModelTab extends JPanel {
 		 * */
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-		leftPanel.setPreferredSize(new Dimension(230, 610));
+		leftPanel.setPreferredSize(new Dimension(leftPanelWidth,
+				leftPanelHeight));
 		
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -153,7 +158,7 @@ public class DiscreteModelTab extends JPanel {
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
-//		tmpPanel.setPreferredSize(new Dimension(230, 100));
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.add(generateKml);
 		tmpPanel.add(generateProcessing);
 		tmpPanel.add(progressBar);
@@ -164,12 +169,12 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel.add(saveProcessingPlot);
 		leftPanel.add(tmpPanel);
 
-//		JPanel leftPanelContainer = new JPanel();
-//		leftPanelContainer.setLayout(new BorderLayout());
-//		leftPanelContainer.add(leftPanel, BorderLayout.NORTH);
-//		add(leftPanelContainer);
-
-		add(leftPanel);
+		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth,
+				leftPanelHeight));
+		add(leftScrollPane, BorderLayout.CENTER);
 		
 		/**
 		 * Processing pane

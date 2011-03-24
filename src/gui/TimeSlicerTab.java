@@ -28,6 +28,10 @@ import templates.TimeSlicerToProcessing;
 @SuppressWarnings("serial")
 public class TimeSlicerTab extends JPanel {
 
+	// Sizing constants
+	private final int leftPanelWidth = 230;
+	private final int leftPanelHeight = 900;
+
 	// Current date
 	private Calendar calendar;
 	private SimpleDateFormat formatter;
@@ -99,7 +103,7 @@ public class TimeSlicerTab extends JPanel {
 				8);
 		numberOfIntervalsParser = new JTextField("10", 5);
 		maxAltMappingParser = new JTextField("500000", 5);
-		kmlPathParser = new JTextField("output.kml", 15);
+		kmlPathParser = new JTextField("output.kml", 10);
 
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
@@ -118,7 +122,8 @@ public class TimeSlicerTab extends JPanel {
 		 * */
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));// PAGE_AXIS
-		leftPanel.setPreferredSize(new Dimension(230, 610));
+		leftPanel.setPreferredSize(new Dimension(leftPanelWidth,
+				leftPanelHeight));
 
 		openTree.addActionListener(new ListenOpenTree());
 		openTrees.addActionListener(new ListenOpenTrees());
@@ -192,7 +197,7 @@ public class TimeSlicerTab extends JPanel {
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
-		tmpPanel.setPreferredSize(new Dimension(230, 100));
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.add(generateKml);
 		tmpPanel.add(generateProcessing);
 		tmpPanel.add(progressBar);
@@ -203,17 +208,21 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.add(saveProcessingPlot);
 		leftPanel.add(tmpPanel);
 
-//		JPanel leftPanelContainer = new JPanel();
-//		leftPanelContainer.setLayout(new BorderLayout());
-//		leftPanelContainer.add(leftPanel, BorderLayout.NORTH);
-		add(leftPanel);
+		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth,
+				leftPanelHeight));
+		add(leftScrollPane, BorderLayout.CENTER);
 
 		/**
 		 * Processing pane
 		 * */
 		timeSlicerToProcessing = new TimeSlicerToProcessing();
 		timeSlicerToProcessing.setPreferredSize(new Dimension(2048, 1025));
-		JScrollPane rightScrollPane = new JScrollPane(timeSlicerToProcessing, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		JScrollPane rightScrollPane = new JScrollPane(timeSlicerToProcessing,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		add(rightScrollPane, BorderLayout.CENTER);
 
 	}
