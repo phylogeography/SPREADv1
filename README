@@ -41,12 +41,16 @@ colt.jar
 
 ________________________________________________________________________________
                               TODO
-
+* Processing applets
+   - applets crash after an exception occurs and we cannot print to them again 
 * improve GUI looks & feels
    - allow for saving panel settings
    - hide some options with "show more" buttons 
    - Processing listeners are printing "Finished" message even when an 
      exception is caught
+   - we need a consistent method of exceptions handling. What should be 
+     displayed in terminal and what in pop-up window. Definitely all the 
+     stack traces should go to terminal tab 
 * TimeSlicer template
   - give the concurrent implementation of AnalyzeTree another try. This might        
     be achieveable with ConcurrentHashMap class  

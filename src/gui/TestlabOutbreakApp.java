@@ -19,6 +19,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import utils.ExceptionHandler;
+
 public class TestlabOutbreakApp {
 
 	// Dimension
@@ -164,6 +166,8 @@ public class TestlabOutbreakApp {
 
 	public static void main(String args[]) {
 
+		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+		
 		// Start application's GUI from Event Dispatching Thread
 		SwingUtilities.invokeLater(new Runnable() {
 

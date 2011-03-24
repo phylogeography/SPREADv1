@@ -1,6 +1,7 @@
 package utils;
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -807,5 +808,20 @@ public class Utils {
 		}
 		return b;
 	}
+	
+	/** Return the currently active frame. */
+	public static Frame getActiveFrame() {
+		Frame result = null;
+		Frame[] frames = Frame.getFrames();
+		for (int i = 0; i < frames.length; i++) {
+			Frame frame = frames[i];
+			if (frame.isVisible()) {
+				result = frame;
+				break;
+			}
+		}
+		return result;
+	}
+
 
 }// END: Utils class

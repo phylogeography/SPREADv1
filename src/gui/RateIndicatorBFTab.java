@@ -10,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -19,6 +20,7 @@ import javax.swing.border.TitledBorder;
 
 import templates.RateIndicatorBFToKML;
 import templates.RateIndicatorBFToProcessing;
+import utils.Utils;
 
 @SuppressWarnings("serial")
 public class RateIndicatorBFTab extends JPanel {
@@ -26,7 +28,7 @@ public class RateIndicatorBFTab extends JPanel {
 	// Sizing constants
 	private final int leftPanelWidth = 230;
 	private final int leftPanelHeight = 610;
-	
+
 	// Icons
 	private ImageIcon nuclearIcon;
 	private ImageIcon logIcon;
@@ -91,7 +93,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 		// Setup progress bar
 		progressBar = new JProgressBar();
-		
+
 		/**
 		 * left tools pane
 		 * */
@@ -160,17 +162,18 @@ public class RateIndicatorBFTab extends JPanel {
 		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth,
 				leftPanelHeight));
 		add(leftScrollPane, BorderLayout.CENTER);
-		
+
 		/**
 		 * Processing pane
 		 * */
 		rateIndicatorBFToProcessing = new RateIndicatorBFToProcessing();
 		rateIndicatorBFToProcessing.setPreferredSize(new Dimension(2048, 1025));
-		JScrollPane rightScrollPane = new JScrollPane(rateIndicatorBFToProcessing, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		JScrollPane rightScrollPane = new JScrollPane(
+				rateIndicatorBFToProcessing,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		add(rightScrollPane, BorderLayout.CENTER);
 
-		
-		
 	}
 
 	private class ListenOpenLog implements ActionListener {
@@ -260,7 +263,8 @@ public class RateIndicatorBFTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.err.println("I went tits up :( \n");
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
+								"I went tits up :( \n");
 					}
 
 					return null;
@@ -303,7 +307,8 @@ public class RateIndicatorBFTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.err.println("I went tits up :( \n");
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
+								"I went tits up :( \n");
 					}
 
 					return null;

@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -24,6 +25,7 @@ import javax.swing.border.TitledBorder;
 
 import templates.TimeSlicerToKML;
 import templates.TimeSlicerToProcessing;
+import utils.Utils;
 
 @SuppressWarnings("serial")
 public class TimeSlicerTab extends JPanel {
@@ -353,11 +355,11 @@ public class TimeSlicerTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.err.println("I went tits up :( \n");
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(), "I went tits up :( \n");
 
 					} catch (OutOfMemoryError e) {
 						e.printStackTrace();
-						System.err.println("I went tits up :( \n");
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(), "I went tits up :( \n");
 					}
 
 					return null;
