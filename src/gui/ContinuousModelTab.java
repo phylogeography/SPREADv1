@@ -20,8 +20,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import templates.ContinuousTreeToKML;
@@ -106,7 +104,7 @@ public class ContinuousModelTab extends JPanel {
 		 * */
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-		leftPanel.setPreferredSize(new Dimension(230, 800));
+		leftPanel.setPreferredSize(new Dimension(230, 610));
 
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -165,12 +163,12 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel.setBorder(new TitledBorder("Save plot:"));
 		tmpPanel.add(saveProcessingPlot);
 		leftPanel.add(tmpPanel);
-
+		
 		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//		leftScrollPane.setViewportBorder(new Border());
-		add(leftScrollPane);
+		leftScrollPane.setMinimumSize(new Dimension(230, 610))	;
+		add(leftScrollPane, BorderLayout.CENTER);
 
 		/**
 		 * Processing pane
