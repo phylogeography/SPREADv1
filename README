@@ -48,12 +48,13 @@ ________________________________________________________________________________
    - hide some options with "show more" buttons 
    - Processing listeners are printing "Finished" message even when an 
      exception is caught
-   - we need a consistent method of exceptions handling. What should be 
-     displayed in terminal and what in pop-up window. Definitely all the 
-     stack traces should go to terminal tab 
 * TimeSlicer template
   - give the concurrent implementation of AnalyzeTree another try. This might        
     be achieveable with ConcurrentHashMap class  
-
+* Exceptions handling
+  * Continuous Model
+  - java.lang.RuntimeException: Attribute missing from node for KML's is not 
+    caught from UI level (only from inner method) and consequently displayed 
+    in terminal only not in pop-up.
 
 

@@ -428,11 +428,13 @@ public class TimeSlicerTab extends JPanel {
 
 					} catch (OutOfMemoryError e) {
 						e.printStackTrace();
-						System.err.println("I went tits up :( \n");
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
+						"I went tits up :( \n");
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.err.println("I went tits up :( \n");
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
+						"I went tits up :( \n");
 					}
 
 					return null;

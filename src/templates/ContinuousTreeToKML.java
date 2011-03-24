@@ -325,9 +325,6 @@ public class ContinuousTreeToKML {
 
 			} catch (ParseException e) {
 				e.printStackTrace();
-				
-			} catch (RuntimeException e) {
-				e.printStackTrace();
 			}
 
 		}// END: run
@@ -338,7 +335,7 @@ public class ContinuousTreeToKML {
 	// ////////////////
 	private class Polygons implements Runnable {
 
-		public void run() {
+		public void run() throws RuntimeException {
 
 			try {
 

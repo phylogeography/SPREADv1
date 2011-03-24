@@ -269,7 +269,7 @@ public class ContinuousModelTab extends JPanel {
 					} catch (Exception e) {
 						e.printStackTrace();
 						JOptionPane.showMessageDialog(Utils.getActiveFrame(), "I went tits up :( \n");
-					}
+					} 
 
 					return null;
 				}// END: doInBackground()
