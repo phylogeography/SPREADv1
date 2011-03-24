@@ -92,7 +92,7 @@ public class TimeSlicerTab extends JPanel {
 		saveIcon = CreateImageIcon("/icons/save.png");
 
 		// Setup text fields
-		burnInParser = new JTextField("4990", 10);
+		burnInParser = new JTextField("500", 10);
 		locationAttNameParser = new JTextField("location", 10);
 		rateAttNameParser = new JTextField("rate", 10);
 		precisionAttNameParser = new JTextField("precision", 10);
@@ -152,7 +152,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.add(trueNoiseParser);
 		trueNoiseParser.setEnabled(false);
 		leftPanel.add(tmpPanel);
-		
+
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Rate attribute name:"));
 		tmpPanel.add(rateAttNameParser);
@@ -165,7 +165,7 @@ public class TimeSlicerTab extends JPanel {
 
 		rateAttNameParser.setEnabled(false);
 		precisionAttNameParser.setEnabled(false);
-		
+
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
 		tmpPanel.add(burnInParser);
@@ -350,6 +350,10 @@ public class TimeSlicerTab extends JPanel {
 					} catch (Exception e) {
 						e.printStackTrace();
 						System.err.println("I went tits up :( \n");
+
+					} catch (OutOfMemoryError e) {
+						e.printStackTrace();
+						System.err.println("I went tits up :( \n");
 					}
 
 					return null;
@@ -418,6 +422,10 @@ public class TimeSlicerTab extends JPanel {
 						System.out.println("Done! \n");
 
 					} catch (Exception e) {
+						e.printStackTrace();
+						System.err.println("I went tits up :( \n");
+
+					} catch (OutOfMemoryError e) {
 						e.printStackTrace();
 						System.err.println("I went tits up :( \n");
 					}

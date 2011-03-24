@@ -166,7 +166,7 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	}// END: drawMapBackground
 
-	private void drawPolygons() {
+	private void drawPolygons() throws OutOfMemoryError {
 
 		Set<Double> hostKeys = slicesMap.keySet();
 		Iterator<Double> iterator = hostKeys.iterator();
@@ -177,7 +177,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		}
 	}// END: drawPolygons
 
-	private void drawPolygon(Double sliceTime) throws OutOfMemoryError{
+	private void drawPolygon(Double sliceTime)  {
 
 		/**
 		 * Color and Opacity mapping

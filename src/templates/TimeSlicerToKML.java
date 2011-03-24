@@ -194,8 +194,6 @@ public class TimeSlicerToKML {
 		while (!executor.isTerminated()) {
 		}
 
-		// Utils.printHashMap(slicesMap, true);
-
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
 		Set<Double> hostKeys = slicesMap.keySet();
@@ -367,7 +365,7 @@ public class TimeSlicerToKML {
 	// ///////////////////////////
 	private class Polygons implements Runnable {
 
-		public void run() {
+		public void run() throws OutOfMemoryError {
 
 			Layer polygonsLayer = new Layer("Time_Slice_"
 					+ formatter.format(sliceTime), null);
@@ -408,8 +406,6 @@ public class TimeSlicerToKML {
 				List<Coordinates> coords = new ArrayList<Coordinates>();
 
 				for (int i = 0; i < latitude.length; i++) {
-
-					// System.out.println(longitude[i] + " " + latitude[i]);
 
 					coords.add(new Coordinates(longitude[i], latitude[i], 0.0));
 				}
