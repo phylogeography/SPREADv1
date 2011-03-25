@@ -27,7 +27,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 230;
-	private final int leftPanelHeight = 610;
+	private final int leftPanelHeight = 650;
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -35,7 +35,8 @@ public class RateIndicatorBFTab extends JPanel {
 	private ImageIcon locationsIcon;
 	private ImageIcon processingIcon;
 	private ImageIcon saveIcon;
-
+	private ImageIcon errorIcon;
+	
 	// Strings for paths
 	private String logFilename;
 	private String locationsFilename;
@@ -76,6 +77,7 @@ public class RateIndicatorBFTab extends JPanel {
 		locationsIcon = CreateImageIcon("/icons/locations.png");
 		processingIcon = CreateImageIcon("/icons/processing.png");
 		saveIcon = CreateImageIcon("/icons/save.png");
+		errorIcon = CreateImageIcon("/icons/error.png");
 
 		// Setup text fields
 		burnInParser = new JTextField("0.1", 5);
@@ -264,7 +266,8 @@ public class RateIndicatorBFTab extends JPanel {
 					} catch (Exception e) {
 						e.printStackTrace();
 						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
-								"I went tits up :( \n");
+								"I went tits up :( \n", "Error",
+								JOptionPane.ERROR_MESSAGE, errorIcon);
 					}
 
 					return null;
@@ -308,7 +311,8 @@ public class RateIndicatorBFTab extends JPanel {
 					} catch (Exception e) {
 						e.printStackTrace();
 						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
-								"I went tits up :( \n");
+								"I went tits up :( \n", "Error",
+								JOptionPane.ERROR_MESSAGE, errorIcon);
 					}
 
 					return null;

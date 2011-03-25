@@ -31,7 +31,7 @@ public class DiscreteModelTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 230;
-	private final int leftPanelHeight = 610;
+	private final int leftPanelHeight = 650;
 	
 	// Current date
 	private Calendar calendar;
@@ -43,7 +43,8 @@ public class DiscreteModelTab extends JPanel {
 	private ImageIcon locationsIcon;
 	private ImageIcon processingIcon;
 	private ImageIcon saveIcon;
-
+	private ImageIcon errorIcon;
+	
 	// Strings for paths
 	private String treeFilename;
 	private String locationsFilename;
@@ -87,6 +88,7 @@ public class DiscreteModelTab extends JPanel {
 		locationsIcon = CreateImageIcon("/icons/locations.png");
 		processingIcon = CreateImageIcon("/icons/processing.png");
 		saveIcon = CreateImageIcon("/icons/save.png");
+		errorIcon = CreateImageIcon("/icons/error.png");
 
 		// Setup text fields
 		stateAttNameParser = new JTextField("states", 5);
@@ -282,7 +284,9 @@ public class DiscreteModelTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(), "I went tits up :( \n");
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
+								"I went tits up :( \n", "Error",
+								JOptionPane.ERROR_MESSAGE, errorIcon);
 					}
 
 					return null;
@@ -321,7 +325,9 @@ public class DiscreteModelTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(), "I went tits up :( \n");
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
+								"I went tits up :( \n", "Error",
+								JOptionPane.ERROR_MESSAGE, errorIcon);
 					}
 
 					return null;

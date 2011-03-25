@@ -32,7 +32,7 @@ public class ContinuousModelTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 230;
-	private final int leftPanelHeight = 610;
+	private final int leftPanelHeight = 650;// 610
 
 	// Current date
 	private Calendar calendar;
@@ -43,6 +43,7 @@ public class ContinuousModelTab extends JPanel {
 	private ImageIcon treeIcon;
 	private ImageIcon processingIcon;
 	private ImageIcon saveIcon;
+	private ImageIcon errorIcon;
 
 	// Strings for paths
 	private String treeFilename;
@@ -86,7 +87,8 @@ public class ContinuousModelTab extends JPanel {
 		treeIcon = CreateImageIcon("/icons/tree.png");
 		processingIcon = CreateImageIcon("/icons/processing.png");
 		saveIcon = CreateImageIcon("/icons/save.png");
-
+		errorIcon = CreateImageIcon("/icons/error.png");
+		
 		// Setup text fields
 		coordinatesNameParser = new JTextField("location", 5);
 		HPDParser = new JTextField("95", 2);
@@ -268,8 +270,10 @@ public class ContinuousModelTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(), "I went tits up :( \n");
-					} 
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
+								"I went tits up :( \n", "Error",
+								JOptionPane.ERROR_MESSAGE, errorIcon);
+					}
 
 					return null;
 				}// END: doInBackground()
@@ -308,7 +312,9 @@ public class ContinuousModelTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(), "I went tits up :( \n");
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
+								"I went tits up :( \n", "Error",
+								JOptionPane.ERROR_MESSAGE, errorIcon);
 					}
 
 					return null;

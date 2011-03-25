@@ -44,7 +44,8 @@ public class TimeSlicerTab extends JPanel {
 	private ImageIcon treesIcon;
 	private ImageIcon processingIcon;
 	private ImageIcon saveIcon;
-
+	private ImageIcon errorIcon;
+	
 	// Strings for paths
 	private String mccTreeFilename;
 	private String treesFilename;
@@ -95,6 +96,7 @@ public class TimeSlicerTab extends JPanel {
 		treesIcon = CreateImageIcon("/icons/trees.png");
 		processingIcon = CreateImageIcon("/icons/processing.png");
 		saveIcon = CreateImageIcon("/icons/save.png");
+		errorIcon = CreateImageIcon("/icons/error.png");
 
 		// Setup text fields
 		burnInParser = new JTextField("500", 10);
@@ -355,11 +357,15 @@ public class TimeSlicerTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(), "I went tits up :( \n");
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
+								"I went tits up :( \n", "Error",
+								JOptionPane.ERROR_MESSAGE, errorIcon);
 
 					} catch (OutOfMemoryError e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(), "I went tits up :( \n");
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
+								"I went tits up :( \n", "Error",
+								JOptionPane.ERROR_MESSAGE, errorIcon);
 					}
 
 					return null;
