@@ -45,18 +45,23 @@ public class DiscreteTreeToKML {
 	private int numberOfIntervals;
 	private double timescaler;
 	private String stateAttName;
+	private String userAttribute;
 	private double rootHeight;
 	private List<Layer> layers;
 	private double maxAltMapping;
+	private double maxPolygonRedMapping;
+	private double maxPolygonGreenMapping;
+	private double maxPolygonBlueMapping;
+	private double maxPolygonOpacityMapping;
+	private double maxBranchRedMapping;
+	private double maxBranchGreenMapping;
+	private double maxBranchBlueMapping;
+	private double maxBranchOpacityMapping;
 	private PrintWriter writer;
 	private TreeImporter importer;
 
 	private enum branchesMappingEnum {
-		TIME, STATESPROB, DISTANCE, DEFAULT
-	}
-
-	private enum circlesMappingEnum {
-		COUNT, DEFAULT
+		TIME, DISTANCE, DEFAULT, USER
 	}
 
 	private enum timescalerEnum {
@@ -67,9 +72,6 @@ public class DiscreteTreeToKML {
 	private branchesMappingEnum branchesColorMapping;
 	private branchesMappingEnum branchesOpacityMapping;
 	private branchesMappingEnum widthMapping;
-	private circlesMappingEnum circlesColorMapping;
-	private circlesMappingEnum circlesOpacityMapping;
-	private String statesProbString;
 	private branchesMappingEnum altitudeMapping;
 
 	public DiscreteTreeToKML() {
@@ -80,8 +82,6 @@ public class DiscreteTreeToKML {
 		branchesOpacityMapping = branchesMappingEnum.TIME;
 		widthMapping = branchesMappingEnum.DEFAULT;
 		altitudeMapping = branchesMappingEnum.DISTANCE;
-		circlesColorMapping = circlesMappingEnum.COUNT;
-		circlesOpacityMapping = circlesMappingEnum.COUNT;
 
 	}// END: DiscreteTreeToKML()
 
@@ -111,8 +111,43 @@ public class DiscreteTreeToKML {
 	}
 
 	public void setLocationFilePath(String path) {
-
 		data = new ReadLocations(path);
+	}
+
+	public void setUserAttribute(String attribute) {
+		userAttribute = attribute;
+	}
+
+	public void setMaxPolygonRedMapping(double max) {
+		maxPolygonRedMapping = max;
+	}
+
+	public void setMaxPolygonGreenMapping(double max) {
+		maxPolygonGreenMapping = max;
+	}
+
+	public void setMaxPolygonBlueMapping(double max) {
+		maxPolygonBlueMapping = max;
+	}
+
+	public void setMaxPolygonOpacityMapping(double max) {
+		maxPolygonOpacityMapping = max;
+	}
+
+	public void setMaxBranchRedMapping(double max) {
+		maxBranchRedMapping = max;
+	}
+
+	public void setMaxBranchGreenMapping(double max) {
+		maxBranchGreenMapping = max;
+	}
+
+	public void setMaxBranchBlueMapping(double max) {
+		maxBranchBlueMapping = max;
+	}
+
+	public void setMaxBranchOpacityMapping(double max) {
+		maxBranchOpacityMapping = max;
 	}
 
 	public void GenerateKML() throws IOException, ImportException,
@@ -138,11 +173,6 @@ public class DiscreteTreeToKML {
 
 		// this is for time calculations
 		rootHeight = tree.getHeight(tree.getRootNode());
-
-		// this is for states.prob attribute name
-		StringBuilder statesProbStringBuilder = new StringBuilder();
-		statesProbString = statesProbStringBuilder.append(stateAttName).append(
-				".prob").toString();
 
 		// This is a general time span for the tree
 		SpreadDate mrsd = new SpreadDate(mrsdString);
@@ -244,18 +274,21 @@ public class DiscreteTreeToKML {
 								maxAltitude = (int) Utils.map(nodeHeight, 0,
 										treeHeightMax, 0, maxAltMapping);
 								break;
-							case STATESPROB:
+
+							case USER:
 								maxAltitude = Utils.map(Utils
 										.getDoubleNodeAttribute(node,
-												"statesProbString"), 0,
+												userAttribute), 0,
 										treeHeightMax, 0, maxAltMapping);
 								break;
+
 							case DISTANCE:
 								maxAltitude = Utils.map(Utils.RhumbDistance(
 										parentLongitude, parentLatitude,
 										longitude, latitude), 0, EarthRadius,
 										0, maxAltMapping);
 								break;
+
 							case DEFAULT:
 								maxAltitude = 0;
 								break;
@@ -269,19 +302,36 @@ public class DiscreteTreeToKML {
 							int blue = (int) Double.NaN;
 							switch (branchesColorMapping) {
 							case TIME:
-								red = 255;
-								green = 0;
+
+								red = (int) Utils.map(nodeHeight, 0,
+										treeHeightMax, 0, maxBranchRedMapping);
+
+								green = (int) Utils
+										.map(nodeHeight, 0, treeHeightMax, 0,
+												maxBranchGreenMapping);
+
 								blue = (int) Utils.map(nodeHeight, 0,
-										treeHeightMax, 255, 0);
+										treeHeightMax, 0, maxBranchBlueMapping);
 								break;
-							case STATESPROB:
-								red = 255;
-								green = 0;
+
+							case USER:
+								red = (int) Utils.map(Utils
+										.getDoubleNodeAttribute(node,
+												userAttribute), 0,
+										treeHeightMax, 0, maxBranchRedMapping);
+
+								green = (int) Utils
+										.map(Utils.getDoubleNodeAttribute(node,
+												userAttribute), 0,
+												treeHeightMax, 0,
+												maxBranchGreenMapping);
+
 								blue = (int) Utils.map(Utils
 										.getDoubleNodeAttribute(node,
-												statesProbString), 0,
-										treeHeightMax, 255, 0);
+												userAttribute), 0,
+										treeHeightMax, 0, maxBranchBlueMapping);
 								break;
+
 							case DEFAULT:
 								red = 255;
 								green = 0;
@@ -296,13 +346,15 @@ public class DiscreteTreeToKML {
 							switch (branchesOpacityMapping) {
 							case TIME:
 								alpha = (int) Utils.map(nodeHeight, 0,
-										treeHeightMax, 100.0, 255.0);
+										treeHeightMax, maxBranchOpacityMapping,
+										100);
 								break;
-							case STATESPROB:
+							case USER:
 								alpha = (int) Utils.map(Utils
 										.getDoubleNodeAttribute(node,
-												statesProbString), 0,
-										treeHeightMax, 127, 255);
+												userAttribute), 0,
+										treeHeightMax, maxBranchOpacityMapping,
+										100);
 								break;
 							case DEFAULT:
 								alpha = 255;
@@ -320,10 +372,10 @@ public class DiscreteTreeToKML {
 								width = Utils.map(nodeHeight, 0, treeHeightMax,
 										3.5, 10.0);
 								break;
-							case STATESPROB:
+							case USER:
 								width = Utils.map(Utils.getDoubleNodeAttribute(
-										node, statesProbString), 0,
-										treeHeightMax, 3.5, 10.0);
+										node, userAttribute), 0, treeHeightMax,
+										3.5, 10.0);
 								break;
 							case DEFAULT:
 								width = 3.5;
@@ -340,11 +392,9 @@ public class DiscreteTreeToKML {
 							branchesLayer.addItem(new Line(
 									(parentState + ":" + state), // string name
 									new Coordinates(parentLatitude,
-											parentLongitude), startTime, // double
-									// startime
+											parentLongitude), startTime, // startime
 									linesStyle, // style startstyle
-									new Coordinates(latitude, longitude), // end
-									// coords
+									new Coordinates(latitude, longitude), // endcoords
 									0.0, // double endtime
 									linesStyle, // style endstyle
 									maxAltitude, // double maxAltitude
@@ -376,6 +426,7 @@ public class DiscreteTreeToKML {
 		public void run() {
 
 			try {
+
 				// this is for Circles folder:
 				String circlesDescription = null;
 				Layer circlesLayer = new Layer("Circles", circlesDescription);
@@ -393,40 +444,28 @@ public class DiscreteTreeToKML {
 							/**
 							 * Color mapping
 							 * */
-							int red = (int) Double.NaN;
-							int green = (int) Double.NaN;
-							int blue = (int) Double.NaN;
-							switch (circlesColorMapping) {
-							case COUNT:
-								red = 55;
-								green = (int) Utils.map(
-										numberOfLineages[i][j + 1], 0,
-										lineagesCountMax, 255, 0);
-								blue = 0;
-								break;
-							case DEFAULT:
-								red = 139;
-								green = 71;
-								blue = 93;
-								break;
-							}
+							int red = (int) Utils.map(
+									numberOfLineages[i][j + 1], 0,
+									lineagesCountMax, 0, maxPolygonRedMapping);
+
+							int green = (int) Utils
+									.map(numberOfLineages[i][j + 1], 0,
+											lineagesCountMax, 0,
+											maxPolygonGreenMapping);
+
+							int blue = (int) Utils.map(
+									numberOfLineages[i][j + 1], 0,
+									lineagesCountMax, 0, maxPolygonBlueMapping);
 
 							/**
 							 * Opacity mapping
 							 * 
 							 * Larger the values more opaque the colors
 							 * */
-							int alpha = (int) Double.NaN;
-							switch (circlesOpacityMapping) {
-							case COUNT:
-								alpha = (int) Utils.map(
-										numberOfLineages[i][j + 1], 0,
-										lineagesCountMax, 100, 255);
-								break;
-							case DEFAULT:
-								alpha = 255;
-								break;
-							}
+							int alpha = (int) Utils.map(
+									numberOfLineages[i][j + 1], 0,
+									lineagesCountMax, maxPolygonOpacityMapping,
+									100);
 
 							Color col = new Color(red, green, blue, alpha);
 
@@ -436,6 +475,7 @@ public class DiscreteTreeToKML {
 
 							double radius = Math.round(100 * Math
 									.sqrt(numberOfLineages[i][j + 1]));
+
 							int days = (int) (numberOfLineages[i][0] * timescaler);
 							SpreadDate mrsd = new SpreadDate(mrsdString);
 

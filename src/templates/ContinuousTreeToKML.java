@@ -55,10 +55,10 @@ public class ContinuousTreeToKML {
 	private double maxBranchOpacityMapping;
 	private String longitudeName;
 	private String latitudeName;
+	private String userAttribute;
 	private double treeHeightMax;
 	private TreeImporter importer;
 	private PrintWriter writer;
-	private String userAttribute;
 
 	private enum branchesMappingEnum {
 		TIME, DISTANCE, DEFAULT, USER

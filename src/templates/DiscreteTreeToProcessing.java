@@ -18,16 +18,16 @@ import utils.Utils;
 @SuppressWarnings("serial")
 public class DiscreteTreeToProcessing extends PApplet {
 
-//	private final int imageWidth = 2048;
-//	private final int imageHeight = 1025;
-
 	private TreeImporter importer;
 	private RootedTree tree;
 	private ReadLocations data;
 	private String stateAttName;
 	private PImage mapImage;
+	private double maxBranchRedMapping;
+	private double maxBranchGreenMapping;
+	private double maxBranchBlueMapping;
+	private double maxBranchOpacityMapping;
 
-	// Borders of the map coordinates
 	// min/max longitude
 	private float minX, maxX;
 	// min/max latitude
@@ -50,6 +50,22 @@ public class DiscreteTreeToProcessing extends PApplet {
 		data = new ReadLocations(path);
 	}
 
+	public void setMaxBranchRedMapping(double max) {
+		maxBranchRedMapping = max;
+	}
+
+	public void setMaxBranchGreenMapping(double max) {
+		maxBranchGreenMapping = max;
+	}
+
+	public void setMaxBranchBlueMapping(double max) {
+		maxBranchBlueMapping = max;
+	}
+
+	public void setMaxBranchOpacityMapping(double max) {
+		maxBranchOpacityMapping = max;
+	}
+
 	public void setup() {
 
 		minX = -180;
@@ -57,11 +73,6 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 		minY = -90;
 		maxY = 90;
-
-//		width = imageWidth;
-//		height = imageHeight;
-//
-//		size(width, height);
 
 		// will improve font rendering speed with default renderer
 		hint(ENABLE_NATIVE_FONTS);
@@ -83,11 +94,11 @@ public class DiscreteTreeToProcessing extends PApplet {
 	void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		Setter jarSetter = new Setter();
-		mapImage = loadImage(LoadMapBackground(jarSetter.getJarBoolean()));
+//		Setter jarSetter = new Setter().getJarBoolean();
+		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
 		image(mapImage, 0, 0, width, height);
 
-	}// END: drawMapPolygons
+	}// END: drawMapBackground
 
 	// //////////////
 	// ---PLACES---//
@@ -167,12 +178,17 @@ public class DiscreteTreeToProcessing extends PApplet {
 					 * */
 					double nodeHeight = tree.getHeight(node);
 
-					int red = 255;
-					int green = 0;
-					int blue = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-							255, 0);
+					int red = (int) Utils.map(nodeHeight, 0, treeHeightMax, 0,
+							maxBranchRedMapping);
+
+					int green = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+							0, maxBranchGreenMapping);
+
+					int blue = (int) Utils.map(nodeHeight, 0, treeHeightMax, 0,
+							maxBranchBlueMapping);
+
 					int alpha = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-							100, 255);
+							maxBranchOpacityMapping, 100);
 
 					stroke(red, green, blue, alpha);
 					line(x0, y0, x1, y1);
