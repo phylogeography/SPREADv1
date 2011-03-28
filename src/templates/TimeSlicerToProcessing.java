@@ -33,8 +33,8 @@ import contouring.ContourWithSynder;
 @SuppressWarnings("serial")
 public class TimeSlicerToProcessing extends PApplet {
 
-	private final int imageWidth = 2048;
-	private final int imageHeight = 1025;
+//	private final int imageWidth = 2048;
+//	private final int imageHeight = 1025;
 	private final int DayInMillis = 86400000;
 	private final int NTHREDS = Runtime.getRuntime().availableProcessors();;
 
@@ -141,10 +141,10 @@ public class TimeSlicerToProcessing extends PApplet {
 		minY = -80;
 		maxY = 90;
 
-		width = imageWidth;
-		height = imageHeight;
-
-		size(width, height);
+//		width = imageWidth;
+//		height = imageHeight;
+//
+//		size(width, height);
 
 	}// END:setup
 

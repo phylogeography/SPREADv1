@@ -170,7 +170,7 @@ public class TimeSlicerToKML {
 		while (treesImporter.hasTree()) {
 
 			currentTree = (RootedTree) treesImporter.importNextTree();
-			synchronized (this) {
+			synchronized (currentTree) {
 				if (readTrees >= burnIn) {
 
 					// executor.submit(new AnalyzeTree());
@@ -215,9 +215,9 @@ public class TimeSlicerToKML {
 
 				sliceTime = (Double) iterator.next();
 
-				// executor.submit(new Polygons());
-				Polygons polygons = new Polygons();
-				polygons.run();
+				 executor.submit(new Polygons());
+//				Polygons polygons = new Polygons();
+//				polygons.run();
 
 			}
 		}

@@ -45,18 +45,27 @@ public class ContinuousTreeToKML {
 	private double rootHeight;
 	private List<Layer> layers;
 	private double maxAltMapping;
+	private double maxPolygonRedMapping;
+	private double maxPolygonGreenMapping;
+	private double maxPolygonBlueMapping;
+	private double maxPolygonOpacityMapping;
+	private double maxBranchRedMapping;
+	private double maxBranchGreenMapping;
+	private double maxBranchBlueMapping;
+	private double maxBranchOpacityMapping;
 	private String longitudeName;
 	private String latitudeName;
 	private double treeHeightMax;
 	private TreeImporter importer;
 	private PrintWriter writer;
+	private String userAttribute;
 
 	private enum branchesMappingEnum {
-		TIME, RATE, DISTANCE, DEFAULT
+		TIME, DISTANCE, DEFAULT, USER
 	}
 
 	private enum polygonsMappingEnum {
-		TIME, RATE, DEFAULT
+		TIME, RATE, USER
 	}
 
 	private enum timescalerEnum {
@@ -79,8 +88,8 @@ public class ContinuousTreeToKML {
 		branchesOpacityMapping = branchesMappingEnum.TIME;
 		branchesWidthMapping = branchesMappingEnum.DEFAULT;
 		branchesAltitudeMapping = branchesMappingEnum.DISTANCE;
-		polygonsColorMapping = polygonsMappingEnum.RATE;
-		polygonsOpacityMapping = polygonsMappingEnum.RATE;
+		polygonsColorMapping = polygonsMappingEnum.TIME;
+		polygonsOpacityMapping = polygonsMappingEnum.TIME;
 
 	}// END: ContinuousTreeToKML()
 
@@ -112,8 +121,44 @@ public class ContinuousTreeToKML {
 		importer = new NexusImporter(new FileReader(path));
 	}
 
+	public void setUserAttribute(String attribute) {
+		userAttribute = attribute;
+	}
+
+	public void setMaxPolygonRedMapping(double max) {
+		maxPolygonRedMapping = max;
+	}
+
+	public void setMaxPolygonGreenMapping(double max) {
+		maxPolygonGreenMapping = max;
+	}
+
+	public void setMaxPolygonBlueMapping(double max) {
+		maxPolygonBlueMapping = max;
+	}
+
+	public void setMaxPolygonOpacityMapping(double max) {
+		maxPolygonOpacityMapping = max;
+	}
+
+	public void setMaxBranchRedMapping(double max) {
+		maxBranchRedMapping = max;
+	}
+
+	public void setMaxBranchGreenMapping(double max) {
+		maxBranchGreenMapping = max;
+	}
+
+	public void setMaxBranchBlueMapping(double max) {
+		maxBranchBlueMapping = max;
+	}
+
+	public void setMaxBranchOpacityMapping(double max) {
+		maxBranchOpacityMapping = max;
+	}
+
 	public void GenerateKML() throws IOException, ImportException,
-			ParseException, RuntimeException {
+			ParseException {
 
 		// start timing
 		time = -System.currentTimeMillis();
@@ -194,6 +239,10 @@ public class ContinuousTreeToKML {
 						double latitude = (Double) node
 								.getAttribute(latitudeName);
 
+						// if (Double.isInfinite((Double) longitude)
+						// || Double.isNaN((Double) longitude))
+						// System.out.println("is null!!");
+
 						Node parentNode = tree.getParent(node);
 						double parentLongitude = (Double) parentNode
 								.getAttribute(longitudeName);
@@ -211,10 +260,11 @@ public class ContinuousTreeToKML {
 							maxAltitude = Utils.map(nodeHeight, 0,
 									treeHeightMax, 0, maxAltMapping);
 							break;
-						case RATE:
-							maxAltitude = Utils.map(Utils
-									.getDoubleNodeAttribute(node, "rate"), 0,
-									treeHeightMax, 0, maxAltMapping);
+						case USER:
+							maxAltitude = Utils.map(
+									Utils.getDoubleNodeAttribute(node,
+											userAttribute), 0, treeHeightMax,
+									0, maxAltMapping);
 							break;
 						case DISTANCE:
 							maxAltitude = Utils
@@ -237,22 +287,31 @@ public class ContinuousTreeToKML {
 						int blue = (int) Double.NaN;
 						switch (branchesColorMapping) {
 						case TIME:
-							red = 255;
-							green = 0;
+							red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+									0, maxBranchRedMapping);
+
+							green = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, 0, maxBranchGreenMapping);
+
 							blue = (int) Utils.map(nodeHeight, 0,
-									treeHeightMax, 255, 0);
+									treeHeightMax, 0, maxBranchBlueMapping);
+
 							break;
-						case RATE:
-							red = 255;
-							green = 0;
-							blue = (int) Utils.map(Utils
-									.getDoubleNodeAttribute(node, "rate"), 0,
-									treeHeightMax, 255, 0);
-							break;
-						case DEFAULT:
-							red = 255;
-							green = 0;
-							blue = 0;
+						case USER:
+							red = (int) Utils.map(Utils.getDoubleNodeAttribute(
+									node, userAttribute), 0, treeHeightMax, 0,
+									maxBranchRedMapping);
+
+							green = (int) Utils.map(
+									Utils.getDoubleNodeAttribute(node,
+											userAttribute), 0, treeHeightMax,
+									0, maxBranchGreenMapping);
+
+							blue = (int) Utils.map(
+									Utils.getDoubleNodeAttribute(node,
+											userAttribute), 0, treeHeightMax,
+									0, maxBranchBlueMapping);
+
 							break;
 						}
 
@@ -262,13 +321,15 @@ public class ContinuousTreeToKML {
 						int alpha = (int) Double.NaN;
 						switch (branchesOpacityMapping) {
 						case TIME:
-							alpha = (int) Utils.map(nodeHeight, 0,
-									treeHeightMax, 255, 100);
+							alpha = (int) Utils
+									.map(nodeHeight, 0, treeHeightMax,
+											maxBranchOpacityMapping, 100);
 							break;
-						case RATE:
-							alpha = (int) Utils.map(Utils
-									.getDoubleNodeAttribute(node, "rate"), 0,
-									treeHeightMax, 255, 100);
+						case USER:
+							alpha = (int) Utils.map(
+									Utils.getDoubleNodeAttribute(node,
+											userAttribute), 0, treeHeightMax,
+									maxBranchOpacityMapping, 100);
 							break;
 						case DEFAULT:
 							alpha = 255;
@@ -286,9 +347,10 @@ public class ContinuousTreeToKML {
 							width = Utils.map(nodeHeight, 0, treeHeightMax,
 									3.5, 10.0);
 							break;
-						case RATE:
+						case USER:
 							width = Utils.map(Utils.getDoubleNodeAttribute(
-									node, "rate"), 0, treeHeightMax, 4.0, 5.0);
+									node, userAttribute), 0, treeHeightMax,
+									4.0, 5.0);
 							break;
 						case DEFAULT:
 							width = 4.5;
@@ -325,6 +387,9 @@ public class ContinuousTreeToKML {
 
 			} catch (ParseException e) {
 				e.printStackTrace();
+
+			} catch (RuntimeException e) {
+				e.printStackTrace();
 			}
 
 		}// END: run
@@ -335,7 +400,7 @@ public class ContinuousTreeToKML {
 	// ////////////////
 	private class Polygons implements Runnable {
 
-		public void run() throws RuntimeException {
+		public void run() {
 
 			try {
 
@@ -345,7 +410,9 @@ public class ContinuousTreeToKML {
 
 				int polygonsStyleId = 1;
 				for (Node node : tree.getNodes()) {
+
 					if (!tree.isRoot(node)) {
+
 						if (!tree.isExternal(node)) {
 
 							int modality = Utils.getIntegerNodeAttribute(node,
@@ -373,23 +440,38 @@ public class ContinuousTreeToKML {
 								int blue = (int) Double.NaN;
 								switch (polygonsColorMapping) {
 								case TIME:
-									red = 55;
+									red = (int) Utils.map(nodeHeight, 0,
+											treeHeightMax, 0,
+											maxPolygonRedMapping);
+
 									green = (int) Utils.map(nodeHeight, 0,
-											treeHeightMax, 255, 0);
-									blue = 0;
+											treeHeightMax, 0,
+											maxPolygonGreenMapping);
+
+									blue = (int) Utils.map(nodeHeight, 0,
+											treeHeightMax, 0,
+											maxPolygonBlueMapping);
+
 									break;
-								case RATE:
-									red = 55;
+								case USER:
+									red = (int) Utils.map(Utils
+											.getDoubleNodeAttribute(node,
+													userAttribute), 0,
+											treeHeightMax, 0,
+											maxPolygonRedMapping);
+
 									green = (int) Utils.map(Utils
 											.getDoubleNodeAttribute(node,
-													"rate"), 0, treeHeightMax,
-											255, 0);
-									blue = 0;
-									break;
-								case DEFAULT:
-									red = 0;
-									green = 255;
-									blue = 0;
+													userAttribute), 0,
+											treeHeightMax, 0,
+											maxPolygonGreenMapping);
+
+									blue = (int) Utils.map(Utils
+											.getDoubleNodeAttribute(node,
+													userAttribute), 0,
+											treeHeightMax, 0,
+											maxPolygonBlueMapping);
+
 									break;
 								}
 
@@ -400,16 +482,15 @@ public class ContinuousTreeToKML {
 								switch (polygonsOpacityMapping) {
 								case TIME:
 									alpha = (int) Utils.map(nodeHeight, 0,
-											treeHeightMax, 100, 255);
+											treeHeightMax,
+											maxPolygonOpacityMapping, 100);
 									break;
-								case RATE:
+								case USER:
 									alpha = (int) Utils.map(Utils
 											.getDoubleNodeAttribute(node,
-													"rate"), 0, treeHeightMax,
-											100, 255);
-									break;
-								case DEFAULT:
-									alpha = 255;
+													userAttribute), 0,
+											treeHeightMax,
+											maxPolygonOpacityMapping, 100);
 									break;
 								}
 

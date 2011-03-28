@@ -14,8 +14,8 @@ import utils.Utils;
 @SuppressWarnings("serial")
 public class RateIndicatorBFToProcessing extends PApplet {
 
-	private final int imageWidth = 2048;
-	private final int imageHeight = 1025;
+//	private final int imageWidth = 2048;
+//	private final int imageHeight = 1025;
 
 	private ReadLocations locations;
 	private ReadLog indicators;
@@ -56,10 +56,10 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		minY = -90;
 		maxY = 90;
 
-		width = imageWidth;
-		height = imageHeight;
-
-		size(width, height);
+//		width = imageWidth;
+//		height = imageHeight;
+//
+//		size(width, height);
 
 		// will improve font rendering speed with default renderer
 		hint(ENABLE_NATIVE_FONTS);

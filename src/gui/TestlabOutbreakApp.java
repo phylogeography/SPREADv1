@@ -117,10 +117,6 @@ public class TestlabOutbreakApp {
 
 		frame.setJMenuBar(mainMenu);
 		frame.add(tabbedPane, BorderLayout.CENTER);
-//		JScrollPane scrollPane = new JScrollPane(tabbedPane,
-//				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-//				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//		frame.add(scrollPane, BorderLayout.CENTER);
 		frame.getContentPane().add(Box.createVerticalStrut(15),
 				BorderLayout.SOUTH);
 		frame.pack();

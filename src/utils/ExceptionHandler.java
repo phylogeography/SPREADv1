@@ -1,10 +1,12 @@
 package utils;
 
+import java.lang.Thread.UncaughtExceptionHandler;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
+public class ExceptionHandler implements UncaughtExceptionHandler {
 
 	ImageIcon errorIcon = CreateImageIcon("/icons/error.png");
 

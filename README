@@ -51,6 +51,8 @@ ________________________________________________________________________________
 * TimeSlicer template
   - give the concurrent implementation of AnalyzeTree another try. This might        
     be achieveable with ConcurrentHashMap class  
+  - Polygons should also be easily executed in parallel (read only operation)  ,
+    the problem is in getting the style id's right
 * Exceptions handling
   * Continuous Model
   - java.lang.RuntimeException: Attribute missing from node for KML's is not 

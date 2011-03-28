@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -32,7 +34,7 @@ public class ContinuousModelTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 230;
-	private final int leftPanelHeight = 700;// 610
+	private final int leftPanelHeight = 1500;
 
 	// Current date
 	private Calendar calendar;
@@ -49,6 +51,9 @@ public class ContinuousModelTab extends JPanel {
 	private String treeFilename;
 	private String workingDirectory;
 
+	// Labels
+	JLabel tmpLabel;
+
 	// Text fields
 	private JTextField coordinatesNameParser;
 	private JTextField HPDParser;
@@ -63,6 +68,16 @@ public class ContinuousModelTab extends JPanel {
 	private JButton openTree;
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
+
+	// Sliders
+	private JSlider redPolygonSlider;
+	private JSlider greenPolygonSlider;
+	private JSlider bluePolygonSlider;
+	private JSlider opacityPolygonSlider;
+	private JSlider redBranchSlider;
+	private JSlider greenBranchSlider;
+	private JSlider blueBranchSlider;
+	private JSlider opacityBranchSlider;
 
 	// Left tools pane
 	private JPanel leftPanel;
@@ -88,7 +103,7 @@ public class ContinuousModelTab extends JPanel {
 		processingIcon = CreateImageIcon("/icons/processing.png");
 		saveIcon = CreateImageIcon("/icons/save.png");
 		errorIcon = CreateImageIcon("/icons/error.png");
-		
+
 		// Setup text fields
 		coordinatesNameParser = new JTextField("location", 5);
 		HPDParser = new JTextField("95", 2);
@@ -139,11 +154,11 @@ public class ContinuousModelTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		JLabel tmplabel = new JLabel("%");
+		tmpLabel = new JLabel("%");
 		tmpPanel.setBorder(new TitledBorder("HPD:"));
 		tmpPanel.add(HPDParser);
-		tmpPanel.add(tmplabel);
-		tmplabel.setLabelFor(tmpPanel);
+		tmpPanel.add(tmpLabel);
+		tmpLabel.setLabelFor(tmpPanel);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -152,8 +167,90 @@ public class ContinuousModelTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setBorder(new TitledBorder("Maximal altitude:"));
+		tmpPanel.setBorder(new TitledBorder("Maximal altitude mapping:"));
 		tmpPanel.add(maxAltMappingParser);
+		leftPanel.add(tmpPanel);
+
+		// Polygons color mapping:
+		tmpPanel = new JPanel();
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 400));
+		tmpLabel = new JLabel("Polygons color mapping:");
+		tmpPanel.add(tmpLabel);
+
+		redPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		redPolygonSlider.setBorder(BorderFactory.createTitledBorder("Red"));
+		redPolygonSlider.setMajorTickSpacing(50);
+		redPolygonSlider.setMinorTickSpacing(25);
+		redPolygonSlider.setPaintTicks(true);
+		redPolygonSlider.setPaintLabels(true);
+		tmpPanel.add(redPolygonSlider);
+
+		greenPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		greenPolygonSlider.setBorder(BorderFactory.createTitledBorder("Green"));
+		greenPolygonSlider.setMajorTickSpacing(50);
+		greenPolygonSlider.setMinorTickSpacing(25);
+		greenPolygonSlider.setPaintTicks(true);
+		greenPolygonSlider.setPaintLabels(true);
+		tmpPanel.add(greenPolygonSlider);
+
+		bluePolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		bluePolygonSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
+		bluePolygonSlider.setMajorTickSpacing(50);
+		bluePolygonSlider.setMinorTickSpacing(25);
+		bluePolygonSlider.setPaintTicks(true);
+		bluePolygonSlider.setPaintLabels(true);
+		tmpPanel.add(bluePolygonSlider);
+
+		opacityPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		opacityPolygonSlider.setBorder(BorderFactory
+				.createTitledBorder("Opacity"));
+		opacityPolygonSlider.setMajorTickSpacing(50);
+		opacityPolygonSlider.setMinorTickSpacing(25);
+		opacityPolygonSlider.setPaintTicks(true);
+		opacityPolygonSlider.setPaintLabels(true);
+		tmpPanel.add(opacityPolygonSlider);
+
+		leftPanel.add(tmpPanel);
+
+		// Branches color mapping:
+		tmpPanel = new JPanel();
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 400));
+		tmpLabel = new JLabel("Branches color mapping:");
+		tmpPanel.add(tmpLabel);
+
+		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		redBranchSlider.setBorder(BorderFactory.createTitledBorder("Red"));
+		redBranchSlider.setMajorTickSpacing(50);
+		redBranchSlider.setMinorTickSpacing(25);
+		redBranchSlider.setPaintTicks(true);
+		redBranchSlider.setPaintLabels(true);
+		tmpPanel.add(redBranchSlider);
+
+		greenBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		greenBranchSlider.setBorder(BorderFactory.createTitledBorder("Green"));
+		greenBranchSlider.setMajorTickSpacing(50);
+		greenBranchSlider.setMinorTickSpacing(25);
+		greenBranchSlider.setPaintTicks(true);
+		greenBranchSlider.setPaintLabels(true);
+		tmpPanel.add(greenBranchSlider);
+
+		blueBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		blueBranchSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
+		blueBranchSlider.setMajorTickSpacing(50);
+		blueBranchSlider.setMinorTickSpacing(25);
+		blueBranchSlider.setPaintTicks(true);
+		blueBranchSlider.setPaintLabels(true);
+		tmpPanel.add(blueBranchSlider);
+
+		opacityBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		opacityBranchSlider.setBorder(BorderFactory
+				.createTitledBorder("Opacity"));
+		opacityBranchSlider.setMajorTickSpacing(50);
+		opacityBranchSlider.setMinorTickSpacing(25);
+		opacityBranchSlider.setPaintTicks(true);
+		opacityBranchSlider.setPaintLabels(true);
+		tmpPanel.add(opacityBranchSlider);
+
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -251,6 +348,38 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToKML.setMaxAltitudeMapping(Double
 								.valueOf(maxAltMappingParser.getText()));
 
+						continuousTreeToKML
+								.setMaxPolygonRedMapping(redPolygonSlider
+										.getValue());
+
+						continuousTreeToKML
+								.setMaxPolygonGreenMapping(greenPolygonSlider
+										.getValue());
+
+						continuousTreeToKML
+								.setMaxPolygonBlueMapping(bluePolygonSlider
+										.getValue());
+
+						continuousTreeToKML
+								.setMaxPolygonOpacityMapping(opacityPolygonSlider
+										.getValue());
+
+						continuousTreeToKML
+								.setMaxBranchRedMapping(redBranchSlider
+										.getValue());
+
+						continuousTreeToKML
+								.setMaxBranchGreenMapping(greenBranchSlider
+										.getValue());
+
+						continuousTreeToKML
+								.setMaxBranchBlueMapping(blueBranchSlider
+										.getValue());
+
+						continuousTreeToKML
+								.setMaxBranchOpacityMapping(opacityBranchSlider
+										.getValue());
+
 						continuousTreeToKML.setMrsdString(mrsdString);
 
 						continuousTreeToKML.setNumberOfIntervals(Integer
@@ -270,8 +399,9 @@ public class ContinuousModelTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
-								"I went tits up :( \n", "Error",
+
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(), e
+								.toString(), "Error",
 								JOptionPane.ERROR_MESSAGE, errorIcon);
 					}
 
@@ -303,17 +433,53 @@ public class ContinuousModelTab extends JPanel {
 						progressBar.setIndeterminate(true);
 
 						continuousTreeToProcessing.setTreePath(treeFilename);
+
 						continuousTreeToProcessing
 								.setCoordinatesName(coordinatesNameParser
 										.getText());
+
 						continuousTreeToProcessing.setHPD(HPDParser.getText()
 								+ "%");
+
+						continuousTreeToProcessing
+								.setMaxPolygonRedMapping(redPolygonSlider
+										.getValue());
+
+						continuousTreeToProcessing
+								.setMaxPolygonGreenMapping(greenPolygonSlider
+										.getValue());
+
+						continuousTreeToProcessing
+								.setMaxPolygonBlueMapping(bluePolygonSlider
+										.getValue());
+
+						continuousTreeToProcessing
+								.setMaxPolygonOpacityMapping(opacityPolygonSlider
+										.getValue());
+
+						continuousTreeToProcessing
+								.setMaxBranchRedMapping(redBranchSlider
+										.getValue());
+
+						continuousTreeToProcessing
+								.setMaxBranchGreenMapping(greenBranchSlider
+										.getValue());
+
+						continuousTreeToProcessing
+								.setMaxBranchBlueMapping(blueBranchSlider
+										.getValue());
+
+						continuousTreeToProcessing
+								.setMaxBranchOpacityMapping(opacityBranchSlider
+										.getValue());
+
 						continuousTreeToProcessing.init();
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
-								"I went tits up :( \n", "Error",
+
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(), e
+								.toString(), "Error",
 								JOptionPane.ERROR_MESSAGE, errorIcon);
 					}
 

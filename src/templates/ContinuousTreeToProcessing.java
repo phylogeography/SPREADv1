@@ -18,9 +18,6 @@ import utils.Setter;
 @SuppressWarnings("serial")
 public class ContinuousTreeToProcessing extends PApplet {
 
-	private final int imageWidth = 2048;
-	private final int imageHeight = 1025;
-
 	private String coordinatesName;
 	private TreeImporter importer;
 	private RootedTree tree;
@@ -29,6 +26,14 @@ public class ContinuousTreeToProcessing extends PApplet {
 	private double treeHeightMax;
 	private String HPD;
 	private PImage mapImage;
+	private double maxPolygonRedMapping;
+	private double maxPolygonGreenMapping;
+	private double maxPolygonBlueMapping;
+	private double maxPolygonOpacityMapping;
+	private double maxBranchRedMapping;
+	private double maxBranchGreenMapping;
+	private double maxBranchBlueMapping;
+	private double maxBranchOpacityMapping;
 
 	// Borders of the map coordinates
 	// min/max longitude
@@ -60,6 +65,38 @@ public class ContinuousTreeToProcessing extends PApplet {
 		treeHeightMax = Utils.getTreeHeightMax(tree);
 	}
 
+	public void setMaxPolygonRedMapping(double max) {
+		maxPolygonRedMapping = max;
+	}
+
+	public void setMaxPolygonGreenMapping(double max) {
+		maxPolygonGreenMapping = max;
+	}
+
+	public void setMaxPolygonBlueMapping(double max) {
+		maxPolygonBlueMapping = max;
+	}
+
+	public void setMaxPolygonOpacityMapping(double max) {
+		maxPolygonOpacityMapping = max;
+	}
+
+	public void setMaxBranchRedMapping(double max) {
+		maxBranchRedMapping = max;
+	}
+
+	public void setMaxBranchGreenMapping(double max) {
+		maxBranchGreenMapping = max;
+	}
+
+	public void setMaxBranchBlueMapping(double max) {
+		maxBranchBlueMapping = max;
+	}
+
+	public void setMaxBranchOpacityMapping(double max) {
+		maxBranchOpacityMapping = max;
+	}
+
 	public void setup() {
 
 		minX = -180;
@@ -67,11 +104,6 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 		minY = -80;
 		maxY = 90;
-
-		width = imageWidth;
-		height = imageHeight;
-
-		size(width, height);
 
 	}// END:setup
 
@@ -127,12 +159,17 @@ public class ContinuousTreeToProcessing extends PApplet {
 				 * */
 				double nodeHeight = tree.getHeight(node);
 
-				int red = 255;
-				int green = 0;
-				int blue = (int) Utils
-						.map(nodeHeight, 0, treeHeightMax, 255, 0);
-				int alpha = (int) Utils.map(nodeHeight, 0, treeHeightMax, 100,
-						255);
+				int red = (int) Utils.map(nodeHeight, 0, treeHeightMax, 0,
+						maxBranchRedMapping);
+
+				int green = (int) Utils.map(nodeHeight, 0, treeHeightMax, 0,
+						maxBranchGreenMapping);
+
+				int blue = (int) Utils.map(nodeHeight, 0, treeHeightMax, 0,
+						maxBranchBlueMapping);
+
+				int alpha = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+						maxBranchOpacityMapping, 100);
 
 				stroke(red, green, blue, alpha);
 				line(x0, y0, x1, y1);
@@ -163,12 +200,17 @@ public class ContinuousTreeToProcessing extends PApplet {
 						 * */
 						double nodeHeight = tree.getHeight(node);
 
-						int red = 55;
-						int green = 0;
+						int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+								0, maxPolygonRedMapping);
+
+						int green = (int) Utils.map(nodeHeight, 0,
+								treeHeightMax, 0, maxPolygonGreenMapping);
+
 						int blue = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, 255, 0);
+								treeHeightMax, 0, maxPolygonBlueMapping);
+
 						int alpha = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, 100, 255);
+								treeHeightMax, maxPolygonOpacityMapping, 100);
 
 						stroke(red, green, blue, alpha);
 						fill(red, green, blue, alpha);
