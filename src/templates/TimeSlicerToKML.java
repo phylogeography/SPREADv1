@@ -47,9 +47,16 @@ public class TimeSlicerToKML {
 	private TreeImporter treeImporter;
 	private RootedTree tree;
 	private double maxAltMapping;
+	private double maxPolygonRedMapping;
+	private double maxPolygonGreenMapping;
+	private double maxPolygonBlueMapping;
+	private double maxPolygonOpacityMapping;
+	private double maxBranchRedMapping;
+	private double maxBranchGreenMapping;
+	private double maxBranchBlueMapping;
+	private double maxBranchOpacityMapping;
 	private TreeImporter treesImporter;
 	private RootedTree currentTree;
-
 	private String mrsdString;
 	private double timescaler;
 	private int numberOfIntervals;
@@ -148,6 +155,38 @@ public class TimeSlicerToKML {
 		maxAltMapping = max;
 	}
 
+	public void setMaxPolygonRedMapping(double max) {
+		maxPolygonRedMapping = max;
+	}
+
+	public void setMaxPolygonGreenMapping(double max) {
+		maxPolygonGreenMapping = max;
+	}
+
+	public void setMaxPolygonBlueMapping(double max) {
+		maxPolygonBlueMapping = max;
+	}
+
+	public void setMaxPolygonOpacityMapping(double max) {
+		maxPolygonOpacityMapping = max;
+	}
+
+	public void setMaxBranchRedMapping(double max) {
+		maxBranchRedMapping = max;
+	}
+
+	public void setMaxBranchGreenMapping(double max) {
+		maxBranchGreenMapping = max;
+	}
+
+	public void setMaxBranchBlueMapping(double max) {
+		maxBranchBlueMapping = max;
+	}
+
+	public void setMaxBranchOpacityMapping(double max) {
+		maxBranchOpacityMapping = max;
+	}
+
 	public void GenerateKML() throws IOException, ImportException,
 			ParseException, RuntimeException, OutOfMemoryError {
 
@@ -215,9 +254,9 @@ public class TimeSlicerToKML {
 
 				sliceTime = (Double) iterator.next();
 
-				 executor.submit(new Polygons());
-//				Polygons polygons = new Polygons();
-//				polygons.run();
+//				executor.submit(new Polygons());
+				 Polygons polygons = new Polygons();
+				 polygons.run();
 
 			}
 		}
@@ -373,11 +412,17 @@ public class TimeSlicerToKML {
 			/**
 			 * Color and Opacity mapping
 			 * */
-			int red = 55;
-			int green = (int) Utils.map(sliceTime, startTime, endTime, 255, 0);
-			int blue = 0;
-			int alpha = (int) Utils
-					.map(sliceTime, startTime, endTime, 100, 255);
+			int red = (int) Utils.map(sliceTime, startTime, endTime, 0,
+					maxPolygonRedMapping);
+			
+			int green = (int) Utils.map(sliceTime, startTime, endTime, 0,
+					maxPolygonGreenMapping);
+			
+			int blue = (int) Utils.map(sliceTime, startTime, endTime, 0,
+					maxPolygonBlueMapping);
+			
+			int alpha = (int) Utils.map(sliceTime, startTime, endTime,
+					maxPolygonOpacityMapping, 100);
 
 			Color col = new Color(red, green, blue, alpha);
 			Style polygonsStyle = new Style(col, 0);
@@ -466,12 +511,17 @@ public class TimeSlicerToKML {
 						double maxAltitude = Utils.map(nodeHeight, 0,
 								treeHeightMax, 0, maxAltMapping);
 
-						int red = 255;
-						int green = 0;
+						int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+								0, maxBranchRedMapping);
+
+						int green = (int) Utils.map(nodeHeight, 0,
+								treeHeightMax, 0, maxBranchGreenMapping);
+
 						int blue = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, 255, 0);
+								treeHeightMax, 0, maxBranchBlueMapping);
+
 						int alpha = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, 100, 255);
+								treeHeightMax, maxBranchOpacityMapping, 100);
 
 						Color col = new Color(red, green, blue, alpha);
 

@@ -9,16 +9,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -32,7 +35,7 @@ public class TimeSlicerTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 230;
-	private final int leftPanelHeight = 900;
+	private final int leftPanelHeight = 1900;
 
 	// Current date
 	private Calendar calendar;
@@ -51,6 +54,9 @@ public class TimeSlicerTab extends JPanel {
 	private String treesFilename;
 	private String workingDirectory;
 
+	// Labels
+	JLabel tmpLabel;
+
 	// Text fields
 	private JTextField burnInParser;
 	private JTextField locationAttNameParser;
@@ -68,6 +74,16 @@ public class TimeSlicerTab extends JPanel {
 	private JButton openTrees;
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
+
+	// Sliders
+	private JSlider redPolygonSlider;
+	private JSlider greenPolygonSlider;
+	private JSlider bluePolygonSlider;
+	private JSlider opacityPolygonSlider;
+	private JSlider redBranchSlider;
+	private JSlider greenBranchSlider;
+	private JSlider blueBranchSlider;
+	private JSlider opacityBranchSlider;
 
 	// checkboxes
 	private JCheckBox trueNoiseParser;
@@ -190,8 +206,90 @@ public class TimeSlicerTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setBorder(new TitledBorder("Maximal altitude:"));
+		tmpPanel.setBorder(new TitledBorder("Maximal altitude mapping:"));
 		tmpPanel.add(maxAltMappingParser);
+		leftPanel.add(tmpPanel);
+
+		// Polygons color mapping:
+		tmpPanel = new JPanel();
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 400));
+		tmpLabel = new JLabel("Polygons color mapping:");
+		tmpPanel.add(tmpLabel);
+
+		redPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		redPolygonSlider.setBorder(BorderFactory.createTitledBorder("Red"));
+		redPolygonSlider.setMajorTickSpacing(50);
+		redPolygonSlider.setMinorTickSpacing(25);
+		redPolygonSlider.setPaintTicks(true);
+		redPolygonSlider.setPaintLabels(true);
+		tmpPanel.add(redPolygonSlider);
+
+		greenPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		greenPolygonSlider.setBorder(BorderFactory.createTitledBorder("Green"));
+		greenPolygonSlider.setMajorTickSpacing(50);
+		greenPolygonSlider.setMinorTickSpacing(25);
+		greenPolygonSlider.setPaintTicks(true);
+		greenPolygonSlider.setPaintLabels(true);
+		tmpPanel.add(greenPolygonSlider);
+
+		bluePolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		bluePolygonSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
+		bluePolygonSlider.setMajorTickSpacing(50);
+		bluePolygonSlider.setMinorTickSpacing(25);
+		bluePolygonSlider.setPaintTicks(true);
+		bluePolygonSlider.setPaintLabels(true);
+		tmpPanel.add(bluePolygonSlider);
+
+		opacityPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		opacityPolygonSlider.setBorder(BorderFactory
+				.createTitledBorder("Opacity"));
+		opacityPolygonSlider.setMajorTickSpacing(50);
+		opacityPolygonSlider.setMinorTickSpacing(25);
+		opacityPolygonSlider.setPaintTicks(true);
+		opacityPolygonSlider.setPaintLabels(true);
+		tmpPanel.add(opacityPolygonSlider);
+
+		leftPanel.add(tmpPanel);
+
+		// Branches color mapping:
+		tmpPanel = new JPanel();
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 400));
+		tmpLabel = new JLabel("Branches color mapping:");
+		tmpPanel.add(tmpLabel);
+
+		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		redBranchSlider.setBorder(BorderFactory.createTitledBorder("Red"));
+		redBranchSlider.setMajorTickSpacing(50);
+		redBranchSlider.setMinorTickSpacing(25);
+		redBranchSlider.setPaintTicks(true);
+		redBranchSlider.setPaintLabels(true);
+		tmpPanel.add(redBranchSlider);
+
+		greenBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		greenBranchSlider.setBorder(BorderFactory.createTitledBorder("Green"));
+		greenBranchSlider.setMajorTickSpacing(50);
+		greenBranchSlider.setMinorTickSpacing(25);
+		greenBranchSlider.setPaintTicks(true);
+		greenBranchSlider.setPaintLabels(true);
+		tmpPanel.add(greenBranchSlider);
+
+		blueBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		blueBranchSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
+		blueBranchSlider.setMajorTickSpacing(50);
+		blueBranchSlider.setMinorTickSpacing(25);
+		blueBranchSlider.setPaintTicks(true);
+		blueBranchSlider.setPaintLabels(true);
+		tmpPanel.add(blueBranchSlider);
+
+		opacityBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		opacityBranchSlider.setBorder(BorderFactory
+				.createTitledBorder("Opacity"));
+		opacityBranchSlider.setMajorTickSpacing(50);
+		opacityBranchSlider.setMinorTickSpacing(25);
+		opacityBranchSlider.setPaintTicks(true);
+		opacityBranchSlider.setPaintLabels(true);
+		tmpPanel.add(opacityBranchSlider);
+
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -353,6 +451,37 @@ public class TimeSlicerTab extends JPanel {
 						timeSlicerToKML.setMaxAltitudeMapping(Double
 								.valueOf(maxAltMappingParser.getText()));
 
+						timeSlicerToKML
+								.setMaxPolygonRedMapping(redPolygonSlider
+										.getValue());
+
+						timeSlicerToKML
+								.setMaxPolygonGreenMapping(greenPolygonSlider
+										.getValue());
+
+						timeSlicerToKML
+								.setMaxPolygonBlueMapping(bluePolygonSlider
+										.getValue());
+
+						timeSlicerToKML
+								.setMaxPolygonOpacityMapping(opacityPolygonSlider
+										.getValue());
+
+						timeSlicerToKML.setMaxBranchRedMapping(redBranchSlider
+								.getValue());
+
+						timeSlicerToKML
+								.setMaxBranchGreenMapping(greenBranchSlider
+										.getValue());
+
+						timeSlicerToKML
+								.setMaxBranchBlueMapping(blueBranchSlider
+										.getValue());
+
+						timeSlicerToKML
+								.setMaxBranchOpacityMapping(opacityBranchSlider
+										.getValue());
+
 						timeSlicerToKML.GenerateKML();
 
 					} catch (Exception e) {
@@ -430,6 +559,38 @@ public class TimeSlicerTab extends JPanel {
 
 						timeSlicerToProcessing.setNumberOfIntervals(Integer
 								.valueOf(numberOfIntervalsParser.getText()));
+
+						timeSlicerToProcessing
+								.setMaxPolygonRedMapping(redPolygonSlider
+										.getValue());
+
+						timeSlicerToProcessing
+								.setMaxPolygonGreenMapping(greenPolygonSlider
+										.getValue());
+
+						timeSlicerToProcessing
+								.setMaxPolygonBlueMapping(bluePolygonSlider
+										.getValue());
+
+						timeSlicerToProcessing
+								.setMaxPolygonOpacityMapping(opacityPolygonSlider
+										.getValue());
+
+						timeSlicerToProcessing
+								.setMaxBranchRedMapping(redBranchSlider
+										.getValue());
+
+						timeSlicerToProcessing
+								.setMaxBranchGreenMapping(greenBranchSlider
+										.getValue());
+
+						timeSlicerToProcessing
+								.setMaxBranchBlueMapping(blueBranchSlider
+										.getValue());
+
+						timeSlicerToProcessing
+								.setMaxBranchOpacityMapping(opacityBranchSlider
+										.getValue());
 
 						timeSlicerToProcessing.AnalyzeTrees();
 						timeSlicerToProcessing.init();
