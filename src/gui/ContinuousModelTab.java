@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,6 +47,9 @@ public class ContinuousModelTab extends JPanel {
 	private ImageIcon processingIcon;
 	private ImageIcon saveIcon;
 	private ImageIcon errorIcon;
+
+	// Colors
+	private Color backgroundColor;
 
 	// Strings for paths
 	private String treeFilename;
@@ -93,6 +97,7 @@ public class ContinuousModelTab extends JPanel {
 
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+		backgroundColor = new Color(231, 237, 246);
 
 		calendar = Calendar.getInstance();
 		formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -136,11 +141,13 @@ public class ContinuousModelTab extends JPanel {
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load tree file:"));
 		tmpPanel.add(openTree);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
@@ -149,11 +156,13 @@ public class ContinuousModelTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Coordinate attribute name:"));
 		tmpPanel.add(coordinatesNameParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpLabel = new JLabel("%");
 		tmpPanel.setBorder(new TitledBorder("HPD:"));
 		tmpPanel.add(HPDParser);
@@ -162,22 +171,25 @@ public class ContinuousModelTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude mapping:"));
 		tmpPanel.add(maxAltMappingParser);
 		leftPanel.add(tmpPanel);
 
 		// Polygons color mapping:
 		tmpPanel = new JPanel();
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 400));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 410));
 		tmpLabel = new JLabel("Polygons color mapping:");
 		tmpPanel.add(tmpLabel);
 
-		redPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		redPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
 		redPolygonSlider.setBorder(BorderFactory.createTitledBorder("Red"));
 		redPolygonSlider.setMajorTickSpacing(50);
 		redPolygonSlider.setMinorTickSpacing(25);
@@ -185,7 +197,7 @@ public class ContinuousModelTab extends JPanel {
 		redPolygonSlider.setPaintLabels(true);
 		tmpPanel.add(redPolygonSlider);
 
-		greenPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		greenPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 200);
 		greenPolygonSlider.setBorder(BorderFactory.createTitledBorder("Green"));
 		greenPolygonSlider.setMajorTickSpacing(50);
 		greenPolygonSlider.setMinorTickSpacing(25);
@@ -193,7 +205,7 @@ public class ContinuousModelTab extends JPanel {
 		greenPolygonSlider.setPaintLabels(true);
 		tmpPanel.add(greenPolygonSlider);
 
-		bluePolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		bluePolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 200);
 		bluePolygonSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
 		bluePolygonSlider.setMajorTickSpacing(50);
 		bluePolygonSlider.setMinorTickSpacing(25);
@@ -201,7 +213,7 @@ public class ContinuousModelTab extends JPanel {
 		bluePolygonSlider.setPaintLabels(true);
 		tmpPanel.add(bluePolygonSlider);
 
-		opacityPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		opacityPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
 		opacityPolygonSlider.setBorder(BorderFactory
 				.createTitledBorder("Opacity"));
 		opacityPolygonSlider.setMajorTickSpacing(50);
@@ -214,11 +226,12 @@ public class ContinuousModelTab extends JPanel {
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 400));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 410));
 		tmpLabel = new JLabel("Branches color mapping:");
 		tmpPanel.add(tmpLabel);
 
-		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
 		redBranchSlider.setBorder(BorderFactory.createTitledBorder("Red"));
 		redBranchSlider.setMajorTickSpacing(50);
 		redBranchSlider.setMinorTickSpacing(25);
@@ -234,7 +247,7 @@ public class ContinuousModelTab extends JPanel {
 		greenBranchSlider.setPaintLabels(true);
 		tmpPanel.add(greenBranchSlider);
 
-		blueBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		blueBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
 		blueBranchSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
 		blueBranchSlider.setMajorTickSpacing(50);
 		blueBranchSlider.setMinorTickSpacing(25);
@@ -242,7 +255,7 @@ public class ContinuousModelTab extends JPanel {
 		blueBranchSlider.setPaintLabels(true);
 		tmpPanel.add(blueBranchSlider);
 
-		opacityBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		opacityBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
 		opacityBranchSlider.setBorder(BorderFactory
 				.createTitledBorder("Opacity"));
 		opacityBranchSlider.setMajorTickSpacing(50);
@@ -254,11 +267,13 @@ public class ContinuousModelTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("KML name:"));
 		tmpPanel.add(kmlPathParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
 		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.add(generateKml);
@@ -267,6 +282,7 @@ public class ContinuousModelTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Save plot:"));
 		tmpPanel.add(saveProcessingPlot);
 		leftPanel.add(tmpPanel);

@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +31,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 230;
-	private final int leftPanelHeight = 1100;
+	private final int leftPanelHeight = 1050;
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -39,6 +40,9 @@ public class RateIndicatorBFTab extends JPanel {
 	private ImageIcon processingIcon;
 	private ImageIcon saveIcon;
 	private ImageIcon errorIcon;
+	
+	// Colors
+	private Color backgroundColor;
 
 	// Strings for paths
 	private String logFilename;
@@ -82,7 +86,8 @@ public class RateIndicatorBFTab extends JPanel {
 
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-
+		backgroundColor = new Color(231, 237, 246);
+		
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 		logIcon = CreateImageIcon("/icons/log.png");
@@ -123,42 +128,49 @@ public class RateIndicatorBFTab extends JPanel {
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load log file:"));
 		tmpPanel.add(openLog);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load locations file:"));
 		tmpPanel.add(openLocations);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
 		tmpPanel.add(burnInParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Bayes Factor cut-off:"));
 		tmpPanel.add(bfCutoffParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude:"));
 		tmpPanel.add(maxAltMappingParser);
 		leftPanel.add(tmpPanel);
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 400));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 410));
 		tmpLabel = new JLabel("Branches color mapping:");
 		tmpPanel.add(tmpLabel);
 
-		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
 		redBranchSlider.setBorder(BorderFactory.createTitledBorder("Red"));
 		redBranchSlider.setMajorTickSpacing(50);
 		redBranchSlider.setMinorTickSpacing(25);
@@ -174,7 +186,7 @@ public class RateIndicatorBFTab extends JPanel {
 		greenBranchSlider.setPaintLabels(true);
 		tmpPanel.add(greenBranchSlider);
 
-		blueBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		blueBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
 		blueBranchSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
 		blueBranchSlider.setMajorTickSpacing(50);
 		blueBranchSlider.setMinorTickSpacing(25);
@@ -182,7 +194,7 @@ public class RateIndicatorBFTab extends JPanel {
 		blueBranchSlider.setPaintLabels(true);
 		tmpPanel.add(blueBranchSlider);
 
-		opacityBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		opacityBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
 		opacityBranchSlider.setBorder(BorderFactory
 				.createTitledBorder("Opacity"));
 		opacityBranchSlider.setMajorTickSpacing(50);
@@ -194,11 +206,13 @@ public class RateIndicatorBFTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("KML name:"));
 		tmpPanel.add(kmlPathParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
 		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.add(generateKml);
@@ -207,6 +221,7 @@ public class RateIndicatorBFTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Save plot:"));
 		tmpPanel.add(saveProcessingPlot);
 		leftPanel.add(tmpPanel);
@@ -334,8 +349,9 @@ public class RateIndicatorBFTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
-								"I went tits up :( \n", "Error",
+
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(), e
+								.toString(), "Error",
 								JOptionPane.ERROR_MESSAGE, errorIcon);
 					}
 
@@ -395,8 +411,9 @@ public class RateIndicatorBFTab extends JPanel {
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
-								"I went tits up :( \n", "Error",
+
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(), e
+								.toString(), "Error",
 								JOptionPane.ERROR_MESSAGE, errorIcon);
 					}
 
