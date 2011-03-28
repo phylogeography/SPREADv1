@@ -119,8 +119,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	private void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		Setter jarSetter = new Setter();
-		mapImage = loadImage(LoadMapBackground(jarSetter.getJarBoolean()));
+		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons

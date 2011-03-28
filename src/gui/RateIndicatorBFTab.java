@@ -6,14 +6,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -27,7 +30,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 230;
-	private final int leftPanelHeight = 700;
+	private final int leftPanelHeight = 1100;
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -36,11 +39,14 @@ public class RateIndicatorBFTab extends JPanel {
 	private ImageIcon processingIcon;
 	private ImageIcon saveIcon;
 	private ImageIcon errorIcon;
-	
+
 	// Strings for paths
 	private String logFilename;
 	private String locationsFilename;
 	private String workingDirectory;
+
+	// Labels
+	JLabel tmpLabel;
 
 	// Text fields
 	private JTextField burnInParser;
@@ -55,6 +61,12 @@ public class RateIndicatorBFTab extends JPanel {
 	private JButton generateKml;
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
+
+	// Sliders
+	private JSlider redBranchSlider;
+	private JSlider greenBranchSlider;
+	private JSlider blueBranchSlider;
+	private JSlider opacityBranchSlider;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -100,7 +112,7 @@ public class RateIndicatorBFTab extends JPanel {
 		 * left tools pane
 		 * */
 		leftPanel = new JPanel();
-		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));// PAGE_AXIS
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
 		leftPanel.setPreferredSize(new Dimension(leftPanelWidth,
 				leftPanelHeight));
 
@@ -138,6 +150,47 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude:"));
 		tmpPanel.add(maxAltMappingParser);
+		leftPanel.add(tmpPanel);
+
+		// Branches color mapping:
+		tmpPanel = new JPanel();
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 400));
+		tmpLabel = new JLabel("Branches color mapping:");
+		tmpPanel.add(tmpLabel);
+
+		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		redBranchSlider.setBorder(BorderFactory.createTitledBorder("Red"));
+		redBranchSlider.setMajorTickSpacing(50);
+		redBranchSlider.setMinorTickSpacing(25);
+		redBranchSlider.setPaintTicks(true);
+		redBranchSlider.setPaintLabels(true);
+		tmpPanel.add(redBranchSlider);
+
+		greenBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		greenBranchSlider.setBorder(BorderFactory.createTitledBorder("Green"));
+		greenBranchSlider.setMajorTickSpacing(50);
+		greenBranchSlider.setMinorTickSpacing(25);
+		greenBranchSlider.setPaintTicks(true);
+		greenBranchSlider.setPaintLabels(true);
+		tmpPanel.add(greenBranchSlider);
+
+		blueBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		blueBranchSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
+		blueBranchSlider.setMajorTickSpacing(50);
+		blueBranchSlider.setMinorTickSpacing(25);
+		blueBranchSlider.setPaintTicks(true);
+		blueBranchSlider.setPaintLabels(true);
+		tmpPanel.add(blueBranchSlider);
+
+		opacityBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
+		opacityBranchSlider.setBorder(BorderFactory
+				.createTitledBorder("Opacity"));
+		opacityBranchSlider.setMajorTickSpacing(50);
+		opacityBranchSlider.setMinorTickSpacing(25);
+		opacityBranchSlider.setPaintTicks(true);
+		opacityBranchSlider.setPaintLabels(true);
+		tmpPanel.add(opacityBranchSlider);
+
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -258,6 +311,22 @@ public class RateIndicatorBFTab extends JPanel {
 						rateIndicatorBFToKML.setKmlWriterPath(workingDirectory
 								.concat("/").concat(kmlPathParser.getText()));
 
+						rateIndicatorBFToKML
+								.setMaxBranchRedMapping(redBranchSlider
+										.getValue());
+
+						rateIndicatorBFToKML
+								.setMaxBranchGreenMapping(greenBranchSlider
+										.getValue());
+
+						rateIndicatorBFToKML
+								.setMaxBranchBlueMapping(blueBranchSlider
+										.getValue());
+
+						rateIndicatorBFToKML
+								.setMaxBranchOpacityMapping(opacityBranchSlider
+										.getValue());
+
 						rateIndicatorBFToKML.GenerateKML();
 
 						System.out.println("Finished in: "
@@ -305,6 +374,22 @@ public class RateIndicatorBFTab extends JPanel {
 
 						rateIndicatorBFToProcessing
 								.setLocationFilePath(locationsFilename);
+
+						rateIndicatorBFToProcessing
+								.setMaxBranchRedMapping(redBranchSlider
+										.getValue());
+
+						rateIndicatorBFToProcessing
+								.setMaxBranchGreenMapping(greenBranchSlider
+										.getValue());
+
+						rateIndicatorBFToProcessing
+								.setMaxBranchBlueMapping(blueBranchSlider
+										.getValue());
+
+						rateIndicatorBFToProcessing
+								.setMaxBranchOpacityMapping(opacityBranchSlider
+										.getValue());
 
 						rateIndicatorBFToProcessing.init();
 

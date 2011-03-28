@@ -37,6 +37,10 @@ public class RateIndicatorBFToKML {
 	private double bfCutoff;
 	private List<Double> bayesFactors;
 	private List<String> combin;
+	private double maxBranchRedMapping;
+	private double maxBranchGreenMapping;
+	private double maxBranchBlueMapping;
+	private double maxBranchOpacityMapping;
 
 	public RateIndicatorBFToKML() {
 
@@ -66,6 +70,22 @@ public class RateIndicatorBFToKML {
 
 	public void setKmlWriterPath(String kmlpath) throws FileNotFoundException {
 		writer = new PrintWriter(kmlpath);
+	}
+
+	public void setMaxBranchRedMapping(double max) {
+		maxBranchRedMapping = max;
+	}
+
+	public void setMaxBranchGreenMapping(double max) {
+		maxBranchGreenMapping = max;
+	}
+
+	public void setMaxBranchBlueMapping(double max) {
+		maxBranchBlueMapping = max;
+	}
+
+	public void setMaxBranchOpacityMapping(double max) {
+		maxBranchOpacityMapping = max;
 	}
 
 	public void GenerateKML() throws IOException, ImportException,
@@ -119,7 +139,6 @@ public class RateIndicatorBFToKML {
 			}
 
 			layers.add(placesLayer);
-
 		}
 	}// END: Places
 
@@ -146,10 +165,14 @@ public class RateIndicatorBFToKML {
 					 * */
 					double bf = Math.log(bayesFactors.get(i));
 
-					int red = 255;
-					int green = 0;
-					int blue = (int) Utils.map(bf, 0, bfMax, 255, 0);
-					int alpha = (int) Utils.map(bf, 0, bfMax, 100, 255);
+					int red = (int) Utils.map(bf, 0, bfMax, 0,
+							maxBranchRedMapping);
+					int green = (int) Utils.map(bf, 0, bfMax, 0,
+							maxBranchGreenMapping);
+					int blue = (int) Utils.map(bf, 0, bfMax, 0,
+							maxBranchBlueMapping);
+					int alpha = (int) Utils.map(bf, 0, bfMax,
+							maxBranchOpacityMapping, 100);
 
 					/**
 					 * width mapping
@@ -181,11 +204,9 @@ public class RateIndicatorBFToKML {
 							locations, parentState, 1);
 
 					ratesLayer.addItem(new Line(
-							combin.get(i) + ", BF=" + bayesFactors.get(i), // string
-							// name
+							combin.get(i) + ", BF=" + bayesFactors.get(i), // name
 							new Coordinates(parentLatitude, parentLongitude),
-							Double.NaN, // double
-							// startime
+							Double.NaN, // startime
 							linesStyle, // style startstyle
 							new Coordinates(latitude, longitude), // endCoords
 							Double.NaN, // double endtime

@@ -14,17 +14,17 @@ import utils.Utils;
 @SuppressWarnings("serial")
 public class RateIndicatorBFToProcessing extends PApplet {
 
-//	private final int imageWidth = 2048;
-//	private final int imageHeight = 1025;
-
 	private ReadLocations locations;
 	private ReadLog indicators;
 	private double bfCutoff;
 	private List<Double> bayesFactors;
 	private List<String> combin;
 	private PImage mapImage;
+	private double maxBranchRedMapping;
+	private double maxBranchGreenMapping;
+	private double maxBranchBlueMapping;
+	private double maxBranchOpacityMapping;
 
-	// Borders of the map coordinates
 	// min/max longitude
 	private float minX, maxX;
 	// min/max latitude
@@ -48,6 +48,22 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		indicators = new ReadLog(path, burnIn);
 	}
 
+	public void setMaxBranchRedMapping(double max) {
+		maxBranchRedMapping = max;
+	}
+
+	public void setMaxBranchGreenMapping(double max) {
+		maxBranchGreenMapping = max;
+	}
+
+	public void setMaxBranchBlueMapping(double max) {
+		maxBranchBlueMapping = max;
+	}
+
+	public void setMaxBranchOpacityMapping(double max) {
+		maxBranchOpacityMapping = max;
+	}
+
 	public void setup() {
 
 		minX = -180;
@@ -55,11 +71,6 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		minY = -90;
 		maxY = 90;
-
-//		width = imageWidth;
-//		height = imageHeight;
-//
-//		size(width, height);
 
 		// will improve font rendering speed with default renderer
 		hint(ENABLE_NATIVE_FONTS);
@@ -83,8 +94,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	void drawMapBackground() {
 
 		// World map in Equirectangular projection
-		Setter jarSetter = new Setter();
-		mapImage = loadImage(LoadMapBackground(jarSetter.getJarBoolean()));
+		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons
@@ -130,6 +140,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 	private void DrawRates() {
 
+		strokeWeight(2);
+
 		float bfMax = (float) Math.log(Utils.getListMax(bayesFactors));
 
 		for (int i = 0; i < combin.size(); i++) {
@@ -141,13 +153,18 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				 * */
 				float bf = (float) Math.log(bayesFactors.get(i));
 
-				int red = 255;
-				int green = 0;
-				int blue = (int) Utils.map(bf, 0, bfMax, 255, 0);
-				int alpha = (int) Utils.map(bf, 0, bfMax, 100, 255);
-				stroke(red, green, blue, alpha);
+				int red = (int) Utils.map(bf, 0, bfMax, 0, maxBranchRedMapping);
 
-				strokeWeight(2);
+				int green = (int) Utils.map(bf, 0, bfMax, 0,
+						maxBranchGreenMapping);
+
+				int blue = (int) Utils.map(bf, 0, bfMax, 0,
+						maxBranchBlueMapping);
+
+				int alpha = (int) Utils.map(bf, 0, bfMax,
+						maxBranchOpacityMapping, 100);
+
+				stroke(red, green, blue, alpha);
 
 				String state = combin.get(i).split(":")[1];
 				String parentState = combin.get(i).split(":")[0];
