@@ -281,7 +281,7 @@ public class ContinuousModelTab extends JPanel {
 		/**
 		 * Processing pane
 		 * */
-//		continuousTreeToProcessing = new ContinuousTreeToProcessing();
+		continuousTreeToProcessing = new ContinuousTreeToProcessing();
 		continuousTreeToProcessing.setPreferredSize(new Dimension(2048, 1025));
 		JScrollPane rightScrollPane = new JScrollPane(
 				continuousTreeToProcessing,
@@ -432,8 +432,6 @@ public class ContinuousModelTab extends JPanel {
 						generateProcessing.setEnabled(false);
 						progressBar.setIndeterminate(true);
 
-						continuousTreeToProcessing = new ContinuousTreeToProcessing();
-						
 						continuousTreeToProcessing.setTreePath(treeFilename);
 
 						continuousTreeToProcessing
