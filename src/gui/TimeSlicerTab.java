@@ -228,9 +228,8 @@ public class TimeSlicerTab extends JPanel {
 		// Polygons color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 400));
-		tmpLabel = new JLabel("Polygons color mapping:");
-		tmpPanel.add(tmpLabel);
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 420));
+		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
 
 		redPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
 		redPolygonSlider.setBorder(BorderFactory.createTitledBorder("Red"));
@@ -270,9 +269,8 @@ public class TimeSlicerTab extends JPanel {
 		// Branches color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 400));
-		tmpLabel = new JLabel("Branches color mapping:");
-		tmpPanel.add(tmpLabel);
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 420));
+		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
 
 		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
 		redBranchSlider.setBorder(BorderFactory.createTitledBorder("Red"));
@@ -395,7 +393,7 @@ public class TimeSlicerTab extends JPanel {
 	}
 
 	private class ListenOpenTrees implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
 			try {
 
@@ -412,7 +410,7 @@ public class TimeSlicerTab extends JPanel {
 				treesFilename = file.getAbsolutePath();
 				System.out.println("Opened " + treesFilename + "\n");
 
-			} catch (Exception e1) {
+			} catch (Exception e) {
 				System.err.println("Could not Open! \n");
 			}
 		}

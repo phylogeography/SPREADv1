@@ -56,7 +56,7 @@ public class ContinuousModelTab extends JPanel {
 	private String workingDirectory;
 
 	// Labels
-	JLabel tmpLabel;
+	private JLabel tmpLabel;
 
 	// Text fields
 	private JTextField coordinatesNameParser;
@@ -185,9 +185,8 @@ public class ContinuousModelTab extends JPanel {
 		// Polygons color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 410));
-		tmpLabel = new JLabel("Polygons color mapping:");
-		tmpPanel.add(tmpLabel);
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 420));
+		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
 
 		redPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
 		redPolygonSlider.setBorder(BorderFactory.createTitledBorder("Red"));
@@ -227,9 +226,8 @@ public class ContinuousModelTab extends JPanel {
 		// Branches color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 410));
-		tmpLabel = new JLabel("Branches color mapping:");
-		tmpPanel.add(tmpLabel);
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 420));
+		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
 
 		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
 		redBranchSlider.setBorder(BorderFactory.createTitledBorder("Red"));
@@ -308,7 +306,7 @@ public class ContinuousModelTab extends JPanel {
 	}
 
 	private class ListenOpenTree implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
 			try {
 
@@ -329,14 +327,14 @@ public class ContinuousModelTab extends JPanel {
 				System.out.println("Setted working directory to "
 						+ workingDirectory + "\n");
 
-			} catch (Exception e1) {
+			} catch (Exception e) {
 				System.err.println("Could not Open! \n");
 			}
 		}
 	}
 
 	private class ListenGenerateKml implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
@@ -436,7 +434,7 @@ public class ContinuousModelTab extends JPanel {
 	}// END: ListenGenerateKml
 
 	private class ListenGenerateProcessing implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
@@ -515,7 +513,7 @@ public class ContinuousModelTab extends JPanel {
 	}// END: ListenGenerateProcessing
 
 	private class ListenSaveProcessingPlot implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
 			try {
 
@@ -529,7 +527,7 @@ public class ContinuousModelTab extends JPanel {
 				continuousTreeToProcessing.save(plotToSaveFilename);
 				System.out.println("Saved " + plotToSaveFilename + "\n");
 
-			} catch (Exception e0) {
+			} catch (Exception e) {
 				System.err.println("Could not save! \n");
 			}
 

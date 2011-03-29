@@ -12,7 +12,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -31,7 +30,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 230;
-	private final int leftPanelHeight = 1050;
+	private final int leftPanelHeight = 1100;
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -40,7 +39,7 @@ public class RateIndicatorBFTab extends JPanel {
 	private ImageIcon processingIcon;
 	private ImageIcon saveIcon;
 	private ImageIcon errorIcon;
-	
+
 	// Colors
 	private Color backgroundColor;
 
@@ -48,9 +47,6 @@ public class RateIndicatorBFTab extends JPanel {
 	private String logFilename;
 	private String locationsFilename;
 	private String workingDirectory;
-
-	// Labels
-	JLabel tmpLabel;
 
 	// Text fields
 	private JTextField burnInParser;
@@ -87,7 +83,7 @@ public class RateIndicatorBFTab extends JPanel {
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		backgroundColor = new Color(231, 237, 246);
-		
+
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 		logIcon = CreateImageIcon("/icons/log.png");
@@ -166,9 +162,8 @@ public class RateIndicatorBFTab extends JPanel {
 		// Branches color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 410));
-		tmpLabel = new JLabel("Branches color mapping:");
-		tmpPanel.add(tmpLabel);
+		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 420));
+		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
 
 		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
 		redBranchSlider.setBorder(BorderFactory.createTitledBorder("Red"));
@@ -247,7 +242,7 @@ public class RateIndicatorBFTab extends JPanel {
 	}
 
 	private class ListenOpenLog implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
 			try {
 
@@ -268,14 +263,14 @@ public class RateIndicatorBFTab extends JPanel {
 				System.out.println("Setted working directory to "
 						+ workingDirectory + "\n");
 
-			} catch (Exception e1) {
+			} catch (Exception e) {
 				System.err.println("Could not Open! \n");
 			}
 		}
 	}
 
 	private class ListenOpenLocations implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
 			try {
 
@@ -294,7 +289,7 @@ public class RateIndicatorBFTab extends JPanel {
 	}
 
 	private class ListenGenerateKml implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
@@ -370,7 +365,7 @@ public class RateIndicatorBFTab extends JPanel {
 	}// END: ListenGenerateKml
 
 	private class ListenGenerateProcessing implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
@@ -433,13 +428,12 @@ public class RateIndicatorBFTab extends JPanel {
 	}// END: ListenGenerateProcessing
 
 	private class ListenSaveProcessingPlot implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
 			try {
 
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Saving as png file...");
-				// System.getProperty("user.dir")
 
 				chooser.showSaveDialog(chooser);
 				File file = chooser.getSelectedFile();
@@ -448,7 +442,7 @@ public class RateIndicatorBFTab extends JPanel {
 				rateIndicatorBFToProcessing.save(plotToSaveFilename);
 				System.out.println("Saved " + plotToSaveFilename + "\n");
 
-			} catch (Exception e0) {
+			} catch (Exception e) {
 				System.err.println("Could not save! \n");
 			}
 

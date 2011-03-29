@@ -20,7 +20,7 @@ public class TerminalTab extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
 		// Setup text area
-		textArea = new JTextArea(4, 20);
+		textArea = new JTextArea();
 		textArea.setEditable(true);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);

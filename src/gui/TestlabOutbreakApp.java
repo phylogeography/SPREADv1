@@ -124,7 +124,7 @@ public class TestlabOutbreakApp {
 	}
 
 	private class ListenMenuHelp implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 			String helpText = "TODO \n";
 			terminalTab.setText(helpText);
 
@@ -132,19 +132,19 @@ public class TestlabOutbreakApp {
 	}
 
 	private class ListenMenuClearTerminal implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 			terminalTab.clearTerminal();
 		}
 	}
 
 	public class ListenMenuQuit implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 			System.exit(0);
 		}
 	}
 
 	public class ListenCloseWdw extends WindowAdapter {
-		public void windowClosing(WindowEvent e) {
+		public void windowClosing(WindowEvent ev) {
 			System.exit(0);
 		}
 	}
