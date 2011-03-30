@@ -76,7 +76,7 @@ public class TestlabOutbreakApp {
 
 		} else {
 
-			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//			 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
 					.getLookAndFeel());
 		}
@@ -105,7 +105,6 @@ public class TestlabOutbreakApp {
 		clear.addActionListener(new ListenMenuClearTerminal());
 
 		// Setup Main Menu
-		// mainMenu = new JMenuBar();
 		mainMenu.setLayout(new BorderLayout());
 		JPanel buttonsHolder = new JPanel();
 		buttonsHolder.setOpaque(false);

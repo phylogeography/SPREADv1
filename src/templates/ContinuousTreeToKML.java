@@ -239,10 +239,6 @@ public class ContinuousTreeToKML {
 						double latitude = (Double) node
 								.getAttribute(latitudeName);
 
-						// if (Double.isInfinite((Double) longitude)
-						// || Double.isNaN((Double) longitude))
-						// System.out.println("is null!!");
-
 						Node parentNode = tree.getParent(node);
 						double parentLongitude = (Double) parentNode
 								.getAttribute(longitudeName);
