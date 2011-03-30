@@ -76,9 +76,9 @@ public class TestlabOutbreakApp {
 
 		} else {
 
-//			 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
-					.getLookAndFeel());
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//			 UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
+//			 .getLookAndFeel());
 		}
 
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
