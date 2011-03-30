@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -50,7 +51,7 @@ public class RateIndicatorBFTab extends JPanel {
 	private String workingDirectory;
 
 	// Text fields
-	private JTextField burnInParser;
+	// private JTextField burnInParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField maxAltMappingParser;
 	private JTextField bfCutoffParser;
@@ -63,6 +64,9 @@ public class RateIndicatorBFTab extends JPanel {
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
 	private JButton branchesColorChooser;
+
+	// Sliders
+	private JSlider burnInParser;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -90,9 +94,8 @@ public class RateIndicatorBFTab extends JPanel {
 		errorIcon = CreateImageIcon("/icons/error.png");
 
 		// Setup text fields
-		burnInParser = new JTextField("0.1", 5);
-		numberOfIntervalsParser = new JTextField("100", 5);
-		maxAltMappingParser = new JTextField("500000", 5);
+		numberOfIntervalsParser = new JTextField("100", 10);
+		maxAltMappingParser = new JTextField("500000", 10);
 		bfCutoffParser = new JTextField("3.0", 5);
 		kmlPathParser = new JTextField("output.kml", 10);
 
@@ -103,6 +106,13 @@ public class RateIndicatorBFTab extends JPanel {
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
 		branchesColorChooser = new JButton("Setup");
+
+		// Setup sliders
+		burnInParser = new JSlider(JSlider.HORIZONTAL, 0, 100, 10);
+		burnInParser.setMajorTickSpacing(20);
+		burnInParser.setMinorTickSpacing(10);
+		burnInParser.setPaintTicks(true);
+		burnInParser.setPaintLabels(true);
 
 		// Setup progress bar
 		progressBar = new JProgressBar();
@@ -138,7 +148,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
+		tmpPanel.setBorder(new TitledBorder("Specify burn-in %:"));
 		tmpPanel.add(burnInParser);
 		leftPanel.add(tmpPanel);
 
@@ -263,7 +273,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 			if (c != null)
 				branchesColor = c;
-			
+
 		}
 	}
 
@@ -282,8 +292,8 @@ public class RateIndicatorBFTab extends JPanel {
 
 						RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 
-						rateIndicatorBFToKML.setLogFilePath(logFilename, Double
-								.parseDouble(burnInParser.getText()));
+						rateIndicatorBFToKML.setLogFilePath(logFilename,
+								burnInParser.getValue() / 100);
 
 						rateIndicatorBFToKML.setBfCutoff(Double
 								.valueOf(bfCutoffParser.getText()));
@@ -359,7 +369,7 @@ public class RateIndicatorBFTab extends JPanel {
 						progressBar.setIndeterminate(true);
 
 						rateIndicatorBFToProcessing.setLogFilePath(logFilename,
-								Double.parseDouble(burnInParser.getText()));
+								burnInParser.getValue() / 100);
 
 						rateIndicatorBFToProcessing.setBfCutoff(Double
 								.valueOf(bfCutoffParser.getText()));

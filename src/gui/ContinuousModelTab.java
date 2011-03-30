@@ -106,12 +106,12 @@ public class ContinuousModelTab extends JPanel {
 		errorIcon = CreateImageIcon("/icons/error.png");
 
 		// Setup text fields
-		coordinatesNameParser = new JTextField("location", 5);
+		coordinatesNameParser = new JTextField("location", 10);
 		HPDParser = new JTextField("95", 2);
 		mrsdStringParser = new JTextField(formatter.format(calendar.getTime()),
 				8);
-		numberOfIntervalsParser = new JTextField("100", 5);
-		maxAltMappingParser = new JTextField("5000000", 5);
+		numberOfIntervalsParser = new JTextField("100", 10);
+		maxAltMappingParser = new JTextField("5000000", 10);
 		kmlPathParser = new JTextField("output.kml", 10);
 
 		// Setup buttons
