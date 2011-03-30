@@ -29,8 +29,8 @@ import com.bric.swing.ColorPicker;
 public class RateIndicatorBFTab extends JPanel {
 
 	// Sizing constants
-	private final int leftPanelWidth = 230;
-	private final int leftPanelHeight = 1000;
+	private final int leftPanelWidth = 200;
+	private final int leftPanelHeight = 710;
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -191,7 +191,7 @@ public class RateIndicatorBFTab extends JPanel {
 		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth,
+		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth + 40,
 				leftPanelHeight));
 		add(leftScrollPane, BorderLayout.CENTER);
 

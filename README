@@ -38,7 +38,7 @@ jebl.jar
 org.boehn.kmlframework_20090320.jar
 core.jar
 colt.jar
-
+ColorPicker.jar
 ________________________________________________________________________________
                               TODO
 * Processing applets
@@ -46,8 +46,6 @@ ________________________________________________________________________________
 * improve GUI looks & feels
    - allow for saving panel settings
    - hide some options with "show more" buttons 
-   - Processing listeners are printing "Finished" message even when an 
-     exception is caught
 * TimeSlicer template
   - give the concurrent implementation of AnalyzeTree another try. This might        
     be achieveable with ConcurrentHashMap class  

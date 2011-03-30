@@ -71,13 +71,15 @@ public class TestlabOutbreakApp {
 			System.setProperty("apple.awt.draggableWindowBackground", "true");
 			System.setProperty("apple.awt.showGrowBox", "true");
 
-			UIManager
-					.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");
+			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
+					.getLookAndFeel());
 
 		} else {
 
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
+					.getLookAndFeel());
 		}
 
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -89,7 +91,7 @@ public class TestlabOutbreakApp {
 		clearIcon = CreateImageIcon("/icons/clear.png");
 
 		// Setup Main Frame
-		frame = new JFrame("TestlabOutbreak");
+		frame = new JFrame("S.P.R.E.A.D.");
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.addWindowListener(new ListenCloseWdw());
 
@@ -144,7 +146,19 @@ public class TestlabOutbreakApp {
 
 	private class ListenMenuHelp implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
-			String helpText = "TODO \n";
+
+			String helpText = "S.P.R.E.A.D. \n"
+					+ "Spatial Phylogenetic Reconstruction \n"
+					+ "Version 1.0, 2011 \n"
+					+ "BEAST software: http://beast.bio.ed.ac.uk/Main_Page \n"
+					+ "\n"
+					+ "* Supported date format is YYYY-MM-DD \n"
+					+ "* Remember to set proper node attribute names \n"
+					+ "* \n"
+					+ "* Resulting KML file is generated in the imported tree/log file directory \n"
+					+ "* You can always check the Terminal tab what might have gone wrong with the analysis "
+					+ "\n";
+
 			terminalTab.setText(helpText);
 
 		}
@@ -195,16 +209,7 @@ public class TestlabOutbreakApp {
 					gui = new TestlabOutbreakApp();
 					gui.launchFrame();
 
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-
-				} catch (UnsupportedLookAndFeelException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 
 				}
