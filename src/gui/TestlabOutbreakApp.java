@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -13,7 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JSeparator;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -36,10 +37,9 @@ public class TestlabOutbreakApp {
 	private JTabbedPane tabbedPane;
 
 	// Menubar
-	private JMenuBar mainMenu = new JMenuBar();
+	private JMenuBar mainMenu;
 
 	// Buttons with options
-	private JSeparator separator;
 	private JButton help;
 	private JButton quit;
 	private JButton clear;
@@ -77,9 +77,9 @@ public class TestlabOutbreakApp {
 
 		} else {
 
-//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
-					.getLookAndFeel());
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			// UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
+			// .getLookAndFeel());
 		}
 
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -106,12 +106,17 @@ public class TestlabOutbreakApp {
 		clear.addActionListener(new ListenMenuClearTerminal());
 
 		// Setup Main Menu
-		separator = new JSeparator(JSeparator.VERTICAL);
-		separator.setOpaque(true);
-		mainMenu.add(separator);
-		mainMenu.add(clear);
-		mainMenu.add(help);
-		mainMenu.add(quit);
+		mainMenu = new JMenuBar();
+		mainMenu.setLayout(new BorderLayout());
+		JPanel buttonsHolder = new JPanel();
+		buttonsHolder.setOpaque(false);
+		buttonsHolder.add(clear);
+		buttonsHolder.add(help);
+		buttonsHolder.add(quit);
+		mainMenu.add(buttonsHolder, BorderLayout.EAST);
+//		 mainMenu.setOpaque(false);
+//		 mainMenu.setBackground(new Color(216, 216, 216));
+//		 UIManager.put("Menu.background", new Color(216, 216, 216));
 
 		// Setup Tabbed Pane
 		tabbedPane = new JTabbedPane();
@@ -151,12 +156,13 @@ public class TestlabOutbreakApp {
 					+ "Spatial Phylogenetic Reconstruction \n"
 					+ "Version 1.0, 2011 \n"
 					+ "BEAST software: http://beast.bio.ed.ac.uk/Main_Page \n"
+					+ "Processing libraries: http://processing.org/ \n"
 					+ "\n"
 					+ "* Supported date format is YYYY-MM-DD \n"
 					+ "* Remember to set proper node attribute names \n"
-					+ "* \n"
+					+ "* Color picker setups the maximal RGBA value of the colors that get mapped to node heigths \n"
 					+ "* Resulting KML file is generated in the imported tree/log file directory \n"
-					+ "* You can always check the Terminal tab what might have gone wrong with the analysis "
+					+ "* You can always check the Terminal tab what might have gone wrong with the analysis \n"
 					+ "\n";
 
 			terminalTab.setText(helpText);
