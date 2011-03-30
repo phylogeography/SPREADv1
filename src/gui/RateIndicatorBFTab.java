@@ -103,7 +103,7 @@ public class RateIndicatorBFTab extends JPanel {
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
 		branchesColorChooser = new JButton("Setup");
-		
+
 		// Setup progress bar
 		progressBar = new JProgressBar();
 
@@ -258,9 +258,12 @@ public class RateIndicatorBFTab extends JPanel {
 	private class ListenBranchesColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
-			branchesColor = ColorPicker.showDialog(Utils.getActiveFrame(),
-					branchesColor, true);
+			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
+					"Choose branches color...", branchesColor, true);
 
+			if (c != null)
+				branchesColor = c;
+			
 		}
 	}
 

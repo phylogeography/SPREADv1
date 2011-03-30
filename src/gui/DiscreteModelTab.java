@@ -119,7 +119,7 @@ public class DiscreteModelTab extends JPanel {
 		saveProcessingPlot = new JButton("Save", saveIcon);
 		polygonsColorChooser = new JButton("Setup");
 		branchesColorChooser = new JButton("Setup");
-		
+
 		// Setup progress bar
 		progressBar = new JProgressBar();
 
@@ -266,8 +266,11 @@ public class DiscreteModelTab extends JPanel {
 	private class ListenPolygonsColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
-			polygonsColor = ColorPicker.showDialog(Utils.getActiveFrame(),
-					polygonsColor, true);
+			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
+					"Choose polygons color...", polygonsColor, true);
+
+			if (c != null)
+				polygonsColor = c;
 
 		}
 	}
@@ -275,8 +278,11 @@ public class DiscreteModelTab extends JPanel {
 	private class ListenBranchesColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
-			branchesColor = ColorPicker.showDialog(Utils.getActiveFrame(),
-					branchesColor, true);
+			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
+					"Choose branches color...", branchesColor, true);
+
+			if (c != null)
+				branchesColor = c;
 
 		}
 	}
