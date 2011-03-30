@@ -70,7 +70,6 @@ public class TestlabOutbreakApp {
 			System.setProperty("apple.awt.draggableWindowBackground", "true");
 			System.setProperty("apple.awt.showGrowBox", "true");
 
-			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
 					.getLookAndFeel());
 
@@ -78,8 +77,8 @@ public class TestlabOutbreakApp {
 
 			UIManager
 					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-//			 UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
-//			 .getLookAndFeel());
+			// UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
+			// .getLookAndFeel());
 		}
 
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
