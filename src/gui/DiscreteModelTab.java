@@ -376,9 +376,12 @@ public class DiscreteModelTab extends JPanel {
 					} catch (Exception e) {
 						e.printStackTrace();
 
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(), e
-								.toString(), "Error",
-								JOptionPane.ERROR_MESSAGE, errorIcon);
+						String msg = String.format("Unexpected problem: %s", e
+								.toString());
+
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
+								msg, "Error", JOptionPane.ERROR_MESSAGE,
+								errorIcon);
 					}
 
 					return null;
@@ -436,9 +439,12 @@ public class DiscreteModelTab extends JPanel {
 					} catch (Exception e) {
 						e.printStackTrace();
 
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(), e
-								.toString(), "Error",
-								JOptionPane.ERROR_MESSAGE, errorIcon);
+						String msg = String.format("Unexpected problem: %s", e
+								.toString());
+
+						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
+								msg, "Error", JOptionPane.ERROR_MESSAGE,
+								errorIcon);
 					}
 
 					return null;
