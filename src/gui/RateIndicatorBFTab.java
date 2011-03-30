@@ -30,7 +30,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 200;
-	private final int leftPanelHeight = 700;
+	private final int leftPanelHeight = 900;
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -191,7 +191,7 @@ public class RateIndicatorBFTab extends JPanel {
 		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth + 40,
+		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth + 60,
 				leftPanelHeight));
 		add(leftScrollPane, BorderLayout.CENTER);
 

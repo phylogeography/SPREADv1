@@ -36,7 +36,7 @@ public class TestlabOutbreakApp {
 	private JTabbedPane tabbedPane;
 
 	// Menubar
-	private JMenuBar mainMenu = new JMenuBar();;
+	private JMenuBar mainMenu;
 
 	// Buttons with options
 	private JButton help;
@@ -76,7 +76,8 @@ public class TestlabOutbreakApp {
 
 		} else {
 
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager
+					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 //			 UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
 //			 .getLookAndFeel());
 		}
@@ -105,6 +106,7 @@ public class TestlabOutbreakApp {
 		clear.addActionListener(new ListenMenuClearTerminal());
 
 		// Setup Main Menu
+		mainMenu = new JMenuBar();
 		mainMenu.setLayout(new BorderLayout());
 		JPanel buttonsHolder = new JPanel();
 		buttonsHolder.setOpaque(false);
@@ -157,7 +159,7 @@ public class TestlabOutbreakApp {
 					+ "* Remember to set proper node attribute names \n"
 					+ "* Color picker setups the maximal RGBA values of the colors that later get mapped to node heigths \n"
 					+ "* Resulting KML file is generated in the imported tree/log file directory \n"
-					+ "* You can always check the Terminal tab what might have gone wrong with the analysis \n"
+					+ "* You can always check the Terminal tab for what might have gone wrong with the analysis \n"
 					+ "\n";
 
 			terminalTab.setText(helpText);
