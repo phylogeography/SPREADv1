@@ -51,18 +51,37 @@ public class TestlabOutbreakApp {
 	private TimeSlicerTab timeSlicerTab;
 	private TerminalTab terminalTab;
 
-	public TestlabOutbreakApp() throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException, UnsupportedLookAndFeelException {
+	public TestlabOutbreakApp() throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException,
+			UnsupportedLookAndFeelException {
 
 		// Setup Look & Feel
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		if (System.getProperty("os.name").toLowerCase().startsWith("mac os x")) {
+
+			// Mac stuff
+			System.setProperty("apple.awt.showGrowBox", "true");
+			System.setProperty("apple.awt.brushMetalLook", "true");
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+
+			System.setProperty("apple.awt.graphics.UseQuartz", "true");
+			System.setProperty("apple.awt.antialiasing", "true");
+			System.setProperty("apple.awt.rendering", "VALUE_RENDER_QUALITY");
+
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+			System.setProperty("apple.awt.draggableWindowBackground", "true");
+			System.setProperty("apple.awt.showGrowBox", "true");
+
+			UIManager
+					.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");
+
+		} else {
+
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+		}
+
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		Toolkit.getDefaultToolkit().setDynamicLayout(true);
-
-		// Mac stuff
-		System.setProperty("apple.awt.showGrowBox", "true");
-		System.setProperty("apple.awt.brushMetalLook", "true");
-		System.setProperty("apple.laf.useScreenMenuBar", "true");
 
 		// Setup icons
 		quitIcon = CreateImageIcon("/icons/close.png");
@@ -120,7 +139,7 @@ public class TestlabOutbreakApp {
 		frame.getContentPane().add(Box.createVerticalStrut(15),
 				BorderLayout.SOUTH);
 		frame.pack();
-		
+
 	}
 
 	private class ListenMenuHelp implements ActionListener {
@@ -163,7 +182,7 @@ public class TestlabOutbreakApp {
 	public static void main(String args[]) {
 
 		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-		
+
 		// Start application's GUI from Event Dispatching Thread
 		SwingUtilities.invokeLater(new Runnable() {
 

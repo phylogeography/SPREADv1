@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,12 +30,14 @@ import templates.TimeSlicerToKML;
 import templates.TimeSlicerToProcessing;
 import utils.Utils;
 
+import com.bric.swing.ColorPicker;
+
 @SuppressWarnings("serial")
 public class TimeSlicerTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 230;
-	private final int leftPanelHeight = 1850;
+	private final int leftPanelHeight = 1200;
 
 	// Current date
 	private Calendar calendar;
@@ -49,9 +50,11 @@ public class TimeSlicerTab extends JPanel {
 	private ImageIcon processingIcon;
 	private ImageIcon saveIcon;
 	private ImageIcon errorIcon;
-	
+
 	// Colors
 	private Color backgroundColor;
+	private Color polygonsColor;
+	private Color branchesColor;
 
 	// Strings for paths
 	private String mccTreeFilename;
@@ -72,12 +75,14 @@ public class TimeSlicerTab extends JPanel {
 	private JTextField kmlPathParser;
 	private JTextField maxAltMappingParser;
 
-	// Buttons for tab
+	// Buttons
 	private JButton generateKml;
 	private JButton openTree;
 	private JButton openTrees;
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
+	private JButton polygonsColorChooser;
+	private JButton branchesColorChooser;
 
 	// Sliders
 	private JSlider redPolygonSlider;
@@ -110,7 +115,9 @@ public class TimeSlicerTab extends JPanel {
 		calendar = Calendar.getInstance();
 		formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		backgroundColor = new Color(231, 237, 246);
-		
+		polygonsColor = new Color(50, 255, 255, 255);
+		branchesColor = new Color(255, 5, 50, 255);
+
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 		treeIcon = CreateImageIcon("/icons/tree.png");
@@ -130,12 +137,14 @@ public class TimeSlicerTab extends JPanel {
 		maxAltMappingParser = new JTextField("500000", 5);
 		kmlPathParser = new JTextField("output.kml", 10);
 
-		// Setup buttons for tab
+		// Setup buttons
 		generateKml = new JButton("Generate", nuclearIcon);
 		openTree = new JButton("Open", treeIcon);
 		openTrees = new JButton("Open", treesIcon);
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
+		polygonsColorChooser = new JButton("Setup");
+		branchesColorChooser = new JButton("Setup");
 
 		// Setup progress bar & checkboxes
 		progressBar = new JProgressBar();
@@ -150,12 +159,17 @@ public class TimeSlicerTab extends JPanel {
 		leftPanel.setPreferredSize(new Dimension(leftPanelWidth,
 				leftPanelHeight));
 
+		// Listeners
 		openTree.addActionListener(new ListenOpenTree());
 		openTrees.addActionListener(new ListenOpenTrees());
 		generateKml.addActionListener(new ListenGenerateKml());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
 		imputeParser.addActionListener(new listenImputeParser());
+		polygonsColorChooser
+				.addActionListener(new ListenPolygonsColorChooser());
+		branchesColorChooser
+				.addActionListener(new ListenBranchesColorChooser());
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
@@ -228,85 +242,16 @@ public class TimeSlicerTab extends JPanel {
 		// Polygons color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 420));
 		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
-
-		redPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
-		redPolygonSlider.setBorder(BorderFactory.createTitledBorder("Red"));
-		redPolygonSlider.setMajorTickSpacing(50);
-		redPolygonSlider.setMinorTickSpacing(25);
-		redPolygonSlider.setPaintTicks(true);
-		redPolygonSlider.setPaintLabels(true);
-		tmpPanel.add(redPolygonSlider);
-
-		greenPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 200);
-		greenPolygonSlider.setBorder(BorderFactory.createTitledBorder("Green"));
-		greenPolygonSlider.setMajorTickSpacing(50);
-		greenPolygonSlider.setMinorTickSpacing(25);
-		greenPolygonSlider.setPaintTicks(true);
-		greenPolygonSlider.setPaintLabels(true);
-		tmpPanel.add(greenPolygonSlider);
-
-		bluePolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 200);
-		bluePolygonSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
-		bluePolygonSlider.setMajorTickSpacing(50);
-		bluePolygonSlider.setMinorTickSpacing(25);
-		bluePolygonSlider.setPaintTicks(true);
-		bluePolygonSlider.setPaintLabels(true);
-		tmpPanel.add(bluePolygonSlider);
-
-		opacityPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
-		opacityPolygonSlider.setBorder(BorderFactory
-				.createTitledBorder("Opacity"));
-		opacityPolygonSlider.setMajorTickSpacing(50);
-		opacityPolygonSlider.setMinorTickSpacing(25);
-		opacityPolygonSlider.setPaintTicks(true);
-		opacityPolygonSlider.setPaintLabels(true);
-		tmpPanel.add(opacityPolygonSlider);
-
+		tmpPanel.add(polygonsColorChooser);
 		leftPanel.add(tmpPanel);
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 420));
-		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
-
-		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
-		redBranchSlider.setBorder(BorderFactory.createTitledBorder("Red"));
-		redBranchSlider.setMajorTickSpacing(50);
-		redBranchSlider.setMinorTickSpacing(25);
-		redBranchSlider.setPaintTicks(true);
-		redBranchSlider.setPaintLabels(true);
-		tmpPanel.add(redBranchSlider);
-
-		greenBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
-		greenBranchSlider.setBorder(BorderFactory.createTitledBorder("Green"));
-		greenBranchSlider.setMajorTickSpacing(50);
-		greenBranchSlider.setMinorTickSpacing(25);
-		greenBranchSlider.setPaintTicks(true);
-		greenBranchSlider.setPaintLabels(true);
-		tmpPanel.add(greenBranchSlider);
-
-		blueBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
-		blueBranchSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
-		blueBranchSlider.setMajorTickSpacing(50);
-		blueBranchSlider.setMinorTickSpacing(25);
-		blueBranchSlider.setPaintTicks(true);
-		blueBranchSlider.setPaintLabels(true);
-		tmpPanel.add(blueBranchSlider);
-
-		opacityBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
-		opacityBranchSlider.setBorder(BorderFactory
-				.createTitledBorder("Opacity"));
-		opacityBranchSlider.setMajorTickSpacing(50);
-		opacityBranchSlider.setMinorTickSpacing(25);
-		opacityBranchSlider.setPaintTicks(true);
-		opacityBranchSlider.setPaintLabels(true);
-		tmpPanel.add(opacityBranchSlider);
-
+		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
+		tmpPanel.add(branchesColorChooser);
 		leftPanel.add(tmpPanel);
-
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("KML name:"));
@@ -413,6 +358,24 @@ public class TimeSlicerTab extends JPanel {
 			} catch (Exception e) {
 				System.err.println("Could not Open! \n");
 			}
+		}
+	}
+
+	private class ListenPolygonsColorChooser implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			polygonsColor = ColorPicker.showDialog(Utils.getActiveFrame(),
+					polygonsColor, true);
+
+		}
+	}
+
+	private class ListenBranchesColorChooser implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			branchesColor = ColorPicker.showDialog(Utils.getActiveFrame(),
+					branchesColor, true);
+
 		}
 	}
 

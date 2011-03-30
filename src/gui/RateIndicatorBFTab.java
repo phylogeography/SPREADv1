@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,7 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -25,12 +23,14 @@ import templates.RateIndicatorBFToKML;
 import templates.RateIndicatorBFToProcessing;
 import utils.Utils;
 
+import com.bric.swing.ColorPicker;
+
 @SuppressWarnings("serial")
 public class RateIndicatorBFTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 230;
-	private final int leftPanelHeight = 1100;
+	private final int leftPanelHeight = 1000;
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -42,6 +42,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Colors
 	private Color backgroundColor;
+	private Color branchesColor;
 
 	// Strings for paths
 	private String logFilename;
@@ -55,18 +56,13 @@ public class RateIndicatorBFTab extends JPanel {
 	private JTextField bfCutoffParser;
 	private JTextField kmlPathParser;
 
-	// Buttons for tab
+	// Buttons
 	private JButton openLog;
 	private JButton openLocations;
 	private JButton generateKml;
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
-
-	// Sliders
-	private JSlider redBranchSlider;
-	private JSlider greenBranchSlider;
-	private JSlider blueBranchSlider;
-	private JSlider opacityBranchSlider;
+	private JButton branchesColorChooser;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -83,6 +79,7 @@ public class RateIndicatorBFTab extends JPanel {
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		backgroundColor = new Color(231, 237, 246);
+		branchesColor = new Color(255, 5, 50, 255);
 
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
@@ -99,13 +96,14 @@ public class RateIndicatorBFTab extends JPanel {
 		bfCutoffParser = new JTextField("3.0", 5);
 		kmlPathParser = new JTextField("output.kml", 10);
 
-		// Setup buttons for tab
+		// Setup buttons
 		openLog = new JButton("Open", logIcon);
 		openLocations = new JButton("Open", locationsIcon);
 		generateKml = new JButton("Generate", nuclearIcon);
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
-
+		branchesColorChooser = new JButton("Setup");
+		
 		// Setup progress bar
 		progressBar = new JProgressBar();
 
@@ -117,11 +115,14 @@ public class RateIndicatorBFTab extends JPanel {
 		leftPanel.setPreferredSize(new Dimension(leftPanelWidth,
 				leftPanelHeight));
 
+		// Listeners
 		openLog.addActionListener(new ListenOpenLog());
 		generateKml.addActionListener(new ListenGenerateKml());
 		openLocations.addActionListener(new ListenOpenLocations());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
+		branchesColorChooser
+				.addActionListener(new ListenBranchesColorChooser());
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
@@ -162,42 +163,8 @@ public class RateIndicatorBFTab extends JPanel {
 		// Branches color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 420));
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
-
-		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
-		redBranchSlider.setBorder(BorderFactory.createTitledBorder("Red"));
-		redBranchSlider.setMajorTickSpacing(50);
-		redBranchSlider.setMinorTickSpacing(25);
-		redBranchSlider.setPaintTicks(true);
-		redBranchSlider.setPaintLabels(true);
-		tmpPanel.add(redBranchSlider);
-
-		greenBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
-		greenBranchSlider.setBorder(BorderFactory.createTitledBorder("Green"));
-		greenBranchSlider.setMajorTickSpacing(50);
-		greenBranchSlider.setMinorTickSpacing(25);
-		greenBranchSlider.setPaintTicks(true);
-		greenBranchSlider.setPaintLabels(true);
-		tmpPanel.add(greenBranchSlider);
-
-		blueBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
-		blueBranchSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
-		blueBranchSlider.setMajorTickSpacing(50);
-		blueBranchSlider.setMinorTickSpacing(25);
-		blueBranchSlider.setPaintTicks(true);
-		blueBranchSlider.setPaintLabels(true);
-		tmpPanel.add(blueBranchSlider);
-
-		opacityBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
-		opacityBranchSlider.setBorder(BorderFactory
-				.createTitledBorder("Opacity"));
-		opacityBranchSlider.setMajorTickSpacing(50);
-		opacityBranchSlider.setMinorTickSpacing(25);
-		opacityBranchSlider.setPaintTicks(true);
-		opacityBranchSlider.setPaintLabels(true);
-		tmpPanel.add(opacityBranchSlider);
-
+		tmpPanel.add(branchesColorChooser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -288,6 +255,15 @@ public class RateIndicatorBFTab extends JPanel {
 		}
 	}
 
+	private class ListenBranchesColorChooser implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			branchesColor = ColorPicker.showDialog(Utils.getActiveFrame(),
+					branchesColor, true);
+
+		}
+	}
+
 	private class ListenGenerateKml implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
@@ -322,20 +298,19 @@ public class RateIndicatorBFTab extends JPanel {
 								.concat("/").concat(kmlPathParser.getText()));
 
 						rateIndicatorBFToKML
-								.setMaxBranchRedMapping(redBranchSlider
-										.getValue());
+								.setMaxBranchRedMapping(branchesColor.getRed());
 
 						rateIndicatorBFToKML
-								.setMaxBranchGreenMapping(greenBranchSlider
-										.getValue());
+								.setMaxBranchGreenMapping(branchesColor
+										.getGreen());
 
 						rateIndicatorBFToKML
-								.setMaxBranchBlueMapping(blueBranchSlider
-										.getValue());
+								.setMaxBranchBlueMapping(branchesColor
+										.getBlue());
 
 						rateIndicatorBFToKML
-								.setMaxBranchOpacityMapping(opacityBranchSlider
-										.getValue());
+								.setMaxBranchOpacityMapping(branchesColor
+										.getAlpha());
 
 						rateIndicatorBFToKML.GenerateKML();
 
@@ -387,20 +362,19 @@ public class RateIndicatorBFTab extends JPanel {
 								.setLocationFilePath(locationsFilename);
 
 						rateIndicatorBFToProcessing
-								.setMaxBranchRedMapping(redBranchSlider
-										.getValue());
+								.setMaxBranchRedMapping(branchesColor.getRed());
 
 						rateIndicatorBFToProcessing
-								.setMaxBranchGreenMapping(greenBranchSlider
-										.getValue());
+								.setMaxBranchGreenMapping(branchesColor
+										.getGreen());
 
 						rateIndicatorBFToProcessing
-								.setMaxBranchBlueMapping(blueBranchSlider
-										.getValue());
+								.setMaxBranchBlueMapping(branchesColor
+										.getBlue());
 
 						rateIndicatorBFToProcessing
-								.setMaxBranchOpacityMapping(opacityBranchSlider
-										.getValue());
+								.setMaxBranchOpacityMapping(branchesColor
+										.getAlpha());
 
 						rateIndicatorBFToProcessing.init();
 

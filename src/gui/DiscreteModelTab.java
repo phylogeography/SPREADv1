@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,7 +19,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -29,12 +27,14 @@ import templates.DiscreteTreeToKML;
 import templates.DiscreteTreeToProcessing;
 import utils.Utils;
 
+import com.bric.swing.ColorPicker;
+
 @SuppressWarnings("serial")
 public class DiscreteModelTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 230;
-	private final int leftPanelHeight = 1500;
+	private final int leftPanelHeight = 1000;
 
 	// Current date
 	private Calendar calendar;
@@ -47,9 +47,11 @@ public class DiscreteModelTab extends JPanel {
 	private ImageIcon processingIcon;
 	private ImageIcon saveIcon;
 	private ImageIcon errorIcon;
-	
+
 	// Colors
 	private Color backgroundColor;
+	private Color polygonsColor;
+	private Color branchesColor;
 
 	// Strings for paths
 	private String treeFilename;
@@ -64,22 +66,14 @@ public class DiscreteModelTab extends JPanel {
 	private JTextField maxAltMappingParser;
 	private JTextField kmlPathParser;
 
-	// Buttons for tab
+	// Buttons
 	private JButton generateKml;
 	private JButton openTree;
 	private JButton openLocations;
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
-
-	// Sliders
-	private JSlider redPolygonSlider;
-	private JSlider greenPolygonSlider;
-	private JSlider bluePolygonSlider;
-	private JSlider opacityPolygonSlider;
-	private JSlider redBranchSlider;
-	private JSlider greenBranchSlider;
-	private JSlider blueBranchSlider;
-	private JSlider opacityBranchSlider;
+	private JButton polygonsColorChooser;
+	private JButton branchesColorChooser;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -98,6 +92,8 @@ public class DiscreteModelTab extends JPanel {
 		calendar = Calendar.getInstance();
 		formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		backgroundColor = new Color(231, 237, 246);
+		polygonsColor = new Color(50, 255, 255, 255);
+		branchesColor = new Color(255, 5, 50, 255);
 
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
@@ -121,7 +117,9 @@ public class DiscreteModelTab extends JPanel {
 		openLocations = new JButton("Open", locationsIcon);
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
-
+		polygonsColorChooser = new JButton("Setup");
+		branchesColorChooser = new JButton("Setup");
+		
 		// Setup progress bar
 		progressBar = new JProgressBar();
 
@@ -138,6 +136,10 @@ public class DiscreteModelTab extends JPanel {
 		openLocations.addActionListener(new ListenOpenLocations());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
+		polygonsColorChooser
+				.addActionListener(new ListenPolygonsColorChooser());
+		branchesColorChooser
+				.addActionListener(new ListenBranchesColorChooser());
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
@@ -181,83 +183,15 @@ public class DiscreteModelTab extends JPanel {
 		// Polygons color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 420));
 		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
-		
-		redPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
-		redPolygonSlider.setBorder(BorderFactory.createTitledBorder("Red"));
-		redPolygonSlider.setMajorTickSpacing(50);
-		redPolygonSlider.setMinorTickSpacing(25);
-		redPolygonSlider.setPaintTicks(true);
-		redPolygonSlider.setPaintLabels(true);
-		tmpPanel.add(redPolygonSlider);
-
-		greenPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 200);
-		greenPolygonSlider.setBorder(BorderFactory.createTitledBorder("Green"));
-		greenPolygonSlider.setMajorTickSpacing(50);
-		greenPolygonSlider.setMinorTickSpacing(25);
-		greenPolygonSlider.setPaintTicks(true);
-		greenPolygonSlider.setPaintLabels(true);
-		tmpPanel.add(greenPolygonSlider);
-
-		bluePolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 200);
-		bluePolygonSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
-		bluePolygonSlider.setMajorTickSpacing(50);
-		bluePolygonSlider.setMinorTickSpacing(25);
-		bluePolygonSlider.setPaintTicks(true);
-		bluePolygonSlider.setPaintLabels(true);
-		tmpPanel.add(bluePolygonSlider);
-
-		opacityPolygonSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
-		opacityPolygonSlider.setBorder(BorderFactory
-				.createTitledBorder("Opacity"));
-		opacityPolygonSlider.setMajorTickSpacing(50);
-		opacityPolygonSlider.setMinorTickSpacing(25);
-		opacityPolygonSlider.setPaintTicks(true);
-		opacityPolygonSlider.setPaintLabels(true);
-		tmpPanel.add(opacityPolygonSlider);
-
+		tmpPanel.add(polygonsColorChooser);
 		leftPanel.add(tmpPanel);
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 420));
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
-		
-		redBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
-		redBranchSlider.setBorder(BorderFactory.createTitledBorder("Red"));
-		redBranchSlider.setMajorTickSpacing(50);
-		redBranchSlider.setMinorTickSpacing(25);
-		redBranchSlider.setPaintTicks(true);
-		redBranchSlider.setPaintLabels(true);
-		tmpPanel.add(redBranchSlider);
-
-		greenBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 5);
-		greenBranchSlider.setBorder(BorderFactory.createTitledBorder("Green"));
-		greenBranchSlider.setMajorTickSpacing(50);
-		greenBranchSlider.setMinorTickSpacing(25);
-		greenBranchSlider.setPaintTicks(true);
-		greenBranchSlider.setPaintLabels(true);
-		tmpPanel.add(greenBranchSlider);
-
-		blueBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
-		blueBranchSlider.setBorder(BorderFactory.createTitledBorder("Blue"));
-		blueBranchSlider.setMajorTickSpacing(50);
-		blueBranchSlider.setMinorTickSpacing(25);
-		blueBranchSlider.setPaintTicks(true);
-		blueBranchSlider.setPaintLabels(true);
-		tmpPanel.add(blueBranchSlider);
-
-		opacityBranchSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
-		opacityBranchSlider.setBorder(BorderFactory
-				.createTitledBorder("Opacity"));
-		opacityBranchSlider.setMajorTickSpacing(50);
-		opacityBranchSlider.setMinorTickSpacing(25);
-		opacityBranchSlider.setPaintTicks(true);
-		opacityBranchSlider.setPaintLabels(true);
-		tmpPanel.add(opacityBranchSlider);
-
+		tmpPanel.add(branchesColorChooser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -329,6 +263,24 @@ public class DiscreteModelTab extends JPanel {
 		}
 	}
 
+	private class ListenPolygonsColorChooser implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			polygonsColor = ColorPicker.showDialog(Utils.getActiveFrame(),
+					polygonsColor, true);
+
+		}
+	}
+
+	private class ListenBranchesColorChooser implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			branchesColor = ColorPicker.showDialog(Utils.getActiveFrame(),
+					branchesColor, true);
+
+		}
+	}
+
 	private class ListenOpenLocations implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
@@ -387,37 +339,34 @@ public class DiscreteModelTab extends JPanel {
 
 						discreteTreeToKML.setTreePath(treeFilename);
 
-						discreteTreeToKML
-								.setMaxPolygonRedMapping(redPolygonSlider
-										.getValue());
+						discreteTreeToKML.setMaxPolygonRedMapping(polygonsColor
+								.getRed());
 
 						discreteTreeToKML
-								.setMaxPolygonGreenMapping(greenPolygonSlider
-										.getValue());
+								.setMaxPolygonGreenMapping(polygonsColor
+										.getGreen());
 
 						discreteTreeToKML
-								.setMaxPolygonBlueMapping(bluePolygonSlider
-										.getValue());
+								.setMaxPolygonBlueMapping(polygonsColor
+										.getBlue());
 
 						discreteTreeToKML
-								.setMaxPolygonOpacityMapping(opacityPolygonSlider
-										.getValue());
+								.setMaxPolygonOpacityMapping(polygonsColor
+										.getAlpha());
+
+						discreteTreeToKML.setMaxBranchRedMapping(branchesColor
+								.getRed());
 
 						discreteTreeToKML
-								.setMaxBranchRedMapping(redBranchSlider
-										.getValue());
+								.setMaxBranchGreenMapping(branchesColor
+										.getGreen());
+
+						discreteTreeToKML.setMaxBranchBlueMapping(branchesColor
+								.getBlue());
 
 						discreteTreeToKML
-								.setMaxBranchGreenMapping(greenBranchSlider
-										.getValue());
-
-						discreteTreeToKML
-								.setMaxBranchBlueMapping(blueBranchSlider
-										.getValue());
-
-						discreteTreeToKML
-								.setMaxBranchOpacityMapping(opacityBranchSlider
-										.getValue());
+								.setMaxBranchOpacityMapping(branchesColor
+										.getAlpha());
 
 						discreteTreeToKML.GenerateKML();
 
@@ -468,26 +417,25 @@ public class DiscreteModelTab extends JPanel {
 						discreteTreeToProcessing.setTreePath(treeFilename);
 
 						discreteTreeToProcessing
-								.setMaxBranchRedMapping(redBranchSlider
-										.getValue());
+								.setMaxBranchRedMapping(branchesColor.getRed());
 
 						discreteTreeToProcessing
-								.setMaxBranchGreenMapping(greenBranchSlider
-										.getValue());
+								.setMaxBranchGreenMapping(branchesColor
+										.getGreen());
 
 						discreteTreeToProcessing
-								.setMaxBranchBlueMapping(blueBranchSlider
-										.getValue());
+								.setMaxBranchBlueMapping(branchesColor
+										.getBlue());
 
 						discreteTreeToProcessing
-								.setMaxBranchOpacityMapping(opacityBranchSlider
-										.getValue());
+								.setMaxBranchOpacityMapping(branchesColor
+										.getAlpha());
 
 						discreteTreeToProcessing.init();
 
 					} catch (Exception e) {
 						e.printStackTrace();
-						
+
 						JOptionPane.showMessageDialog(Utils.getActiveFrame(), e
 								.toString(), "Error",
 								JOptionPane.ERROR_MESSAGE, errorIcon);
