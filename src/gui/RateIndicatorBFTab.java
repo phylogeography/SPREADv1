@@ -30,7 +30,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 200;
-	private final int leftPanelHeight = 710;
+	private final int leftPanelHeight = 700;
 
 	// Icons
 	private ImageIcon nuclearIcon;

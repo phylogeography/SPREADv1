@@ -35,7 +35,7 @@ public class ContinuousModelTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 200;
-	private final int leftPanelHeight = 900;
+	private final int leftPanelHeight = 800;
 
 	// Current date
 	private Calendar calendar;
