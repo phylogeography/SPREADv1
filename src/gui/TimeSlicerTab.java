@@ -37,7 +37,7 @@ public class TimeSlicerTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 200;
-	private final int leftPanelHeight = 1300;
+	private final int leftPanelHeight = 1260;
 
 	// Current date
 	private Calendar calendar;
