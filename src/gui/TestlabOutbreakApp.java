@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -37,7 +36,7 @@ public class TestlabOutbreakApp {
 	private JTabbedPane tabbedPane;
 
 	// Menubar
-	private JMenuBar mainMenu;
+	private JMenuBar mainMenu = new JMenuBar();;
 
 	// Buttons with options
 	private JButton help;
@@ -77,9 +76,9 @@ public class TestlabOutbreakApp {
 
 		} else {
 
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			// UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
-			// .getLookAndFeel());
+			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
+					.getLookAndFeel());
 		}
 
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -106,7 +105,7 @@ public class TestlabOutbreakApp {
 		clear.addActionListener(new ListenMenuClearTerminal());
 
 		// Setup Main Menu
-		mainMenu = new JMenuBar();
+		// mainMenu = new JMenuBar();
 		mainMenu.setLayout(new BorderLayout());
 		JPanel buttonsHolder = new JPanel();
 		buttonsHolder.setOpaque(false);
@@ -114,9 +113,6 @@ public class TestlabOutbreakApp {
 		buttonsHolder.add(help);
 		buttonsHolder.add(quit);
 		mainMenu.add(buttonsHolder, BorderLayout.EAST);
-//		 mainMenu.setOpaque(false);
-//		 mainMenu.setBackground(new Color(216, 216, 216));
-//		 UIManager.put("Menu.background", new Color(216, 216, 216));
 
 		// Setup Tabbed Pane
 		tabbedPane = new JTabbedPane();
@@ -160,7 +156,7 @@ public class TestlabOutbreakApp {
 					+ "\n"
 					+ "* Supported date format is YYYY-MM-DD \n"
 					+ "* Remember to set proper node attribute names \n"
-					+ "* Color picker setups the maximal RGBA value of the colors that get mapped to node heigths \n"
+					+ "* Color picker setups the maximal RGBA values of the colors that later get mapped to node heigths \n"
 					+ "* Resulting KML file is generated in the imported tree/log file directory \n"
 					+ "* You can always check the Terminal tab what might have gone wrong with the analysis \n"
 					+ "\n";
