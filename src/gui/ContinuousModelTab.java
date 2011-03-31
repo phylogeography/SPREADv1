@@ -233,31 +233,12 @@ public class ContinuousModelTab extends JPanel {
 		 * Processing pane
 		 * */
 		continuousTreeToProcessing = new ContinuousTreeToProcessing();
-		// continuousTreeToProcessing.setPreferredSize(new Dimension(2048,
-		// 1025));
-
-		JInternalFrame sketch = new JInternalFrame();
-		BasicInternalFrameUI ui = (BasicInternalFrameUI) sketch.getUI();
-		sketch.putClientProperty("titlePane", ui.getNorthPane());
-		sketch.putClientProperty("border", sketch.getBorder());
-		ui.setNorthPane(null);
-		sketch.setBorder(null);
-		sketch.add(continuousTreeToProcessing);
-		sketch.setPreferredSize(new Dimension(2048, 1025));
-		sketch.setMaximumSize(new Dimension(2048, 1025));
-		sketch.setResizable(false);
-		sketch.setVisible(true);
-		sketch.pack();
-		JScrollPane rightScrollPane = new JScrollPane(sketch,
+		continuousTreeToProcessing.setPreferredSize(new Dimension(2048, 1025));
+		JScrollPane rightScrollPane = new JScrollPane(
+				continuousTreeToProcessing,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		add(rightScrollPane, BorderLayout.CENTER);
-
-		// JScrollPane rightScrollPane = new JScrollPane(
-		// continuousTreeToProcessing,
-		// JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-		// JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		// add(rightScrollPane, BorderLayout.CENTER);
 
 	}
 
