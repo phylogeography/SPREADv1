@@ -487,6 +487,7 @@ public class ContinuousModelTab extends JPanel {
 						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
 								msg, "Error", JOptionPane.ERROR_MESSAGE,
 								errorIcon);
+
 					}
 
 					return null;

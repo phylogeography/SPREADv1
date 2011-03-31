@@ -2,11 +2,13 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -93,6 +95,7 @@ public class TestlabOutbreakApp {
 		frame = new JFrame("S.P.R.E.A.D.");
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.addWindowListener(new ListenCloseWdw());
+		frame.setIconImage(CreateImage("/icons/nuclear.png"));
 
 		// Setup Main Menu buttons
 		help = new JButton("Help", helpIcon);
@@ -220,13 +223,27 @@ public class TestlabOutbreakApp {
 	}// END: main
 
 	private ImageIcon CreateImageIcon(String path) {
-		java.net.URL imgURL = this.getClass().getResource(path);
+		URL imgURL = this.getClass().getResource(path);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL);
 		} else {
 			System.err.println("Couldn't find file: " + path + "\n");
 			return null;
 		}
-	}
+	}// END: CreateImageIcon
 
-}
+	private Image CreateImage(String path) {
+		URL imgURL = this.getClass().getResource(path);
+		Toolkit kit = Toolkit.getDefaultToolkit();
+		Image img = kit.createImage(imgURL);
+
+		if (img != null) {
+			return img;
+		} else {
+			System.err.println("Couldn't find file: " + path + "\n");
+			return null;
+		}
+
+	}// END: CreateImage
+
+}// END: TestlabOutbreakApp
