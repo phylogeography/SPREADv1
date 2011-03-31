@@ -25,64 +25,67 @@
 
 package math;
 
-
 /**
  * an interface for a distribution.
- *
+ * 
  * @author Alexei Drummond
  * @author Andrew Rambaut
  * @version $Id: Distribution.java,v 1.7 2005/05/24 20:26:00 rambaut Exp $
  */
 public interface Distribution {
-    /**
-     * probability density function of the distribution
-     *
-     * @param x argument
-     * @return pdf value
-     */
-    public double pdf(double x);
+	/**
+	 * probability density function of the distribution
+	 * 
+	 * @param x
+	 *            argument
+	 * @return pdf value
+	 */
+	public double pdf(double x);
 
-    /**
-     * the natural log of the probability density function of the distribution
-     *
-     * @param x argument
-     * @return log pdf value
-     */
-    public double logPdf(double x);
+	/**
+	 * the natural log of the probability density function of the distribution
+	 * 
+	 * @param x
+	 *            argument
+	 * @return log pdf value
+	 */
+	public double logPdf(double x);
 
-    /**
-     * cumulative density function of the distribution
-     *
-     * @param x argument
-     * @return cdf value
-     */
-    public double cdf(double x);
+	/**
+	 * cumulative density function of the distribution
+	 * 
+	 * @param x
+	 *            argument
+	 * @return cdf value
+	 */
+	public double cdf(double x);
 
-    /**
-     * quantile (inverse cumulative density function) of the distribution
-     *
-     * @param y argument
-     * @return icdf value
-     */
-    public double quantile(double y);
+	/**
+	 * quantile (inverse cumulative density function) of the distribution
+	 * 
+	 * @param y
+	 *            argument
+	 * @return icdf value
+	 */
+	public double quantile(double y);
 
-    /**
-     * mean of the distribution
-     *
-     * @return mean
-     */
-    public double mean();
+	/**
+	 * mean of the distribution
+	 * 
+	 * @return mean
+	 */
+	public double mean();
 
-    /**
-     * variance of the distribution
-     *
-     * @return variance
-     */
-    public double variance();
+	/**
+	 * variance of the distribution
+	 * 
+	 * @return variance
+	 */
+	public double variance();
 
-    /**
-     * @return a probability density function representing this distribution
-     */
-    public UnivariateFunction getProbabilityDensityFunction();
+	/**
+	 * @return a probability density function representing this distribution
+	 */
+	public UnivariateFunction getProbabilityDensityFunction();
 
 }

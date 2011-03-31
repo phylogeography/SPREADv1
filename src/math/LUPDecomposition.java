@@ -27,7 +27,7 @@ package math;
 
 /**
  * Lower Upper Permutation (LUP) decomposition
- *
+ * 
  * @author Didier H. Besset
  */
 public class LUPDecomposition {
@@ -46,13 +46,13 @@ public class LUPDecomposition {
 
 	/**
 	 * Constructor method
-	 *
-	 * @param components double[][]
+	 * 
+	 * @param components
+	 *            double[][]
 	 * @throws DhbMatrixAlgebra.DhbIllegalDimension
-	 *          the supplied matrix is not square
+	 *             the supplied matrix is not square
 	 */
-	public LUPDecomposition(double[][] components)
-			throws IllegalDimension {
+	public LUPDecomposition(double[][] components) throws IllegalDimension {
 		int n = components.length;
 		if (components[0].length != n)
 			throw new IllegalDimension("Illegal system: a" + n + " by "
@@ -63,29 +63,31 @@ public class LUPDecomposition {
 
 	/**
 	 * Constructor method.
-	 *
-	 * @param m DhbMatrixAlgebra.Matrix
+	 * 
+	 * @param m
+	 *            DhbMatrixAlgebra.Matrix
 	 * @throws DhbMatrixAlgebra.DhbIllegalDimension
-	 *          the supplied matrix is not square
+	 *             the supplied matrix is not square
 	 */
 	public LUPDecomposition(Matrix m) throws IllegalDimension {
 		if (!m.isSquare())
-			throw new IllegalDimension(
-					"Supplied matrix is not a square matrix");
+			throw new IllegalDimension("Supplied matrix is not a square matrix");
 		initialize(m.components);
 	}
 
 	/**
 	 * Constructor method.
-	 *
-	 * @param m DhbMatrixAlgebra.DhbSymmetricMatrix
+	 * 
+	 * @param m
+	 *            DhbMatrixAlgebra.DhbSymmetricMatrix
 	 */
 	public LUPDecomposition(SymmetricMatrix m) {
 		initialize(m.components);
 	}
 
 	/**
-	 * @param xTilde double[]
+	 * @param xTilde
+	 *            double[]
 	 * @return double[]
 	 */
 	private double[] backwardSubstitution(double[] xTilde) {
@@ -114,10 +116,10 @@ public class LUPDecomposition {
 		} catch (ArithmeticException e) {
 			parity = 0;
 		}
-    }
+	}
 
 	/**
-	 * @return boolean	true if decomposition was done already
+	 * @return boolean true if decomposition was done already
 	 */
 	private boolean decomposed() {
 		if (parity == 1 && permutation == null)
@@ -126,7 +128,8 @@ public class LUPDecomposition {
 	}
 
 	/**
-	 * @param c double[]
+	 * @param c
+	 *            double[]
 	 * @return double[]
 	 */
 	public double determinant() {
@@ -146,9 +149,9 @@ public class LUPDecomposition {
 		return true;
 	}
 
-
 	/**
-	 * @param c double[]
+	 * @param c
+	 *            double[]
 	 * @return double[]
 	 */
 	private double[] forwardSubstitution(double[] c) {
@@ -168,7 +171,8 @@ public class LUPDecomposition {
 	}
 
 	/**
-	 * @param components double[][]  components obtained from constructor methods.
+	 * @param components
+	 *            double[][] components obtained from constructor methods.
 	 */
 	private void initialize(double[][] components) {
 		int n = components.length;
@@ -181,7 +185,8 @@ public class LUPDecomposition {
 	}
 
 	/**
-	 * @param c double[]
+	 * @param c
+	 *            double[]
 	 * @return double[]
 	 */
 	public double[][] inverseMatrixComponents() {
@@ -202,7 +207,8 @@ public class LUPDecomposition {
 	}
 
 	/**
-	 * @param k int
+	 * @param k
+	 *            int
 	 * @return int
 	 */
 	private int largestPivot(int k) {
@@ -220,7 +226,8 @@ public class LUPDecomposition {
 	}
 
 	/**
-	 * @param k int
+	 * @param k
+	 *            int
 	 */
 	private void pivot(int k) {
 		double inversePivot = 1 / rows[k][k];
@@ -234,17 +241,18 @@ public class LUPDecomposition {
 	}
 
 	/**
-	 * @param c double[]
+	 * @param c
+	 *            double[]
 	 * @return double[]
 	 */
 	public double[] solve(double[] c) {
-		return decomposed()
-				? backwardSubstitution(forwardSubstitution(c))
+		return decomposed() ? backwardSubstitution(forwardSubstitution(c))
 				: null;
 	}
 
 	/**
-	 * @param c double[]
+	 * @param c
+	 *            double[]
 	 * @return double[]
 	 */
 	public Vector solve(Vector c) {
@@ -255,8 +263,10 @@ public class LUPDecomposition {
 	}
 
 	/**
-	 * @param i int
-	 * @param k int
+	 * @param i
+	 *            int
+	 * @param k
+	 *            int
 	 */
 	private void swapRows(int i, int k) {
 		if (i != k) {
@@ -275,10 +285,10 @@ public class LUPDecomposition {
 	}
 
 	/**
-	 * Make sure the supplied matrix components are those of
-	 * a symmetric matrix
-	 *
-	 * @param components double
+	 * Make sure the supplied matrix components are those of a symmetric matrix
+	 * 
+	 * @param components
+	 *            double
 	 */
 	public static void symmetrizeComponents(double[][] components) {
 		for (int i = 0; i < components.length; i++) {
@@ -292,12 +302,12 @@ public class LUPDecomposition {
 
 	/**
 	 * Returns a String that represents the value of this object.
-	 *
+	 * 
 	 * @return a string representation of the receiver
 	 */
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		char[] separator = {'[', ' '};
+		char[] separator = { '[', ' ' };
 		int n = rows.length;
 		for (int i = 0; i < n; i++) {
 			separator[0] = '{';

@@ -27,7 +27,7 @@ package math;
 
 /**
  * Class representing matrix
- *
+ * 
  * @author Didier H. Besset
  */
 public class Matrix {
@@ -35,28 +35,30 @@ public class Matrix {
 	protected LUPDecomposition lupDecomposition = null;
 
 	/**
-	 * Creates a matrix with given components.
-	 * NOTE: the components must not be altered after the definition.
-	 *
-	 * @param a double[][]
+	 * Creates a matrix with given components. NOTE: the components must not be
+	 * altered after the definition.
+	 * 
+	 * @param a
+	 *            double[][]
 	 */
 	public Matrix(double[][] a) {
 		components = a;
 	}
 
 	/**
-	 * Creates a matrix with given components.
-	 * NOTE: the components must not be altered after the definition.
-	 *
-	 * @param a double[]
+	 * Creates a matrix with given components. NOTE: the components must not be
+	 * altered after the definition.
+	 * 
+	 * @param a
+	 *            double[]
 	 */
 	public Matrix(double[] a, int n, int m) {
 		if (n <= 0 || m <= 0)
-			throw new NegativeArraySizeException(
-					"Requested matrix size: " + n + " by " + m);
+			throw new NegativeArraySizeException("Requested matrix size: " + n
+					+ " by " + m);
 		if (n * m != a.length) {
-			throw new IllegalArgumentException(
-					"Requested matrix size: " + n + " by " + m + " doesn't match array size: " + a.length);
+			throw new IllegalArgumentException("Requested matrix size: " + n
+					+ " by " + m + " doesn't match array size: " + a.length);
 		}
 		components = new double[n][m];
 		int k = 0;
@@ -71,31 +73,32 @@ public class Matrix {
 
 	/**
 	 * Creates a null matrix of given dimensions.
-	 *
-	 * @param n int	number of rows
-	 * @param m int	number of columns
+	 * 
+	 * @param n
+	 *            int number of rows
+	 * @param m
+	 *            int number of columns
 	 * @throws NegativeArraySizeException
 	 */
 	public Matrix(int n, int m) throws NegativeArraySizeException {
 		if (n <= 0 || m <= 0)
-			throw new NegativeArraySizeException(
-					"Requested matrix size: " + n + " by " + m);
+			throw new NegativeArraySizeException("Requested matrix size: " + n
+					+ " by " + m);
 		components = new double[n][m];
 		clear();
 	}
 
 	/**
-	 * @param a MatrixAlgebra.Matrix
+	 * @param a
+	 *            MatrixAlgebra.Matrix
 	 * @throws dr.math.matrixAlgebra.IllegalDimension
-	 *          if the supplied matrix
-	 *          does not have the same dimensions.
+	 *             if the supplied matrix does not have the same dimensions.
 	 */
 	public void accumulate(Matrix a) throws IllegalDimension {
 		if (a.rows() != rows() || a.columns() != columns())
 			throw new IllegalDimension("Operation error: cannot add a"
-					+ a.rows() + " by " + a.columns()
-					+ " matrix to a " + rows() + " by "
-					+ columns() + " matrix");
+					+ a.rows() + " by " + a.columns() + " matrix to a "
+					+ rows() + " by " + columns() + " matrix");
 		int m = components[0].length;
 		for (int i = 0; i < components.length; i++) {
 			for (int j = 0; j < m; j++)
@@ -104,27 +107,26 @@ public class Matrix {
 	}
 
 	/**
-	 * @param a MatrixAlgebra.Matrix
-	 * @return MatrixAlgebra.Matrix		sum of the receiver with the
-	 *         supplied matrix.
+	 * @param a
+	 *            MatrixAlgebra.Matrix
+	 * @return MatrixAlgebra.Matrix sum of the receiver with the supplied
+	 *         matrix.
 	 * @throws dr.math.matrixAlgebra.IllegalDimension
-	 *          if the supplied matrix
-	 *          does not have the same dimensions.
+	 *             if the supplied matrix does not have the same dimensions.
 	 */
 	public Matrix add(Matrix a) throws IllegalDimension {
 		if (a.rows() != rows() || a.columns() != columns())
 			throw new IllegalDimension("Operation error: cannot add a"
-					+ a.rows() + " by " + a.columns()
-					+ " matrix to a " + rows() + " by "
-					+ columns() + " matrix");
+					+ a.rows() + " by " + a.columns() + " matrix to a "
+					+ rows() + " by " + columns() + " matrix");
 		return new Matrix(addComponents(a));
 	}
 
 	/**
-	 * Computes the components of the sum of the receiver and
-	 * a supplied matrix.
-	 *
-	 * @param a MatrixAlgebra.Matrix
+	 * Computes the components of the sum of the receiver and a supplied matrix.
+	 * 
+	 * @param a
+	 *            MatrixAlgebra.Matrix
 	 * @return double[][]
 	 */
 	protected double[][] addComponents(Matrix a) {
@@ -141,20 +143,23 @@ public class Matrix {
 	public void clear() {
 		int m = components[0].length;
 		for (int i = 0; i < components.length; i++) {
-			for (int j = 0; j < m; j++) components[i][j] = 0;
+			for (int j = 0; j < m; j++)
+				components[i][j] = 0;
 		}
 	}
 
 	/**
-	 * @return int	the number of columns of the matrix
+	 * @return int the number of columns of the matrix
 	 */
 	public int columns() {
 		return components[0].length;
 	}
 
 	/**
-	 * @param n int
-	 * @param m int
+	 * @param n
+	 *            int
+	 * @param m
+	 *            int
 	 * @return double
 	 */
 	public double component(int n, int m) {
@@ -164,8 +169,7 @@ public class Matrix {
 	/**
 	 * @return double
 	 * @throws dr.math.matrixAlgebra.IllegalDimension
-	 *          if the supplied
-	 *          matrix is not square.
+	 *             if the supplied matrix is not square.
 	 */
 	public double determinant() throws IllegalDimension {
 		return lupDecomposition().determinant();
@@ -175,9 +179,9 @@ public class Matrix {
 		return lupDecomposition().isPD();
 	}
 
-
 	/**
-	 * @param a MatrixAlgebra.Matrix
+	 * @param a
+	 *            MatrixAlgebra.Matrix
 	 * @return true if the supplied matrix is equal to the receiver.
 	 */
 	public boolean equals(Matrix a) {
@@ -197,20 +201,17 @@ public class Matrix {
 	}
 
 	/**
-	 * @return MatrixAlgebra.Matrix		inverse of the receiver
-	 *         or pseudoinverse if the receiver is not a square matrix.
-	 * @throws java.lang.ArithmeticException if the receiver is
-	 *                                       a singular matrix.
+	 * @return MatrixAlgebra.Matrix inverse of the receiver or pseudoinverse if
+	 *         the receiver is not a square matrix.
+	 * @throws java.lang.ArithmeticException
+	 *             if the receiver is a singular matrix.
 	 */
 	public Matrix inverse() throws ArithmeticException {
 		try {
-			return new Matrix(
-					lupDecomposition().inverseMatrixComponents());
-		}
-		catch (IllegalDimension e) {
-			return new Matrix(
-					transposedProduct().inverse()
-							.productWithTransposedComponents(this));
+			return new Matrix(lupDecomposition().inverseMatrixComponents());
+		} catch (IllegalDimension e) {
+			return new Matrix(transposedProduct().inverse()
+					.productWithTransposedComponents(this));
 		}
 	}
 
@@ -222,21 +223,20 @@ public class Matrix {
 	}
 
 	/**
-	 * @return LUPDecomposition	the LUP decomposition of the receiver.
-	 * @throws IllegalDimension if the receiver is not
-	 *                          a square matrix.
+	 * @return LUPDecomposition the LUP decomposition of the receiver.
+	 * @throws IllegalDimension
+	 *             if the receiver is not a square matrix.
 	 */
-	protected LUPDecomposition lupDecomposition()
-			throws IllegalDimension {
+	protected LUPDecomposition lupDecomposition() throws IllegalDimension {
 		if (lupDecomposition == null)
 			lupDecomposition = new LUPDecomposition(this);
 		return lupDecomposition;
 	}
 
 	/**
-	 * @param a double	multiplicand.
-	 * @return MatrixAlgebra.Matrix		product of the matrix with
-	 *         a supplied number
+	 * @param a
+	 *            double multiplicand.
+	 * @return MatrixAlgebra.Matrix product of the matrix with a supplied number
 	 */
 	public Matrix product(double a) {
 		return new Matrix(productComponents(a));
@@ -244,8 +244,9 @@ public class Matrix {
 
 	/**
 	 * Computes the product of the matrix with a vector.
-	 *
-	 * @param v matrixAlgebra.Vector
+	 * 
+	 * @param v
+	 *            matrixAlgebra.Vector
 	 * @return matrixAlgebra.Vector
 	 */
 	public Vector product(Vector v) throws IllegalDimension {
@@ -259,27 +260,25 @@ public class Matrix {
 	}
 
 	/**
-	 * @param a MatrixAlgebra.Matrix
-	 * @return MatrixAlgebra.Matrix		product of the receiver with the
-	 *         supplied matrix
+	 * @param a
+	 *            MatrixAlgebra.Matrix
+	 * @return MatrixAlgebra.Matrix product of the receiver with the supplied
+	 *         matrix
 	 * @throws dr.math.matrixAlgebra.IllegalDimension
-	 *          If the number of
-	 *          columns of the receiver are not equal to the
-	 *          number of rows of the supplied matrix.
+	 *             If the number of columns of the receiver are not equal to the
+	 *             number of rows of the supplied matrix.
 	 */
 	public Matrix product(Matrix a) throws IllegalDimension {
 		if (a.rows() != columns())
-			throw new IllegalDimension(
-					"Operation error: cannot multiply a"
-							+ rows() + " by " + columns()
-							+ " matrix with a " + a.rows()
-							+ " by " + a.columns()
-							+ " matrix");
+			throw new IllegalDimension("Operation error: cannot multiply a"
+					+ rows() + " by " + columns() + " matrix with a "
+					+ a.rows() + " by " + a.columns() + " matrix");
 		return new Matrix(productComponents(a));
 	}
 
 	/**
-	 * @param a double
+	 * @param a
+	 *            double
 	 * @return double[][]
 	 */
 	protected double[][] productComponents(double a) {
@@ -294,9 +293,10 @@ public class Matrix {
 	}
 
 	/**
-	 * @param a MatrixAlgebra.Matrix
-	 * @return double[][]	the components of the product of the receiver
-	 *         with the supplied matrix
+	 * @param a
+	 *            MatrixAlgebra.Matrix
+	 * @return double[][] the components of the product of the receiver with the
+	 *         supplied matrix
 	 */
 	protected double[][] productComponents(Matrix a) {
 		int p = this.columns();
@@ -315,30 +315,28 @@ public class Matrix {
 	}
 
 	/**
-	 * @param a MatrixAlgebra.Matrix
-	 * @return MatrixAlgebra.Matrix	product of the receiver with the
-	 *         tranpose of the supplied matrix
+	 * @param a
+	 *            MatrixAlgebra.Matrix
+	 * @return MatrixAlgebra.Matrix product of the receiver with the tranpose of
+	 *         the supplied matrix
 	 * @throws dr.math.matrixAlgebra.IllegalDimension
-	 *          If the number of
-	 *          columns of the receiver are not equal to
-	 *          the number of columns of the supplied matrix.
+	 *             If the number of columns of the receiver are not equal to the
+	 *             number of columns of the supplied matrix.
 	 */
-	public Matrix productWithTransposed(Matrix a)
-			throws IllegalDimension {
+	public Matrix productWithTransposed(Matrix a) throws IllegalDimension {
 		if (a.columns() != columns())
-			throw new IllegalDimension(
-					"Operation error: cannot multiply a " + rows()
-							+ " by " + columns()
-							+ " matrix with the transpose of a "
-							+ a.rows() + " by " + a.columns()
-							+ " matrix");
+			throw new IllegalDimension("Operation error: cannot multiply a "
+					+ rows() + " by " + columns()
+					+ " matrix with the transpose of a " + a.rows() + " by "
+					+ a.columns() + " matrix");
 		return new Matrix(productWithTransposedComponents(a));
 	}
 
 	/**
-	 * @param a MatrixAlgebra.Matrix
-	 * @return double[][]	the components of the product of the receiver
-	 *         with the transpose of the supplied matrix
+	 * @param a
+	 *            MatrixAlgebra.Matrix
+	 * @return double[][] the components of the product of the receiver with the
+	 *         transpose of the supplied matrix
 	 */
 	protected double[][] productWithTransposedComponents(Matrix a) {
 		int p = this.columns();
@@ -357,7 +355,7 @@ public class Matrix {
 	}
 
 	/**
-	 * @return int	the number of rows of the matrix
+	 * @return int the number of rows of the matrix
 	 */
 	public int rows() {
 		return components.length;
@@ -365,8 +363,9 @@ public class Matrix {
 
 	/**
 	 * Computes the product of the matrix with a vector.
-	 *
-	 * @param v matrixAlgebra.Vector
+	 * 
+	 * @param v
+	 *            matrixAlgebra.Vector
 	 * @return matrixAlgebra.Vector
 	 */
 	protected Vector secureProduct(Vector v) {
@@ -383,10 +382,11 @@ public class Matrix {
 
 	/**
 	 * Same as product(Matrix a), but without dimension checking.
-	 *
-	 * @param a MatrixAlgebra.Matrix
-	 * @return MatrixAlgebra.Matrix		product of the receiver with the
-	 *         supplied matrix
+	 * 
+	 * @param a
+	 *            MatrixAlgebra.Matrix
+	 * @return MatrixAlgebra.Matrix product of the receiver with the supplied
+	 *         matrix
 	 */
 	protected Matrix secureProduct(Matrix a) {
 		return new Matrix(productComponents(a));
@@ -394,8 +394,9 @@ public class Matrix {
 
 	/**
 	 * Same as subtract ( Marix a), but without dimension checking.
-	 *
-	 * @param a MatrixAlgebra.Matrix
+	 * 
+	 * @param a
+	 *            MatrixAlgebra.Matrix
 	 * @return MatrixAlgebra.Matrix
 	 */
 	protected Matrix secureSubtract(Matrix a) {
@@ -403,24 +404,24 @@ public class Matrix {
 	}
 
 	/**
-	 * @param a MatrixAlgebra.Matrix
-	 * @return MatrixAlgebra.Matrix		subtract the supplied matrix to
-	 *         the receiver.
+	 * @param a
+	 *            MatrixAlgebra.Matrix
+	 * @return MatrixAlgebra.Matrix subtract the supplied matrix to the
+	 *         receiver.
 	 * @throws dr.math.matrixAlgebra.IllegalDimension
-	 *          if the supplied matrix
-	 *          does not have the same dimensions.
+	 *             if the supplied matrix does not have the same dimensions.
 	 */
 	public Matrix subtract(Matrix a) throws IllegalDimension {
 		if (a.rows() != rows() || a.columns() != columns())
-			throw new IllegalDimension(
-					"Product error: cannot subtract a" + a.rows()
-							+ " by " + a.columns() + " matrix to a "
-							+ rows() + " by " + columns() + " matrix");
+			throw new IllegalDimension("Product error: cannot subtract a"
+					+ a.rows() + " by " + a.columns() + " matrix to a "
+					+ rows() + " by " + columns() + " matrix");
 		return new Matrix(subtractComponents(a));
 	}
 
 	/**
-	 * @param a MatrixAlgebra.Matrix
+	 * @param a
+	 *            MatrixAlgebra.Matrix
 	 * @return double[][]
 	 */
 	protected double[][] subtractComponents(Matrix a) {
@@ -435,7 +436,7 @@ public class Matrix {
 	}
 
 	/**
-	 * @return double[][]	a copy of the components of the receiver.
+	 * @return double[][] a copy of the components of the receiver.
 	 */
 	public double[][] toComponents() {
 		int n = rows();
@@ -450,12 +451,12 @@ public class Matrix {
 
 	/**
 	 * Returns a string representation of the system.
-	 *
+	 * 
 	 * @return java.lang.String
 	 */
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		char[] separator = {'[', ' '};
+		char[] separator = { '[', ' ' };
 		int n = rows();
 		int m = columns();
 		for (int i = 0; i < n; i++) {
@@ -493,7 +494,7 @@ public class Matrix {
 	}
 
 	/**
-	 * @return MatrixAlgebra.Matrix		transpose of the receiver
+	 * @return MatrixAlgebra.Matrix transpose of the receiver
 	 */
 	public Matrix transpose() {
 		int n = rows();
@@ -507,37 +508,36 @@ public class Matrix {
 	}
 
 	/**
-	 * @return MatrixAlgebra.SymmetricMatrix	the transposed product
-	 *         of the receiver with itself.
+	 * @return MatrixAlgebra.SymmetricMatrix the transposed product of the
+	 *         receiver with itself.
 	 */
 	public SymmetricMatrix transposedProduct() {
 		return new SymmetricMatrix(transposedProductComponents(this));
 	}
 
 	/**
-	 * @param a MatrixAlgebra.Matrix
-	 * @return MatrixAlgebra.Matrix	product of the tranpose of the
-	 *         receiver with the supplied matrix
+	 * @param a
+	 *            MatrixAlgebra.Matrix
+	 * @return MatrixAlgebra.Matrix product of the tranpose of the receiver with
+	 *         the supplied matrix
 	 * @throws dr.math.matrixAlgebra.IllegalDimension
-	 *          If the number of rows
-	 *          of the receiver are not equal to
-	 *          the number of rows of the supplied matrix.
+	 *             If the number of rows of the receiver are not equal to the
+	 *             number of rows of the supplied matrix.
 	 */
 	public Matrix transposedProduct(Matrix a) throws IllegalDimension {
 		if (a.rows() != rows())
 			throw new IllegalDimension(
-					"Operation error: cannot multiply a tranposed "
-							+ rows() + " by " + columns()
-							+ " matrix with a " + a.rows() + " by "
-							+ a.columns() + " matrix");
+					"Operation error: cannot multiply a tranposed " + rows()
+							+ " by " + columns() + " matrix with a " + a.rows()
+							+ " by " + a.columns() + " matrix");
 		return new Matrix(transposedProductComponents(a));
 	}
 
 	/**
-	 * @param a MatrixAlgebra.Matrix
-	 * @return double[][]	the components of the product of the
-	 *         transpose of the receiver
-	 *         with the supplied matrix.
+	 * @param a
+	 *            MatrixAlgebra.Matrix
+	 * @return double[][] the components of the product of the transpose of the
+	 *         receiver with the supplied matrix.
 	 */
 	protected double[][] transposedProductComponents(Matrix a) {
 		int p = this.rows();

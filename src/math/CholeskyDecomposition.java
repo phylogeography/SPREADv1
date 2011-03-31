@@ -1,10 +1,7 @@
 package math;
 
 /**
- * Created by IntelliJ IDEA.
- * User: msuchard
- * Date: Jan 12, 2007
- * Time: 9:05:44 PM
+ * Created by IntelliJ IDEA. User: msuchard Date: Jan 12, 2007 Time: 9:05:44 PM
  * To change this template use File | Settings | File Templates.
  */
 public class CholeskyDecomposition {
@@ -35,7 +32,8 @@ public class CholeskyDecomposition {
 		L = new double[n][n];
 		isspd = (A[0].length == n);
 		if (!isspd)
-			throw new IllegalDimension("Cholesky decomposition is only defined for square matrices");
+			throw new IllegalDimension(
+					"Cholesky decomposition is only defined for square matrices");
 		// Main loop.
 		for (int j = 0; j < n; j++) {
 			double[] Lrowj = L[j];
@@ -53,9 +51,9 @@ public class CholeskyDecomposition {
 			d = A[j][j] - d;
 			isspd = isspd & (d > 0.0);
 			L[j][j] = Math.sqrt(Math.max(d, 0.0));
-			/*for (int k = j+1; k < n; k++) {
-						L[j][k] = 0.0;
-					 }*/
+			/*
+			 * for (int k = j+1; k < n; k++) { L[j][k] = 0.0; }
+			 */
 		}
 
 	}

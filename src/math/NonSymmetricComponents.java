@@ -30,21 +30,25 @@ package math;
  */
 public class NonSymmetricComponents extends Exception {
 
-/**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9046634992672041256L;
-/**
- * DhbNonSymmetricComponents constructor comment.
- */
-public NonSymmetricComponents() {
-	super();
-}
-/**
- * DhbNonSymmetricComponents constructor comment.
- * @param s java.lang.String
- */
-public NonSymmetricComponents(String s) {
-	super(s);
-}
+
+	/**
+	 * DhbNonSymmetricComponents constructor comment.
+	 */
+	public NonSymmetricComponents() {
+		super();
+	}
+
+	/**
+	 * DhbNonSymmetricComponents constructor comment.
+	 * 
+	 * @param s
+	 *            java.lang.String
+	 */
+	public NonSymmetricComponents(String s) {
+		super(s);
+	}
 }

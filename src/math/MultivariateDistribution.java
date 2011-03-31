@@ -5,12 +5,12 @@ package math;
  */
 public interface MultivariateDistribution {
 
-    public double logPdf(double[] x);
+	public double logPdf(double[] x);
 
-    public double[][] getScaleMatrix();
+	public double[][] getScaleMatrix();
 
-    public double[] getMean();
+	public double[] getMean();
 
-    public String getType();
+	public String getType();
 
 }

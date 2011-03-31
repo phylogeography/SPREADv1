@@ -294,7 +294,8 @@ public class TimeSlicerTab extends JPanel {
 		timeSlicerToProcessing = new TimeSlicerToProcessing();
 		timeSlicerToProcessing.setPreferredSize(new Dimension(2048, 1025));
 
-		if (System.getProperty("os.name").toLowerCase().startsWith("linux")) {
+		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
+				"openjdk")) {
 
 			JScrollPane rightScrollPane = new JScrollPane(
 					timeSlicerToProcessing,

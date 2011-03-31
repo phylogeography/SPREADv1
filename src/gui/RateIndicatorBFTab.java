@@ -127,9 +127,9 @@ public class RateIndicatorBFTab extends JPanel {
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
 		leftPanel.setPreferredSize(new Dimension(leftPanelWidth,
 				leftPanelHeight));
-		leftPanel.setMinimumSize(new Dimension(leftPanelWidth,
-				leftPanelHeight));
-		
+		leftPanel
+				.setMinimumSize(new Dimension(leftPanelWidth, leftPanelHeight));
+
 		// Listeners
 		openLog.addActionListener(new ListenOpenLog());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -230,7 +230,8 @@ public class RateIndicatorBFTab extends JPanel {
 		rateIndicatorBFToProcessing = new RateIndicatorBFToProcessing();
 		rateIndicatorBFToProcessing.setPreferredSize(new Dimension(2048, 1025));
 
-		if (System.getProperty("os.name").toLowerCase().startsWith("linux")) {
+		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
+				"openjdk")) {
 
 			JScrollPane rightScrollPane = new JScrollPane(
 					rateIndicatorBFToProcessing,

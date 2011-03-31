@@ -25,16 +25,16 @@
 
 package utils;
 
-/** 
+/**
  * This class is unfortunate but necessary to conform to JDK 1.1
- *
+ * 
  * @version $Id: ComparableDouble.java,v 1.3 2005/05/24 20:26:01 rambaut Exp $
- *
+ * 
  * @author Alexei Drummond
  */
 @SuppressWarnings("unchecked")
 public class ComparableDouble implements Comparable {
-	
+
 	private final double value;
 
 	public ComparableDouble(double d) {
@@ -43,18 +43,19 @@ public class ComparableDouble implements Comparable {
 
 	public int compareTo(Object o) {
 
-		ComparableDouble cd = (ComparableDouble)o;
+		ComparableDouble cd = (ComparableDouble) o;
 
 		if (value < cd.value) {
 			return -1;
 		} else if (value > cd.value) {
 			return 1;
-		} else return 0;
+		} else
+			return 0;
 	}
 
 	public boolean equals(Object o) {
 
-		ComparableDouble cd = (ComparableDouble)o;
+		ComparableDouble cd = (ComparableDouble) o;
 		return cd.value == value;
 	}
 

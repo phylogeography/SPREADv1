@@ -24,14 +24,14 @@ public class Polygon extends GeoItem {
 		this.style = style;
 	}
 
-    public Style getPolyStyle() {
-        return style;
-    }
-    
-    public List <Coordinates> getPolyCoordinates() {
-        return vertices;
-    }
-	
+	public Style getPolyStyle() {
+		return style;
+	}
+
+	public List<Coordinates> getPolyCoordinates() {
+		return vertices;
+	}
+
 	private final List<Coordinates> vertices;
 	private final Style style;
 }

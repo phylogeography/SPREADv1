@@ -1,59 +1,60 @@
 package contouring;
 
-
 /**
-*  <p> This object represents the attributes assigned to a
-*      contour path.  Typically, the same attributes are
-*      assigned to all the contour paths of a given contour
-*      level.
-*  </p>
-*
-*  <p> Right now, the only attribute used is "level", but
-*      in the future I may add more.
-*  </p>
-*
-*  <p>  Modified by:  Joseph A. Huwaldt  </p>
-*
-*  @author  Joseph A. Huwaldt   Date:  November 11, 2000
-*  @version November 17, 2000
-*
-*
-*  @author Marc Suchard
-**/
+ * <p>
+ * This object represents the attributes assigned to a contour path. Typically,
+ * the same attributes are assigned to all the contour paths of a given contour
+ * level.
+ * </p>
+ * 
+ * <p>
+ * Right now, the only attribute used is "level", but in the future I may add
+ * more.
+ * </p>
+ * 
+ * <p>
+ * Modified by: Joseph A. Huwaldt
+ * </p>
+ * 
+ * @author Joseph A. Huwaldt Date: November 11, 2000
+ * @version November 17, 2000
+ * 
+ * 
+ * @author Marc Suchard
+ **/
 @SuppressWarnings("serial")
 public class ContourAttrib implements Cloneable, java.io.Serializable {
 
-	//	The level (altitude) of a contour path.
+	// The level (altitude) of a contour path.
 	private double level;
 
-
 	/**
-	*  Create a contour attribute object where only
-	*  the contour level is specified.
-	**/
+	 * Create a contour attribute object where only the contour level is
+	 * specified.
+	 **/
 	public ContourAttrib(double level) {
 		this.level = level;
 	}
 
 	/**
-	*  Return the level stored in this contour attribute.
-	**/
+	 * Return the level stored in this contour attribute.
+	 **/
 	public double getLevel() {
 		return level;
 	}
 
 	/**
-	*  Set or change the level stored in this contour attribute.
-	**/
+	 * Set or change the level stored in this contour attribute.
+	 **/
 	public void setLevel(double level) {
 		this.level = level;
 	}
 
 	/**
-	*  Make a copy of this ContourAttrib object.
-	*
-	*  @return  Returns a clone of this object.
-	**/
+	 * Make a copy of this ContourAttrib object.
+	 * 
+	 * @return Returns a clone of this object.
+	 **/
 	public Object clone() {
 		ContourAttrib newObject = null;
 
@@ -73,4 +74,3 @@ public class ContourAttrib implements Cloneable, java.io.Serializable {
 	}
 
 }
-

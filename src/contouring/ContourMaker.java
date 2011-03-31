@@ -6,6 +6,6 @@ package contouring;
 
 public interface ContourMaker {
 
-    ContourPath[] getContourPaths(double level);
+	ContourPath[] getContourPaths(double level);
 
 }

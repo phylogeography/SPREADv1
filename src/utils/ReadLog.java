@@ -61,7 +61,8 @@ public class ReadLog extends PApplet {
 		for (int row = delete; row < nrow; row++) {
 
 			String[] line = lines[row].split("\t");
-			indicators[i] = Utils.parseDouble(Utils.Subset(line, list.get(0), ncol));
+			indicators[i] = Utils.parseDouble(Utils.Subset(line, list.get(0),
+					ncol));
 			i++;
 
 		}

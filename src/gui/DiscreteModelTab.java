@@ -247,7 +247,8 @@ public class DiscreteModelTab extends JPanel {
 		discreteTreeToProcessing = new DiscreteTreeToProcessing();
 		discreteTreeToProcessing.setPreferredSize(new Dimension(2048, 1025));
 
-		if (System.getProperty("os.name").toLowerCase().startsWith("linux")) {
+		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
+				"openjdk")) {
 
 			JScrollPane rightScrollPane = new JScrollPane(
 					discreteTreeToProcessing,

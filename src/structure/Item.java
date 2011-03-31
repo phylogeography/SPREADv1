@@ -5,7 +5,9 @@ package structure;
  * @version $Id$
  */
 public interface Item {
-    boolean isContainer();
-    boolean isVisible();
-    String getName();
+	boolean isContainer();
+
+	boolean isVisible();
+
+	String getName();
 }

@@ -254,9 +254,9 @@ public class TimeSlicerToKML {
 
 				sliceTime = (Double) iterator.next();
 
-//				executor.submit(new Polygons());
-				 Polygons polygons = new Polygons();
-				 polygons.run();
+				// executor.submit(new Polygons());
+				Polygons polygons = new Polygons();
+				polygons.run();
 
 			}
 		}
@@ -414,13 +414,13 @@ public class TimeSlicerToKML {
 			 * */
 			int red = (int) Utils.map(sliceTime, startTime, endTime, 0,
 					maxPolygonRedMapping);
-			
+
 			int green = (int) Utils.map(sliceTime, startTime, endTime, 0,
 					maxPolygonGreenMapping);
-			
+
 			int blue = (int) Utils.map(sliceTime, startTime, endTime, 0,
 					maxPolygonBlueMapping);
-			
+
 			int alpha = (int) Utils.map(sliceTime, startTime, endTime,
 					maxPolygonOpacityMapping, 100);
 

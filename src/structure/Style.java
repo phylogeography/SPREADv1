@@ -12,7 +12,6 @@ public class Style extends org.boehn.kmlframework.kml.Style {
 		this(strokeColor, strokeWidth, null);
 	}
 
-	
 	public Style(final Color strokeColor, final double strokeWidth,
 			final Color fillColor) {
 		this.strokeColor = strokeColor;

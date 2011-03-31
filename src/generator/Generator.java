@@ -12,5 +12,6 @@ import java.util.Collection;
  * @version $Id$
  */
 public interface Generator {
-    public void generate(PrintWriter writer, final TimeLine timeLine, final Collection<Layer> layers) throws IOException;
+	public void generate(PrintWriter writer, final TimeLine timeLine,
+			final Collection<Layer> layers) throws IOException;
 }

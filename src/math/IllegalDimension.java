@@ -30,21 +30,25 @@ package math;
  */
 public class IllegalDimension extends Exception {
 
-/**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8101918570370620261L;
-/**
- * DhbIllegalDimension constructor comment.
- */
-public IllegalDimension() {
-	super();
-}
-/**
- * DhbIllegalDimension constructor comment.
- * @param s java.lang.String
- */
-public IllegalDimension(String s) {
-	super(s);
-}
+
+	/**
+	 * DhbIllegalDimension constructor comment.
+	 */
+	public IllegalDimension() {
+		super();
+	}
+
+	/**
+	 * DhbIllegalDimension constructor comment.
+	 * 
+	 * @param s
+	 *            java.lang.String
+	 */
+	public IllegalDimension(String s) {
+		super(s);
+	}
 }
