@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -227,12 +228,25 @@ public class DiscreteModelTab extends JPanel {
 		 * */
 		discreteTreeToProcessing = new DiscreteTreeToProcessing();
 		discreteTreeToProcessing.setPreferredSize(new Dimension(2048, 1025));
-		JScrollPane rightScrollPane = new JScrollPane(discreteTreeToProcessing,
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		add(rightScrollPane, BorderLayout.CENTER);
 
-	}
+		if (System.getProperty("os.name").toLowerCase().startsWith("linux")) {
+
+			JScrollPane rightScrollPane = new JScrollPane(
+					discreteTreeToProcessing,
+					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			add(rightScrollPane, BorderLayout.CENTER);
+
+		} else {
+
+			ScrollPane rightScrollPane = new ScrollPane(
+					ScrollPane.SCROLLBARS_ALWAYS);
+			rightScrollPane.add(discreteTreeToProcessing);
+			add(rightScrollPane, BorderLayout.CENTER);
+
+		}
+
+	} // END: discreteModelTab
 
 	private class ListenOpenTree implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {

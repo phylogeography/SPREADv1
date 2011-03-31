@@ -321,7 +321,8 @@ public class Utils {
 		return coords;
 	}// END: GenerateCircle
 
-	public static void printHashMap(ConcurrentMap<Double,List<Coordinates>> slicesMap,
+	public static void printHashMap(
+			ConcurrentMap<Double, List<Coordinates>> slicesMap,
 			boolean printValues) {
 
 		Set<Double> hostKeys = slicesMap.keySet();
@@ -343,10 +344,10 @@ public class Utils {
 				for (int i = 0; i < list.size(); i++) {
 
 					Coordinates coord = list.get(i);
-					
+
 					System.out.println(coord.getLongitude() + " "
 							+ coord.getLatitude());
-					
+
 					if (coord == null) {
 						System.out.println("null!");
 					}
@@ -808,7 +809,7 @@ public class Utils {
 		}
 		return b;
 	}
-	
+
 	/** Return the currently active frame. */
 	public static Frame getActiveFrame() {
 		Frame result = null;
@@ -822,6 +823,5 @@ public class Utils {
 		}
 		return result;
 	}
-
 
 }// END: Utils class

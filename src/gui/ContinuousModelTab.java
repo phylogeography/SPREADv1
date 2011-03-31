@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -15,7 +16,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,7 +24,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import templates.ContinuousTreeToKML;
 import templates.ContinuousTreeToProcessing;
@@ -234,13 +233,25 @@ public class ContinuousModelTab extends JPanel {
 		 * */
 		continuousTreeToProcessing = new ContinuousTreeToProcessing();
 		continuousTreeToProcessing.setPreferredSize(new Dimension(2048, 1025));
-		JScrollPane rightScrollPane = new JScrollPane(
-				continuousTreeToProcessing,
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		add(rightScrollPane, BorderLayout.CENTER);
 
-	}
+		if (System.getProperty("os.name").toLowerCase().startsWith("linux")) {
+
+			JScrollPane rightScrollPane = new JScrollPane(
+					continuousTreeToProcessing,
+					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			add(rightScrollPane, BorderLayout.CENTER);
+
+		} else {
+
+			ScrollPane rightScrollPane = new ScrollPane(
+					ScrollPane.SCROLLBARS_ALWAYS);
+			rightScrollPane.add(continuousTreeToProcessing);
+			add(rightScrollPane, BorderLayout.CENTER);
+
+		}
+
+	}// END: continuousModelTab
 
 	private class ListenOpenTree implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
