@@ -38,7 +38,7 @@ public class ContinuousModelTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 200;
-	private final int leftPanelHeight = 1000;// 800
+	private final int leftPanelHeight = 950;// 1000
 
 	// Current date
 	private Calendar calendar;
@@ -132,11 +132,10 @@ public class ContinuousModelTab extends JPanel {
 		 * left tools pane
 		 * */
 		leftPanel = new JPanel();
+		leftPanel.setBackground(backgroundColor);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		leftPanel.setPreferredSize(new Dimension(leftPanelWidth,
 				leftPanelHeight));
-		leftPanel
-				.setMinimumSize(new Dimension(leftPanelWidth, leftPanelHeight));
 
 		// Listeners
 		openTree.addActionListener(new ListenOpenTree());
@@ -215,18 +214,14 @@ public class ContinuousModelTab extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 20, 100));
-		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 100));
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
 		tmpPanel.add(generateKml, c);
-		c.weightx = 0.5;
 		c.gridx = 2;
 		c.gridy = 0;
 		tmpPanel.add(generateProcessing, c);
 		c.ipady = 7;
-		c.weightx = 0.0;
 		c.gridwidth = 3;
 		c.gridx = 0;
 		c.gridy = 1;
