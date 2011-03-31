@@ -190,7 +190,7 @@ public class TestlabOutbreakApp {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(new Dimension(dimension.width - 100,
 				dimension.height - 100));
-		frame.setMinimumSize(new Dimension(230, 100));
+		frame.setMinimumSize(new Dimension(260, 100));
 		frame.setResizable(true);
 		frame.setVisible(true);
 	}

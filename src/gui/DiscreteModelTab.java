@@ -3,6 +3,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -131,6 +133,8 @@ public class DiscreteModelTab extends JPanel {
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		leftPanel.setPreferredSize(new Dimension(leftPanelWidth,
 				leftPanelHeight));
+		leftPanel
+				.setMinimumSize(new Dimension(leftPanelWidth, leftPanelHeight));
 
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -202,12 +206,26 @@ public class DiscreteModelTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 20, 100));
 		tmpPanel.setPreferredSize(new Dimension(leftPanelWidth, 100));
-		tmpPanel.add(generateKml);
-		tmpPanel.add(generateProcessing);
-		tmpPanel.add(progressBar);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		tmpPanel.add(generateKml, c);
+		c.weightx = 0.5;
+		c.gridx = 2;
+		c.gridy = 0;
+		tmpPanel.add(generateProcessing, c);
+		c.ipady = 7;
+		c.weightx = 0.0;
+		c.gridwidth = 3;
+		c.gridx = 0;
+		c.gridy = 1;
+		tmpPanel.add(progressBar, c);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
