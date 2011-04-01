@@ -252,6 +252,7 @@ public class TimeSlicerTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		tmpPanel.setBackground(backgroundColor);
