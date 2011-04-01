@@ -62,7 +62,7 @@ public class DiscreteModelTab extends JPanel {
 	private JTextField kmlPathParser;
 
 	// Spinners
-	private SpinnerDate spinnerDate;
+	private DateSpinner spinnerDate;
 	
 	// Buttons
 	private JButton generateKml;
@@ -153,7 +153,7 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
-		spinnerDate = new SpinnerDate();
+		spinnerDate = new DateSpinner();
 		tmpPanel.add(spinnerDate);
 		tmpPanel.add(eraParser);
 		leftPanel.add(tmpPanel);

@@ -66,7 +66,7 @@ public class TimeSlicerTab extends JPanel {
 	private JTextField maxAltMappingParser;
 
 	// Spinners
-	private SpinnerDate spinnerDate;
+	private DateSpinner spinnerDate;
 	
 	// Buttons
 	private JButton generateKml;
@@ -168,7 +168,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
-		spinnerDate = new SpinnerDate();
+		spinnerDate = new DateSpinner();
 		tmpPanel.add(spinnerDate);
 		tmpPanel.add(eraParser);
 		leftPanel.add(tmpPanel);

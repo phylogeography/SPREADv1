@@ -10,13 +10,13 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
 @SuppressWarnings("serial")
-public class SpinnerDate extends JPanel {
+public class DateSpinner extends JPanel {
 
 	private Date today;
 	private JSpinner spinner;
 	private SimpleDateFormat formatter;
 
-	public SpinnerDate() {
+	public DateSpinner() {
 
 		formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		today = new Date();
