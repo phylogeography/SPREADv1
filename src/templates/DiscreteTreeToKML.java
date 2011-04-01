@@ -244,13 +244,9 @@ public class DiscreteTreeToKML {
 				for (Node node : tree.getNodes()) {
 					if (!tree.isRoot(node)) {
 
-						String state = (String) node.getAttribute(stateAttName);
+						String state = Utils.getStringNodeAttribute(node,
+								stateAttName);
 
-						if (state == null) {
-							throw new RuntimeException("Attribute " + stateAttName
-									+ " missing from node");
-						}
-						
 						Node parentNode = tree.getParent(node);
 						String parentState = (String) parentNode
 								.getAttribute(stateAttName);

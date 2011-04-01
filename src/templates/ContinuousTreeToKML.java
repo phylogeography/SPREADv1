@@ -234,10 +234,10 @@ public class ContinuousTreeToKML {
 
 					if (!tree.isRoot(node)) {
 
-						double longitude = (Double) node
-								.getAttribute(longitudeName);
-						double latitude = (Double) node
-								.getAttribute(latitudeName);
+						double longitude = Utils.getDoubleNodeAttribute(node,
+								longitudeName);
+						double latitude = Utils.getDoubleNodeAttribute(node,
+								latitudeName);
 
 						Node parentNode = tree.getParent(node);
 						double parentLongitude = (Double) parentNode
