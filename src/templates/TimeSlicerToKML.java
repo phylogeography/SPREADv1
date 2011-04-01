@@ -209,7 +209,7 @@ public class TimeSlicerToKML {
 		while (treesImporter.hasTree()) {
 
 			currentTree = (RootedTree) treesImporter.importNextTree();
-			synchronized (currentTree) {
+			synchronized (slicesMap) {
 				if (readTrees >= burnIn) {
 
 					// executor.submit(new AnalyzeTree());
