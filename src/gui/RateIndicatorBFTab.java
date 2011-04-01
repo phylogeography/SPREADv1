@@ -54,7 +54,6 @@ public class RateIndicatorBFTab extends JPanel {
 	private String workingDirectory;
 
 	// Text fields
-	// private JTextField burnInParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField maxAltMappingParser;
 	private JTextField bfCutoffParser;

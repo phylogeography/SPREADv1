@@ -9,9 +9,6 @@ import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -19,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -41,10 +37,6 @@ public class TimeSlicerTab extends JPanel {
 	private final int leftPanelWidth = 200;
 	private final int leftPanelHeight = 1260;
 
-	// Current date
-	private Calendar calendar;
-	private SimpleDateFormat formatter;
-
 	// Icons
 	private ImageIcon nuclearIcon;
 	private ImageIcon treeIcon;
@@ -63,20 +55,19 @@ public class TimeSlicerTab extends JPanel {
 	private String treesFilename;
 	private String workingDirectory;
 
-	// Labels
-	JLabel tmpLabel;
-
 	// Text fields
 	private JTextField burnInParser;
 	private JTextField locationAttNameParser;
 	private JTextField rateAttNameParser;
 	private JTextField precisionAttNameParser;
-	private JTextField mrsdStringParser;
 	private JComboBox eraParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField kmlPathParser;
 	private JTextField maxAltMappingParser;
 
+	// Spinners
+	private SpinnerDate spinnerDate;
+	
 	// Buttons
 	private JButton generateKml;
 	private JButton openTree;
@@ -104,8 +95,6 @@ public class TimeSlicerTab extends JPanel {
 
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-		calendar = Calendar.getInstance();
-		formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		backgroundColor = new Color(231, 237, 246);
 		polygonsColor = new Color(50, 255, 255, 255);
 		branchesColor = new Color(255, 5, 50, 255);
@@ -123,8 +112,6 @@ public class TimeSlicerTab extends JPanel {
 		locationAttNameParser = new JTextField("location", 10);
 		rateAttNameParser = new JTextField("rate", 10);
 		precisionAttNameParser = new JTextField("precision", 10);
-		mrsdStringParser = new JTextField(formatter.format(calendar.getTime()),
-				8);
 		numberOfIntervalsParser = new JTextField("10", 5);
 		maxAltMappingParser = new JTextField("500000", 5);
 		kmlPathParser = new JTextField("output.kml", 10);
@@ -181,7 +168,8 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
-		tmpPanel.add(mrsdStringParser);
+		spinnerDate = new SpinnerDate();
+		tmpPanel.add(spinnerDate);
 		tmpPanel.add(eraParser);
 		leftPanel.add(tmpPanel);
 
@@ -417,7 +405,7 @@ public class TimeSlicerTab extends JPanel {
 						progressBar.setIndeterminate(true);
 
 						TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
-						String mrsdString = mrsdStringParser.getText()
+						String mrsdString = spinnerDate.getValue()
 								+ " "
 								+ (eraParser.getSelectedIndex() == 0 ? "AD"
 										: "BC");
@@ -532,7 +520,7 @@ public class TimeSlicerTab extends JPanel {
 						generateProcessing.setEnabled(false);
 						progressBar.setIndeterminate(true);
 
-						String mrsdString = mrsdStringParser.getText()
+						String mrsdString = spinnerDate.getValue()
 								+ " "
 								+ (eraParser.getSelectedIndex() == 0 ? "AD"
 										: "BC");

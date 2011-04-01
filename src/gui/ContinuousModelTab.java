@@ -9,9 +9,6 @@ import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -40,10 +37,6 @@ public class ContinuousModelTab extends JPanel {
 	private final int leftPanelWidth = 200;
 	private final int leftPanelHeight = 950;// 1000
 
-	// Current date
-	private Calendar calendar;
-	private SimpleDateFormat formatter;
-
 	// Icons
 	private ImageIcon nuclearIcon;
 	private ImageIcon treeIcon;
@@ -66,12 +59,14 @@ public class ContinuousModelTab extends JPanel {
 	// Text fields
 	private JTextField coordinatesNameParser;
 	private JTextField HPDParser;
-	private JTextField mrsdStringParser;
 	private JComboBox eraParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField maxAltMappingParser;
 	private JTextField kmlPathParser;
 
+	// Spinners
+	private SpinnerDate spinnerDate;
+	
 	// Buttons
 	private JButton generateKml;
 	private JButton openTree;
@@ -98,9 +93,6 @@ public class ContinuousModelTab extends JPanel {
 		polygonsColor = new Color(50, 255, 255, 255);
 		branchesColor = new Color(255, 5, 50, 255);
 
-		calendar = Calendar.getInstance();
-		formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 		treeIcon = CreateImageIcon("/icons/tree.png");
@@ -111,8 +103,6 @@ public class ContinuousModelTab extends JPanel {
 		// Setup text fields
 		coordinatesNameParser = new JTextField("location", 10);
 		HPDParser = new JTextField("95", 2);
-		mrsdStringParser = new JTextField(formatter.format(calendar.getTime()),
-				8);
 		numberOfIntervalsParser = new JTextField("100", 10);
 		maxAltMappingParser = new JTextField("5000000", 10);
 		kmlPathParser = new JTextField("output.kml", 10);
@@ -158,7 +148,8 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
-		tmpPanel.add(mrsdStringParser);
+		spinnerDate = new SpinnerDate();
+		tmpPanel.add(spinnerDate);
 		tmpPanel.add(eraParser);
 		leftPanel.add(tmpPanel);
 
@@ -335,7 +326,7 @@ public class ContinuousModelTab extends JPanel {
 
 						ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
 
-						String mrsdString = mrsdStringParser.getText()
+						String mrsdString = spinnerDate.getValue()
 								+ " "
 								+ (eraParser.getSelectedIndex() == 0 ? "AD"
 										: "BC");
