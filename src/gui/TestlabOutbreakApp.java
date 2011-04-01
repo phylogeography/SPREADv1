@@ -159,7 +159,7 @@ public class TestlabOutbreakApp {
 					+ "\n"
 					+ "* Supported date format is YYYY-MM-DD \n"
 					+ "* Remember to set proper node attribute names \n"
-					+ "* Color picker setups the maximal RGBA values of the colors that later get mapped to node heigths \n"
+					+ "* Color picker setups the maximal RGBA values of the colors, those later get mapped from node heigths \n"
 					+ "* Resulting KML file is generated in the imported tree/log file directory \n"
 					+ "* You can always check the Terminal tab for what might have gone wrong with the analysis \n"
 					+ "\n";

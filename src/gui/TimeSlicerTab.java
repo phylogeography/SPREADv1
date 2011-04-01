@@ -98,7 +98,8 @@ public class TimeSlicerTab extends JPanel {
 		backgroundColor = new Color(231, 237, 246);
 		polygonsColor = new Color(50, 255, 255, 255);
 		branchesColor = new Color(255, 5, 50, 255);
-
+		GridBagConstraints c = new GridBagConstraints();
+		
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 		treeIcon = CreateImageIcon("/icons/tree.png");
@@ -164,13 +165,20 @@ public class TimeSlicerTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
+		spinnerDate = new DateSpinner();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		tmpPanel.add(spinnerDate,c);
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
-		spinnerDate = new DateSpinner();
-		tmpPanel.add(spinnerDate);
-		tmpPanel.add(eraParser);
+		c.gridx = 2;
+		c.gridy = 0;
+		tmpPanel.add(eraParser,c);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -242,7 +250,6 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
 		c.fill = GridBagConstraints.HORIZONTAL;

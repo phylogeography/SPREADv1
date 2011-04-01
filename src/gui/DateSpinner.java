@@ -24,7 +24,7 @@ public class DateSpinner extends JPanel {
 		spinner = new JSpinner(new SpinnerDateModel(today, null, null,
 				Calendar.MONTH));
 
-		spinner.setEditor(new JSpinner.DateEditor(spinner, "yyyy/MM/dd"));
+		spinner.setEditor(new JSpinner.DateEditor(spinner, "yyyy-MM-dd"));
 		spinner.setOpaque(false);
 		
 		add(spinner);
