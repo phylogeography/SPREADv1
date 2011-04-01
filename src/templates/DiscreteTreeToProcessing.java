@@ -151,6 +151,11 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 				String state = (String) node.getAttribute(stateAttName);
 
+				if (state == null) {
+					throw new RuntimeException("Attribute " + stateAttName
+							+ " missing from node");
+				}
+
 				Node parentNode = tree.getParent(node);
 				String parentState = (String) parentNode
 						.getAttribute(stateAttName);
