@@ -183,6 +183,7 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	public void draw() {
 
+		noLoop();
 		smooth();
 		drawMapBackground();
 		drawPolygons();

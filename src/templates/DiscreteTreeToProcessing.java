@@ -83,6 +83,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 	public void draw() {
 
+		noLoop();
 		smooth();
 		drawMapBackground();
 		DrawPlaces();

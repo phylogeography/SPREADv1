@@ -83,6 +83,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		ComputeBFTest();
 
+		noLoop();
 		smooth();
 		drawMapBackground();
 		DrawPlaces();

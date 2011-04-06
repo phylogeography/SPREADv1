@@ -66,7 +66,7 @@ public class ContinuousModelTab extends JPanel {
 
 	// Spinners
 	private DateSpinner spinnerDate;
-	
+
 	// Buttons
 	private JButton generateKml;
 	private JButton openTree;
@@ -93,7 +93,7 @@ public class ContinuousModelTab extends JPanel {
 		polygonsColor = new Color(50, 255, 255, 255);
 		branchesColor = new Color(255, 5, 50, 255);
 		GridBagConstraints c = new GridBagConstraints();
-		
+
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 		treeIcon = CreateImageIcon("/icons/tree.png");
@@ -153,12 +153,12 @@ public class ContinuousModelTab extends JPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
-		tmpPanel.add(spinnerDate,c);
+		tmpPanel.add(spinnerDate, c);
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
 		c.gridx = 2;
 		c.gridy = 0;
-		tmpPanel.add(eraParser,c);
+		tmpPanel.add(eraParser, c);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -474,6 +474,7 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToProcessing.init();
 
 					} catch (Exception e) {
+						
 						e.printStackTrace();
 
 						String msg = String.format("Unexpected problem: %s", e

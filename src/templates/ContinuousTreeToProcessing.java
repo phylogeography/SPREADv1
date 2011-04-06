@@ -105,10 +105,13 @@ public class ContinuousTreeToProcessing extends PApplet {
 		minY = -80;
 		maxY = 90;
 
+		size(2048, 1025);
+
 	}// END:setup
 
 	public void draw() {
 
+		noLoop();
 		smooth();
 		drawMapBackground();
 		drawPolygons();
