@@ -1,5 +1,6 @@
 package templates;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		bfCutoff = cutoff;
 	}
 
-	public void setLocationFilePath(String path) {
+	public void setLocationFilePath(String path) throws ParseException {
 
 		locations = new ReadLocations(path);
 	}

@@ -110,7 +110,7 @@ public class DiscreteTreeToKML {
 		importer = new NexusImporter(new FileReader(path));
 	}
 
-	public void setLocationFilePath(String path) {
+	public void setLocationFilePath(String path) throws ParseException {
 		data = new ReadLocations(path);
 	}
 
@@ -403,7 +403,7 @@ public class DiscreteTreeToKML {
 									);
 
 							branchStyleId++;
-						}
+						} 
 					}
 				}// END: nodes loop
 

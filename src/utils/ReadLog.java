@@ -41,7 +41,7 @@ public class ReadLog extends PApplet {
 		List<Integer> list = new ArrayList<Integer>();
 
 		// Create a pattern to match
-		Pattern pattern = Pattern.compile("indicators");
+		Pattern pattern = Pattern.compile("indicator");
 		for (int row = 0; row < colNames.length; row++) {
 
 			// Look for matches in column names

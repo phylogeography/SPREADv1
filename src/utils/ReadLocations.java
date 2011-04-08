@@ -1,5 +1,7 @@
 package utils;
 
+import java.text.ParseException;
+
 import processing.core.PApplet;
 
 public class ReadLocations extends PApplet {
@@ -10,7 +12,7 @@ public class ReadLocations extends PApplet {
 	public float[][] coordinates;
 	public int nrow;
 
-	public ReadLocations(String filename) {
+	public ReadLocations(String filename) throws ParseException {
 
 		lines = loadStrings(filename);
 		nrow = lines.length;

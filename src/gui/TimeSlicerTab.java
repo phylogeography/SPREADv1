@@ -53,7 +53,7 @@ public class TimeSlicerTab extends JPanel {
 	// Strings for paths
 	private String mccTreeFilename;
 	private String treesFilename;
-	private String workingDirectory;
+	private File workingDirectory;
 
 	// Text fields
 	private JTextField burnInParser;
@@ -67,7 +67,7 @@ public class TimeSlicerTab extends JPanel {
 
 	// Spinners
 	private DateSpinner spinnerDate;
-	
+
 	// Buttons
 	private JButton generateKml;
 	private JButton openTree;
@@ -99,7 +99,7 @@ public class TimeSlicerTab extends JPanel {
 		polygonsColor = new Color(50, 255, 255, 255);
 		branchesColor = new Color(255, 5, 50, 255);
 		GridBagConstraints c = new GridBagConstraints();
-		
+
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 		treeIcon = CreateImageIcon("/icons/tree.png");
@@ -173,12 +173,12 @@ public class TimeSlicerTab extends JPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
-		tmpPanel.add(spinnerDate,c);
+		tmpPanel.add(spinnerDate, c);
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
 		c.gridx = 2;
 		c.gridy = 0;
-		tmpPanel.add(eraParser,c);
+		tmpPanel.add(eraParser, c);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -334,15 +334,18 @@ public class TimeSlicerTab extends JPanel {
 				chooser.setMultiSelectionEnabled(false);
 				chooser.addChoosableFileFilter(new SimpleFileFilter(treeFiles,
 						"Tree files (*.tree, *.tre)"));
+				chooser.setCurrentDirectory(workingDirectory);
 
-				chooser.showOpenDialog(chooser);
+				chooser.showOpenDialog(Utils.getActiveFrame());
 				File file = chooser.getSelectedFile();
 				mccTreeFilename = file.getAbsolutePath();
 				System.out.println("Opened " + mccTreeFilename + "\n");
 
-				workingDirectory = chooser.getCurrentDirectory().toString();
-				System.out.println("Setted working directory to "
-						+ workingDirectory + "\n");
+				if (workingDirectory == null) {
+					workingDirectory = chooser.getCurrentDirectory();
+					System.out.println("Setted working directory to "
+							+ workingDirectory.toString() + "\n");
+				}
 
 			} catch (Exception e1) {
 				System.err.println("Could not Open! \n");
@@ -362,11 +365,18 @@ public class TimeSlicerTab extends JPanel {
 				chooser.setMultiSelectionEnabled(false);
 				chooser.addChoosableFileFilter(new SimpleFileFilter(treesFiles,
 						"Tree files (*.trees)"));
+				chooser.setCurrentDirectory(workingDirectory);
 
-				chooser.showOpenDialog(chooser);
+				chooser.showOpenDialog(Utils.getActiveFrame());
 				File file = chooser.getSelectedFile();
 				treesFilename = file.getAbsolutePath();
 				System.out.println("Opened " + treesFilename + "\n");
+
+				if (workingDirectory == null) {
+					workingDirectory = chooser.getCurrentDirectory();
+					System.out.println("Setted working directory to "
+							+ workingDirectory.toString() + "\n");
+				}
 
 			} catch (Exception e) {
 				System.err.println("Could not Open! \n");
@@ -446,7 +456,8 @@ public class TimeSlicerTab extends JPanel {
 								.valueOf(numberOfIntervalsParser.getText()));
 
 						timeSlicerToKML.setKmlWriterPath(workingDirectory
-								.concat("/").concat(kmlPathParser.getText()));
+								.toString().concat("/").concat(
+										kmlPathParser.getText()));
 
 						timeSlicerToKML.setMaxAltitudeMapping(Double
 								.valueOf(maxAltMappingParser.getText()));
@@ -633,7 +644,7 @@ public class TimeSlicerTab extends JPanel {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Saving as png file...");
 
-				chooser.showSaveDialog(chooser);
+				chooser.showSaveDialog(Utils.getActiveFrame());
 				File file = chooser.getSelectedFile();
 				String plotToSaveFilename = file.getAbsolutePath();
 

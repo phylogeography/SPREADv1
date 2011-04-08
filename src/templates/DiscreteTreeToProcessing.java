@@ -2,6 +2,7 @@ package templates;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
@@ -46,7 +47,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 		tree = (RootedTree) importer.importNextTree();
 	}
 
-	public void setLocationFilePath(String path) {
+	public void setLocationFilePath(String path) throws ParseException {
 		data = new ReadLocations(path);
 	}
 

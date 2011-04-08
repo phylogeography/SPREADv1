@@ -51,7 +51,7 @@ public class RateIndicatorBFTab extends JPanel {
 	// Strings for paths
 	private String logFilename;
 	private String locationsFilename;
-	private String workingDirectory;
+	private File workingDirectory;
 
 	// Text fields
 	private JTextField numberOfIntervalsParser;
@@ -257,15 +257,18 @@ public class RateIndicatorBFTab extends JPanel {
 				chooser.setMultiSelectionEnabled(false);
 				chooser.addChoosableFileFilter(new SimpleFileFilter(logFiles,
 						"Log files (*.log)"));
+				chooser.setCurrentDirectory(workingDirectory);
 
-				chooser.showOpenDialog(chooser);
+				chooser.showOpenDialog(Utils.getActiveFrame());
 				File file = chooser.getSelectedFile();
 				logFilename = file.getAbsolutePath();
 				System.out.println("Opened " + logFilename + "\n");
 
-				workingDirectory = chooser.getCurrentDirectory().toString();
-				System.out.println("Setted working directory to "
-						+ workingDirectory + "\n");
+				if (workingDirectory == null) {
+					workingDirectory = chooser.getCurrentDirectory();
+					System.out.println("Setted working directory to "
+							+ workingDirectory.toString() + "\n");
+				}
 
 			} catch (Exception e) {
 				System.err.println("Could not Open! \n");
@@ -280,11 +283,18 @@ public class RateIndicatorBFTab extends JPanel {
 
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Loading locations file...");
+				chooser.setCurrentDirectory(workingDirectory);
 
-				chooser.showOpenDialog(chooser);
+				chooser.showOpenDialog(Utils.getActiveFrame());
 				File file = chooser.getSelectedFile();
 				locationsFilename = file.getAbsolutePath();
 				System.out.println("Opened " + locationsFilename + "\n");
+
+				if (workingDirectory == null) {
+					workingDirectory = chooser.getCurrentDirectory();
+					System.out.println("Setted working directory to "
+							+ workingDirectory.toString() + "\n");
+				}
 
 			} catch (Exception e1) {
 				System.err.println("Could not Open! \n");
@@ -335,7 +345,8 @@ public class RateIndicatorBFTab extends JPanel {
 								.valueOf(numberOfIntervalsParser.getText()));
 
 						rateIndicatorBFToKML.setKmlWriterPath(workingDirectory
-								.concat("/").concat(kmlPathParser.getText()));
+								.toString().concat("/").concat(
+										kmlPathParser.getText()));
 
 						rateIndicatorBFToKML
 								.setMaxBranchRedMapping(branchesColor.getRed());
@@ -455,7 +466,7 @@ public class RateIndicatorBFTab extends JPanel {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Saving as png file...");
 
-				chooser.showSaveDialog(chooser);
+				chooser.showSaveDialog(Utils.getActiveFrame());
 				File file = chooser.getSelectedFile();
 				String plotToSaveFilename = file.getAbsolutePath();
 

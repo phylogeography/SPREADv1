@@ -34,7 +34,7 @@ public class DiscreteModelTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 200;
-	private final int leftPanelHeight = 950;//1000
+	private final int leftPanelHeight = 950;// 1000
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -52,7 +52,7 @@ public class DiscreteModelTab extends JPanel {
 	// Strings for paths
 	private String treeFilename;
 	private String locationsFilename;
-	private String workingDirectory;
+	private File workingDirectory;
 
 	// Text fields
 	private JTextField stateAttNameParser;
@@ -63,7 +63,7 @@ public class DiscreteModelTab extends JPanel {
 
 	// Spinners
 	private DateSpinner spinnerDate;
-	
+
 	// Buttons
 	private JButton generateKml;
 	private JButton openTree;
@@ -91,7 +91,7 @@ public class DiscreteModelTab extends JPanel {
 		polygonsColor = new Color(50, 255, 255, 255);
 		branchesColor = new Color(255, 5, 50, 255);
 		GridBagConstraints c = new GridBagConstraints();
-		
+
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
 		treeIcon = CreateImageIcon("/icons/tree.png");
@@ -158,12 +158,12 @@ public class DiscreteModelTab extends JPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
-		tmpPanel.add(spinnerDate,c);
+		tmpPanel.add(spinnerDate, c);
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
 		c.gridx = 2;
 		c.gridy = 0;
-		tmpPanel.add(eraParser,c);
+		tmpPanel.add(eraParser, c);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -274,22 +274,51 @@ public class DiscreteModelTab extends JPanel {
 				chooser.setMultiSelectionEnabled(false);
 				chooser.addChoosableFileFilter(new SimpleFileFilter(treeFiles,
 						"Tree files (*.tree, *.tre)"));
+				chooser.setCurrentDirectory(workingDirectory);
 
-				chooser.showOpenDialog(chooser);
+				chooser.showOpenDialog(Utils.getActiveFrame());
 				File file = chooser.getSelectedFile();
 				treeFilename = file.getAbsolutePath();
 
 				System.out.println("Opened " + treeFilename + "\n");
 
-				workingDirectory = chooser.getCurrentDirectory().toString();
-				System.out.println("Setted working directory to "
-						+ workingDirectory + "\n");
+				if (workingDirectory == null) {
+					workingDirectory = chooser.getCurrentDirectory();
+					System.out.println("Setted working directory to "
+							+ workingDirectory.toString() + "\n");
+				}
 
 			} catch (Exception e) {
 				System.err.println("Could not Open! \n");
 			}
 		}
-	}
+	}// END: ListenOpenTree
+
+	private class ListenOpenLocations implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			try {
+
+				JFileChooser chooser = new JFileChooser();
+				chooser.setDialogTitle("Loading locations file...");
+				chooser.setCurrentDirectory(workingDirectory);
+
+				chooser.showOpenDialog(Utils.getActiveFrame());
+				File file = chooser.getSelectedFile();
+				locationsFilename = file.getAbsolutePath();
+				System.out.println("Opened " + locationsFilename + "\n");
+				
+				if (workingDirectory == null) {
+					workingDirectory = chooser.getCurrentDirectory();
+					System.out.println("Setted working directory to "
+							+ workingDirectory.toString() + "\n");
+				}
+
+			} catch (Exception e) {
+				System.err.println("Could not Open! \n");
+			}
+		}
+	}// END: ListenOpenLocations
 
 	private class ListenPolygonsColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
@@ -312,25 +341,6 @@ public class DiscreteModelTab extends JPanel {
 			if (c != null)
 				branchesColor = c;
 
-		}
-	}
-
-	private class ListenOpenLocations implements ActionListener {
-		public void actionPerformed(ActionEvent ev) {
-
-			try {
-
-				JFileChooser chooser = new JFileChooser();
-				chooser.setDialogTitle("Loading locations file...");
-
-				chooser.showOpenDialog(chooser);
-				File file = chooser.getSelectedFile();
-				locationsFilename = file.getAbsolutePath();
-				System.out.println("Opened " + locationsFilename + "\n");
-
-			} catch (Exception e) {
-				System.err.println("Could not Open! \n");
-			}
 		}
 	}
 
@@ -369,7 +379,8 @@ public class DiscreteModelTab extends JPanel {
 								.valueOf(numberOfIntervalsParser.getText()));
 
 						discreteTreeToKML.setKmlWriterPath(workingDirectory
-								.concat("/").concat(kmlPathParser.getText()));
+								.toString().concat("/").concat(
+										kmlPathParser.getText()));
 
 						discreteTreeToKML.setTreePath(treeFilename);
 
@@ -486,9 +497,11 @@ public class DiscreteModelTab extends JPanel {
 
 				// Executed in event dispatch thread
 				public void done() {
+					
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
 					System.out.println("Finished. \n");
+					
 				}
 			};
 
@@ -503,9 +516,8 @@ public class DiscreteModelTab extends JPanel {
 
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Saving as png file...");
-				// System.getProperty("user.dir")
 
-				chooser.showSaveDialog(chooser);
+				chooser.showSaveDialog(Utils.getActiveFrame());
 				File file = chooser.getSelectedFile();
 				String plotToSaveFilename = file.getAbsolutePath();
 

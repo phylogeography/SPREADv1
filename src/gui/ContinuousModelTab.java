@@ -51,7 +51,7 @@ public class ContinuousModelTab extends JPanel {
 
 	// Strings for paths
 	private String treeFilename;
-	private String workingDirectory;
+	private File workingDirectory;
 
 	// Labels
 	private JLabel tmpLabel;
@@ -279,14 +279,14 @@ public class ContinuousModelTab extends JPanel {
 				chooser.addChoosableFileFilter(new SimpleFileFilter(treeFiles,
 						"Tree files (*.tree, *.tre)"));
 
-				chooser.showOpenDialog(chooser);
+				chooser.showOpenDialog(Utils.getActiveFrame());
 				File file = chooser.getSelectedFile();
 				treeFilename = file.getAbsolutePath();
 				System.out.println("Opened " + treeFilename + "\n");
 
-				workingDirectory = chooser.getCurrentDirectory().toString();
+				workingDirectory = chooser.getCurrentDirectory();
 				System.out.println("Setted working directory to "
-						+ workingDirectory + "\n");
+						+ workingDirectory.toString() + "\n");
 
 			} catch (Exception e) {
 				System.err.println("Could not Open! \n");
@@ -384,7 +384,7 @@ public class ContinuousModelTab extends JPanel {
 
 						continuousTreeToKML.setKmlWriterPath(
 
-						workingDirectory.concat("/").concat(
+						workingDirectory.toString().concat("/").concat(
 								kmlPathParser.getText()));
 
 						continuousTreeToKML.setTreePath(treeFilename);
@@ -491,9 +491,11 @@ public class ContinuousModelTab extends JPanel {
 
 				// Executed in event dispatch thread
 				public void done() {
+					
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
 					System.out.println("Finished. \n");
+					
 				}
 			};
 
@@ -509,7 +511,7 @@ public class ContinuousModelTab extends JPanel {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Saving as png file...");
 
-				chooser.showSaveDialog(chooser);
+				chooser.showSaveDialog(Utils.getActiveFrame());
 				File file = chooser.getSelectedFile();
 				String plotToSaveFilename = file.getAbsolutePath();
 
