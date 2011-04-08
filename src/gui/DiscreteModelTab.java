@@ -76,6 +76,7 @@ public class DiscreteModelTab extends JPanel {
 
 	// Sliders
 	private JSlider branchesWidthParser;
+	private JSlider polygonsRadiusMultiplierParser;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -125,6 +126,12 @@ public class DiscreteModelTab extends JPanel {
 		branchesWidthParser.setMinorTickSpacing(1);
 		branchesWidthParser.setPaintTicks(true);
 		branchesWidthParser.setPaintLabels(true);
+		polygonsRadiusMultiplierParser = new JSlider(JSlider.HORIZONTAL, 1, 11,
+				1);
+		polygonsRadiusMultiplierParser.setMajorTickSpacing(2);
+		polygonsRadiusMultiplierParser.setMinorTickSpacing(1);
+		polygonsRadiusMultiplierParser.setPaintTicks(true);
+		polygonsRadiusMultiplierParser.setPaintLabels(true);
 
 		// Setup progress bar
 		progressBar = new JProgressBar();
@@ -195,10 +202,10 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel.add(maxAltMappingParser);
 		leftPanel.add(tmpPanel);
 
-		// Polygons color mapping:
+		// Circles color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
+		tmpPanel.setBorder(new TitledBorder("Circles color mapping:"));
 		tmpPanel.add(polygonsColorChooser);
 		leftPanel.add(tmpPanel);
 
@@ -207,6 +214,13 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
 		tmpPanel.add(branchesColorChooser);
+		leftPanel.add(tmpPanel);
+
+		// Circles radius multiplier:
+		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Circles radius multiplier:"));
+		tmpPanel.add(polygonsRadiusMultiplierParser);
 		leftPanel.add(tmpPanel);
 
 		// Branches width:
@@ -416,6 +430,10 @@ public class DiscreteModelTab extends JPanel {
 						discreteTreeToKML
 								.setMaxPolygonOpacityMapping(polygonsColor
 										.getAlpha());
+
+						discreteTreeToKML
+								.setPolygonsRadiusMultiplier(polygonsRadiusMultiplierParser
+										.getValue());
 
 						discreteTreeToKML.setMaxBranchRedMapping(branchesColor
 								.getRed());
