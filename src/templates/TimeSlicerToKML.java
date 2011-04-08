@@ -55,6 +55,7 @@ public class TimeSlicerToKML {
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+	private double branchWidth;
 	private TreeImporter treesImporter;
 	private RootedTree currentTree;
 	private String mrsdString;
@@ -185,6 +186,10 @@ public class TimeSlicerToKML {
 
 	public void setMaxBranchOpacityMapping(double max) {
 		maxBranchOpacityMapping = max;
+	}
+	
+	public void setBranchWidth(double width) {
+		branchWidth = width;
 	}
 
 	public void GenerateKML() throws IOException, ImportException,
@@ -525,10 +530,7 @@ public class TimeSlicerToKML {
 
 						Color col = new Color(red, green, blue, alpha);
 
-						double width = Utils.map(nodeHeight, 0, treeHeightMax,
-								3.5, 10.0);
-
-						Style linesStyle = new Style(col, width);
+						Style linesStyle = new Style(col, branchWidth);
 						linesStyle.setId("branch_style" + branchStyleId);
 						branchStyleId++;
 

@@ -41,6 +41,7 @@ public class RateIndicatorBFToKML {
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+	private double branchWidth;
 
 	public RateIndicatorBFToKML() {
 
@@ -86,6 +87,10 @@ public class RateIndicatorBFToKML {
 
 	public void setMaxBranchOpacityMapping(double max) {
 		maxBranchOpacityMapping = max;
+	}
+
+	public void setBranchWidth(double width) {
+		branchWidth = width;
 	}
 
 	public void GenerateKML() throws IOException, ImportException,
@@ -174,14 +179,8 @@ public class RateIndicatorBFToKML {
 					int alpha = (int) Utils.map(bf, 0, bfMax,
 							maxBranchOpacityMapping, 100);
 
-					/**
-					 * width mapping
-					 * */
-					double width = Utils.map(bf, 0, bfMax, 3.5, 10.0);
-					// System.out.println(width);
-
 					Style linesStyle = new Style(new Color(red, green, blue,
-							alpha), width);
+							alpha), branchWidth);
 					linesStyle.setId("branch_style" + branchStyleId);
 
 					/**

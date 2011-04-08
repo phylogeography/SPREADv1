@@ -35,7 +35,7 @@ public class DiscreteModelTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 200;
-	private final int leftPanelHeight = 950;// 1000
+	private final int leftPanelHeight = 1050;// 1000
 
 	// Icons
 	private ImageIcon nuclearIcon;

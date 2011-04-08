@@ -63,6 +63,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+	private double branchWidth;
 
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 
@@ -169,6 +170,10 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	public void setMaxBranchOpacityMapping(double max) {
 		maxBranchOpacityMapping = max;
+	}
+	
+	public void setBranchWidth(double width) {
+		branchWidth = width;
 	}
 
 	public void setup() {
@@ -285,7 +290,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private void drawBranches() {
 
 		double treeHeightMax = Utils.getTreeHeightMax(tree);
-		strokeWeight(2);
+		strokeWeight((float) branchWidth);
 
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {

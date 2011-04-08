@@ -25,6 +25,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+	private double branchWidth;
 
 	// min/max longitude
 	private float minX, maxX;
@@ -65,6 +66,10 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		maxBranchOpacityMapping = max;
 	}
 
+	public void setBranchWidth(double width) {
+		branchWidth = width;
+	}
+
 	public void setup() {
 
 		minX = -180;
@@ -77,12 +82,12 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		hint(ENABLE_NATIVE_FONTS);
 		PFont plotFont = createFont("Arial", 12);
 		textFont(plotFont);
+		
+		ComputeBFTest();
 
 	}// END: setup
 
 	public void draw() {
-
-		ComputeBFTest();
 
 		noLoop();
 		smooth();
@@ -142,7 +147,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 	private void DrawRates() {
 
-		strokeWeight(2);
+		strokeWeight((float) branchWidth);
 
 		float bfMax = (float) Math.log(Utils.getListMax(bayesFactors));
 

@@ -69,6 +69,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Sliders
 	private JSlider burnInParser;
+	private JSlider branchesWidthParser;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -115,6 +116,11 @@ public class RateIndicatorBFTab extends JPanel {
 		burnInParser.setMinorTickSpacing(10);
 		burnInParser.setPaintTicks(true);
 		burnInParser.setPaintLabels(true);
+		branchesWidthParser = new JSlider(JSlider.HORIZONTAL, 2, 10, 4);
+		branchesWidthParser.setMajorTickSpacing(2);
+		branchesWidthParser.setMinorTickSpacing(1);
+		branchesWidthParser.setPaintTicks(true);
+		branchesWidthParser.setPaintLabels(true);
 
 		// Setup progress bar
 		progressBar = new JProgressBar();
@@ -178,6 +184,13 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
 		tmpPanel.add(branchesColorChooser);
+		leftPanel.add(tmpPanel);
+
+		// Branches width:
+		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Branches width:"));
+		tmpPanel.add(branchesWidthParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -363,6 +376,9 @@ public class RateIndicatorBFTab extends JPanel {
 								.setMaxBranchOpacityMapping(branchesColor
 										.getAlpha());
 
+						rateIndicatorBFToKML.setBranchWidth(branchesWidthParser
+								.getValue());
+
 						rateIndicatorBFToKML.GenerateKML();
 
 						System.out.println("Finished in: "
@@ -429,6 +445,9 @@ public class RateIndicatorBFTab extends JPanel {
 						rateIndicatorBFToProcessing
 								.setMaxBranchOpacityMapping(branchesColor
 										.getAlpha());
+
+						rateIndicatorBFToProcessing
+								.setBranchWidth(branchesWidthParser.getValue() / 2);
 
 						rateIndicatorBFToProcessing.init();
 

@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -77,6 +78,9 @@ public class TimeSlicerTab extends JPanel {
 	private JButton polygonsColorChooser;
 	private JButton branchesColorChooser;
 
+	// Sliders
+	private JSlider branchesWidthParser;
+
 	// checkboxes
 	private JCheckBox trueNoiseParser;
 	private JCheckBox imputeParser;
@@ -125,6 +129,13 @@ public class TimeSlicerTab extends JPanel {
 		saveProcessingPlot = new JButton("Save", saveIcon);
 		polygonsColorChooser = new JButton("Setup");
 		branchesColorChooser = new JButton("Setup");
+
+		// Setup sliders
+		branchesWidthParser = new JSlider(JSlider.HORIZONTAL, 2, 10, 4);
+		branchesWidthParser.setMajorTickSpacing(2);
+		branchesWidthParser.setMinorTickSpacing(1);
+		branchesWidthParser.setPaintTicks(true);
+		branchesWidthParser.setPaintLabels(true);
 
 		// Setup progress bar & checkboxes
 		progressBar = new JProgressBar();
@@ -245,6 +256,13 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("KML name:"));
 		tmpPanel.add(kmlPathParser);
+		leftPanel.add(tmpPanel);
+
+		// Branches width:
+		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Branches width:"));
+		tmpPanel.add(branchesWidthParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -488,6 +506,9 @@ public class TimeSlicerTab extends JPanel {
 								.setMaxBranchOpacityMapping(branchesColor
 										.getAlpha());
 
+						timeSlicerToKML.setBranchWidth(branchesWidthParser
+								.getValue());
+
 						timeSlicerToKML.GenerateKML();
 
 					} catch (Exception e) {
@@ -601,6 +622,9 @@ public class TimeSlicerTab extends JPanel {
 						timeSlicerToProcessing
 								.setMaxBranchOpacityMapping(branchesColor
 										.getAlpha());
+
+						timeSlicerToProcessing
+								.setBranchWidth(branchesWidthParser.getValue() / 2);
 
 						timeSlicerToProcessing.AnalyzeTrees();
 						timeSlicerToProcessing.init();
