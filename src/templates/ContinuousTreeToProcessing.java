@@ -34,6 +34,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+	private double branchWidth;
 
 	// Borders of the map coordinates
 	// min/max longitude
@@ -96,6 +97,10 @@ public class ContinuousTreeToProcessing extends PApplet {
 	public void setMaxBranchOpacityMapping(double max) {
 		maxBranchOpacityMapping = max;
 	}
+	
+	public void setBranchWidth(double width) {
+		branchWidth = width;
+	}
 
 	public void setup() {
 
@@ -130,7 +135,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	// ////////////////
 	private void drawBranches() {
 
-		strokeWeight(2);
+		strokeWeight((float) branchWidth);
 
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {

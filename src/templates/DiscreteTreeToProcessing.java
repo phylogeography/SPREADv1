@@ -28,6 +28,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+	private double branchWidth;
 
 	// min/max longitude
 	private float minX, maxX;
@@ -65,6 +66,10 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 	public void setMaxBranchOpacityMapping(double max) {
 		maxBranchOpacityMapping = max;
+	}
+
+	public void setBranchWidth(double width) {
+		branchWidth = width;
 	}
 
 	public void setup() {
@@ -144,7 +149,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 	// ////////////////
 	private void DrawBranches() {
 
-		strokeWeight(2);
+		strokeWeight((float) branchWidth);
 
 		double treeHeightMax = Utils.getTreeHeightMax(tree);
 

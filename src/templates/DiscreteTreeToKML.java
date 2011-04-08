@@ -57,6 +57,7 @@ public class DiscreteTreeToKML {
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+	private double branchWidth;
 	private PrintWriter writer;
 	private TreeImporter importer;
 
@@ -71,7 +72,6 @@ public class DiscreteTreeToKML {
 	private timescalerEnum timescalerSwitcher;
 	private branchesMappingEnum branchesColorMapping;
 	private branchesMappingEnum branchesOpacityMapping;
-	private branchesMappingEnum widthMapping;
 	private branchesMappingEnum altitudeMapping;
 
 	public DiscreteTreeToKML() {
@@ -80,7 +80,6 @@ public class DiscreteTreeToKML {
 		timescalerSwitcher = timescalerEnum.YEARS;
 		branchesColorMapping = branchesMappingEnum.TIME;
 		branchesOpacityMapping = branchesMappingEnum.TIME;
-		widthMapping = branchesMappingEnum.DEFAULT;
 		altitudeMapping = branchesMappingEnum.DISTANCE;
 
 	}// END: DiscreteTreeToKML()
@@ -148,6 +147,10 @@ public class DiscreteTreeToKML {
 
 	public void setMaxBranchOpacityMapping(double max) {
 		maxBranchOpacityMapping = max;
+	}
+	
+	public void setBranchWidth(double width) {
+		branchWidth = width;
 	}
 
 	public void GenerateKML() throws IOException, ImportException,
@@ -364,26 +367,7 @@ public class DiscreteTreeToKML {
 
 							Color col = new Color(red, green, blue, alpha);
 
-							/**
-							 * width mapping
-							 * */
-							double width = Double.NaN;
-							switch (widthMapping) {
-							case TIME:
-								width = Utils.map(nodeHeight, 0, treeHeightMax,
-										3.5, 10.0);
-								break;
-							case USER:
-								width = Utils.map(Utils.getDoubleNodeAttribute(
-										node, userAttribute), 0, treeHeightMax,
-										3.5, 10.0);
-								break;
-							case DEFAULT:
-								width = 3.5;
-								break;
-							}
-
-							Style linesStyle = new Style(col, width);
+							Style linesStyle = new Style(col, branchWidth);
 							linesStyle.setId("branch_style" + branchStyleId);
 
 							SpreadDate mrsd = new SpreadDate(mrsdString);

@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -75,6 +76,9 @@ public class ContinuousModelTab extends JPanel {
 	private JButton polygonsColorChooser;
 	private JButton branchesColorChooser;
 
+	// Sliders
+	private JSlider branchesWidthParser;
+
 	// Left tools pane
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
@@ -115,6 +119,13 @@ public class ContinuousModelTab extends JPanel {
 		saveProcessingPlot = new JButton("Save", saveIcon);
 		polygonsColorChooser = new JButton("Setup");
 		branchesColorChooser = new JButton("Setup");
+
+		// Setup sliders
+		branchesWidthParser = new JSlider(JSlider.HORIZONTAL, 2, 10, 4);
+		branchesWidthParser.setMajorTickSpacing(2);
+		branchesWidthParser.setMinorTickSpacing(1);
+		branchesWidthParser.setPaintTicks(true);
+		branchesWidthParser.setPaintLabels(true);
 
 		// Setup progress bar
 		progressBar = new JProgressBar();
@@ -200,6 +211,13 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
 		tmpPanel.add(branchesColorChooser);
+		leftPanel.add(tmpPanel);
+
+		// Branches width:
+		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Branches width:"));
+		tmpPanel.add(branchesWidthParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -377,6 +395,9 @@ public class ContinuousModelTab extends JPanel {
 								.setMaxBranchOpacityMapping(branchesColor
 										.getAlpha());
 
+						continuousTreeToKML.setBranchWidth(branchesWidthParser
+								.getValue());
+
 						continuousTreeToKML.setMrsdString(mrsdString);
 
 						continuousTreeToKML.setNumberOfIntervals(Integer
@@ -471,10 +492,13 @@ public class ContinuousModelTab extends JPanel {
 								.setMaxBranchOpacityMapping(branchesColor
 										.getAlpha());
 
+						continuousTreeToProcessing
+								.setBranchWidth(branchesWidthParser.getValue() / 2);
+
 						continuousTreeToProcessing.init();
 
 					} catch (Exception e) {
-						
+
 						e.printStackTrace();
 
 						String msg = String.format("Unexpected problem: %s", e
@@ -491,11 +515,11 @@ public class ContinuousModelTab extends JPanel {
 
 				// Executed in event dispatch thread
 				public void done() {
-					
+
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
 					System.out.println("Finished. \n");
-					
+
 				}
 			};
 

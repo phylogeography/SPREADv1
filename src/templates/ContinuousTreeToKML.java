@@ -53,6 +53,7 @@ public class ContinuousTreeToKML {
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+	private double branchWidth;
 	private String longitudeName;
 	private String latitudeName;
 	private String userAttribute;
@@ -75,7 +76,6 @@ public class ContinuousTreeToKML {
 	private timescalerEnum timescalerSwitcher;
 	private branchesMappingEnum branchesColorMapping;
 	private branchesMappingEnum branchesOpacityMapping;
-	private branchesMappingEnum branchesWidthMapping;
 	private branchesMappingEnum branchesAltitudeMapping;
 	private polygonsMappingEnum polygonsColorMapping;
 	private polygonsMappingEnum polygonsOpacityMapping;
@@ -86,7 +86,6 @@ public class ContinuousTreeToKML {
 		timescalerSwitcher = timescalerEnum.YEARS;
 		branchesColorMapping = branchesMappingEnum.TIME;
 		branchesOpacityMapping = branchesMappingEnum.TIME;
-		branchesWidthMapping = branchesMappingEnum.DEFAULT;
 		branchesAltitudeMapping = branchesMappingEnum.DISTANCE;
 		polygonsColorMapping = polygonsMappingEnum.TIME;
 		polygonsOpacityMapping = polygonsMappingEnum.TIME;
@@ -155,6 +154,10 @@ public class ContinuousTreeToKML {
 
 	public void setMaxBranchOpacityMapping(double max) {
 		maxBranchOpacityMapping = max;
+	}
+	
+	public void setBranchWidth(double width) {
+		branchWidth = width;
 	}
 
 	public void GenerateKML() throws IOException, ImportException,
@@ -334,26 +337,7 @@ public class ContinuousTreeToKML {
 
 						Color col = new Color(red, green, blue, alpha);
 
-						/**
-						 * width mapping
-						 * */
-						double width = Double.NaN;
-						switch (branchesWidthMapping) {
-						case TIME:
-							width = Utils.map(nodeHeight, 0, treeHeightMax,
-									3.5, 10.0);
-							break;
-						case USER:
-							width = Utils.map(Utils.getDoubleNodeAttribute(
-									node, userAttribute), 0, treeHeightMax,
-									4.0, 5.0);
-							break;
-						case DEFAULT:
-							width = 4.5;
-							break;
-						}
-
-						Style linesStyle = new Style(col, width);
+						Style linesStyle = new Style(col, branchWidth);
 						linesStyle.setId("branch_style" + branchStyleId);
 						branchStyleId++;
 

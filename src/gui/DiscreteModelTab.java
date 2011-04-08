@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -73,6 +74,9 @@ public class DiscreteModelTab extends JPanel {
 	private JButton polygonsColorChooser;
 	private JButton branchesColorChooser;
 
+	// Sliders
+	private JSlider branchesWidthParser;
+
 	// left tools pane
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
@@ -114,6 +118,13 @@ public class DiscreteModelTab extends JPanel {
 		saveProcessingPlot = new JButton("Save", saveIcon);
 		polygonsColorChooser = new JButton("Setup");
 		branchesColorChooser = new JButton("Setup");
+
+		// Setup sliders
+		branchesWidthParser = new JSlider(JSlider.HORIZONTAL, 2, 10, 4);
+		branchesWidthParser.setMajorTickSpacing(2);
+		branchesWidthParser.setMinorTickSpacing(1);
+		branchesWidthParser.setPaintTicks(true);
+		branchesWidthParser.setPaintLabels(true);
 
 		// Setup progress bar
 		progressBar = new JProgressBar();
@@ -196,6 +207,13 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
 		tmpPanel.add(branchesColorChooser);
+		leftPanel.add(tmpPanel);
+
+		// Branches width:
+		tmpPanel = new JPanel();
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Branches width:"));
+		tmpPanel.add(branchesWidthParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -307,7 +325,7 @@ public class DiscreteModelTab extends JPanel {
 				File file = chooser.getSelectedFile();
 				locationsFilename = file.getAbsolutePath();
 				System.out.println("Opened " + locationsFilename + "\n");
-				
+
 				if (workingDirectory == null) {
 					workingDirectory = chooser.getCurrentDirectory();
 					System.out.println("Setted working directory to "
@@ -413,6 +431,9 @@ public class DiscreteModelTab extends JPanel {
 								.setMaxBranchOpacityMapping(branchesColor
 										.getAlpha());
 
+						discreteTreeToKML.setBranchWidth(branchesWidthParser
+								.getValue());
+
 						discreteTreeToKML.GenerateKML();
 
 						System.out.println("Finished in: "
@@ -479,6 +500,9 @@ public class DiscreteModelTab extends JPanel {
 								.setMaxBranchOpacityMapping(branchesColor
 										.getAlpha());
 
+						discreteTreeToProcessing
+								.setBranchWidth(branchesWidthParser.getValue() / 2);
+
 						discreteTreeToProcessing.init();
 
 					} catch (Exception e) {
@@ -497,11 +521,11 @@ public class DiscreteModelTab extends JPanel {
 
 				// Executed in event dispatch thread
 				public void done() {
-					
+
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
 					System.out.println("Finished. \n");
-					
+
 				}
 			};
 
