@@ -162,6 +162,7 @@ public class ContinuousModelTab extends JPanel {
 				.addActionListener(new ListenBranchesMinColorChooser());
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load tree file:"));
 		tmpPanel.add(openTree);
@@ -217,8 +218,8 @@ public class ContinuousModelTab extends JPanel {
 
 		// Polygons color mapping:
 		tmpPanel = new JPanel();
-		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -232,8 +233,8 @@ public class ContinuousModelTab extends JPanel {
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
-		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -247,6 +248,7 @@ public class ContinuousModelTab extends JPanel {
 
 		// Branches width:
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches width:"));
 		tmpPanel.add(branchesWidthParser);
@@ -279,6 +281,7 @@ public class ContinuousModelTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Save plot:"));
 		tmpPanel.add(saveProcessingPlot);
