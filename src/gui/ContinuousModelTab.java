@@ -47,8 +47,8 @@ public class ContinuousModelTab extends JPanel {
 
 	// Colors
 	private Color backgroundColor;
-	private Color polygonsColor;
-	private Color branchesColor;
+	private Color polygonsMaxColor;
+	private Color branchesMaxColor;
 
 	// Strings for paths
 	private String treeFilename;
@@ -73,8 +73,8 @@ public class ContinuousModelTab extends JPanel {
 	private JButton openTree;
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
-	private JButton polygonsColorChooser;
-	private JButton branchesColorChooser;
+	private JButton polygonsMaxColorChooser;
+	private JButton branchesMaxColorChooser;
 
 	// Sliders
 	private JSlider branchesWidthParser;
@@ -94,8 +94,8 @@ public class ContinuousModelTab extends JPanel {
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		backgroundColor = new Color(231, 237, 246);
-		polygonsColor = new Color(50, 255, 255, 255);
-		branchesColor = new Color(255, 5, 50, 255);
+		polygonsMaxColor = new Color(50, 255, 255, 255);
+		branchesMaxColor = new Color(255, 5, 50, 255);
 		GridBagConstraints c = new GridBagConstraints();
 
 		// Setup icons
@@ -117,8 +117,8 @@ public class ContinuousModelTab extends JPanel {
 		openTree = new JButton("Open", treeIcon);
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
-		polygonsColorChooser = new JButton("Setup");
-		branchesColorChooser = new JButton("Setup");
+		polygonsMaxColorChooser = new JButton("Setup");
+		branchesMaxColorChooser = new JButton("Setup");
 
 		// Setup sliders
 		branchesWidthParser = new JSlider(JSlider.HORIZONTAL, 2, 10, 4);
@@ -144,10 +144,10 @@ public class ContinuousModelTab extends JPanel {
 		generateKml.addActionListener(new ListenGenerateKml());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
-		polygonsColorChooser
-				.addActionListener(new ListenPolygonsColorChooser());
-		branchesColorChooser
-				.addActionListener(new ListenBranchesColorChooser());
+		polygonsMaxColorChooser
+				.addActionListener(new ListenPolygonsMaxColorChooser());
+		branchesMaxColorChooser
+				.addActionListener(new ListenBranchesMaxColorChooser());
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
@@ -203,14 +203,14 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
-		tmpPanel.add(polygonsColorChooser);
+		tmpPanel.add(polygonsMaxColorChooser);
 		leftPanel.add(tmpPanel);
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
-		tmpPanel.add(branchesColorChooser);
+		tmpPanel.add(branchesMaxColorChooser);
 		leftPanel.add(tmpPanel);
 
 		// Branches width:
@@ -312,26 +312,26 @@ public class ContinuousModelTab extends JPanel {
 		}
 	}
 
-	private class ListenPolygonsColorChooser implements ActionListener {
+	private class ListenPolygonsMaxColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
 			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
-					"Choose polygons color...", polygonsColor, true);
+					"Choose polygons color...", polygonsMaxColor, true);
 
 			if (c != null)
-				polygonsColor = c;
+				polygonsMaxColor = c;
 
 		}
 	}
 
-	private class ListenBranchesColorChooser implements ActionListener {
+	private class ListenBranchesMaxColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
 			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
-					branchesColor, true);
+					branchesMaxColor, true);
 
 			if (c != null)
-				branchesColor = c;
+				branchesMaxColor = c;
 
 		}
 	}
@@ -366,33 +366,33 @@ public class ContinuousModelTab extends JPanel {
 								.valueOf(maxAltMappingParser.getText()));
 
 						continuousTreeToKML
-								.setMaxPolygonRedMapping(polygonsColor.getRed());
+								.setMaxPolygonRedMapping(polygonsMaxColor.getRed());
 
 						continuousTreeToKML
-								.setMaxPolygonGreenMapping(polygonsColor
+								.setMaxPolygonGreenMapping(polygonsMaxColor
 										.getGreen());
 
 						continuousTreeToKML
-								.setMaxPolygonBlueMapping(polygonsColor
+								.setMaxPolygonBlueMapping(polygonsMaxColor
 										.getBlue());
 
 						continuousTreeToKML
-								.setMaxPolygonOpacityMapping(polygonsColor
+								.setMaxPolygonOpacityMapping(polygonsMaxColor
 										.getAlpha());
 
 						continuousTreeToKML
-								.setMaxBranchRedMapping(branchesColor.getRed());
+								.setMaxBranchRedMapping(branchesMaxColor.getRed());
 
 						continuousTreeToKML
-								.setMaxBranchGreenMapping(branchesColor
+								.setMaxBranchGreenMapping(branchesMaxColor
 										.getGreen());
 
 						continuousTreeToKML
-								.setMaxBranchBlueMapping(branchesColor
+								.setMaxBranchBlueMapping(branchesMaxColor
 										.getBlue());
 
 						continuousTreeToKML
-								.setMaxBranchOpacityMapping(branchesColor
+								.setMaxBranchOpacityMapping(branchesMaxColor
 										.getAlpha());
 
 						continuousTreeToKML.setBranchWidth(branchesWidthParser
@@ -463,33 +463,33 @@ public class ContinuousModelTab extends JPanel {
 								+ "%");
 
 						continuousTreeToProcessing
-								.setMaxPolygonRedMapping(polygonsColor.getRed());
+								.setMaxPolygonRedMapping(polygonsMaxColor.getRed());
 
 						continuousTreeToProcessing
-								.setMaxPolygonGreenMapping(polygonsColor
+								.setMaxPolygonGreenMapping(polygonsMaxColor
 										.getGreen());
 
 						continuousTreeToProcessing
-								.setMaxPolygonBlueMapping(polygonsColor
+								.setMaxPolygonBlueMapping(polygonsMaxColor
 										.getBlue());
 
 						continuousTreeToProcessing
-								.setMaxPolygonOpacityMapping(polygonsColor
+								.setMaxPolygonOpacityMapping(polygonsMaxColor
 										.getAlpha());
 
 						continuousTreeToProcessing
-								.setMaxBranchRedMapping(branchesColor.getRed());
+								.setMaxBranchRedMapping(branchesMaxColor.getRed());
 
 						continuousTreeToProcessing
-								.setMaxBranchGreenMapping(branchesColor
+								.setMaxBranchGreenMapping(branchesMaxColor
 										.getGreen());
 
 						continuousTreeToProcessing
-								.setMaxBranchBlueMapping(branchesColor
+								.setMaxBranchBlueMapping(branchesMaxColor
 										.getBlue());
 
 						continuousTreeToProcessing
-								.setMaxBranchOpacityMapping(branchesColor
+								.setMaxBranchOpacityMapping(branchesMaxColor
 										.getAlpha());
 
 						continuousTreeToProcessing
