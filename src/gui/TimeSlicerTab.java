@@ -63,7 +63,6 @@ public class TimeSlicerTab extends JPanel {
 	private JTextField locationAttNameParser;
 	private JTextField rateAttNameParser;
 	private JTextField precisionAttNameParser;
-	private JComboBox eraParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField kmlPathParser;
 	private JTextField maxAltMappingParser;
@@ -84,6 +83,9 @@ public class TimeSlicerTab extends JPanel {
 
 	// Sliders
 	private JSlider branchesWidthParser;
+
+	// Combo boxes
+	private JComboBox eraParser;
 
 	// checkboxes
 	private JCheckBox trueNoiseParser;

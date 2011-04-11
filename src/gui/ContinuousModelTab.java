@@ -62,7 +62,6 @@ public class ContinuousModelTab extends JPanel {
 	// Text fields
 	private JTextField coordinatesNameParser;
 	private JTextField HPDParser;
-	private JComboBox eraParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField maxAltMappingParser;
 	private JTextField kmlPathParser;
@@ -82,6 +81,9 @@ public class ContinuousModelTab extends JPanel {
 
 	// Sliders
 	private JSlider branchesWidthParser;
+
+	// Combo boxes
+	private JComboBox eraParser;
 
 	// Left tools pane
 	private JPanel leftPanel;

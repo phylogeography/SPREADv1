@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,7 @@ import java.io.File;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -34,7 +36,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 200;
-	private final int leftPanelHeight = 1000;
+	private final int leftPanelHeight = 1050;
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -72,6 +74,10 @@ public class RateIndicatorBFTab extends JPanel {
 	// Sliders
 	private JSlider burnInParser;
 	private JSlider branchesWidthParser;
+
+	// Combo boxes
+	private JComboBox meanPoissonPriorParser;
+	private JComboBox poissonPriorOffsetParser;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -170,6 +176,25 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel.setBorder(new TitledBorder("Specify burn-in %:"));
 		tmpPanel.add(burnInParser);
 		leftPanel.add(tmpPanel);
+
+		// ////////////
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setLayout(new GridLayout(1,2));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Poisson prior mean / offset:"));
+		String[] meanPoissonPrior = { "log(2)", "" };
+		meanPoissonPriorParser = new JComboBox(meanPoissonPrior);
+		meanPoissonPriorParser.setEditable(true);
+		tmpPanel.add(meanPoissonPriorParser);
+		String[] poissonPriorOffset = { "n-1", "" };
+		poissonPriorOffsetParser = new JComboBox(poissonPriorOffset);
+		poissonPriorOffsetParser.setEditable(true);
+		tmpPanel.add(poissonPriorOffsetParser);
+		leftPanel.add(tmpPanel);
+
+		// ////////////
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));

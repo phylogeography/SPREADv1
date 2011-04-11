@@ -59,7 +59,6 @@ public class DiscreteModelTab extends JPanel {
 
 	// Text fields
 	private JTextField stateAttNameParser;
-	private JComboBox eraParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField maxAltMappingParser;
 	private JTextField kmlPathParser;
@@ -82,6 +81,9 @@ public class DiscreteModelTab extends JPanel {
 	private JSlider branchesWidthParser;
 	private JSlider polygonsRadiusMultiplierParser;
 
+	// Combo boxes
+	private JComboBox eraParser;
+	
 	// left tools pane
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
