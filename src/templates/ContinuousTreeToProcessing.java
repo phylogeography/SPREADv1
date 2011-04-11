@@ -26,14 +26,27 @@ public class ContinuousTreeToProcessing extends PApplet {
 	private double treeHeightMax;
 	private String HPD;
 	private PImage mapImage;
+
+	private double minPolygonRedMapping;
+	private double minPolygonGreenMapping;
+	private double minPolygonBlueMapping;
+	private double minPolygonOpacityMapping;
+
 	private double maxPolygonRedMapping;
 	private double maxPolygonGreenMapping;
 	private double maxPolygonBlueMapping;
 	private double maxPolygonOpacityMapping;
+
+	private double minBranchRedMapping;
+	private double minBranchGreenMapping;
+	private double minBranchBlueMapping;
+	private double minBranchOpacityMapping;
+
 	private double maxBranchRedMapping;
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+
 	private double branchWidth;
 
 	// Borders of the map coordinates
@@ -66,6 +79,22 @@ public class ContinuousTreeToProcessing extends PApplet {
 		treeHeightMax = Utils.getTreeHeightMax(tree);
 	}
 
+	public void setMinPolygonRedMapping(double min) {
+		minPolygonRedMapping = min;
+	}
+
+	public void setMinPolygonGreenMapping(double min) {
+		minPolygonGreenMapping = min;
+	}
+
+	public void setMinPolygonBlueMapping(double min) {
+		minPolygonBlueMapping = min;
+	}
+
+	public void setMinPolygonOpacityMapping(double min) {
+		minPolygonOpacityMapping = min;
+	}
+
 	public void setMaxPolygonRedMapping(double max) {
 		maxPolygonRedMapping = max;
 	}
@@ -80,6 +109,22 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 	public void setMaxPolygonOpacityMapping(double max) {
 		maxPolygonOpacityMapping = max;
+	}
+
+	public void setMinBranchRedMapping(double min) {
+		minBranchRedMapping = min;
+	}
+
+	public void setMinBranchGreenMapping(double min) {
+		minBranchGreenMapping = min;
+	}
+
+	public void setMinBranchBlueMapping(double min) {
+		minBranchBlueMapping = min;
+	}
+
+	public void setMinBranchOpacityMapping(double min) {
+		minBranchOpacityMapping = min;
 	}
 
 	public void setMaxBranchRedMapping(double max) {
@@ -97,7 +142,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	public void setMaxBranchOpacityMapping(double max) {
 		maxBranchOpacityMapping = max;
 	}
-	
+
 	public void setBranchWidth(double width) {
 		branchWidth = width;
 	}
@@ -164,17 +209,17 @@ public class ContinuousTreeToProcessing extends PApplet {
 				 * */
 				double nodeHeight = tree.getHeight(node);
 
-				int red = (int) Utils.map(nodeHeight, 0, treeHeightMax, 0,
-						maxBranchRedMapping);
+				int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+						minBranchRedMapping, maxBranchRedMapping);
 
-				int green = (int) Utils.map(nodeHeight, 0, treeHeightMax, 0,
-						maxBranchGreenMapping);
+				int green = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+						minBranchGreenMapping, maxBranchGreenMapping);
 
-				int blue = (int) Utils.map(nodeHeight, 0, treeHeightMax, 0,
-						maxBranchBlueMapping);
+				int blue = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+						minBranchBlueMapping, maxBranchBlueMapping);
 
 				int alpha = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-						maxBranchOpacityMapping, 100);
+						maxBranchOpacityMapping, minBranchOpacityMapping);
 
 				stroke(red, green, blue, alpha);
 				line(x0, y0, x1, y1);
@@ -206,16 +251,19 @@ public class ContinuousTreeToProcessing extends PApplet {
 						double nodeHeight = tree.getHeight(node);
 
 						int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-								0, maxPolygonRedMapping);
+								minPolygonRedMapping, maxPolygonRedMapping);
 
 						int green = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, 0, maxPolygonGreenMapping);
+								treeHeightMax, minPolygonGreenMapping,
+								maxPolygonGreenMapping);
 
 						int blue = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, 0, maxPolygonBlueMapping);
+								treeHeightMax, minPolygonBlueMapping,
+								maxPolygonBlueMapping);
 
 						int alpha = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, maxPolygonOpacityMapping, 100);
+								treeHeightMax, maxPolygonOpacityMapping,
+								minPolygonOpacityMapping);
 
 						stroke(red, green, blue, alpha);
 						fill(red, green, blue, alpha);

@@ -535,6 +535,22 @@ public class ContinuousModelTab extends JPanel {
 								+ "%");
 
 						continuousTreeToProcessing
+								.setMinPolygonRedMapping(polygonsMinColor
+										.getRed());
+
+						continuousTreeToProcessing
+								.setMinPolygonGreenMapping(polygonsMinColor
+										.getGreen());
+
+						continuousTreeToProcessing
+								.setMinPolygonBlueMapping(polygonsMinColor
+										.getBlue());
+
+						continuousTreeToProcessing
+								.setMinPolygonOpacityMapping(polygonsMinColor
+										.getAlpha());
+
+						continuousTreeToProcessing
 								.setMaxPolygonRedMapping(polygonsMaxColor
 										.getRed());
 
@@ -548,6 +564,22 @@ public class ContinuousModelTab extends JPanel {
 
 						continuousTreeToProcessing
 								.setMaxPolygonOpacityMapping(polygonsMaxColor
+										.getAlpha());
+
+						continuousTreeToProcessing
+								.setMinBranchRedMapping(branchesMinColor
+										.getRed());
+
+						continuousTreeToProcessing
+								.setMinBranchGreenMapping(branchesMinColor
+										.getGreen());
+
+						continuousTreeToProcessing
+								.setMinBranchBlueMapping(branchesMinColor
+										.getBlue());
+
+						continuousTreeToProcessing
+								.setMinBranchOpacityMapping(branchesMinColor
 										.getAlpha());
 
 						continuousTreeToProcessing
