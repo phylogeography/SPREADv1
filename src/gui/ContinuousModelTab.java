@@ -402,6 +402,25 @@ public class ContinuousModelTab extends JPanel {
 
 						continuousTreeToKML.setMaxAltitudeMapping(Double
 								.valueOf(maxAltMappingParser.getText()));
+						
+						
+						continuousTreeToKML
+						.setMinPolygonRedMapping(polygonsMinColor
+								.getRed());
+
+				continuousTreeToKML
+						.setMinPolygonGreenMapping(polygonsMinColor
+								.getGreen());
+
+				continuousTreeToKML
+						.setMinPolygonBlueMapping(polygonsMinColor
+								.getBlue());
+
+				continuousTreeToKML
+						.setMinPolygonOpacityMapping(polygonsMinColor
+								.getAlpha());
+						
+						
 
 						continuousTreeToKML
 								.setMaxPolygonRedMapping(polygonsMaxColor
@@ -418,6 +437,37 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToKML
 								.setMaxPolygonOpacityMapping(polygonsMaxColor
 										.getAlpha());
+						
+						
+						
+						
+						
+						
+						
+						continuousTreeToKML
+						.setMinBranchRedMapping(branchesMinColor
+								.getRed());
+
+				continuousTreeToKML
+						.setMaxBranchGreenMapping(branchesMaxColor
+								.getGreen());
+
+				continuousTreeToKML
+						.setMaxBranchBlueMapping(branchesMaxColor
+								.getBlue());
+
+				continuousTreeToKML
+						.setMaxBranchOpacityMapping(branchesMaxColor
+								.getAlpha());
+						
+						
+						
+						
+						
+						
+						
+						
+						
 
 						continuousTreeToKML
 								.setMaxBranchRedMapping(branchesMaxColor

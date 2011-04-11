@@ -137,20 +137,20 @@ public class ContinuousTreeToKML {
 		userAttribute = attribute;
 	}
 
-	public void setMinPolygonRedMapping(double max) {
-		maxPolygonRedMapping = max;
+	public void setMinPolygonRedMapping(double min) {
+		minPolygonRedMapping = min;
 	}
 
-	public void setMinPolygonGreenMapping(double max) {
-		maxPolygonGreenMapping = max;
+	public void setMinPolygonGreenMapping(double min) {
+		minPolygonGreenMapping = min;
 	}
 
-	public void setMinPolygonBlueMapping(double max) {
-		maxPolygonBlueMapping = max;
+	public void setMinPolygonBlueMapping(double min) {
+		minPolygonBlueMapping = min;
 	}
 
-	public void setMinPolygonOpacityMapping(double max) {
-		maxPolygonOpacityMapping = max;
+	public void setMinPolygonOpacityMapping(double min) {
+		minPolygonOpacityMapping = min;
 	}
 
 	public void setMaxPolygonRedMapping(double max) {
@@ -167,6 +167,22 @@ public class ContinuousTreeToKML {
 
 	public void setMaxPolygonOpacityMapping(double max) {
 		maxPolygonOpacityMapping = max;
+	}
+
+	public void setMinBranchRedMapping(double min) {
+		minBranchRedMapping = min;
+	}
+
+	public void setMinBranchGreenMapping(double min) {
+		minBranchGreenMapping = min;
+	}
+
+	public void setMinBranchBlueMapping(double min) {
+		minBranchBlueMapping = min;
+	}
+
+	public void setMinBranchOpacityMapping(double min) {
+		minBranchOpacityMapping = min;
 	}
 
 	public void setMaxBranchRedMapping(double max) {
