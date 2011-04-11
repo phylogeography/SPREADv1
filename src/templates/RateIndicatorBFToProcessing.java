@@ -21,10 +21,17 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private List<Double> bayesFactors;
 	private List<String> combin;
 	private PImage mapImage;
+
+	private double minBranchRedMapping;
+	private double minBranchGreenMapping;
+	private double minBranchBlueMapping;
+	private double minBranchOpacityMapping;
+
 	private double maxBranchRedMapping;
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+
 	private double branchWidth;
 
 	// min/max longitude
@@ -41,13 +48,27 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	}
 
 	public void setLocationFilePath(String path) throws ParseException {
-
 		locations = new ReadLocations(path);
 	}
 
 	public void setLogFilePath(String path, double burnIn) {
-
 		indicators = new ReadLog(path, burnIn);
+	}
+
+	public void setMinBranchRedMapping(double min) {
+		minBranchRedMapping = min;
+	}
+
+	public void setMinBranchGreenMapping(double min) {
+		minBranchGreenMapping = min;
+	}
+
+	public void setMinBranchBlueMapping(double min) {
+		minBranchBlueMapping = min;
+	}
+
+	public void setMinBranchOpacityMapping(double min) {
+		minBranchOpacityMapping = min;
 	}
 
 	public void setMaxBranchRedMapping(double max) {
@@ -82,7 +103,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		hint(ENABLE_NATIVE_FONTS);
 		PFont plotFont = createFont("Arial", 12);
 		textFont(plotFont);
-		
+
 		ComputeBFTest();
 
 	}// END: setup
@@ -146,11 +167,10 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	}// END: DrawPlacesLabels
 
 	private void DrawRates() {
-		
+
 		System.out.println("BF cutoff = " + bfCutoff);
 		System.out.println("mean Poisson Prior = " + Math.log(2));
-		System.out
-				.println("Poisson Prior offset = " + (locations.nrow - 1));
+		System.out.println("Poisson Prior offset = " + (locations.nrow - 1));
 
 		strokeWeight((float) branchWidth);
 
@@ -165,16 +185,17 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				 * */
 				float bf = (float) Math.log(bayesFactors.get(i));
 
-				int red = (int) Utils.map(bf, 0, bfMax, 0, maxBranchRedMapping);
+				int red = (int) Utils.map(bf, 0, bfMax, minBranchRedMapping,
+						maxBranchRedMapping);
 
-				int green = (int) Utils.map(bf, 0, bfMax, 0,
-						maxBranchGreenMapping);
+				int green = (int) Utils.map(bf, 0, bfMax,
+						minBranchGreenMapping, maxBranchGreenMapping);
 
-				int blue = (int) Utils.map(bf, 0, bfMax, 0,
+				int blue = (int) Utils.map(bf, 0, bfMax, minBranchBlueMapping,
 						maxBranchBlueMapping);
 
 				int alpha = (int) Utils.map(bf, 0, bfMax,
-						maxBranchOpacityMapping, 100);
+						maxBranchOpacityMapping, minBranchOpacityMapping);
 
 				stroke(red, green, blue, alpha);
 
@@ -198,12 +219,11 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				float y1 = map(latitude, maxY, minY, 0, height);
 
 				line(x0, y0, x1, y1);
-				
-				System.out.println("BF=" + bayesFactors.get(i)
-						+ " : between " + parentState + " (long: "
-						+ parentLongitude + "; lat: " + parentLongitude
-						+ ") and " + state + " (long: " + longitude
-						+ "; lat: " + latitude + ")");
+
+				System.out.println("BF=" + bayesFactors.get(i) + " : between "
+						+ parentState + " (long: " + parentLongitude
+						+ "; lat: " + parentLongitude + ") and " + state
+						+ " (long: " + longitude + "; lat: " + latitude + ")");
 			}
 		}// END: ArrayList loop
 	}// END: DrawRates
@@ -218,8 +238,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		} else if (indicators.ncol == (n * (n - 1)) / 2) {
 			symmetrical = true;
 		} else {
-			System.err.println("the number of rate indicators does not match "
-					+ "the number of locations!");
+			throw new RuntimeException(
+					"the number of rate indicators does not match the number of locations!");
 		}
 
 		combin = new ArrayList<String>();

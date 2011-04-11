@@ -37,10 +37,17 @@ public class RateIndicatorBFToKML {
 	private double bfCutoff;
 	private List<Double> bayesFactors;
 	private List<String> combin;
+
+	private double minBranchRedMapping;
+	private double minBranchGreenMapping;
+	private double minBranchBlueMapping;
+	private double minBranchOpacityMapping;
+
 	private double maxBranchRedMapping;
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+
 	private double branchWidth;
 
 	public RateIndicatorBFToKML() {
@@ -60,17 +67,31 @@ public class RateIndicatorBFToKML {
 	}
 
 	public void setLocationFilePath(String path) throws ParseException {
-
 		locations = new ReadLocations(path);
 	}
 
 	public void setLogFilePath(String path, double burnIn) {
-
 		indicators = new ReadLog(path, burnIn);
 	}
 
 	public void setKmlWriterPath(String kmlpath) throws FileNotFoundException {
 		writer = new PrintWriter(kmlpath);
+	}
+
+	public void setMinBranchRedMapping(double min) {
+		minBranchRedMapping = min;
+	}
+
+	public void setMinBranchGreenMapping(double min) {
+		minBranchGreenMapping = min;
+	}
+
+	public void setMinBranchBlueMapping(double min) {
+		minBranchBlueMapping = min;
+	}
+
+	public void setMinBranchOpacityMapping(double min) {
+		minBranchOpacityMapping = min;
 	}
 
 	public void setMaxBranchRedMapping(double max) {
@@ -175,14 +196,14 @@ public class RateIndicatorBFToKML {
 					 * */
 					double bf = Math.log(bayesFactors.get(i));
 
-					int red = (int) Utils.map(bf, 0, bfMax, 0,
-							maxBranchRedMapping);
-					int green = (int) Utils.map(bf, 0, bfMax, 0,
-							maxBranchGreenMapping);
-					int blue = (int) Utils.map(bf, 0, bfMax, 0,
-							maxBranchBlueMapping);
+					int red = (int) Utils.map(bf, 0, bfMax,
+							minBranchRedMapping, maxBranchRedMapping);
+					int green = (int) Utils.map(bf, 0, bfMax,
+							minBranchGreenMapping, maxBranchGreenMapping);
+					int blue = (int) Utils.map(bf, 0, bfMax,
+							minBranchBlueMapping, maxBranchBlueMapping);
 					int alpha = (int) Utils.map(bf, 0, bfMax,
-							maxBranchOpacityMapping, 100);
+							maxBranchOpacityMapping, minBranchOpacityMapping);
 
 					Style linesStyle = new Style(new Color(red, green, blue,
 							alpha), branchWidth);
@@ -244,8 +265,8 @@ public class RateIndicatorBFToKML {
 		} else if (indicators.ncol == (n * (n - 1)) / 2) {
 			symmetrical = true;
 		} else {
-			System.err.println("the number of rate indicators does not match "
-					+ "the number of locations!");
+			throw new RuntimeException(
+					"the number of rate indicators does not match the number of locations!");
 		}
 
 		combin = new ArrayList<String>();

@@ -46,7 +46,8 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Colors
 	private Color backgroundColor;
-	private Color branchesColor;
+	private Color branchesMaxColor;
+	private Color branchesMinColor;
 
 	// Strings for paths
 	private String logFilename;
@@ -65,7 +66,8 @@ public class RateIndicatorBFTab extends JPanel {
 	private JButton generateKml;
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
-	private JButton branchesColorChooser;
+	private JButton branchesMaxColorChooser;
+	private JButton branchesMinColorChooser;
 
 	// Sliders
 	private JSlider burnInParser;
@@ -86,7 +88,9 @@ public class RateIndicatorBFTab extends JPanel {
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		backgroundColor = new Color(231, 237, 246);
-		branchesColor = new Color(255, 5, 50, 255);
+		branchesMaxColor = new Color(255, 5, 50, 255);
+		branchesMinColor = new Color(0, 0, 0, 255);
+		GridBagConstraints c = new GridBagConstraints();
 
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
@@ -108,7 +112,8 @@ public class RateIndicatorBFTab extends JPanel {
 		generateKml = new JButton("Generate", nuclearIcon);
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
-		branchesColorChooser = new JButton("Setup");
+		branchesMaxColorChooser = new JButton("Setup max");
+		branchesMinColorChooser = new JButton("Setup min");
 
 		// Setup sliders
 		burnInParser = new JSlider(JSlider.HORIZONTAL, 0, 100, 10);
@@ -140,40 +145,48 @@ public class RateIndicatorBFTab extends JPanel {
 		openLocations.addActionListener(new ListenOpenLocations());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
-		branchesColorChooser
-				.addActionListener(new ListenBranchesColorChooser());
+		branchesMaxColorChooser
+				.addActionListener(new ListenBranchesMaxColorChooser());
+		branchesMinColorChooser
+				.addActionListener(new ListenBranchesMinColorChooser());
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load log file:"));
 		tmpPanel.add(openLog);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load locations file:"));
 		tmpPanel.add(openLocations);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Specify burn-in %:"));
 		tmpPanel.add(burnInParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Bayes Factor cut-off:"));
 		tmpPanel.add(bfCutoffParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude:"));
 		tmpPanel.add(maxAltMappingParser);
@@ -181,19 +194,29 @@ public class RateIndicatorBFTab extends JPanel {
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
-		tmpPanel.add(branchesColorChooser);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		tmpPanel.add(branchesMinColorChooser, c);
+		c.gridx = 2;
+		c.gridy = 0;
+		tmpPanel.add(branchesMaxColorChooser, c);
 		leftPanel.add(tmpPanel);
 
 		// Branches width:
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches width:"));
 		tmpPanel.add(branchesWidthParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("KML name:"));
 		tmpPanel.add(kmlPathParser);
@@ -202,7 +225,6 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -220,6 +242,7 @@ public class RateIndicatorBFTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Save plot:"));
 		tmpPanel.add(saveProcessingPlot);
@@ -315,14 +338,26 @@ public class RateIndicatorBFTab extends JPanel {
 		}
 	}
 
-	private class ListenBranchesColorChooser implements ActionListener {
+	private class ListenBranchesMinColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
 			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
-					"Choose branches color...", branchesColor, true);
+					"Choose minimum branches color...", branchesMinColor, true);
 
 			if (c != null)
-				branchesColor = c;
+				branchesMinColor = c;
+
+		}
+	}
+
+	private class ListenBranchesMaxColorChooser implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
+					"Choose maximum branches color...", branchesMaxColor, true);
+
+			if (c != null)
+				branchesMaxColor = c;
 
 		}
 	}
@@ -362,18 +397,35 @@ public class RateIndicatorBFTab extends JPanel {
 										kmlPathParser.getText()));
 
 						rateIndicatorBFToKML
-								.setMaxBranchRedMapping(branchesColor.getRed());
+								.setMinBranchRedMapping(branchesMinColor
+										.getRed());
 
 						rateIndicatorBFToKML
-								.setMaxBranchGreenMapping(branchesColor
+								.setMinBranchGreenMapping(branchesMinColor
 										.getGreen());
 
 						rateIndicatorBFToKML
-								.setMaxBranchBlueMapping(branchesColor
+								.setMinBranchBlueMapping(branchesMinColor
 										.getBlue());
 
 						rateIndicatorBFToKML
-								.setMaxBranchOpacityMapping(branchesColor
+								.setMinBranchOpacityMapping(branchesMinColor
+										.getAlpha());
+
+						rateIndicatorBFToKML
+								.setMaxBranchRedMapping(branchesMaxColor
+										.getRed());
+
+						rateIndicatorBFToKML
+								.setMaxBranchGreenMapping(branchesMaxColor
+										.getGreen());
+
+						rateIndicatorBFToKML
+								.setMaxBranchBlueMapping(branchesMaxColor
+										.getBlue());
+
+						rateIndicatorBFToKML
+								.setMaxBranchOpacityMapping(branchesMaxColor
 										.getAlpha());
 
 						rateIndicatorBFToKML.setBranchWidth(branchesWidthParser
@@ -432,18 +484,35 @@ public class RateIndicatorBFTab extends JPanel {
 								.setLocationFilePath(locationsFilename);
 
 						rateIndicatorBFToProcessing
-								.setMaxBranchRedMapping(branchesColor.getRed());
+								.setMinBranchRedMapping(branchesMinColor
+										.getRed());
 
 						rateIndicatorBFToProcessing
-								.setMaxBranchGreenMapping(branchesColor
+								.setMinBranchGreenMapping(branchesMinColor
 										.getGreen());
 
 						rateIndicatorBFToProcessing
-								.setMaxBranchBlueMapping(branchesColor
+								.setMinBranchBlueMapping(branchesMinColor
 										.getBlue());
 
 						rateIndicatorBFToProcessing
-								.setMaxBranchOpacityMapping(branchesColor
+								.setMinBranchOpacityMapping(branchesMinColor
+										.getAlpha());
+
+						rateIndicatorBFToProcessing
+								.setMaxBranchRedMapping(branchesMaxColor
+										.getRed());
+
+						rateIndicatorBFToProcessing
+								.setMaxBranchGreenMapping(branchesMaxColor
+										.getGreen());
+
+						rateIndicatorBFToProcessing
+								.setMaxBranchBlueMapping(branchesMaxColor
+										.getBlue());
+
+						rateIndicatorBFToProcessing
+								.setMaxBranchOpacityMapping(branchesMaxColor
 										.getAlpha());
 
 						rateIndicatorBFToProcessing
