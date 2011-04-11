@@ -50,15 +50,28 @@ public class DiscreteTreeToKML {
 	private double rootHeight;
 	private List<Layer> layers;
 	private double maxAltMapping;
+
+	private double minPolygonRedMapping;
+	private double minPolygonGreenMapping;
+	private double minPolygonBlueMapping;
+	private double minPolygonOpacityMapping;
+
 	private double maxPolygonRedMapping;
 	private double maxPolygonGreenMapping;
 	private double maxPolygonBlueMapping;
 	private double maxPolygonOpacityMapping;
-	private double polygonsRadiusMultiplier;
+
+	private double minBranchRedMapping;
+	private double minBranchGreenMapping;
+	private double minBranchBlueMapping;
+	private double minBranchOpacityMapping;
+
 	private double maxBranchRedMapping;
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+
+	private double polygonsRadiusMultiplier;
 	private double branchWidth;
 	private PrintWriter writer;
 	private TreeImporter importer;
@@ -119,6 +132,26 @@ public class DiscreteTreeToKML {
 		userAttribute = attribute;
 	}
 
+	public void setPolygonsRadiusMultiplier(double multiplier) {
+		polygonsRadiusMultiplier = multiplier;
+	}
+
+	public void setMinPolygonRedMapping(double min) {
+		minPolygonRedMapping = min;
+	}
+
+	public void setMinPolygonGreenMapping(double min) {
+		minPolygonGreenMapping = min;
+	}
+
+	public void setMinPolygonBlueMapping(double min) {
+		minPolygonBlueMapping = min;
+	}
+
+	public void setMinPolygonOpacityMapping(double min) {
+		minPolygonOpacityMapping = min;
+	}
+
 	public void setMaxPolygonRedMapping(double max) {
 		maxPolygonRedMapping = max;
 	}
@@ -135,8 +168,20 @@ public class DiscreteTreeToKML {
 		maxPolygonOpacityMapping = max;
 	}
 
-	public void setPolygonsRadiusMultiplier(double multiplier) {
-		polygonsRadiusMultiplier = multiplier;
+	public void setMinBranchRedMapping(double min) {
+		minBranchRedMapping = min;
+	}
+
+	public void setMinBranchGreenMapping(double min) {
+		minBranchGreenMapping = min;
+	}
+
+	public void setMinBranchBlueMapping(double min) {
+		minBranchBlueMapping = min;
+	}
+
+	public void setMinBranchOpacityMapping(double min) {
+		minBranchOpacityMapping = min;
 	}
 
 	public void setMaxBranchRedMapping(double max) {
@@ -315,32 +360,36 @@ public class DiscreteTreeToKML {
 							case TIME:
 
 								red = (int) Utils.map(nodeHeight, 0,
-										treeHeightMax, 0, maxBranchRedMapping);
+										treeHeightMax, minBranchRedMapping,
+										maxBranchRedMapping);
 
-								green = (int) Utils
-										.map(nodeHeight, 0, treeHeightMax, 0,
-												maxBranchGreenMapping);
+								green = (int) Utils.map(nodeHeight, 0,
+										treeHeightMax, minBranchGreenMapping,
+										maxBranchGreenMapping);
 
 								blue = (int) Utils.map(nodeHeight, 0,
-										treeHeightMax, 0, maxBranchBlueMapping);
+										treeHeightMax, minBranchBlueMapping,
+										maxBranchBlueMapping);
 								break;
 
 							case USER:
 								red = (int) Utils.map(Utils
 										.getDoubleNodeAttribute(node,
 												userAttribute), 0,
-										treeHeightMax, 0, maxBranchRedMapping);
+										treeHeightMax, minBranchRedMapping,
+										maxBranchRedMapping);
 
-								green = (int) Utils
-										.map(Utils.getDoubleNodeAttribute(node,
+								green = (int) Utils.map(Utils
+										.getDoubleNodeAttribute(node,
 												userAttribute), 0,
-												treeHeightMax, 0,
-												maxBranchGreenMapping);
+										treeHeightMax, minBranchGreenMapping,
+										maxBranchGreenMapping);
 
 								blue = (int) Utils.map(Utils
 										.getDoubleNodeAttribute(node,
 												userAttribute), 0,
-										treeHeightMax, 0, maxBranchBlueMapping);
+										treeHeightMax, minBranchBlueMapping,
+										maxBranchBlueMapping);
 								break;
 
 							case DEFAULT:
@@ -358,14 +407,14 @@ public class DiscreteTreeToKML {
 							case TIME:
 								alpha = (int) Utils.map(nodeHeight, 0,
 										treeHeightMax, maxBranchOpacityMapping,
-										100);
+										minBranchOpacityMapping);
 								break;
 							case USER:
 								alpha = (int) Utils.map(Utils
 										.getDoubleNodeAttribute(node,
 												userAttribute), 0,
 										treeHeightMax, maxBranchOpacityMapping,
-										100);
+										minBranchOpacityMapping);
 								break;
 							case DEFAULT:
 								alpha = 255;
@@ -438,16 +487,18 @@ public class DiscreteTreeToKML {
 							 * */
 							int red = (int) Utils.map(
 									numberOfLineages[i][j + 1], 0,
-									lineagesCountMax, 0, maxPolygonRedMapping);
+									lineagesCountMax, minPolygonRedMapping,
+									maxPolygonRedMapping);
 
-							int green = (int) Utils
-									.map(numberOfLineages[i][j + 1], 0,
-											lineagesCountMax, 0,
-											maxPolygonGreenMapping);
+							int green = (int) Utils.map(
+									numberOfLineages[i][j + 1], 0,
+									lineagesCountMax, minPolygonGreenMapping,
+									maxPolygonGreenMapping);
 
 							int blue = (int) Utils.map(
 									numberOfLineages[i][j + 1], 0,
-									lineagesCountMax, 0, maxPolygonBlueMapping);
+									lineagesCountMax, minPolygonBlueMapping,
+									maxPolygonBlueMapping);
 
 							/**
 							 * Opacity mapping
@@ -457,7 +508,7 @@ public class DiscreteTreeToKML {
 							int alpha = (int) Utils.map(
 									numberOfLineages[i][j + 1], 0,
 									lineagesCountMax, maxPolygonOpacityMapping,
-									100);
+									minPolygonOpacityMapping);
 
 							Color col = new Color(red, green, blue, alpha);
 

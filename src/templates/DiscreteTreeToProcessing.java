@@ -26,10 +26,17 @@ public class DiscreteTreeToProcessing extends PApplet {
 	private ReadLocations data;
 	private String stateAttName;
 	private PImage mapImage;
+
+	private double minBranchRedMapping;
+	private double minBranchGreenMapping;
+	private double minBranchBlueMapping;
+	private double minBranchOpacityMapping;
+
 	private double maxBranchRedMapping;
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+
 	private double branchWidth;
 
 	// min/max longitude
@@ -52,6 +59,22 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 	public void setLocationFilePath(String path) throws ParseException {
 		data = new ReadLocations(path);
+	}
+
+	public void setMinBranchRedMapping(double min) {
+		minBranchRedMapping = min;
+	}
+
+	public void setMinBranchGreenMapping(double min) {
+		minBranchGreenMapping = min;
+	}
+
+	public void setMinBranchBlueMapping(double min) {
+		minBranchBlueMapping = min;
+	}
+
+	public void setMinBranchOpacityMapping(double min) {
+		minBranchOpacityMapping = min;
 	}
 
 	public void setMaxBranchRedMapping(double max) {
@@ -189,17 +212,17 @@ public class DiscreteTreeToProcessing extends PApplet {
 					 * */
 					double nodeHeight = tree.getHeight(node);
 
-					int red = (int) Utils.map(nodeHeight, 0, treeHeightMax, 0,
-							maxBranchRedMapping);
+					int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+							minBranchRedMapping, maxBranchRedMapping);
 
 					int green = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-							0, maxBranchGreenMapping);
+							minBranchGreenMapping, maxBranchGreenMapping);
 
-					int blue = (int) Utils.map(nodeHeight, 0, treeHeightMax, 0,
-							maxBranchBlueMapping);
+					int blue = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+							minBranchBlueMapping, maxBranchBlueMapping);
 
 					int alpha = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-							maxBranchOpacityMapping, 100);
+							maxBranchOpacityMapping, minBranchOpacityMapping);
 
 					stroke(red, green, blue, alpha);
 					line(x0, y0, x1, y1);

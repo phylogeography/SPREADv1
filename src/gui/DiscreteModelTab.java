@@ -47,8 +47,10 @@ public class DiscreteModelTab extends JPanel {
 
 	// Colors
 	private Color backgroundColor;
-	private Color polygonsColor;
-	private Color branchesColor;
+	private Color polygonsMaxColor;
+	private Color branchesMaxColor;
+	private Color polygonsMinColor;
+	private Color branchesMinColor;
 
 	// Strings for paths
 	private String treeFilename;
@@ -71,8 +73,10 @@ public class DiscreteModelTab extends JPanel {
 	private JButton openLocations;
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
-	private JButton polygonsColorChooser;
-	private JButton branchesColorChooser;
+	private JButton polygonsMaxColorChooser;
+	private JButton branchesMaxColorChooser;
+	private JButton polygonsMinColorChooser;
+	private JButton branchesMinColorChooser;
 
 	// Sliders
 	private JSlider branchesWidthParser;
@@ -93,8 +97,10 @@ public class DiscreteModelTab extends JPanel {
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		backgroundColor = new Color(231, 237, 246);
-		polygonsColor = new Color(50, 255, 255, 255);
-		branchesColor = new Color(255, 5, 50, 255);
+		polygonsMaxColor = new Color(50, 255, 255, 255);
+		branchesMaxColor = new Color(255, 5, 50, 255);
+		polygonsMinColor = new Color(0, 0, 0, 100);
+		branchesMinColor = new Color(0, 0, 0, 255);
 		GridBagConstraints c = new GridBagConstraints();
 
 		// Setup icons
@@ -117,8 +123,10 @@ public class DiscreteModelTab extends JPanel {
 		openLocations = new JButton("Open", locationsIcon);
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
-		polygonsColorChooser = new JButton("Setup");
-		branchesColorChooser = new JButton("Setup");
+		polygonsMaxColorChooser = new JButton("Setup max");
+		branchesMaxColorChooser = new JButton("Setup max");
+		polygonsMinColorChooser = new JButton("Setup min");
+		branchesMinColorChooser = new JButton("Setup min");
 
 		// Setup sliders
 		branchesWidthParser = new JSlider(JSlider.HORIZONTAL, 2, 10, 4);
@@ -150,10 +158,14 @@ public class DiscreteModelTab extends JPanel {
 		openLocations.addActionListener(new ListenOpenLocations());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
-		polygonsColorChooser
-				.addActionListener(new ListenPolygonsColorChooser());
-		branchesColorChooser
-				.addActionListener(new ListenBranchesColorChooser());
+		polygonsMaxColorChooser
+				.addActionListener(new ListenPolygonsMaxColorChooser());
+		branchesMaxColorChooser
+				.addActionListener(new ListenBranchesMaxColorChooser());
+		polygonsMinColorChooser
+				.addActionListener(new ListenPolygonsMinColorChooser());
+		branchesMinColorChooser
+				.addActionListener(new ListenBranchesMinColorChooser());
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
@@ -206,14 +218,16 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Circles color mapping:"));
-		tmpPanel.add(polygonsColorChooser);
+		tmpPanel.add(polygonsMinColorChooser);
+		tmpPanel.add(polygonsMaxColorChooser);
 		leftPanel.add(tmpPanel);
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
-		tmpPanel.add(branchesColorChooser);
+		tmpPanel.add(branchesMinColorChooser);
+		tmpPanel.add(branchesMaxColorChooser);
 		leftPanel.add(tmpPanel);
 
 		// Circles radius multiplier:
@@ -352,26 +366,50 @@ public class DiscreteModelTab extends JPanel {
 		}
 	}// END: ListenOpenLocations
 
-	private class ListenPolygonsColorChooser implements ActionListener {
+	private class ListenPolygonsMinColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
 			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
-					"Choose polygons color...", polygonsColor, true);
+					"Choose minimum polygons color...", polygonsMinColor, true);
 
 			if (c != null)
-				polygonsColor = c;
+				polygonsMinColor = c;
 
 		}
 	}
 
-	private class ListenBranchesColorChooser implements ActionListener {
+	private class ListenPolygonsMaxColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
 			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
-					"Choose branches color...", branchesColor, true);
+					"Choose maximum polygons color...", polygonsMaxColor, true);
 
 			if (c != null)
-				branchesColor = c;
+				polygonsMaxColor = c;
+
+		}
+	}
+
+	private class ListenBranchesMinColorChooser implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
+					"Choose minimum branches color...", branchesMinColor, true);
+
+			if (c != null)
+				branchesMinColor = c;
+
+		}
+	}
+
+	private class ListenBranchesMaxColorChooser implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
+					"Choose maximum branches color...", branchesMaxColor, true);
+
+			if (c != null)
+				branchesMaxColor = c;
 
 		}
 	}
@@ -416,37 +454,72 @@ public class DiscreteModelTab extends JPanel {
 
 						discreteTreeToKML.setTreePath(treeFilename);
 
-						discreteTreeToKML.setMaxPolygonRedMapping(polygonsColor
-								.getRed());
+						discreteTreeToKML
+								.setMinPolygonRedMapping(polygonsMinColor
+										.getRed());
 
 						discreteTreeToKML
-								.setMaxPolygonGreenMapping(polygonsColor
+								.setMinPolygonGreenMapping(polygonsMinColor
 										.getGreen());
 
 						discreteTreeToKML
-								.setMaxPolygonBlueMapping(polygonsColor
+								.setMinPolygonBlueMapping(polygonsMinColor
 										.getBlue());
 
 						discreteTreeToKML
-								.setMaxPolygonOpacityMapping(polygonsColor
+								.setMinPolygonOpacityMapping(polygonsMinColor
+										.getAlpha());
+
+						discreteTreeToKML
+								.setMaxPolygonRedMapping(polygonsMaxColor
+										.getRed());
+
+						discreteTreeToKML
+								.setMaxPolygonGreenMapping(polygonsMaxColor
+										.getGreen());
+
+						discreteTreeToKML
+								.setMaxPolygonBlueMapping(polygonsMaxColor
+										.getBlue());
+
+						discreteTreeToKML
+								.setMaxPolygonOpacityMapping(polygonsMaxColor
 										.getAlpha());
 
 						discreteTreeToKML
 								.setPolygonsRadiusMultiplier(polygonsRadiusMultiplierParser
 										.getValue());
 
-						discreteTreeToKML.setMaxBranchRedMapping(branchesColor
-								.getRed());
+						discreteTreeToKML
+								.setMinBranchRedMapping(branchesMinColor
+										.getRed());
 
 						discreteTreeToKML
-								.setMaxBranchGreenMapping(branchesColor
+								.setMinBranchGreenMapping(branchesMinColor
 										.getGreen());
 
-						discreteTreeToKML.setMaxBranchBlueMapping(branchesColor
-								.getBlue());
+						discreteTreeToKML
+								.setMinBranchBlueMapping(branchesMinColor
+										.getBlue());
 
 						discreteTreeToKML
-								.setMaxBranchOpacityMapping(branchesColor
+								.setMinBranchOpacityMapping(branchesMinColor
+										.getAlpha());
+
+						discreteTreeToKML
+								.setMaxBranchRedMapping(branchesMaxColor
+										.getRed());
+
+						discreteTreeToKML
+								.setMaxBranchGreenMapping(branchesMaxColor
+										.getGreen());
+
+						discreteTreeToKML
+								.setMaxBranchBlueMapping(branchesMaxColor
+										.getBlue());
+
+						discreteTreeToKML
+								.setMaxBranchOpacityMapping(branchesMaxColor
 										.getAlpha());
 
 						discreteTreeToKML.setBranchWidth(branchesWidthParser
@@ -504,18 +577,35 @@ public class DiscreteModelTab extends JPanel {
 						discreteTreeToProcessing.setTreePath(treeFilename);
 
 						discreteTreeToProcessing
-								.setMaxBranchRedMapping(branchesColor.getRed());
+								.setMinBranchRedMapping(branchesMinColor
+										.getRed());
 
 						discreteTreeToProcessing
-								.setMaxBranchGreenMapping(branchesColor
+								.setMinBranchGreenMapping(branchesMinColor
 										.getGreen());
 
 						discreteTreeToProcessing
-								.setMaxBranchBlueMapping(branchesColor
+								.setMinBranchBlueMapping(branchesMinColor
 										.getBlue());
 
 						discreteTreeToProcessing
-								.setMaxBranchOpacityMapping(branchesColor
+								.setMinBranchOpacityMapping(branchesMinColor
+										.getAlpha());
+
+						discreteTreeToProcessing
+								.setMaxBranchRedMapping(branchesMaxColor
+										.getRed());
+
+						discreteTreeToProcessing
+								.setMaxBranchGreenMapping(branchesMaxColor
+										.getGreen());
+
+						discreteTreeToProcessing
+								.setMaxBranchBlueMapping(branchesMaxColor
+										.getBlue());
+
+						discreteTreeToProcessing
+								.setMaxBranchOpacityMapping(branchesMaxColor
 										.getAlpha());
 
 						discreteTreeToProcessing
