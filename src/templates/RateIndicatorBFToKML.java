@@ -154,7 +154,7 @@ public class RateIndicatorBFToKML {
 
 		public void run() {
 
-			System.out.println("Indicator cutoff = " + bfCutoff);
+			System.out.println("BF cutoff = " + bfCutoff);
 			System.out.println("mean Poisson Prior = " + Math.log(2));
 			System.out
 					.println("Poisson Prior offset = " + (locations.nrow - 1));

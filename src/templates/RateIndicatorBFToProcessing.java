@@ -146,6 +146,11 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	}// END: DrawPlacesLabels
 
 	private void DrawRates() {
+		
+		System.out.println("BF cutoff = " + bfCutoff);
+		System.out.println("mean Poisson Prior = " + Math.log(2));
+		System.out
+				.println("Poisson Prior offset = " + (locations.nrow - 1));
 
 		strokeWeight((float) branchWidth);
 
@@ -193,6 +198,12 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				float y1 = map(latitude, maxY, minY, 0, height);
 
 				line(x0, y0, x1, y1);
+				
+				System.out.println("BF=" + bayesFactors.get(i)
+						+ " : between " + parentState + " (long: "
+						+ parentLongitude + "; lat: " + parentLongitude
+						+ ") and " + state + " (long: " + longitude
+						+ "; lat: " + latitude + ")");
 			}
 		}// END: ArrayList loop
 	}// END: DrawRates

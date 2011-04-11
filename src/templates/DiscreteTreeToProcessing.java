@@ -3,6 +3,8 @@ package templates;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.HashSet;
+import java.util.Set;
 
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
@@ -84,6 +86,9 @@ public class DiscreteTreeToProcessing extends PApplet {
 		hint(ENABLE_NATIVE_FONTS);
 		PFont plotFont = createFont("Arial", 12);
 		textFont(plotFont);
+
+		SanityCheck sanityCheck = new SanityCheck();
+		sanityCheck.run();
 
 	}// END: setup
 
@@ -202,6 +207,46 @@ public class DiscreteTreeToProcessing extends PApplet {
 			}
 		}// END: nodes loop
 	}// END: DrawBranches
+
+	private class SanityCheck implements Runnable {
+
+		public void run() {
+
+			Set<String> uniqueTreeStates = new HashSet<String>();
+			for (Node node : tree.getNodes()) {
+				if (!tree.isRoot(node)) {
+
+					uniqueTreeStates.add(Utils.getStringNodeAttribute(node,
+							stateAttName));
+
+				}
+			}// END: node loop
+
+			Object[] uniqueTreeStatesArray = uniqueTreeStates.toArray();
+
+			for (int i = 0; i < data.locations.length; i++) {
+
+				String state = null;
+
+				for (int j = 0; j < uniqueTreeStatesArray.length; j++) {
+
+					if (data.locations[i].toLowerCase().equals(
+							((String) uniqueTreeStatesArray[j]).toLowerCase())) {
+
+						state = data.locations[i];
+
+					}// END: if location and discrete states match
+
+				}// END: unique discrete states loop
+
+				if (state == null) { // if none matches
+					System.out.println("Location " + data.locations[i]
+							+ " does not fit any of the discrete states");
+				}
+			}// END: locations loop
+
+		}// END: run
+	}// END: SanityCheck class
 
 	private String LoadMapBackground(boolean fromJar) {
 
