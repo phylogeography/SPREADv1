@@ -100,7 +100,7 @@ public class ContinuousModelTab extends JPanel {
 		backgroundColor = new Color(231, 237, 246);
 		polygonsMaxColor = new Color(50, 255, 255, 255);
 		branchesMaxColor = new Color(255, 5, 50, 255);
-		polygonsMinColor = new Color(0, 0, 0, 255);
+		polygonsMinColor = new Color(0, 0, 0, 100);
 		branchesMinColor = new Color(0, 0, 0, 255);
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -402,25 +402,22 @@ public class ContinuousModelTab extends JPanel {
 
 						continuousTreeToKML.setMaxAltitudeMapping(Double
 								.valueOf(maxAltMappingParser.getText()));
-						
-						
+
 						continuousTreeToKML
-						.setMinPolygonRedMapping(polygonsMinColor
-								.getRed());
+								.setMinPolygonRedMapping(polygonsMinColor
+										.getRed());
 
-				continuousTreeToKML
-						.setMinPolygonGreenMapping(polygonsMinColor
-								.getGreen());
+						continuousTreeToKML
+								.setMinPolygonGreenMapping(polygonsMinColor
+										.getGreen());
 
-				continuousTreeToKML
-						.setMinPolygonBlueMapping(polygonsMinColor
-								.getBlue());
+						continuousTreeToKML
+								.setMinPolygonBlueMapping(polygonsMinColor
+										.getBlue());
 
-				continuousTreeToKML
-						.setMinPolygonOpacityMapping(polygonsMinColor
-								.getAlpha());
-						
-						
+						continuousTreeToKML
+								.setMinPolygonOpacityMapping(polygonsMinColor
+										.getAlpha());
 
 						continuousTreeToKML
 								.setMaxPolygonRedMapping(polygonsMaxColor
@@ -437,37 +434,22 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToKML
 								.setMaxPolygonOpacityMapping(polygonsMaxColor
 										.getAlpha());
-						
-						
-						
-						
-						
-						
-						
+
 						continuousTreeToKML
-						.setMinBranchRedMapping(branchesMinColor
-								.getRed());
+								.setMinBranchRedMapping(branchesMinColor
+										.getRed());
 
-				continuousTreeToKML
-						.setMaxBranchGreenMapping(branchesMaxColor
-								.getGreen());
+						continuousTreeToKML
+								.setMinBranchGreenMapping(branchesMinColor
+										.getGreen());
 
-				continuousTreeToKML
-						.setMaxBranchBlueMapping(branchesMaxColor
-								.getBlue());
+						continuousTreeToKML
+								.setMinBranchBlueMapping(branchesMinColor
+										.getBlue());
 
-				continuousTreeToKML
-						.setMaxBranchOpacityMapping(branchesMaxColor
-								.getAlpha());
-						
-						
-						
-						
-						
-						
-						
-						
-						
+						continuousTreeToKML
+								.setMinBranchOpacityMapping(branchesMinColor
+										.getAlpha());
 
 						continuousTreeToKML
 								.setMaxBranchRedMapping(branchesMaxColor
