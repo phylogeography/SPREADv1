@@ -36,7 +36,7 @@ public class TimeSlicerTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 200;
-	private final int leftPanelHeight = 1260;
+	private final int leftPanelHeight = 1350;
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -48,8 +48,10 @@ public class TimeSlicerTab extends JPanel {
 
 	// Colors
 	private Color backgroundColor;
-	private Color polygonsColor;
-	private Color branchesColor;
+	private Color polygonsMaxColor;
+	private Color branchesMaxColor;
+	private Color polygonsMinColor;
+	private Color branchesMinColor;
 
 	// Strings for paths
 	private String mccTreeFilename;
@@ -75,8 +77,10 @@ public class TimeSlicerTab extends JPanel {
 	private JButton openTrees;
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
-	private JButton polygonsColorChooser;
-	private JButton branchesColorChooser;
+	private JButton polygonsMaxColorChooser;
+	private JButton branchesMaxColorChooser;
+	private JButton polygonsMinColorChooser;
+	private JButton branchesMinColorChooser;
 
 	// Sliders
 	private JSlider branchesWidthParser;
@@ -100,8 +104,10 @@ public class TimeSlicerTab extends JPanel {
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		backgroundColor = new Color(231, 237, 246);
-		polygonsColor = new Color(50, 255, 255, 255);
-		branchesColor = new Color(255, 5, 50, 255);
+		polygonsMaxColor = new Color(50, 255, 255, 255);
+		branchesMaxColor = new Color(255, 5, 50, 255);
+		polygonsMinColor = new Color(0, 0, 0, 100);
+		branchesMinColor = new Color(0, 0, 0, 255);
 		GridBagConstraints c = new GridBagConstraints();
 
 		// Setup icons
@@ -127,8 +133,10 @@ public class TimeSlicerTab extends JPanel {
 		openTrees = new JButton("Open", treesIcon);
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
-		polygonsColorChooser = new JButton("Setup");
-		branchesColorChooser = new JButton("Setup");
+		polygonsMaxColorChooser = new JButton("Setup max");
+		branchesMaxColorChooser = new JButton("Setup max");
+		polygonsMinColorChooser = new JButton("Setup min");
+		branchesMinColorChooser = new JButton("Setup min");
 
 		// Setup sliders
 		branchesWidthParser = new JSlider(JSlider.HORIZONTAL, 2, 10, 4);
@@ -158,18 +166,24 @@ public class TimeSlicerTab extends JPanel {
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
 		imputeParser.addActionListener(new listenImputeParser());
-		polygonsColorChooser
-				.addActionListener(new ListenPolygonsColorChooser());
-		branchesColorChooser
-				.addActionListener(new ListenBranchesColorChooser());
+		polygonsMaxColorChooser
+				.addActionListener(new ListenPolygonsMaxColorChooser());
+		branchesMaxColorChooser
+				.addActionListener(new ListenBranchesMaxColorChooser());
+		polygonsMinColorChooser
+				.addActionListener(new ListenPolygonsMinColorChooser());
+		branchesMinColorChooser
+				.addActionListener(new ListenBranchesMinColorChooser());
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load tree file:"));
 		tmpPanel.add(openTree);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load trees file:"));
 		tmpPanel.add(openTrees);
@@ -193,6 +207,7 @@ public class TimeSlicerTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Impute / Use true noise:"));
 		tmpPanel.add(imputeParser);
@@ -201,12 +216,14 @@ public class TimeSlicerTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Rate attribute name:"));
 		tmpPanel.add(rateAttNameParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Precision attribute name:"));
 		tmpPanel.add(precisionAttNameParser);
@@ -216,24 +233,28 @@ public class TimeSlicerTab extends JPanel {
 		precisionAttNameParser.setEnabled(false);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
 		tmpPanel.add(burnInParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Location attribute name:"));
 		tmpPanel.add(locationAttNameParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude mapping:"));
 		tmpPanel.add(maxAltMappingParser);
@@ -241,16 +262,33 @@ public class TimeSlicerTab extends JPanel {
 
 		// Polygons color mapping:
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
-		tmpPanel.add(polygonsColorChooser);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		tmpPanel.add(polygonsMinColorChooser, c);
+		c.gridx = 2;
+		c.gridy = 0;
+		tmpPanel.add(polygonsMaxColorChooser);
 		leftPanel.add(tmpPanel);
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
-		tmpPanel.add(branchesColorChooser);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		tmpPanel.add(branchesMinColorChooser);
+		c.gridx = 2;
+		c.gridy = 0;
+		tmpPanel.add(branchesMaxColorChooser);
+
 		leftPanel.add(tmpPanel);
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
@@ -260,6 +298,7 @@ public class TimeSlicerTab extends JPanel {
 
 		// Branches width:
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches width:"));
 		tmpPanel.add(branchesWidthParser);
@@ -285,6 +324,7 @@ public class TimeSlicerTab extends JPanel {
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Save plot:"));
 		tmpPanel.add(saveProcessingPlot);
@@ -402,26 +442,50 @@ public class TimeSlicerTab extends JPanel {
 		}
 	}
 
-	private class ListenPolygonsColorChooser implements ActionListener {
+	private class ListenPolygonsMinColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
 			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
-					"Choose polygons color...", polygonsColor, true);
+					"Choose minimum polygons color...", polygonsMinColor, true);
 
 			if (c != null)
-				polygonsColor = c;
+				polygonsMinColor = c;
 
 		}
 	}
 
-	private class ListenBranchesColorChooser implements ActionListener {
+	private class ListenPolygonsMaxColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
 			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
-					"Choose branches color...", branchesColor, true);
+					"Choose maximum polygons color...", polygonsMaxColor, true);
 
 			if (c != null)
-				branchesColor = c;
+				polygonsMaxColor = c;
+
+		}
+	}
+
+	private class ListenBranchesMinColorChooser implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
+					"Choose minimum branches color...", branchesMinColor, true);
+
+			if (c != null)
+				branchesMinColor = c;
+
+		}
+	}
+
+	private class ListenBranchesMaxColorChooser implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
+					"Choose maximum branches color...", branchesMaxColor, true);
+
+			if (c != null)
+				branchesMaxColor = c;
 
 		}
 	}
@@ -480,30 +544,66 @@ public class TimeSlicerTab extends JPanel {
 						timeSlicerToKML.setMaxAltitudeMapping(Double
 								.valueOf(maxAltMappingParser.getText()));
 
-						timeSlicerToKML.setMaxPolygonRedMapping(polygonsColor
-								.getRed());
-
-						timeSlicerToKML.setMaxPolygonGreenMapping(polygonsColor
-								.getGreen());
-
-						timeSlicerToKML.setMaxPolygonBlueMapping(polygonsColor
-								.getBlue());
+						timeSlicerToKML
+								.setMinPolygonRedMapping(polygonsMinColor
+										.getRed());
 
 						timeSlicerToKML
-								.setMaxPolygonOpacityMapping(polygonsColor
+								.setMinPolygonGreenMapping(polygonsMinColor
+										.getGreen());
+
+						timeSlicerToKML
+								.setMinPolygonBlueMapping(polygonsMinColor
+										.getBlue());
+
+						timeSlicerToKML
+								.setMinPolygonOpacityMapping(polygonsMinColor
 										.getAlpha());
 
-						timeSlicerToKML.setMaxBranchRedMapping(branchesColor
-								.getRed());
-
-						timeSlicerToKML.setMaxBranchGreenMapping(branchesColor
-								.getGreen());
-
-						timeSlicerToKML.setMaxBranchBlueMapping(branchesColor
-								.getBlue());
+						timeSlicerToKML
+								.setMaxPolygonRedMapping(polygonsMaxColor
+										.getRed());
 
 						timeSlicerToKML
-								.setMaxBranchOpacityMapping(branchesColor
+								.setMaxPolygonGreenMapping(polygonsMaxColor
+										.getGreen());
+
+						timeSlicerToKML
+								.setMaxPolygonBlueMapping(polygonsMaxColor
+										.getBlue());
+
+						timeSlicerToKML
+								.setMaxPolygonOpacityMapping(polygonsMaxColor
+										.getAlpha());
+
+						timeSlicerToKML.setMinBranchRedMapping(branchesMinColor
+								.getRed());
+
+						timeSlicerToKML
+								.setMinBranchGreenMapping(branchesMinColor
+										.getGreen());
+
+						timeSlicerToKML
+								.setMinBranchBlueMapping(branchesMinColor
+										.getBlue());
+
+						timeSlicerToKML
+								.setMinBranchOpacityMapping(branchesMinColor
+										.getAlpha());
+
+						timeSlicerToKML.setMaxBranchRedMapping(branchesMaxColor
+								.getRed());
+
+						timeSlicerToKML
+								.setMaxBranchGreenMapping(branchesMaxColor
+										.getGreen());
+
+						timeSlicerToKML
+								.setMaxBranchBlueMapping(branchesMaxColor
+										.getBlue());
+
+						timeSlicerToKML
+								.setMaxBranchOpacityMapping(branchesMaxColor
 										.getAlpha());
 
 						timeSlicerToKML.setBranchWidth(branchesWidthParser
@@ -594,33 +694,67 @@ public class TimeSlicerTab extends JPanel {
 								.valueOf(numberOfIntervalsParser.getText()));
 
 						timeSlicerToProcessing
-								.setMaxPolygonRedMapping(polygonsColor.getRed());
+								.setMinPolygonRedMapping(polygonsMinColor
+										.getRed());
 
 						timeSlicerToProcessing
-								.setMaxPolygonGreenMapping(polygonsColor
+								.setMinPolygonGreenMapping(polygonsMinColor
 										.getGreen());
 
 						timeSlicerToProcessing
-								.setMaxPolygonBlueMapping(polygonsColor
+								.setMinPolygonBlueMapping(polygonsMinColor
 										.getBlue());
 
 						timeSlicerToProcessing
-								.setMaxPolygonOpacityMapping(polygonsColor
+								.setMinPolygonOpacityMapping(polygonsMinColor
 										.getAlpha());
 
 						timeSlicerToProcessing
-								.setMaxBranchRedMapping(branchesColor.getRed());
+								.setMaxPolygonRedMapping(polygonsMaxColor
+										.getRed());
 
 						timeSlicerToProcessing
-								.setMaxBranchGreenMapping(branchesColor
+								.setMaxPolygonGreenMapping(polygonsMaxColor
 										.getGreen());
 
 						timeSlicerToProcessing
-								.setMaxBranchBlueMapping(branchesColor
+								.setMaxPolygonBlueMapping(polygonsMaxColor
 										.getBlue());
 
 						timeSlicerToProcessing
-								.setMaxBranchOpacityMapping(branchesColor
+								.setMaxPolygonOpacityMapping(polygonsMaxColor
+										.getAlpha());
+
+						timeSlicerToProcessing
+								.setMinBranchRedMapping(branchesMinColor
+										.getRed());
+
+						timeSlicerToProcessing
+								.setMinBranchGreenMapping(branchesMinColor
+										.getGreen());
+
+						timeSlicerToProcessing
+								.setMinBranchBlueMapping(branchesMinColor
+										.getBlue());
+
+						timeSlicerToProcessing
+								.setMinBranchOpacityMapping(branchesMinColor
+										.getAlpha());
+
+						timeSlicerToProcessing
+								.setMaxBranchRedMapping(branchesMaxColor
+										.getRed());
+
+						timeSlicerToProcessing
+								.setMaxBranchGreenMapping(branchesMaxColor
+										.getGreen());
+
+						timeSlicerToProcessing
+								.setMaxBranchBlueMapping(branchesMaxColor
+										.getBlue());
+
+						timeSlicerToProcessing
+								.setMaxBranchOpacityMapping(branchesMaxColor
 										.getAlpha());
 
 						timeSlicerToProcessing

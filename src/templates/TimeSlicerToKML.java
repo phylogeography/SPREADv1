@@ -47,14 +47,27 @@ public class TimeSlicerToKML {
 	private TreeImporter treeImporter;
 	private RootedTree tree;
 	private double maxAltMapping;
+
+	private double minPolygonRedMapping;
+	private double minPolygonGreenMapping;
+	private double minPolygonBlueMapping;
+	private double minPolygonOpacityMapping;
+
 	private double maxPolygonRedMapping;
 	private double maxPolygonGreenMapping;
 	private double maxPolygonBlueMapping;
 	private double maxPolygonOpacityMapping;
+
+	private double minBranchRedMapping;
+	private double minBranchGreenMapping;
+	private double minBranchBlueMapping;
+	private double minBranchOpacityMapping;
+
 	private double maxBranchRedMapping;
 	private double maxBranchGreenMapping;
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
+
 	private double branchWidth;
 	private TreeImporter treesImporter;
 	private RootedTree currentTree;
@@ -73,7 +86,6 @@ public class TimeSlicerToKML {
 	private int polygonsStyleId;
 	private SimpleDateFormat formatter;
 	private PrintWriter writer;
-
 	private Double sliceTime;
 	private TimeLine timeLine;
 	private double startTime;
@@ -156,6 +168,22 @@ public class TimeSlicerToKML {
 		maxAltMapping = max;
 	}
 
+	public void setMinPolygonRedMapping(double min) {
+		minPolygonRedMapping = min;
+	}
+
+	public void setMinPolygonGreenMapping(double min) {
+		minPolygonGreenMapping = min;
+	}
+
+	public void setMinPolygonBlueMapping(double min) {
+		minPolygonBlueMapping = min;
+	}
+
+	public void setMinPolygonOpacityMapping(double min) {
+		minPolygonOpacityMapping = min;
+	}
+
 	public void setMaxPolygonRedMapping(double max) {
 		maxPolygonRedMapping = max;
 	}
@@ -170,6 +198,22 @@ public class TimeSlicerToKML {
 
 	public void setMaxPolygonOpacityMapping(double max) {
 		maxPolygonOpacityMapping = max;
+	}
+
+	public void setMinBranchRedMapping(double min) {
+		minBranchRedMapping = min;
+	}
+
+	public void setMinBranchGreenMapping(double min) {
+		minBranchGreenMapping = min;
+	}
+
+	public void setMinBranchBlueMapping(double min) {
+		minBranchBlueMapping = min;
+	}
+
+	public void setMinBranchOpacityMapping(double min) {
+		minBranchOpacityMapping = min;
 	}
 
 	public void setMaxBranchRedMapping(double max) {
@@ -187,7 +231,7 @@ public class TimeSlicerToKML {
 	public void setMaxBranchOpacityMapping(double max) {
 		maxBranchOpacityMapping = max;
 	}
-	
+
 	public void setBranchWidth(double width) {
 		branchWidth = width;
 	}
@@ -417,17 +461,17 @@ public class TimeSlicerToKML {
 			/**
 			 * Color and Opacity mapping
 			 * */
-			int red = (int) Utils.map(sliceTime, startTime, endTime, 0,
-					maxPolygonRedMapping);
+			int red = (int) Utils.map(sliceTime, startTime, endTime,
+					minPolygonRedMapping, maxPolygonRedMapping);
 
-			int green = (int) Utils.map(sliceTime, startTime, endTime, 0,
-					maxPolygonGreenMapping);
+			int green = (int) Utils.map(sliceTime, startTime, endTime,
+					minPolygonGreenMapping, maxPolygonGreenMapping);
 
-			int blue = (int) Utils.map(sliceTime, startTime, endTime, 0,
-					maxPolygonBlueMapping);
+			int blue = (int) Utils.map(sliceTime, startTime, endTime,
+					minPolygonBlueMapping, maxPolygonBlueMapping);
 
 			int alpha = (int) Utils.map(sliceTime, startTime, endTime,
-					maxPolygonOpacityMapping, 100);
+					maxPolygonOpacityMapping, minPolygonOpacityMapping);
 
 			Color col = new Color(red, green, blue, alpha);
 			Style polygonsStyle = new Style(col, 0);
@@ -517,16 +561,19 @@ public class TimeSlicerToKML {
 								treeHeightMax, 0, maxAltMapping);
 
 						int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-								0, maxBranchRedMapping);
+								minBranchRedMapping, maxBranchRedMapping);
 
 						int green = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, 0, maxBranchGreenMapping);
+								treeHeightMax, minBranchGreenMapping,
+								maxBranchGreenMapping);
 
 						int blue = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, 0, maxBranchBlueMapping);
+								treeHeightMax, minBranchBlueMapping,
+								maxBranchBlueMapping);
 
 						int alpha = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, maxBranchOpacityMapping, 100);
+								treeHeightMax, maxBranchOpacityMapping,
+								minBranchOpacityMapping);
 
 						Color col = new Color(red, green, blue, alpha);
 

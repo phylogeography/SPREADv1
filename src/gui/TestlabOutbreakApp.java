@@ -79,8 +79,8 @@ public class TestlabOutbreakApp {
 
 			UIManager
 					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-//			 UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
-//			 .getLookAndFeel());
+			// UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
+			// .getLookAndFeel());
 		}
 
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -159,7 +159,7 @@ public class TestlabOutbreakApp {
 					+ "\n"
 					+ "* Supported date format is YYYY-MM-DD \n"
 					+ "* Remember to set proper node attribute names \n"
-					+ "* Color picker setups the maximal RGBA values of the colors, those later get mapped from node heigths \n"
+					+ "* Color pickers setup the minimal and maximal RGBA values of the colors, those later get mapped from node attribute values \n"
 					+ "* Resulting KML file is generated in the imported tree/log file directory \n"
 					+ "* You can always check the Terminal tab for what might have gone wrong with the analysis \n"
 					+ "\n";
