@@ -91,7 +91,7 @@ public class Utils {
 		}
 		return (Double) node.getAttribute(attributeName);
 	}
-	
+
 	public static String getStringNodeAttribute(Node node, String attributeName) {
 		if (node.getAttribute(attributeName) == null) {
 			throw new RuntimeException("Attribute, " + attributeName
@@ -775,8 +775,10 @@ public class Utils {
 		float coordinate = Float.NaN;
 
 		for (int i = 0; i < data.locations.length; i++) {
+
 			if (data.locations[i].toLowerCase().equals(state.toLowerCase())) {
 				coordinate = data.coordinates[i][latlon];
+
 			}
 		}
 

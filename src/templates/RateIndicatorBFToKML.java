@@ -154,6 +154,11 @@ public class RateIndicatorBFToKML {
 
 		public void run() {
 
+			System.out.println("Indicator cutoff = " + bfCutoff);
+			System.out.println("mean Poisson Prior = " + Math.log(2));
+			System.out
+					.println("Poisson Prior offset = " + (locations.nrow - 1));
+
 			// this is for Branches folder:
 			String ratesDescription = null;
 			Layer ratesLayer = new Layer("Discrete rates", ratesDescription);
@@ -215,6 +220,13 @@ public class RateIndicatorBFToKML {
 							);
 
 					branchStyleId++;
+
+					System.out.println("BF=" + bayesFactors.get(i)
+							+ " : between " + parentState + " (long: "
+							+ parentLongitude + "; lat: " + parentLongitude
+							+ ") and " + state + " (long: " + longitude
+							+ "; lat: " + latitude + ")");
+
 				}
 			}
 

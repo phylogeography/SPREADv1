@@ -133,7 +133,7 @@ public class DiscreteTreeToKML {
 	public void setMaxPolygonOpacityMapping(double max) {
 		maxPolygonOpacityMapping = max;
 	}
-	
+
 	public void setPolygonsRadiusMultiplier(double multiplier) {
 		polygonsRadiusMultiplier = multiplier;
 	}
@@ -153,7 +153,7 @@ public class DiscreteTreeToKML {
 	public void setMaxBranchOpacityMapping(double max) {
 		maxBranchOpacityMapping = max;
 	}
-	
+
 	public void setBranchWidth(double width) {
 		branchWidth = width;
 	}
@@ -392,7 +392,7 @@ public class DiscreteTreeToKML {
 									);
 
 							branchStyleId++;
-						} 
+						}
 					}
 				}// END: nodes loop
 
@@ -464,7 +464,8 @@ public class DiscreteTreeToKML {
 							circleStyleId++;
 
 							double radius = Math.round(100 * Math
-									.sqrt(numberOfLineages[i][j + 1])) * polygonsRadiusMultiplier;
+									.sqrt(numberOfLineages[i][j + 1]))
+									* polygonsRadiusMultiplier;
 
 							int days = (int) (numberOfLineages[i][0] * timescaler);
 							SpreadDate mrsd = new SpreadDate(mrsdString);

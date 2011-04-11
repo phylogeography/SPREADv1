@@ -15,10 +15,11 @@
 ________________________________________________________________________________
                             PURPOSE
                             
-This is a test run of Spread. S.P.R.E.A.D. is a Java program supporting processing and 
-visualizations of BEAST's phylogeographic models. Contains visualisations (templates), 
-wrapped in a user friendly interface. Supported visualisations include embedded Processing 
-applets and KML output for viewing in Google Earth.
+This is a test run of Spread. S.P.R.E.A.D. is a Java program supporting 
+processing and visualizations of BEAST's phylogeographic models. Contains 
+visualisations (templates), wrapped in a user friendly interface. Supported 
+visualisations include embedded Processing applets and KML output for viewing 
+in Google Earth.
 
 BEAST software: http://beast.bio.ed.ac.uk/Main_Page
 
@@ -49,7 +50,7 @@ ________________________________________________________________________________
 * TimeSlicer template
   - give the concurrent implementation of AnalyzeTree another try. This might        
     be achieveable with ConcurrentHashMap class  
-  - Polygons should also be easily executed in parallel (read only operation)  ,
+  - Polygons should also be easily executed in parallel (read only operation),
     the problem is in getting the style id's right
 * Exceptions handling
   * Continuous Model
