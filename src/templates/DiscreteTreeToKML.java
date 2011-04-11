@@ -84,8 +84,6 @@ public class DiscreteTreeToKML {
 		DAYS, MONTHS, YEARS
 	}
 
-	// TODO: enum and switch for Poisson mean and offset
-
 	private timescalerEnum timescalerSwitcher;
 	private branchesMappingEnum branchesColorMapping;
 	private branchesMappingEnum branchesOpacityMapping;
