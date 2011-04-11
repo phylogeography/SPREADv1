@@ -214,17 +214,31 @@ public class ContinuousModelTab extends JPanel {
 		// Polygons color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
-		tmpPanel.add(polygonsMinColorChooser);
-		tmpPanel.add(polygonsMaxColorChooser);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		tmpPanel.add(polygonsMinColorChooser, c);
+		c.gridx = 2;
+		c.gridy = 0;
+		tmpPanel.add(polygonsMaxColorChooser, c);
 		leftPanel.add(tmpPanel);
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
-		tmpPanel.add(branchesMinColorChooser);
-		tmpPanel.add(branchesMaxColorChooser);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		tmpPanel.add(branchesMinColorChooser, c);
+		c.gridx = 2;
+		c.gridy = 0;
+		tmpPanel.add(branchesMaxColorChooser, c);
 		leftPanel.add(tmpPanel);
 
 		// Branches width:
