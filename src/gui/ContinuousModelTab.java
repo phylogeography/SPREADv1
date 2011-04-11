@@ -49,6 +49,8 @@ public class ContinuousModelTab extends JPanel {
 	private Color backgroundColor;
 	private Color polygonsMaxColor;
 	private Color branchesMaxColor;
+	private Color polygonsMinColor;
+	private Color branchesMinColor;
 
 	// Strings for paths
 	private String treeFilename;
@@ -75,6 +77,8 @@ public class ContinuousModelTab extends JPanel {
 	private JButton saveProcessingPlot;
 	private JButton polygonsMaxColorChooser;
 	private JButton branchesMaxColorChooser;
+	private JButton polygonsMinColorChooser;
+	private JButton branchesMinColorChooser;
 
 	// Sliders
 	private JSlider branchesWidthParser;
@@ -96,6 +100,8 @@ public class ContinuousModelTab extends JPanel {
 		backgroundColor = new Color(231, 237, 246);
 		polygonsMaxColor = new Color(50, 255, 255, 255);
 		branchesMaxColor = new Color(255, 5, 50, 255);
+		polygonsMinColor = new Color(0, 0, 0, 255);
+		branchesMinColor = new Color(0, 0, 0, 255);
 		GridBagConstraints c = new GridBagConstraints();
 
 		// Setup icons
@@ -117,8 +123,10 @@ public class ContinuousModelTab extends JPanel {
 		openTree = new JButton("Open", treeIcon);
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
-		polygonsMaxColorChooser = new JButton("Setup");
-		branchesMaxColorChooser = new JButton("Setup");
+		polygonsMaxColorChooser = new JButton("Setup max");
+		branchesMaxColorChooser = new JButton("Setup max");
+		polygonsMinColorChooser = new JButton("Setup min");
+		branchesMinColorChooser = new JButton("Setup min");
 
 		// Setup sliders
 		branchesWidthParser = new JSlider(JSlider.HORIZONTAL, 2, 10, 4);
@@ -148,6 +156,10 @@ public class ContinuousModelTab extends JPanel {
 				.addActionListener(new ListenPolygonsMaxColorChooser());
 		branchesMaxColorChooser
 				.addActionListener(new ListenBranchesMaxColorChooser());
+		polygonsMinColorChooser
+				.addActionListener(new ListenPolygonsMinColorChooser());
+		branchesMinColorChooser
+				.addActionListener(new ListenBranchesMinColorChooser());
 
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
@@ -203,6 +215,7 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
+		tmpPanel.add(polygonsMinColorChooser);
 		tmpPanel.add(polygonsMaxColorChooser);
 		leftPanel.add(tmpPanel);
 
@@ -210,6 +223,7 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
+		tmpPanel.add(branchesMinColorChooser);
 		tmpPanel.add(branchesMaxColorChooser);
 		leftPanel.add(tmpPanel);
 
@@ -312,14 +326,38 @@ public class ContinuousModelTab extends JPanel {
 		}
 	}
 
+	private class ListenPolygonsMinColorChooser implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
+					"Choose minimum polygons color...", polygonsMinColor, true);
+
+			if (c != null)
+				polygonsMinColor = c;
+
+		}
+	}
+
 	private class ListenPolygonsMaxColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
 			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
-					"Choose polygons color...", polygonsMaxColor, true);
+					"Choose maximum polygons color...", polygonsMaxColor, true);
 
 			if (c != null)
 				polygonsMaxColor = c;
+
+		}
+	}
+
+	private class ListenBranchesMinColorChooser implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
+					"Choose minimum branches color...", branchesMinColor, true);
+
+			if (c != null)
+				branchesMinColor = c;
 
 		}
 	}
@@ -328,7 +366,7 @@ public class ContinuousModelTab extends JPanel {
 		public void actionPerformed(ActionEvent ev) {
 
 			Color c = ColorPicker.showDialog(Utils.getActiveFrame(),
-					branchesMaxColor, true);
+					"Choose maximum branches color...", branchesMaxColor, true);
 
 			if (c != null)
 				branchesMaxColor = c;
@@ -366,7 +404,8 @@ public class ContinuousModelTab extends JPanel {
 								.valueOf(maxAltMappingParser.getText()));
 
 						continuousTreeToKML
-								.setMaxPolygonRedMapping(polygonsMaxColor.getRed());
+								.setMaxPolygonRedMapping(polygonsMaxColor
+										.getRed());
 
 						continuousTreeToKML
 								.setMaxPolygonGreenMapping(polygonsMaxColor
@@ -381,7 +420,8 @@ public class ContinuousModelTab extends JPanel {
 										.getAlpha());
 
 						continuousTreeToKML
-								.setMaxBranchRedMapping(branchesMaxColor.getRed());
+								.setMaxBranchRedMapping(branchesMaxColor
+										.getRed());
 
 						continuousTreeToKML
 								.setMaxBranchGreenMapping(branchesMaxColor
@@ -463,7 +503,8 @@ public class ContinuousModelTab extends JPanel {
 								+ "%");
 
 						continuousTreeToProcessing
-								.setMaxPolygonRedMapping(polygonsMaxColor.getRed());
+								.setMaxPolygonRedMapping(polygonsMaxColor
+										.getRed());
 
 						continuousTreeToProcessing
 								.setMaxPolygonGreenMapping(polygonsMaxColor
@@ -478,7 +519,8 @@ public class ContinuousModelTab extends JPanel {
 										.getAlpha());
 
 						continuousTreeToProcessing
-								.setMaxBranchRedMapping(branchesMaxColor.getRed());
+								.setMaxBranchRedMapping(branchesMaxColor
+										.getRed());
 
 						continuousTreeToProcessing
 								.setMaxBranchGreenMapping(branchesMaxColor
