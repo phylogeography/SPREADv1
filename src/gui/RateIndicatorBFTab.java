@@ -589,6 +589,8 @@ public class RateIndicatorBFTab extends JPanel {
 
 						rateIndicatorBFToProcessing.init();
 
+						System.out.println("Finished. \n");
+
 					} catch (Exception e) {
 						e.printStackTrace();
 
@@ -607,7 +609,7 @@ public class RateIndicatorBFTab extends JPanel {
 				public void done() {
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
-					System.out.println("Finished. \n");
+
 				}
 			};
 

@@ -761,7 +761,10 @@ public class TimeSlicerTab extends JPanel {
 								.setBranchWidth(branchesWidthParser.getValue() / 2);
 
 						timeSlicerToProcessing.AnalyzeTrees();
+
 						timeSlicerToProcessing.init();
+
+						System.out.println("Finished. \n");
 
 					} catch (OutOfMemoryError e) {
 						e.printStackTrace();
@@ -783,10 +786,8 @@ public class TimeSlicerTab extends JPanel {
 
 				// Executed in event dispatch thread
 				public void done() {
-
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
-					System.out.println("Done! \n");
 				}// END: done
 			};
 

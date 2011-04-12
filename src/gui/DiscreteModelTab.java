@@ -636,6 +636,8 @@ public class DiscreteModelTab extends JPanel {
 
 						discreteTreeToProcessing.init();
 
+						System.out.println("Finished. \n");
+
 					} catch (Exception e) {
 						e.printStackTrace();
 
@@ -655,7 +657,6 @@ public class DiscreteModelTab extends JPanel {
 
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
-					System.out.println("Finished. \n");
 
 				}
 			};
