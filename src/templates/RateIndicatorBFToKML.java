@@ -50,9 +50,28 @@ public class RateIndicatorBFToKML {
 
 	private double branchWidth;
 	private double meanPoissonPrior;
+	private double poissonPriorOffset;
 
+	private enum PoissonPriorOffsetEnum {
+		DEFAULT, USER
+	}
+	
+	private PoissonPriorOffsetEnum poissonPriorOffsetSwitcher;
+	
 	public RateIndicatorBFToKML() {
 	}// END: RateIndicatorBF()
+
+	
+	public void setDefaultPoissonPriorOffset() {
+		poissonPriorOffsetSwitcher = PoissonPriorOffsetEnum.DEFAULT;
+	}
+	
+	public void setUserPoissonPriorOffset(double offset) {
+		poissonPriorOffsetSwitcher = PoissonPriorOffsetEnum.USER;
+		poissonPriorOffset = offset;
+	}
+	
+	
 	
 	
 	public void setMeanPoissonPrior(double mean) {
@@ -183,7 +202,7 @@ public class RateIndicatorBFToKML {
 			System.out.println("BF cutoff = " + bfCutoff);
 			System.out.println("mean Poisson Prior = " + meanPoissonPrior);
 			System.out
-					.println("Poisson Prior offset = " + (locations.nrow - 1));
+					.println("Poisson Prior offset = " + poissonPriorOffset);
 
 			// this is for Branches folder:
 			String ratesDescription = null;
@@ -264,6 +283,18 @@ public class RateIndicatorBFToKML {
 
 		int n = locations.nrow;
 
+		//TODO switch
+		switch(poissonPriorOffsetSwitcher){
+		case DEFAULT:
+			poissonPriorOffset = locations.nrow-1;
+			break;
+		case USER:
+//			poissonPriorOffset = poissonPriorOffset;
+			break;
+		}
+		
+		
+		
 		boolean symmetrical = false;
 		if (indicators.ncol == n * (n - 1)) {
 			symmetrical = false;
@@ -291,9 +322,9 @@ public class RateIndicatorBFToKML {
 
 		double qk = Double.NaN;
 		if (symmetrical) {
-			qk = (meanPoissonPrior + n - 1) / ((n * (n - 1)) / 2);
+			qk = (meanPoissonPrior + poissonPriorOffset) / ((n * (n - 1)) / 2);
 		} else {
-			qk = (meanPoissonPrior + n - 1) / ((n * (n - 1)) / 1);
+			qk = (meanPoissonPrior + poissonPriorOffset) / ((n * (n - 1)) / 1);
 		}
 
 		double[] pk = Utils.ColMeans(indicators.indicators);

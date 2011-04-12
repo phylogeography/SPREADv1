@@ -402,12 +402,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 						RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 
-						rateIndicatorBFToKML
-								.setMeanPoissonPrior((meanPoissonPriorParser
-										.getSelectedIndex() == 0) ? Math.log(2)
-										: Double.valueOf(meanPoissonPriorParser
-												.getSelectedItem().toString()));
-
+						
 						rateIndicatorBFToKML.setLogFilePath(logFilename,
 								burnInParser.getValue() / 100);
 
@@ -461,7 +456,24 @@ public class RateIndicatorBFTab extends JPanel {
 
 						rateIndicatorBFToKML.setBranchWidth(branchesWidthParser
 								.getValue());
+						
+						rateIndicatorBFToKML
+						.setMeanPoissonPrior((meanPoissonPriorParser
+								.getSelectedIndex() == 0) ? Math.log(2)
+								: Double.valueOf(meanPoissonPriorParser
+										.getSelectedItem().toString()));
 
+				
+						if(poissonPriorOffsetParser.getSelectedIndex()==0) {
+							rateIndicatorBFToKML.setDefaultPoissonPriorOffset();
+							
+						}else{
+							rateIndicatorBFToKML.setUserPoissonPriorOffset(
+									Double.valueOf(poissonPriorOffsetParser.getSelectedItem().toString()
+											)
+											);
+						}
+						
 						rateIndicatorBFToKML.GenerateKML();
 
 						System.out.println("Finished in: "
