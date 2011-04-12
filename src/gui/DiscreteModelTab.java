@@ -64,7 +64,7 @@ public class DiscreteModelTab extends JPanel {
 	private JTextField kmlPathParser;
 
 	// Spinners
-	private DateSpinner spinnerDate;
+	private DateSpinner dateSpinner;
 
 	// Buttons
 	private JButton generateKml;
@@ -188,11 +188,11 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
-		spinnerDate = new DateSpinner();
+		dateSpinner = new DateSpinner();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
-		tmpPanel.add(spinnerDate, c);
+		tmpPanel.add(dateSpinner, c);
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
 		c.gridx = 2;
@@ -463,7 +463,7 @@ public class DiscreteModelTab extends JPanel {
 						discreteTreeToKML.setMaxAltitudeMapping(Double
 								.valueOf(maxAltMappingParser.getText()));
 
-						discreteTreeToKML.setMrsdString(spinnerDate.getValue()
+						discreteTreeToKML.setMrsdString(dateSpinner.getValue()
 								+ " "
 								+ (eraParser.getSelectedIndex() == 0 ? "AD"
 										: "BC"));

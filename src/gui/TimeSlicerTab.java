@@ -68,7 +68,7 @@ public class TimeSlicerTab extends JPanel {
 	private JTextField maxAltMappingParser;
 
 	// Spinners
-	private DateSpinner spinnerDate;
+	private DateSpinner dateSpinner;
 
 	// Buttons
 	private JButton generateKml;
@@ -196,11 +196,11 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
-		spinnerDate = new DateSpinner();
+		dateSpinner = new DateSpinner();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
-		tmpPanel.add(spinnerDate, c);
+		tmpPanel.add(dateSpinner, c);
 		String era[] = { "AD", "BC" };
 		eraParser = new JComboBox(era);
 		c.gridx = 2;
@@ -530,7 +530,7 @@ public class TimeSlicerTab extends JPanel {
 
 						timeSlicerToKML.setImpute(imputeParser.isSelected());
 
-						timeSlicerToKML.setMrsdString(spinnerDate.getValue()
+						timeSlicerToKML.setMrsdString(dateSpinner.getValue()
 								+ " "
 								+ (eraParser.getSelectedIndex() == 0 ? "AD"
 										: "BC"));
@@ -684,7 +684,7 @@ public class TimeSlicerTab extends JPanel {
 						timeSlicerToProcessing.setImpute(imputeParser
 								.isSelected());
 
-						timeSlicerToProcessing.setMrsdString(spinnerDate
+						timeSlicerToProcessing.setMrsdString(dateSpinner
 								.getValue()
 								+ " "
 								+ (eraParser.getSelectedIndex() == 0 ? "AD"
