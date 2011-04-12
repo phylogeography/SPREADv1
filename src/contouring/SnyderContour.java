@@ -105,7 +105,7 @@ public class SnyderContour {
 		u, v;
 
 		if ((iflag == 1) || (iflag == 4) || (iflag == 5)) { // continue drawing
-															// ...
+			// ...
 			if (cntrIndex != prevIndex) { // Must change colour
 				// SetColour(g);
 				prevIndex = cntrIndex;

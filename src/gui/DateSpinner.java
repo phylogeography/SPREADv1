@@ -26,7 +26,7 @@ public class DateSpinner extends JPanel {
 
 		spinner.setEditor(new JSpinner.DateEditor(spinner, "yyyy-MM-dd"));
 		spinner.setOpaque(false);
-		
+
 		add(spinner);
 		setOpaque(false);
 	}

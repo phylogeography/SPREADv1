@@ -464,8 +464,8 @@ public class ContourGenerator {
 							gi = ibeg; // x index of starting point.
 							gj = jbeg; // y index of starting point.
 							fij = funcArray[jbeg - 1][ibeg - 1]; // z value of
-																	// starting
-																	// point.
+							// starting
+							// point.
 
 							// Round the corner if necessary.
 							/*

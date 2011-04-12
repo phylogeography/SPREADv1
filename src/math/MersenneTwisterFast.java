@@ -83,11 +83,11 @@ class MersenneTwisterFast implements Serializable {
 	private static final int N = 624;
 	private static final int M = 397;
 	private static final int MATRIX_A = 0x9908b0df; // private static final *
-													// constant vector a
+	// constant vector a
 	private static final int UPPER_MASK = 0x80000000; // most significant w-r
-														// bits
+	// bits
 	private static final int LOWER_MASK = 0x7fffffff; // least significant r
-														// bits
+	// bits
 
 	// Tempering parameters
 	private static final int TEMPERING_MASK_B = 0x9d2c5680;
@@ -826,7 +826,7 @@ class MersenneTwisterFast implements Serializable {
 				}
 			}
 		} else { // CASE B: Acceptance complement algorithm gd (gaussian
-					// distribution, box muller transformation)
+			// distribution, box muller transformation)
 			if (a != aa) { // Step 1. Preparations
 				aa = a;
 				ss = a - 0.5;

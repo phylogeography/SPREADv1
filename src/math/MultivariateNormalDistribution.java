@@ -114,8 +114,8 @@ public class MultivariateNormalDistribution implements MultivariateDistribution 
 
 		return dim * logNormalize + 0.5
 				* (logDet - dim * Math.log(scale) - SSE / scale); // There was
-																	// an error
-																	// here.
+		// an error
+		// here.
 		// Variance = (scale * Precision^{-1})
 	}
 
