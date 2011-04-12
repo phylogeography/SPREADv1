@@ -563,6 +563,30 @@ public class RateIndicatorBFTab extends JPanel {
 						rateIndicatorBFToProcessing
 								.setBranchWidth(branchesWidthParser.getValue() / 2);
 
+						if (meanPoissonPriorParser.getSelectedIndex() == 0) {
+							rateIndicatorBFToProcessing
+									.setDefaultMeanPoissonPrior();
+
+						} else {
+							rateIndicatorBFToProcessing
+									.setUserMeanPoissonPrior(Double
+											.valueOf(meanPoissonPriorParser
+													.getSelectedItem()
+													.toString()));
+						}
+
+						if (poissonPriorOffsetParser.getSelectedIndex() == 0) {
+							rateIndicatorBFToProcessing
+									.setDefaultPoissonPriorOffset();
+
+						} else {
+							rateIndicatorBFToProcessing
+									.setUserPoissonPriorOffset(Double
+											.valueOf(poissonPriorOffsetParser
+													.getSelectedItem()
+													.toString()));
+						}
+
 						rateIndicatorBFToProcessing.init();
 
 					} catch (Exception e) {

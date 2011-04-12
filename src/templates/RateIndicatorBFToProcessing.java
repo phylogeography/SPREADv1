@@ -33,15 +33,41 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private double maxBranchOpacityMapping;
 
 	private double branchWidth;
+	private double meanPoissonPrior;
+	private double poissonPriorOffset;
 
 	// min/max longitude
 	private float minX, maxX;
 	// min/max latitude
 	private float minY, maxY;
 
-	public RateIndicatorBFToProcessing() {
+	private enum PoissonPriorEnum {
+		DEFAULT, USER
+	}
 
+	private PoissonPriorEnum poissonPriorOffsetSwitcher;
+	private PoissonPriorEnum meanPoissonPriorSwitcher;
+
+	public RateIndicatorBFToProcessing() {
 	}// END: RateIndicatorBFToProcessing()
+
+	public void setDefaultPoissonPriorOffset() {
+		poissonPriorOffsetSwitcher = PoissonPriorEnum.DEFAULT;
+	}
+
+	public void setUserPoissonPriorOffset(double offset) {
+		poissonPriorOffsetSwitcher = PoissonPriorEnum.USER;
+		poissonPriorOffset = offset;
+	}
+
+	public void setDefaultMeanPoissonPrior() {
+		meanPoissonPriorSwitcher = PoissonPriorEnum.DEFAULT;
+	}
+
+	public void setUserMeanPoissonPrior(double mean) {
+		meanPoissonPriorSwitcher = PoissonPriorEnum.USER;
+		meanPoissonPrior = mean;
+	}
 
 	public void setBfCutoff(double cutoff) {
 		bfCutoff = cutoff;
@@ -104,14 +130,13 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		PFont plotFont = createFont("Arial", 12);
 		textFont(plotFont);
 
-		ComputeBFTest();
-
 	}// END: setup
 
 	public void draw() {
 
 		noLoop();
 		smooth();
+		ComputeBFTest();
 		drawMapBackground();
 		DrawPlaces();
 		DrawRates();
@@ -169,8 +194,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private void DrawRates() {
 
 		System.out.println("BF cutoff = " + bfCutoff);
-		System.out.println("mean Poisson Prior = " + Math.log(2));
-		System.out.println("Poisson Prior offset = " + (locations.nrow - 1));
+		System.out.println("mean Poisson Prior = " + meanPoissonPrior);
+		System.out.println("Poisson Prior offset = " + poissonPriorOffset);
 
 		strokeWeight((float) branchWidth);
 
@@ -232,6 +257,22 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		int n = locations.nrow;
 
+		switch (meanPoissonPriorSwitcher) {
+		case DEFAULT:
+			meanPoissonPrior = Math.log(2);
+			break;
+		case USER:
+			break;
+		}
+
+		switch (poissonPriorOffsetSwitcher) {
+		case DEFAULT:
+			poissonPriorOffset = locations.nrow - 1;
+			break;
+		case USER:
+			break;
+		}
+
 		boolean symmetrical = false;
 		if (indicators.ncol == n * (n - 1)) {
 			symmetrical = false;
@@ -259,9 +300,9 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		double qk = Double.NaN;
 		if (symmetrical) {
-			qk = (Math.log(2) + n - 1) / ((n * (n - 1)) / 2);
+			qk = (meanPoissonPrior + poissonPriorOffset) / ((n * (n - 1)) / 2);
 		} else {
-			qk = (Math.log(2) + n - 1) / ((n * (n - 1)) / 1);
+			qk = (meanPoissonPrior + poissonPriorOffset) / ((n * (n - 1)) / 1);
 		}
 
 		double[] pk = Utils.ColMeans(indicators.indicators);

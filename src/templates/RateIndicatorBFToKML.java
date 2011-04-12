@@ -284,7 +284,6 @@ public class RateIndicatorBFToKML {
 
 		int n = locations.nrow;
 
-		// TODO switch
 		switch (meanPoissonPriorSwitcher) {
 		case DEFAULT:
 			meanPoissonPrior = Math.log(2);
