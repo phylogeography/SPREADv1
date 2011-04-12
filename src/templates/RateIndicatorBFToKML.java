@@ -52,22 +52,22 @@ public class RateIndicatorBFToKML {
 	private double meanPoissonPrior;
 	private double poissonPriorOffset;
 
-	private enum PoissonPriorOffsetEnum {
+	private enum PoissonPriorEnum {
 		DEFAULT, USER
 	}
 	
-	private PoissonPriorOffsetEnum poissonPriorOffsetSwitcher;
+	private PoissonPriorEnum poissonPriorOffsetSwitcher;
 	
 	public RateIndicatorBFToKML() {
 	}// END: RateIndicatorBF()
 
 	
 	public void setDefaultPoissonPriorOffset() {
-		poissonPriorOffsetSwitcher = PoissonPriorOffsetEnum.DEFAULT;
+		poissonPriorOffsetSwitcher = PoissonPriorEnum.DEFAULT;
 	}
 	
 	public void setUserPoissonPriorOffset(double offset) {
-		poissonPriorOffsetSwitcher = PoissonPriorOffsetEnum.USER;
+		poissonPriorOffsetSwitcher = PoissonPriorEnum.USER;
 		poissonPriorOffset = offset;
 	}
 	
