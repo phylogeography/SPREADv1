@@ -83,7 +83,7 @@ public class DiscreteModelTab extends JPanel {
 
 	// Combo boxes
 	private JComboBox eraParser;
-	
+
 	// left tools pane
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
@@ -454,11 +454,6 @@ public class DiscreteModelTab extends JPanel {
 
 						DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
 
-						String mrsdString = spinnerDate.getValue()
-								+ " "
-								+ (eraParser.getSelectedIndex() == 0 ? "AD"
-										: "BC");
-
 						discreteTreeToKML
 								.setLocationFilePath(locationsFilename);
 
@@ -468,7 +463,10 @@ public class DiscreteModelTab extends JPanel {
 						discreteTreeToKML.setMaxAltitudeMapping(Double
 								.valueOf(maxAltMappingParser.getText()));
 
-						discreteTreeToKML.setMrsdString(mrsdString);
+						discreteTreeToKML.setMrsdString(spinnerDate.getValue()
+								+ " "
+								+ (eraParser.getSelectedIndex() == 0 ? "AD"
+										: "BC"));
 
 						discreteTreeToKML.setNumberOfIntervals(Integer
 								.valueOf(numberOfIntervalsParser.getText()));

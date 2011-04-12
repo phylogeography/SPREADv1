@@ -506,10 +506,6 @@ public class TimeSlicerTab extends JPanel {
 						progressBar.setIndeterminate(true);
 
 						TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
-						String mrsdString = spinnerDate.getValue()
-								+ " "
-								+ (eraParser.getSelectedIndex() == 0 ? "AD"
-										: "BC");
 
 						timeSlicerToKML.setTreePath(mccTreeFilename);
 
@@ -534,7 +530,10 @@ public class TimeSlicerTab extends JPanel {
 
 						timeSlicerToKML.setImpute(imputeParser.isSelected());
 
-						timeSlicerToKML.setMrsdString(mrsdString);
+						timeSlicerToKML.setMrsdString(spinnerDate.getValue()
+								+ " "
+								+ (eraParser.getSelectedIndex() == 0 ? "AD"
+										: "BC"));
 
 						timeSlicerToKML.setNumberOfIntervals(Integer
 								.valueOf(numberOfIntervalsParser.getText()));
@@ -661,11 +660,6 @@ public class TimeSlicerTab extends JPanel {
 						generateProcessing.setEnabled(false);
 						progressBar.setIndeterminate(true);
 
-						String mrsdString = spinnerDate.getValue()
-								+ " "
-								+ (eraParser.getSelectedIndex() == 0 ? "AD"
-										: "BC");
-
 						timeSlicerToProcessing.setMccTreePath(mccTreeFilename);
 
 						timeSlicerToProcessing.setTreesPath(treesFilename);
@@ -690,7 +684,11 @@ public class TimeSlicerTab extends JPanel {
 						timeSlicerToProcessing.setImpute(imputeParser
 								.isSelected());
 
-						timeSlicerToProcessing.setMrsdString(mrsdString);
+						timeSlicerToProcessing.setMrsdString(spinnerDate
+								.getValue()
+								+ " "
+								+ (eraParser.getSelectedIndex() == 0 ? "AD"
+										: "BC"));
 
 						timeSlicerToProcessing.setNumberOfIntervals(Integer
 								.valueOf(numberOfIntervalsParser.getText()));

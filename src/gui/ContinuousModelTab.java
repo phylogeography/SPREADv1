@@ -413,11 +413,6 @@ public class ContinuousModelTab extends JPanel {
 
 						ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
 
-						String mrsdString = spinnerDate.getValue()
-								+ " "
-								+ (eraParser.getSelectedIndex() == 0 ? "AD"
-										: "BC");
-
 						continuousTreeToKML.setHPD(HPDParser.getText() + "%");
 
 						continuousTreeToKML
@@ -494,7 +489,11 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToKML.setBranchWidth(branchesWidthParser
 								.getValue());
 
-						continuousTreeToKML.setMrsdString(mrsdString);
+						continuousTreeToKML.setMrsdString(spinnerDate
+								.getValue()
+								+ " "
+								+ (eraParser.getSelectedIndex() == 0 ? "AD"
+										: "BC"));
 
 						continuousTreeToKML.setNumberOfIntervals(Integer
 								.valueOf(numberOfIntervalsParser.getText()));
@@ -689,4 +688,3 @@ public class ContinuousModelTab extends JPanel {
 	}
 
 }// END class
-
