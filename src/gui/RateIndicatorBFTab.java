@@ -181,7 +181,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
-		tmpPanel.setLayout(new GridLayout(1,2));
+		tmpPanel.setLayout(new GridLayout(1, 2));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Poisson prior mean / offset:"));
 		String[] meanPoissonPrior = { "log(2)", "" };
@@ -401,6 +401,12 @@ public class RateIndicatorBFTab extends JPanel {
 						progressBar.setIndeterminate(true);
 
 						RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
+
+						rateIndicatorBFToKML
+								.setMeanPoissonPrior((meanPoissonPriorParser
+										.getSelectedIndex() == 0) ? Math.log(2)
+										: Double.valueOf(meanPoissonPriorParser
+												.getSelectedItem().toString()));
 
 						rateIndicatorBFToKML.setLogFilePath(logFilename,
 								burnInParser.getValue() / 100);

@@ -49,10 +49,15 @@ public class RateIndicatorBFToKML {
 	private double maxBranchOpacityMapping;
 
 	private double branchWidth;
+	private double meanPoissonPrior;
 
 	public RateIndicatorBFToKML() {
-
 	}// END: RateIndicatorBF()
+	
+	
+	public void setMeanPoissonPrior(double mean) {
+		meanPoissonPrior = mean;
+	}
 
 	public void setNumberOfIntervals(int number) {
 		numberOfIntervals = number;
@@ -176,7 +181,7 @@ public class RateIndicatorBFToKML {
 		public void run() {
 
 			System.out.println("BF cutoff = " + bfCutoff);
-			System.out.println("mean Poisson Prior = " + Math.log(2));
+			System.out.println("mean Poisson Prior = " + meanPoissonPrior);
 			System.out
 					.println("Poisson Prior offset = " + (locations.nrow - 1));
 
@@ -286,9 +291,9 @@ public class RateIndicatorBFToKML {
 
 		double qk = Double.NaN;
 		if (symmetrical) {
-			qk = (Math.log(2) + n - 1) / ((n * (n - 1)) / 2);
+			qk = (meanPoissonPrior + n - 1) / ((n * (n - 1)) / 2);
 		} else {
-			qk = (Math.log(2) + n - 1) / ((n * (n - 1)) / 1);
+			qk = (meanPoissonPrior + n - 1) / ((n * (n - 1)) / 1);
 		}
 
 		double[] pk = Utils.ColMeans(indicators.indicators);

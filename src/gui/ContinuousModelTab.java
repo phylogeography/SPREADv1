@@ -499,10 +499,9 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToKML.setNumberOfIntervals(Integer
 								.valueOf(numberOfIntervalsParser.getText()));
 
-						continuousTreeToKML.setKmlWriterPath(
-
-						workingDirectory.toString().concat("/").concat(
-								kmlPathParser.getText()));
+						continuousTreeToKML.setKmlWriterPath(workingDirectory
+								.toString().concat("/").concat(
+										kmlPathParser.getText()));
 
 						continuousTreeToKML.setTreePath(treeFilename);
 
