@@ -55,26 +55,28 @@ public class RateIndicatorBFToKML {
 	private enum PoissonPriorEnum {
 		DEFAULT, USER
 	}
-	
+
 	private PoissonPriorEnum poissonPriorOffsetSwitcher;
-	
+	private PoissonPriorEnum meanPoissonPriorSwitcher;
+
 	public RateIndicatorBFToKML() {
 	}// END: RateIndicatorBF()
 
-	
 	public void setDefaultPoissonPriorOffset() {
 		poissonPriorOffsetSwitcher = PoissonPriorEnum.DEFAULT;
 	}
-	
+
 	public void setUserPoissonPriorOffset(double offset) {
 		poissonPriorOffsetSwitcher = PoissonPriorEnum.USER;
 		poissonPriorOffset = offset;
 	}
-	
-	
-	
-	
-	public void setMeanPoissonPrior(double mean) {
+
+	public void setDefaultMeanPoissonPrior() {
+		meanPoissonPriorSwitcher = PoissonPriorEnum.DEFAULT;
+	}
+
+	public void setUserMeanPoissonPrior(double mean) {
+		meanPoissonPriorSwitcher = PoissonPriorEnum.USER;
 		meanPoissonPrior = mean;
 	}
 
@@ -201,8 +203,7 @@ public class RateIndicatorBFToKML {
 
 			System.out.println("BF cutoff = " + bfCutoff);
 			System.out.println("mean Poisson Prior = " + meanPoissonPrior);
-			System.out
-					.println("Poisson Prior offset = " + poissonPriorOffset);
+			System.out.println("Poisson Prior offset = " + poissonPriorOffset);
 
 			// this is for Branches folder:
 			String ratesDescription = null;
@@ -283,18 +284,23 @@ public class RateIndicatorBFToKML {
 
 		int n = locations.nrow;
 
-		//TODO switch
-		switch(poissonPriorOffsetSwitcher){
+		// TODO switch
+		switch (meanPoissonPriorSwitcher) {
 		case DEFAULT:
-			poissonPriorOffset = locations.nrow-1;
+			meanPoissonPrior = Math.log(2);
 			break;
 		case USER:
-//			poissonPriorOffset = poissonPriorOffset;
 			break;
 		}
-		
-		
-		
+
+		switch (poissonPriorOffsetSwitcher) {
+		case DEFAULT:
+			poissonPriorOffset = locations.nrow - 1;
+			break;
+		case USER:
+			break;
+		}
+
 		boolean symmetrical = false;
 		if (indicators.ncol == n * (n - 1)) {
 			symmetrical = false;
