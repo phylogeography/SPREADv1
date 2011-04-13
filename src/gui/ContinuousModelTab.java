@@ -299,10 +299,8 @@ public class ContinuousModelTab extends JPanel {
 		/**
 		 * Processing pane
 		 * */
-		// TODO add PApplet to JPanel, remove when exception is thrown
 		continuousTreeToProcessing = new ContinuousTreeToProcessing();
 		continuousTreeToProcessing.setPreferredSize(new Dimension(2048, 1025));
-//		JPanel processingPanel = new JPanel();
 
 		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
 				"openjdk")) {

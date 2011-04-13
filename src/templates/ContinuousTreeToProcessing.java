@@ -238,6 +238,8 @@ public class ContinuousTreeToProcessing extends PApplet {
 					int modality = Utils.getIntegerNodeAttribute(node,
 							coordinatesName + "_" + HPD + "HPD_modality");
 
+					System.out.println(modality);
+					
 					for (int i = 1; i <= modality; i++) {
 
 						Object[] longitudeHPD = Utils.getArrayNodeAttribute(

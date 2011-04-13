@@ -36,6 +36,7 @@ public class ExceptionHandler implements UncaughtExceptionHandler {
 	private void logException(Thread t, Throwable e) {
 		// TODO: start a thread that logs it
 		e.printStackTrace();
+	
 	}
 
 	private ImageIcon CreateImageIcon(String path) {
