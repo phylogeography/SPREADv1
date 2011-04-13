@@ -299,8 +299,10 @@ public class ContinuousModelTab extends JPanel {
 		/**
 		 * Processing pane
 		 * */
+		// TODO add PApplet to JPanel, remove when exception is thrown
 		continuousTreeToProcessing = new ContinuousTreeToProcessing();
 		continuousTreeToProcessing.setPreferredSize(new Dimension(2048, 1025));
+//		JPanel processingPanel = new JPanel();
 
 		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
 				"openjdk")) {
@@ -341,7 +343,7 @@ public class ContinuousModelTab extends JPanel {
 				System.out.println("Opened " + treeFilename + "\n");
 
 				workingDirectory = chooser.getCurrentDirectory();
-				System.out.println("Setted working directory to "
+				System.out.println("Set working directory to "
 						+ workingDirectory.toString() + "\n");
 
 			} catch (Exception e) {
@@ -637,7 +639,6 @@ public class ContinuousModelTab extends JPanel {
 						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
 								msg, "Error", JOptionPane.ERROR_MESSAGE,
 								errorIcon);
-
 					}
 
 					return null;

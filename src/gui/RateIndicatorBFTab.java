@@ -177,8 +177,6 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel.add(burnInParser);
 		leftPanel.add(tmpPanel);
 
-		// ////////////
-
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setLayout(new GridLayout(1, 2));
@@ -193,8 +191,6 @@ public class RateIndicatorBFTab extends JPanel {
 		poissonPriorOffsetParser.setEditable(true);
 		tmpPanel.add(poissonPriorOffsetParser);
 		leftPanel.add(tmpPanel);
-
-		// ////////////
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
@@ -327,7 +323,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 				if (workingDirectory == null) {
 					workingDirectory = chooser.getCurrentDirectory();
-					System.out.println("Setted working directory to "
+					System.out.println("Set working directory to "
 							+ workingDirectory.toString() + "\n");
 				}
 
@@ -353,7 +349,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 				if (workingDirectory == null) {
 					workingDirectory = chooser.getCurrentDirectory();
-					System.out.println("Setted working directory to "
+					System.out.println("Set working directory to "
 							+ workingDirectory.toString() + "\n");
 				}
 

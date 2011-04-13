@@ -381,7 +381,7 @@ public class DiscreteModelTab extends JPanel {
 
 				if (workingDirectory == null) {
 					workingDirectory = chooser.getCurrentDirectory();
-					System.out.println("Setted working directory to "
+					System.out.println("Set working directory to "
 							+ workingDirectory.toString() + "\n");
 				}
 

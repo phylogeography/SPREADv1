@@ -56,7 +56,6 @@ public class ContinuousTreeToProcessing extends PApplet {
 	private float minY, maxY;
 
 	public ContinuousTreeToProcessing() {
-
 	}// END:ContinuousTreeToProcessing
 
 	public void setHPD(String percent) throws RuntimeException {
