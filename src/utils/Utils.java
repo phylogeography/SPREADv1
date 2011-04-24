@@ -7,8 +7,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentMap;
 
 import jebl.evolution.graphs.Node;
 import jebl.evolution.trees.RootedTree;
@@ -61,10 +59,10 @@ public class Utils {
 	}
 
 	public static int getIntegerNodeAttribute(Node node, String attributeName) {
-//		if (node.getAttribute(attributeName) == null) {
-//			throw new RuntimeException("Attribute, " + attributeName
-//					+ ", missing from node");
-//		}
+		// if (node.getAttribute(attributeName) == null) {
+		// throw new RuntimeException("Attribute, " + attributeName
+		// + ", missing from node");
+		// }
 		return (Integer) node.getAttribute(attributeName);
 	}
 
@@ -328,48 +326,6 @@ public class Utils {
 
 		return coords;
 	}// END: GenerateCircle
-
-	public static void printHashMap(
-			ConcurrentMap<Double, List<Coordinates>> slicesMap,
-			boolean printValues) {
-
-		Set<Double> hostKeys = slicesMap.keySet();
-		Iterator<Double> iterator = hostKeys.iterator();
-
-		int valCount = 1;
-		while (iterator.hasNext()) {
-
-			Double mapKey = (Double) iterator.next();
-
-			List<Coordinates> list = slicesMap.get(mapKey);
-
-			if (printValues) {
-
-				System.out.println("===================================");
-				System.out.println(mapKey);
-				System.out.println("===================================");
-
-				for (int i = 0; i < list.size(); i++) {
-
-					Coordinates coord = list.get(i);
-
-					System.out.println(coord.getLongitude() + " "
-							+ coord.getLatitude());
-
-					if (coord == null) {
-						System.out.println("null!");
-					}
-				}
-
-			} else {
-
-				System.out.println(mapKey);
-				System.out.println("is null = " + (list == null));
-				System.out.println("===================================");
-				valCount++;
-			}
-		}
-	}// END: PrintHashMap
 
 	public static void PrintArray(double[] x) {
 		for (int i = 0; i < x.length; i++) {

@@ -12,8 +12,8 @@ import jebl.evolution.trees.RootedTree;
 import processing.core.PApplet;
 import processing.core.PImage;
 import structure.Coordinates;
-import utils.Utils;
 import utils.Setter;
+import utils.Utils;
 
 @SuppressWarnings("serial")
 public class ContinuousTreeToProcessing extends PApplet {
@@ -154,13 +154,10 @@ public class ContinuousTreeToProcessing extends PApplet {
 		minY = -80;
 		maxY = 90;
 
-		// size(2048, 1025);
-
 	}// END:setup
 
 	public void draw() {
 
-		noLoop();
 		smooth();
 		drawMapBackground();
 		drawPolygons();
@@ -239,8 +236,6 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 					int modality = Utils.getIntegerNodeAttribute(node,
 							coordinatesName + "_" + HPD + "HPD_modality");
-
-					System.out.println(modality);
 
 					for (int i = 1; i <= modality; i++) {
 
