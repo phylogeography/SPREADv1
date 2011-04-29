@@ -320,7 +320,7 @@ public class ContinuousModelTab extends JPanel {
 
 		}
 
-	}// END: continuousModelTab
+	}// END: ContinuousModelTab
 
 	private class ListenOpenTree implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
