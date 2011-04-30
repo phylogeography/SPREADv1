@@ -1,4 +1,4 @@
-                            TESTLAB OUTBREAK
+                            SPREAD
 
  
   This is free software; you can redistribute it and/or modify
@@ -15,11 +15,11 @@
 ________________________________________________________________________________
                             PURPOSE
                             
-This is a test run of Spread. S.P.R.E.A.D. is a Java program supporting 
-processing and visualizations of BEAST's phylogeographic models. Contains 
-visualisations (templates), wrapped in a user friendly interface. Supported 
-visualisations include embedded Processing applets and KML output for viewing 
-in Google Earth.
+S.P.R.E.A.D. is a Java program supporting processing and visualizations of BEAST's 
+phylogeographic models. Contains visualisations (templates), wrapped in a user 
+friendly interface. Supported visualisations include embedded Processing applets 
+and KML output for viewing in Google Earth or any other virtual globe software 
+capable of reading the format.
 
 BEAST software: http://beast.bio.ed.ac.uk/Main_Page
 
@@ -44,9 +44,6 @@ ________________________________________________________________________________
                               TODO
 * Processing applets
    - applets crash after an exception occurs and we cannot print to them again 
-* improve GUI looks & feels
-   - allow for saving panel settings
-   - hide some options with "show more" buttons 
 * TimeSlicer template
   - give the concurrent implementation of AnalyzeTree another try. This might        
     be achieveable with ConcurrentHashMap class  
