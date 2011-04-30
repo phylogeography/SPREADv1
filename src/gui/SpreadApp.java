@@ -23,7 +23,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import utils.ExceptionHandler;
 
-public class TestlabOutbreakApp {
+public class SpreadApp {
 
 	// Dimension
 	Dimension dimension;
@@ -52,7 +52,7 @@ public class TestlabOutbreakApp {
 	private TimeSlicerTab timeSlicerTab;
 	private TerminalTab terminalTab;
 
-	public TestlabOutbreakApp() throws ClassNotFoundException,
+	public SpreadApp() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {
 
@@ -207,11 +207,11 @@ public class TestlabOutbreakApp {
 
 			public void run() {
 
-				TestlabOutbreakApp gui;
+				SpreadApp gui;
 
 				try {
 
-					gui = new TestlabOutbreakApp();
+					gui = new SpreadApp();
 					gui.launchFrame();
 
 				} catch (Exception e) {

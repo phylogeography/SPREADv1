@@ -247,7 +247,7 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot tree:"));
+		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot map:"));
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
