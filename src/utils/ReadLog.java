@@ -15,15 +15,11 @@ import utils.Utils;
 @SuppressWarnings("serial")
 public class ReadLog extends PApplet {
 
-	public long time;
 	public double[][] indicators;
 	public int nrow;
 	public int ncol;
 
 	public ReadLog(String filename, double burnIn) {
-
-		// start timing
-		time = -System.currentTimeMillis();
 
 		String[] lines = LoadStrings(filename);
 
@@ -34,7 +30,7 @@ public class ReadLog extends PApplet {
 				commentedLines++;
 			}
 		}
-
+		
 		nrow = lines.length - commentedLines - 1;
 		String[] colNames = lines[commentedLines].split("\t");
 
@@ -55,6 +51,7 @@ public class ReadLog extends PApplet {
 		ncol = list.size();
 		// skip first line with col names and the burn in lines
 		int delete = (int) (nrow * burnIn) + 1;
+		System.out.println(nrow * burnIn);
 		indicators = new double[nrow - delete][ncol];
 
 		int i = 0;
@@ -68,9 +65,6 @@ public class ReadLog extends PApplet {
 		}
 		indicators = (double[][]) indicators;
 		nrow = indicators.length;
-
-		// stop timing
-		time += System.currentTimeMillis();
 
 	}// END: ReadLog
 

@@ -399,7 +399,7 @@ public class RateIndicatorBFTab extends JPanel {
 						RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 
 						rateIndicatorBFToKML.setLogFilePath(logFilename,
-								burnInParser.getValue() / 100);
+								burnInParser.getValue() / 100.0);
 
 						rateIndicatorBFToKML.setBfCutoff(Double
 								.valueOf(bfCutoffParser.getText()));
@@ -516,7 +516,7 @@ public class RateIndicatorBFTab extends JPanel {
 						progressBar.setIndeterminate(true);
 
 						rateIndicatorBFToProcessing.setLogFilePath(logFilename,
-								burnInParser.getValue() / 100);
+								burnInParser.getValue() / 100.0);
 
 						rateIndicatorBFToProcessing.setBfCutoff(Double
 								.valueOf(bfCutoffParser.getText()));
