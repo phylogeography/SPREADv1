@@ -586,17 +586,22 @@ public class DiscreteModelTab extends JPanel {
 				// Executed in background thread
 				public Void doInBackground() {
 
+                    // TODO This work should be activated after each option changes (automatic responsive plotting); will make for a much slicker program
+
 					try {
 
 						generateProcessing.setEnabled(false);
 						progressBar.setIndeterminate(true);
 
+                        // TODO Should only be done with state data changes, not with each draw
 						discreteTreeToProcessing
 								.setStateAttName(stateAttNameParser.getText());
-
+                        
+                        // TODO Should only be done when changed, not with each draw
 						discreteTreeToProcessing
 								.setLocationFilePath(locationsFilename);
 
+                        // TODO Should only be done when changed, not with each draw
 						discreteTreeToProcessing.setTreePath(treeFilename);
 
 						discreteTreeToProcessing
