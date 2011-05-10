@@ -222,10 +222,8 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 				stroke(red, green, blue, alpha);
 
-				// if (longitude != null && latitude != null
-				// && parentLongitude != null && parentLatitude != null) {
 				line(x0, y0, x1, y1);
-				// }
+
 			}
 		}// END: nodes loop
 	}// END: DrawBranches
@@ -241,8 +239,6 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 					Integer modality = Utils.getIntegerNodeAttribute(node,
 							coordinatesName + "_" + HPD + "HPD_modality");
-
-					// if (modality != null) {
 
 					for (int i = 1; i <= modality; i++) {
 
@@ -299,7 +295,6 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 					}// END: modality loop
 
-					// }// END: null check
 				}
 			}
 		}// END: node loop

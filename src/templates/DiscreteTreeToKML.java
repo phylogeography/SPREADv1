@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import checks.DiscreteSanityCheck;
+
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
@@ -40,12 +42,12 @@ public class DiscreteTreeToKML {
 	// Earths radius in km
 	private static final double EarthRadius = 6371;
 
-	private ReadLocations data;
 	private RootedTree tree;
+	private String stateAttName;
+	private ReadLocations data;
 	private String mrsdString;
 	private int numberOfIntervals;
 	private double timescaler;
-	private String stateAttName;
 	private String userAttribute;
 	private double rootHeight;
 	private List<Layer> layers;
@@ -242,6 +244,7 @@ public class DiscreteTreeToKML {
 		final int NTHREDS = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
 
+		// executor.submit(new DiscreteSanityCheck());
 		executor.submit(new SanityCheck());
 		executor.submit(new Places());
 		executor.submit(new Branches());

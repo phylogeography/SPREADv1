@@ -116,6 +116,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 		// World map in Equirectangular projection
 		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
+		
 	}// END: setup
 
 	public void draw() {
