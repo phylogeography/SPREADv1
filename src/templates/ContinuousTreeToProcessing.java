@@ -237,7 +237,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 					Integer modality = Utils.getIntegerNodeAttribute(node,
 							coordinatesName + "_" + HPD + "HPD_modality");
 
-//					if (modality != null) {
+					if (modality != null) {
 
 						for (int i = 1; i <= modality; i++) {
 
@@ -296,10 +296,10 @@ public class ContinuousTreeToProcessing extends PApplet {
 							}// END: coordinates loop
 
 							endShape(CLOSE);
-						
-						}// END: null check
-						
-//					}// END: modality loop
+
+						}// END: modality loop
+
+					}// END: null check
 				}
 			}
 		}// END: node loop
