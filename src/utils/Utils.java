@@ -59,10 +59,10 @@ public class Utils {
 	}
 
 	public static int getIntegerNodeAttribute(Node node, String attributeName) {
-		// if (node.getAttribute(attributeName) == null) {
-		// throw new RuntimeException("Attribute, " + attributeName
-		// + ", missing from node");
-		// }
+		if (node.getAttribute(attributeName) == null) {
+			throw new RuntimeException("Attribute, " + attributeName
+					+ ", missing from node");
+		}
 		return (Integer) node.getAttribute(attributeName);
 	}
 

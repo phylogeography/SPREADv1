@@ -234,66 +234,91 @@ public class ContinuousTreeToProcessing extends PApplet {
 			if (!tree.isRoot(node)) {
 				if (!tree.isExternal(node)) {
 
-					int modality = Utils.getIntegerNodeAttribute(node,
+					Integer modality = Utils.getIntegerNodeAttribute(node,
 							coordinatesName + "_" + HPD + "HPD_modality");
 
-					for (int i = 1; i <= modality; i++) {
+//					if (modality != null) {
 
-						Object[] longitudeHPD = Utils.getArrayNodeAttribute(
-								node, longitudeName + "_" + HPD + "HPD_" + i);
-						Object[] latitudeHPD = Utils.getArrayNodeAttribute(
-								node, latitudeName + "_" + HPD + "HPD_" + i);
-						/**
-						 * Color mapping
-						 * */
-						double nodeHeight = tree.getHeight(node);
+						for (int i = 1; i <= modality; i++) {
 
-						int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-								minPolygonRedMapping, maxPolygonRedMapping);
+							Object[] longitudeHPD = Utils
+									.getArrayNodeAttribute(node, longitudeName
+											+ "_" + HPD + "HPD_" + i);
+							Object[] latitudeHPD = Utils
+									.getArrayNodeAttribute(node, latitudeName
+											+ "_" + HPD + "HPD_" + i);
+							/**
+							 * Color mapping
+							 * */
+							double nodeHeight = tree.getHeight(node);
 
-						int green = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, minPolygonGreenMapping,
-								maxPolygonGreenMapping);
+							int red = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, minPolygonRedMapping,
+									maxPolygonRedMapping);
 
-						int blue = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, minPolygonBlueMapping,
-								maxPolygonBlueMapping);
+							int green = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, minPolygonGreenMapping,
+									maxPolygonGreenMapping);
 
-						int alpha = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, maxPolygonOpacityMapping,
-								minPolygonOpacityMapping);
+							int blue = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, minPolygonBlueMapping,
+									maxPolygonBlueMapping);
 
-						stroke(red, green, blue, alpha);
-						fill(red, green, blue, alpha);
+							int alpha = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, maxPolygonOpacityMapping,
+									minPolygonOpacityMapping);
 
-						List<Coordinates> coordinates = Utils.ParsePolygons(
-								longitudeHPD, latitudeHPD);
+							stroke(red, green, blue, alpha);
+							fill(red, green, blue, alpha);
 
-						beginShape();
+							List<Coordinates> coordinates = Utils
+									.ParsePolygons(longitudeHPD, latitudeHPD);
 
-						for (int row = 0; row < coordinates.size() - 1; row++) {
+							beginShape();
 
-							float X = map((float) coordinates.get(row)
-									.getLongitude(), minX, maxX, 0, width);
-							float Y = map((float) coordinates.get(row)
-									.getLatitude(), maxY, minY, 0, height);
+							for (int row = 0; row < coordinates.size() - 1; row++) {
 
-							float XEND = map((float) coordinates.get(row + 1)
-									.getLongitude(), minX, maxX, 0, width);
-							float YEND = map((float) (coordinates.get(row + 1)
-									.getLatitude()), maxY, minY, 0, height);
+								float X = map((float) coordinates.get(row)
+										.getLongitude(), minX, maxX, 0, width);
+								float Y = map((float) coordinates.get(row)
+										.getLatitude(), maxY, minY, 0, height);
 
-							vertex(X, Y);
-							vertex(XEND, YEND);
+								float XEND = map((float) coordinates.get(
+										row + 1).getLongitude(), minX, maxX, 0,
+										width);
+								float YEND = map((float) (coordinates
+										.get(row + 1).getLatitude()), maxY,
+										minY, 0, height);
 
-						}// END: coordinates loop
+								vertex(X, Y);
+								vertex(XEND, YEND);
 
-						endShape(CLOSE);
-					}// END: modality loop
+							}// END: coordinates loop
+
+							endShape(CLOSE);
+						
+						}// END: null check
+						
+//					}// END: modality loop
 				}
 			}
 		}// END: node loop
 	}// END: drawPolygons
+
+	private class SanityCheck implements Runnable {
+
+		public void run() {
+
+			for (Node node : tree.getNodes()) {
+				if (!tree.isRoot(node)) {
+
+					//
+
+				}
+			}// END: node loop
+
+		}
+	}// END: SanityCheck
 
 	private String LoadMapBackground(boolean fromJar) {
 
