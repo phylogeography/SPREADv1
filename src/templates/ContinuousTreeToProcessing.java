@@ -25,7 +25,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	private String latitudeName;
 	private double treeHeightMax;
 	private String HPD;
-	private PImage mapImage;
+	private MapBackground mapBackground;
 
 	private double minPolygonRedMapping;
 	private double minPolygonGreenMapping;
@@ -154,25 +154,18 @@ public class ContinuousTreeToProcessing extends PApplet {
 		minY = -80;
 		maxY = 90;
 
-		// World map in Equirectangular projection
-		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
+		mapBackground = new MapBackground(this);
 
 	}// END:setup
 
 	public void draw() {
 
 		smooth();
-		drawMapBackground();
+		mapBackground.drawMapBackground();
 		drawPolygons();
 		drawBranches();
 
 	}// END:draw
-
-	private void drawMapBackground() {
-
-		image(mapImage, 0, 0, width, height);
-
-	}// END: drawMapPolygons
 
 	// ////////////////
 	// ---BRANCHES---//
@@ -310,20 +303,6 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 			}
 		}// END: node loop
-	}
-
-	private String LoadMapBackground(boolean fromJar) {
-
-		String imgPath;
-
-		if (fromJar) {
-			imgPath = "jar:"
-					+ this.getClass().getResource("world_map.png").getPath();
-		} else {
-			imgPath = this.getClass().getResource("world_map.png").getPath();
-		}
-
-		return imgPath;
 	}
 
 }// END: PlotOnMap class

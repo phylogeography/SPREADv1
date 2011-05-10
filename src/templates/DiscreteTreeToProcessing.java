@@ -25,7 +25,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 	private RootedTree tree;
 	private ReadLocations data;
 	private String stateAttName;
-	private PImage mapImage;
+	private MapBackground mapBackground;
 
 	private double minBranchRedMapping;
 	private double minBranchGreenMapping;
@@ -110,34 +110,24 @@ public class DiscreteTreeToProcessing extends PApplet {
 		PFont plotFont = createFont("Arial", 12);
 		textFont(plotFont);
 
+		// TODO Refactor into abstract class; same code used by several classes
 		SanityCheck sanityCheck = new SanityCheck();
 		sanityCheck.run();
-		// TODO Refactor into abstract class; same code used by several classes
 
-		// World map in Equirectangular projection
-		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
-		
+		mapBackground = new MapBackground(this);
+
 	}// END: setup
 
 	public void draw() {
 
 		noLoop();
 		smooth();
-		drawMapBackground();
+		mapBackground.drawMapBackground();
 		DrawPlaces();
 		DrawBranches();
 		DrawPlacesLabels();
 
 	}// END:draw
-
-	void drawMapBackground() {
-
-		image(mapImage, 0, 0, width, height);
-
-		// TODO Refactor function to abstract class because this function is in
-		// several classes
-
-	}// END: drawMapBackground
 
 	// //////////////
 	// ---PLACES---//
@@ -275,20 +265,5 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 		}// END: run
 	}// END: SanityCheck class
-
-	private String LoadMapBackground(boolean fromJar) {
-
-		String imgPathFromJar;
-
-		if (fromJar) {
-			imgPathFromJar = "jar:"
-					+ this.getClass().getResource("world_map.png").getPath();
-		} else {
-			imgPathFromJar = this.getClass().getResource("world_map.png")
-					.getPath();
-		}
-
-		return imgPathFromJar;
-	}
 
 }// END: PlotOnMap class

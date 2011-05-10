@@ -20,7 +20,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private double bfCutoff;
 	private List<Double> bayesFactors;
 	private List<String> combin;
-	private PImage mapImage;
+	private MapBackground mapBackground;
 
 	private double minBranchRedMapping;
 	private double minBranchGreenMapping;
@@ -130,9 +130,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		PFont plotFont = createFont("Arial", 12);
 		textFont(plotFont);
 
-		// World map in Equirectangular projection
-		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
-		
+		mapBackground = new MapBackground(this);
+
 	}// END: setup
 
 	public void draw() {
@@ -140,18 +139,12 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		noLoop();
 		smooth();
 		ComputeBFTest();
-		drawMapBackground();
+		mapBackground.drawMapBackground();
 		DrawPlaces();
 		DrawRates();
 		DrawPlacesLabels();
 
 	}// END:draw
-
-	void drawMapBackground() {
-
-		image(mapImage, 0, 0, width, height);
-
-	}// END: drawMapPolygons
 
 	// //////////////
 	// ---PLACES---//
@@ -316,20 +309,5 @@ public class RateIndicatorBFToProcessing extends PApplet {
 			bayesFactors.add(bf);
 		}
 	}// END: ComputeBFTest
-
-	private String LoadMapBackground(boolean fromJar) {
-
-		String imgPathFromJar;
-
-		if (fromJar) {
-			imgPathFromJar = "jar:"
-					+ this.getClass().getResource("world_map.png").getPath();
-		} else {
-			imgPathFromJar = this.getClass().getResource("world_map.png")
-					.getPath();
-		}
-
-		return imgPathFromJar;
-	}
 
 }// END: RateIndicatorBFToProcessing class

@@ -86,7 +86,7 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	private timescalerEnum timescalerSwitcher;
 
-	private PImage mapImage;
+	private MapBackground mapBackground;
 	private float minX, maxX;
 	private float minY, maxY;
 
@@ -229,26 +229,19 @@ public class TimeSlicerToProcessing extends PApplet {
 		minY = -80;
 		maxY = 90;
 
-		// World map in Equirectangular projection
-		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
-		
+		mapBackground = new MapBackground(this);
+
 	}// END:setup
 
 	public void draw() {
 
 		noLoop();
 		smooth();
-		drawMapBackground();
+		mapBackground.drawMapBackground();
 		drawPolygons();
 		drawBranches();
 
 	}// END:draw
-
-	private void drawMapBackground() {
-
-		image(mapImage, 0, 0, width, height);
-
-	}// END: drawMapBackground
 
 	private void drawPolygons() throws OutOfMemoryError {
 
@@ -633,21 +626,6 @@ public class TimeSlicerToProcessing extends PApplet {
 		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
 
 		return timeLine;
-	}
-
-	private String LoadMapBackground(boolean fromJar) {
-
-		String imgPathFromJar;
-
-		if (fromJar) {
-			imgPathFromJar = "jar:"
-					+ this.getClass().getResource("world_map.png").getPath();
-		} else {
-			imgPathFromJar = this.getClass().getResource("world_map.png")
-					.getPath();
-		}
-
-		return imgPathFromJar;
 	}
 
 }// END: TimeScalerToProcessing class
