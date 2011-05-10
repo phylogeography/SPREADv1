@@ -130,6 +130,9 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		PFont plotFont = createFont("Arial", 12);
 		textFont(plotFont);
 
+		// World map in Equirectangular projection
+		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
+		
 	}// END: setup
 
 	public void draw() {
@@ -146,8 +149,6 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 	void drawMapBackground() {
 
-		// World map in Equirectangular projection
-		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapPolygons

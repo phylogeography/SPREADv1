@@ -113,6 +113,9 @@ public class DiscreteTreeToProcessing extends PApplet {
 		SanityCheck sanityCheck = new SanityCheck();
 		sanityCheck.run();
 		// TODO Refactor into abstract class; same code used by several classes
+
+		// World map in Equirectangular projection
+		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
 	}// END: setup
 
 	public void draw() {
@@ -128,13 +131,10 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 	void drawMapBackground() {
 
-		// World map in Equirectangular projection
-		// TODO To improve responsiveness, load background map once (not here)
-		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
-		// TODO just call image here
 		image(mapImage, 0, 0, width, height);
-		
-		// TODO Refactor function to abstract class because this function is in several classes
+
+		// TODO Refactor function to abstract class because this function is in
+		// several classes
 
 	}// END: drawMapBackground
 

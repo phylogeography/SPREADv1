@@ -229,6 +229,9 @@ public class TimeSlicerToProcessing extends PApplet {
 		minY = -80;
 		maxY = 90;
 
+		// World map in Equirectangular projection
+		mapImage = loadImage(LoadMapBackground(new Setter().getJarBoolean()));
+		
 	}// END:setup
 
 	public void draw() {
@@ -243,9 +246,6 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	private void drawMapBackground() {
 
-		// World map in Equirectangular projection
-		Setter jarSetter = new Setter();
-		mapImage = loadImage(LoadMapBackground(jarSetter.getJarBoolean()));
 		image(mapImage, 0, 0, width, height);
 
 	}// END: drawMapBackground

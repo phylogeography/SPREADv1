@@ -623,6 +623,8 @@ public class ContinuousModelTab extends JPanel {
 						continuousTreeToProcessing
 								.setBranchWidth(branchesWidthParser.getValue() / 2);
 
+						//continuousTreeToProcessing.sanityCheck();
+						
 						continuousTreeToProcessing.init();
 
 						System.out.println("Finished. \n");
