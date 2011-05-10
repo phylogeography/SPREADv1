@@ -218,7 +218,7 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
+		tmpPanel.setBorder(new TitledBorder("Rates color mapping:"));
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
@@ -232,7 +232,7 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Branches width:"));
+		tmpPanel.setBorder(new TitledBorder("Rates width:"));
 		tmpPanel.add(branchesWidthParser);
 		leftPanel.add(tmpPanel);
 

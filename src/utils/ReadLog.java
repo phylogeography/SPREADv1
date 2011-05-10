@@ -51,7 +51,6 @@ public class ReadLog extends PApplet {
 		ncol = list.size();
 		// skip first line with col names and the burn in lines
 		int delete = (int) (nrow * burnIn) + 1;
-		System.out.println(nrow * burnIn);
 		indicators = new double[nrow - delete][ncol];
 
 		int i = 0;
