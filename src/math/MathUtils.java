@@ -28,9 +28,8 @@ package math;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
-import utils.NumberFormatter;
-
 import jebl.math.GammaFunction;
+import utils.NumberFormatter;
 
 /**
  * Handy utility functions which have some Mathematical relavance.

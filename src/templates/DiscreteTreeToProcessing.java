@@ -13,8 +13,6 @@ import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
 import processing.core.PApplet;
 import processing.core.PFont;
-import processing.core.PImage;
-import utils.Setter;
 import utils.ReadLocations;
 import utils.Utils;
 
@@ -107,7 +105,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 		// will improve font rendering speed with default renderer
 		hint(ENABLE_NATIVE_FONTS);
-		PFont plotFont = createFont("Arial", 12);
+		PFont plotFont = createFont("Monaco", 12);
 		textFont(plotFont);
 
 		// TODO Refactor into abstract class; same code used by several classes

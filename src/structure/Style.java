@@ -1,6 +1,6 @@
 package structure;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * @author Andrew Rambaut

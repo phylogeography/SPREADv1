@@ -19,10 +19,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import contouring.ContourMaker;
-import contouring.ContourPath;
-import contouring.ContourWithSynder;
-
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
@@ -37,6 +33,9 @@ import structure.Style;
 import structure.TimeLine;
 import utils.SpreadDate;
 import utils.Utils;
+import contouring.ContourMaker;
+import contouring.ContourPath;
+import contouring.ContourWithSynder;
 
 public class TimeSlicerToKML {
 

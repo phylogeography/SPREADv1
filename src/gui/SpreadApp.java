@@ -52,9 +52,8 @@ public class SpreadApp {
 	private TimeSlicerTab timeSlicerTab;
 	private TerminalTab terminalTab;
 
-	public SpreadApp() throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException,
-			UnsupportedLookAndFeelException {
+	public SpreadApp() throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException, UnsupportedLookAndFeelException {
 
 		// Setup Look & Feel
 		if (System.getProperty("os.name").toLowerCase().startsWith("mac os x")) {

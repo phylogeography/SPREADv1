@@ -1,7 +1,9 @@
 package contouring;
 
-import java.util.*;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Marc A. Suchard

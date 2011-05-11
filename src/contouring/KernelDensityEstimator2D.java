@@ -1,13 +1,13 @@
 package contouring;
 
+import java.util.Arrays;
+
+import math.DiscreteStatistics;
+import math.Matrix;
+import math.NormalDistribution;
+import math.Vector;
 import cern.colt.list.DoubleArrayList;
 import cern.jet.stat.Descriptive;
-import math.NormalDistribution;
-import math.Matrix;
-import math.Vector;
-import math.DiscreteStatistics;
-
-import java.util.Arrays;
 
 /**
  * KernelDensityEstimator2D creates a bi-variate kernel density smoother for

@@ -28,6 +28,7 @@ import javax.swing.border.TitledBorder;
 import templates.ContinuousTreeToKML;
 import templates.ContinuousTreeToProcessing;
 import utils.Utils;
+import checks.ContinuousSanityCheck;
 
 import com.bric.swing.ColorPicker;
 
@@ -334,15 +335,20 @@ public class ContinuousModelTab extends JPanel {
 				chooser.setMultiSelectionEnabled(false);
 				chooser.addChoosableFileFilter(new SimpleFileFilter(treeFiles,
 						"Tree files (*.tree, *.tre)"));
+				chooser.setCurrentDirectory(workingDirectory);
 
 				chooser.showOpenDialog(Utils.getActiveFrame());
 				File file = chooser.getSelectedFile();
 				treeFilename = file.getAbsolutePath();
 				System.out.println("Opened " + treeFilename + "\n");
 
-				workingDirectory = chooser.getCurrentDirectory();
-				System.out.println("Set working directory to "
-						+ workingDirectory.toString() + "\n");
+				File tmpDir = chooser.getCurrentDirectory();
+				
+				if (tmpDir != null) {
+					workingDirectory = tmpDir;
+					System.out.println("Setted working directory to "
+							+ workingDirectory.toString() + "\n");
+				}
 
 			} catch (Exception e) {
 				System.err.println("Could not Open! \n");
@@ -547,87 +553,95 @@ public class ContinuousModelTab extends JPanel {
 						generateProcessing.setEnabled(false);
 						progressBar.setIndeterminate(true);
 
-						continuousTreeToProcessing.setTreePath(treeFilename);
+						if (new ContinuousSanityCheck().check(treeFilename,
+								coordinatesNameParser.getText(), HPDParser
+										.getText()
+										+ "%")) {
 
-						continuousTreeToProcessing
-								.setCoordinatesName(coordinatesNameParser
-										.getText());
+							continuousTreeToProcessing
+									.setTreePath(treeFilename);
 
-						continuousTreeToProcessing.setHPD(HPDParser.getText()
-								+ "%");
+							continuousTreeToProcessing
+									.setCoordinatesName(coordinatesNameParser
+											.getText());
 
-						continuousTreeToProcessing
-								.setMinPolygonRedMapping(polygonsMinColor
-										.getRed());
+							continuousTreeToProcessing.setHPD(HPDParser
+									.getText()
+									+ "%");
 
-						continuousTreeToProcessing
-								.setMinPolygonGreenMapping(polygonsMinColor
-										.getGreen());
+							continuousTreeToProcessing
+									.setMinPolygonRedMapping(polygonsMinColor
+											.getRed());
 
-						continuousTreeToProcessing
-								.setMinPolygonBlueMapping(polygonsMinColor
-										.getBlue());
+							continuousTreeToProcessing
+									.setMinPolygonGreenMapping(polygonsMinColor
+											.getGreen());
 
-						continuousTreeToProcessing
-								.setMinPolygonOpacityMapping(polygonsMinColor
-										.getAlpha());
+							continuousTreeToProcessing
+									.setMinPolygonBlueMapping(polygonsMinColor
+											.getBlue());
 
-						continuousTreeToProcessing
-								.setMaxPolygonRedMapping(polygonsMaxColor
-										.getRed());
+							continuousTreeToProcessing
+									.setMinPolygonOpacityMapping(polygonsMinColor
+											.getAlpha());
 
-						continuousTreeToProcessing
-								.setMaxPolygonGreenMapping(polygonsMaxColor
-										.getGreen());
+							continuousTreeToProcessing
+									.setMaxPolygonRedMapping(polygonsMaxColor
+											.getRed());
 
-						continuousTreeToProcessing
-								.setMaxPolygonBlueMapping(polygonsMaxColor
-										.getBlue());
+							continuousTreeToProcessing
+									.setMaxPolygonGreenMapping(polygonsMaxColor
+											.getGreen());
 
-						continuousTreeToProcessing
-								.setMaxPolygonOpacityMapping(polygonsMaxColor
-										.getAlpha());
+							continuousTreeToProcessing
+									.setMaxPolygonBlueMapping(polygonsMaxColor
+											.getBlue());
 
-						continuousTreeToProcessing
-								.setMinBranchRedMapping(branchesMinColor
-										.getRed());
+							continuousTreeToProcessing
+									.setMaxPolygonOpacityMapping(polygonsMaxColor
+											.getAlpha());
 
-						continuousTreeToProcessing
-								.setMinBranchGreenMapping(branchesMinColor
-										.getGreen());
+							continuousTreeToProcessing
+									.setMinBranchRedMapping(branchesMinColor
+											.getRed());
 
-						continuousTreeToProcessing
-								.setMinBranchBlueMapping(branchesMinColor
-										.getBlue());
+							continuousTreeToProcessing
+									.setMinBranchGreenMapping(branchesMinColor
+											.getGreen());
 
-						continuousTreeToProcessing
-								.setMinBranchOpacityMapping(branchesMinColor
-										.getAlpha());
+							continuousTreeToProcessing
+									.setMinBranchBlueMapping(branchesMinColor
+											.getBlue());
 
-						continuousTreeToProcessing
-								.setMaxBranchRedMapping(branchesMaxColor
-										.getRed());
+							continuousTreeToProcessing
+									.setMinBranchOpacityMapping(branchesMinColor
+											.getAlpha());
 
-						continuousTreeToProcessing
-								.setMaxBranchGreenMapping(branchesMaxColor
-										.getGreen());
+							continuousTreeToProcessing
+									.setMaxBranchRedMapping(branchesMaxColor
+											.getRed());
 
-						continuousTreeToProcessing
-								.setMaxBranchBlueMapping(branchesMaxColor
-										.getBlue());
+							continuousTreeToProcessing
+									.setMaxBranchGreenMapping(branchesMaxColor
+											.getGreen());
 
-						continuousTreeToProcessing
-								.setMaxBranchOpacityMapping(branchesMaxColor
-										.getAlpha());
+							continuousTreeToProcessing
+									.setMaxBranchBlueMapping(branchesMaxColor
+											.getBlue());
 
-						continuousTreeToProcessing
-								.setBranchWidth(branchesWidthParser.getValue() / 2);
+							continuousTreeToProcessing
+									.setMaxBranchOpacityMapping(branchesMaxColor
+											.getAlpha());
 
-						//continuousTreeToProcessing.sanityCheck();
-						
-						continuousTreeToProcessing.init();
+							continuousTreeToProcessing
+									.setBranchWidth(branchesWidthParser
+											.getValue() / 2);
 
-						System.out.println("Finished. \n");
+							continuousTreeToProcessing.init();
+
+							System.out.println("Finished. \n");
+
+						}// END: check
 
 					} catch (Exception e) {
 
@@ -639,7 +653,7 @@ public class ContinuousModelTab extends JPanel {
 						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
 								msg, "Error", JOptionPane.ERROR_MESSAGE,
 								errorIcon);
-						
+
 					}
 
 					return null;

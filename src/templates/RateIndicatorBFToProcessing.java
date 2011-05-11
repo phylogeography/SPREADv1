@@ -6,8 +6,6 @@ import java.util.List;
 
 import processing.core.PApplet;
 import processing.core.PFont;
-import processing.core.PImage;
-import utils.Setter;
 import utils.ReadLocations;
 import utils.ReadLog;
 import utils.Utils;
@@ -127,7 +125,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		// will improve font rendering speed with default renderer
 		hint(ENABLE_NATIVE_FONTS);
-		PFont plotFont = createFont("Arial", 12);
+		PFont plotFont = createFont("Monaco", 12);
 		textFont(plotFont);
 
 		mapBackground = new MapBackground(this);

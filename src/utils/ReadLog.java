@@ -10,7 +10,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import processing.core.PApplet;
-import utils.Utils;
 
 @SuppressWarnings("serial")
 public class ReadLog extends PApplet {
@@ -30,7 +29,7 @@ public class ReadLog extends PApplet {
 				commentedLines++;
 			}
 		}
-		
+
 		nrow = lines.length - commentedLines - 1;
 		String[] colNames = lines[commentedLines].split("\t");
 

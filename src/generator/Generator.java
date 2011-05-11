@@ -1,11 +1,11 @@
 package generator;
 
-import structure.Layer;
-import structure.TimeLine;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
+
+import structure.Layer;
+import structure.TimeLine;
 
 /**
  * @author Andrew Rambaut

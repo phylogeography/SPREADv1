@@ -2,7 +2,6 @@ package templates;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import utils.Setter;
 
 public class MapBackground {
 

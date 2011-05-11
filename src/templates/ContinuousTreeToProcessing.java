@@ -10,9 +10,7 @@ import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
 import processing.core.PApplet;
-import processing.core.PImage;
 import structure.Coordinates;
-import utils.Setter;
 import utils.Utils;
 
 @SuppressWarnings("serial")

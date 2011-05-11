@@ -1,13 +1,5 @@
 package generator;
 
-import structure.*;
-import structure.Container;
-import structure.Style;
-import structure.Polygon;
-import utils.Utils;
-
-import org.boehn.kmlframework.kml.*;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -15,6 +7,33 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+
+import org.boehn.kmlframework.kml.AltitudeModeEnum;
+import org.boehn.kmlframework.kml.Document;
+import org.boehn.kmlframework.kml.Feature;
+import org.boehn.kmlframework.kml.Folder;
+import org.boehn.kmlframework.kml.Kml;
+import org.boehn.kmlframework.kml.KmlException;
+import org.boehn.kmlframework.kml.LineString;
+import org.boehn.kmlframework.kml.LineStyle;
+import org.boehn.kmlframework.kml.LinearRing;
+import org.boehn.kmlframework.kml.Placemark;
+import org.boehn.kmlframework.kml.Point;
+import org.boehn.kmlframework.kml.PolyStyle;
+import org.boehn.kmlframework.kml.StyleSelector;
+import org.boehn.kmlframework.kml.TimePrimitive;
+import org.boehn.kmlframework.kml.TimeSpan;
+
+import structure.Container;
+import structure.Coordinates;
+import structure.Item;
+import structure.Layer;
+import structure.Line;
+import structure.Place;
+import structure.Polygon;
+import structure.Style;
+import structure.TimeLine;
+import utils.Utils;
 
 public class KMLGenerator implements Generator {
 

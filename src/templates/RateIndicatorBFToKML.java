@@ -13,7 +13,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import jebl.evolution.io.ImportException;
-
 import structure.Coordinates;
 import structure.Layer;
 import structure.Line;

@@ -27,6 +27,7 @@ import javax.swing.border.TitledBorder;
 import templates.DiscreteTreeToKML;
 import templates.DiscreteTreeToProcessing;
 import utils.Utils;
+import checks.DiscreteSanityCheck;
 
 import com.bric.swing.ColorPicker;
 
@@ -104,6 +105,7 @@ public class DiscreteModelTab extends JPanel {
 		polygonsMinColor = new Color(0, 0, 0, 100);
 		branchesMinColor = new Color(0, 0, 0, 255);
 		GridBagConstraints c = new GridBagConstraints();
+		// workingDirectory = System.getProperty("user.home");
 
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
@@ -353,8 +355,10 @@ public class DiscreteModelTab extends JPanel {
 
 				System.out.println("Opened " + treeFilename + "\n");
 
-				if (workingDirectory == null) {
-					workingDirectory = chooser.getCurrentDirectory();
+				File tmpDir = chooser.getCurrentDirectory();
+				
+				if (tmpDir != null) {
+					workingDirectory = tmpDir;
 					System.out.println("Setted working directory to "
 							+ workingDirectory.toString() + "\n");
 				}
@@ -379,9 +383,11 @@ public class DiscreteModelTab extends JPanel {
 				locationsFilename = file.getAbsolutePath();
 				System.out.println("Opened " + locationsFilename + "\n");
 
-				if (workingDirectory == null) {
-					workingDirectory = chooser.getCurrentDirectory();
-					System.out.println("Set working directory to "
+				File tmpDir = chooser.getCurrentDirectory();
+				
+				if (tmpDir != null) {
+					workingDirectory = tmpDir;
+					System.out.println("Setted working directory to "
 							+ workingDirectory.toString() + "\n");
 				}
 
@@ -586,62 +592,76 @@ public class DiscreteModelTab extends JPanel {
 				// Executed in background thread
 				public Void doInBackground() {
 
-                    // TODO This work should be activated after each option changes (automatic responsive plotting); will make for a much slicker program
+					// TODO This work should be activated after each option
+					// changes (automatic responsive plotting); will make for a
+					// much slicker program
 
 					try {
 
 						generateProcessing.setEnabled(false);
 						progressBar.setIndeterminate(true);
 
-                        // TODO Should only be done with state data changes, not with each draw
-						discreteTreeToProcessing
-								.setStateAttName(stateAttNameParser.getText());
-                        
-                        // TODO Should only be done when changed, not with each draw
-						discreteTreeToProcessing
-								.setLocationFilePath(locationsFilename);
+						if (new DiscreteSanityCheck()
+								.check(treeFilename, stateAttNameParser
+										.getText(), locationsFilename)) {
 
-                        // TODO Should only be done when changed, not with each draw
-						discreteTreeToProcessing.setTreePath(treeFilename);
+							// TODO Should only be done with state data changes,
+							// not with each draw
+							discreteTreeToProcessing
+									.setStateAttName(stateAttNameParser
+											.getText());
 
-						discreteTreeToProcessing
-								.setMinBranchRedMapping(branchesMinColor
-										.getRed());
+							// TODO Should only be done when changed,
+							// not with each draw
+							discreteTreeToProcessing
+									.setLocationFilePath(locationsFilename);
 
-						discreteTreeToProcessing
-								.setMinBranchGreenMapping(branchesMinColor
-										.getGreen());
+							// TODO Should only be done when changed, not with
+							// each
+							// draw
+							discreteTreeToProcessing.setTreePath(treeFilename);
 
-						discreteTreeToProcessing
-								.setMinBranchBlueMapping(branchesMinColor
-										.getBlue());
+							discreteTreeToProcessing
+									.setMinBranchRedMapping(branchesMinColor
+											.getRed());
 
-						discreteTreeToProcessing
-								.setMinBranchOpacityMapping(branchesMinColor
-										.getAlpha());
+							discreteTreeToProcessing
+									.setMinBranchGreenMapping(branchesMinColor
+											.getGreen());
 
-						discreteTreeToProcessing
-								.setMaxBranchRedMapping(branchesMaxColor
-										.getRed());
+							discreteTreeToProcessing
+									.setMinBranchBlueMapping(branchesMinColor
+											.getBlue());
 
-						discreteTreeToProcessing
-								.setMaxBranchGreenMapping(branchesMaxColor
-										.getGreen());
+							discreteTreeToProcessing
+									.setMinBranchOpacityMapping(branchesMinColor
+											.getAlpha());
 
-						discreteTreeToProcessing
-								.setMaxBranchBlueMapping(branchesMaxColor
-										.getBlue());
+							discreteTreeToProcessing
+									.setMaxBranchRedMapping(branchesMaxColor
+											.getRed());
 
-						discreteTreeToProcessing
-								.setMaxBranchOpacityMapping(branchesMaxColor
-										.getAlpha());
+							discreteTreeToProcessing
+									.setMaxBranchGreenMapping(branchesMaxColor
+											.getGreen());
 
-						discreteTreeToProcessing
-								.setBranchWidth(branchesWidthParser.getValue() / 2);
+							discreteTreeToProcessing
+									.setMaxBranchBlueMapping(branchesMaxColor
+											.getBlue());
 
-						discreteTreeToProcessing.init();
+							discreteTreeToProcessing
+									.setMaxBranchOpacityMapping(branchesMaxColor
+											.getAlpha());
 
-						System.out.println("Finished. \n");
+							discreteTreeToProcessing
+									.setBranchWidth(branchesWidthParser
+											.getValue() / 2);
+
+							discreteTreeToProcessing.init();
+
+							System.out.println("Finished. \n");
+
+						}// END: check
 
 					} catch (Exception e) {
 						e.printStackTrace();

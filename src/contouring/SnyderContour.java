@@ -1,6 +1,6 @@
 package contouring;
 
-import java.awt.*;
+import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
 import java.util.List;
