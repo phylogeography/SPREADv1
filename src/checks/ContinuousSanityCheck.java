@@ -11,7 +11,7 @@ import utils.Utils;
 
 public class ContinuousSanityCheck {
 
-	private boolean isNull = false;
+	private boolean notNull = false;
 	
 	public boolean check(String treeFilename, String coordinatesName, String HPD)
 			throws IOException, ImportException {
@@ -27,15 +27,15 @@ public class ContinuousSanityCheck {
 							coordinatesName + "_" + HPD + "HPD_modality");
 
 					if (modality == null) {
-						isNull = false;
+						notNull = false;
 						break;
 					} else {
-						isNull = true;
+						notNull = true;
 					}
 				}
 			}
 		}// END: node loop
-		return isNull;
+		return notNull;
 	}
 
 }

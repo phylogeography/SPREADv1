@@ -15,7 +15,7 @@ import utils.Utils;
 
 public class DiscreteSanityCheck {
 
-	private boolean isNull = false;
+	private boolean notNull = false;
 
 	public boolean check(String treeFilename, String stateAttName, String path)
 			throws IOException, ImportException, ParseException {
@@ -33,10 +33,10 @@ public class DiscreteSanityCheck {
 				uniqueTreeStates.add(uniqueTreeState);
 
 				if (uniqueTreeState == null) {
-					isNull = false;
+					notNull = false;
 					break;
 				} else {
-					isNull = true;
+					notNull = true;
 				}
 
 			}
@@ -64,7 +64,7 @@ public class DiscreteSanityCheck {
 						+ " does not fit any of the discrete states");
 			}
 		}// END: locations loop
-		return isNull;
+		return notNull;
 
 	}
 
