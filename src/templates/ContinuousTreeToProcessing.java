@@ -293,16 +293,4 @@ public class ContinuousTreeToProcessing extends PApplet {
 		}// END: node loop
 	}// END: drawPolygons
 
-	public void sanityCheck() {
-
-		for (Node node : tree.getNodes()) {
-			if (!tree.isRoot(node)) {
-
-				Integer modality = Utils.getIntegerNodeAttribute(node,
-						coordinatesName + "_" + HPD + "HPD_modality");
-
-			}
-		}// END: node loop
-	}
-
 }// END: PlotOnMap class
