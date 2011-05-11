@@ -11,13 +11,13 @@ import utils.Utils;
 
 public class ContinuousSanityCheck {
 
+	private boolean isNull = false;
+	
 	public boolean check(String treeFilename, String coordinatesName, String HPD)
 			throws IOException, ImportException {
 
 		NexusImporter importer = new NexusImporter(new FileReader(treeFilename));
 		RootedTree tree = (RootedTree) importer.importNextTree();
-
-		boolean isNull = false;
 
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {

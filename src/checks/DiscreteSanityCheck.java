@@ -15,10 +15,10 @@ import utils.Utils;
 
 public class DiscreteSanityCheck {
 
+	private boolean isNull = false;
+
 	public boolean check(String treeFilename, String stateAttName, String path)
 			throws IOException, ImportException, ParseException {
-
-		boolean isNull = false;
 
 		NexusImporter importer = new NexusImporter(new FileReader(treeFilename));
 		RootedTree tree = (RootedTree) importer.importNextTree();

@@ -343,7 +343,7 @@ public class ContinuousModelTab extends JPanel {
 				System.out.println("Opened " + treeFilename + "\n");
 
 				File tmpDir = chooser.getCurrentDirectory();
-				
+
 				if (tmpDir != null) {
 					workingDirectory = tmpDir;
 					System.out.println("Setted working directory to "
@@ -417,103 +417,115 @@ public class ContinuousModelTab extends JPanel {
 						generateKml.setEnabled(false);
 						progressBar.setIndeterminate(true);
 
-						ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
+						if (new ContinuousSanityCheck().check(treeFilename,
+								coordinatesNameParser.getText(), HPDParser
+										.getText()
+										+ "%")) {
 
-						continuousTreeToKML.setHPD(HPDParser.getText() + "%");
+							ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
 
-						continuousTreeToKML
-								.setCoordinatesName(coordinatesNameParser
-										.getText());
+							continuousTreeToKML.setHPD(HPDParser.getText()
+									+ "%");
 
-						continuousTreeToKML.setMaxAltitudeMapping(Double
-								.valueOf(maxAltMappingParser.getText()));
+							continuousTreeToKML
+									.setCoordinatesName(coordinatesNameParser
+											.getText());
 
-						continuousTreeToKML
-								.setMinPolygonRedMapping(polygonsMinColor
-										.getRed());
+							continuousTreeToKML.setMaxAltitudeMapping(Double
+									.valueOf(maxAltMappingParser.getText()));
 
-						continuousTreeToKML
-								.setMinPolygonGreenMapping(polygonsMinColor
-										.getGreen());
+							continuousTreeToKML
+									.setMinPolygonRedMapping(polygonsMinColor
+											.getRed());
 
-						continuousTreeToKML
-								.setMinPolygonBlueMapping(polygonsMinColor
-										.getBlue());
+							continuousTreeToKML
+									.setMinPolygonGreenMapping(polygonsMinColor
+											.getGreen());
 
-						continuousTreeToKML
-								.setMinPolygonOpacityMapping(polygonsMinColor
-										.getAlpha());
+							continuousTreeToKML
+									.setMinPolygonBlueMapping(polygonsMinColor
+											.getBlue());
 
-						continuousTreeToKML
-								.setMaxPolygonRedMapping(polygonsMaxColor
-										.getRed());
+							continuousTreeToKML
+									.setMinPolygonOpacityMapping(polygonsMinColor
+											.getAlpha());
 
-						continuousTreeToKML
-								.setMaxPolygonGreenMapping(polygonsMaxColor
-										.getGreen());
+							continuousTreeToKML
+									.setMaxPolygonRedMapping(polygonsMaxColor
+											.getRed());
 
-						continuousTreeToKML
-								.setMaxPolygonBlueMapping(polygonsMaxColor
-										.getBlue());
+							continuousTreeToKML
+									.setMaxPolygonGreenMapping(polygonsMaxColor
+											.getGreen());
 
-						continuousTreeToKML
-								.setMaxPolygonOpacityMapping(polygonsMaxColor
-										.getAlpha());
+							continuousTreeToKML
+									.setMaxPolygonBlueMapping(polygonsMaxColor
+											.getBlue());
 
-						continuousTreeToKML
-								.setMinBranchRedMapping(branchesMinColor
-										.getRed());
+							continuousTreeToKML
+									.setMaxPolygonOpacityMapping(polygonsMaxColor
+											.getAlpha());
 
-						continuousTreeToKML
-								.setMinBranchGreenMapping(branchesMinColor
-										.getGreen());
+							continuousTreeToKML
+									.setMinBranchRedMapping(branchesMinColor
+											.getRed());
 
-						continuousTreeToKML
-								.setMinBranchBlueMapping(branchesMinColor
-										.getBlue());
+							continuousTreeToKML
+									.setMinBranchGreenMapping(branchesMinColor
+											.getGreen());
 
-						continuousTreeToKML
-								.setMinBranchOpacityMapping(branchesMinColor
-										.getAlpha());
+							continuousTreeToKML
+									.setMinBranchBlueMapping(branchesMinColor
+											.getBlue());
 
-						continuousTreeToKML
-								.setMaxBranchRedMapping(branchesMaxColor
-										.getRed());
+							continuousTreeToKML
+									.setMinBranchOpacityMapping(branchesMinColor
+											.getAlpha());
 
-						continuousTreeToKML
-								.setMaxBranchGreenMapping(branchesMaxColor
-										.getGreen());
+							continuousTreeToKML
+									.setMaxBranchRedMapping(branchesMaxColor
+											.getRed());
 
-						continuousTreeToKML
-								.setMaxBranchBlueMapping(branchesMaxColor
-										.getBlue());
+							continuousTreeToKML
+									.setMaxBranchGreenMapping(branchesMaxColor
+											.getGreen());
 
-						continuousTreeToKML
-								.setMaxBranchOpacityMapping(branchesMaxColor
-										.getAlpha());
+							continuousTreeToKML
+									.setMaxBranchBlueMapping(branchesMaxColor
+											.getBlue());
 
-						continuousTreeToKML.setBranchWidth(branchesWidthParser
-								.getValue());
+							continuousTreeToKML
+									.setMaxBranchOpacityMapping(branchesMaxColor
+											.getAlpha());
 
-						continuousTreeToKML.setMrsdString(dateSpinner
-								.getValue()
-								+ " "
-								+ (eraParser.getSelectedIndex() == 0 ? "AD"
-										: "BC"));
+							continuousTreeToKML
+									.setBranchWidth(branchesWidthParser
+											.getValue());
 
-						continuousTreeToKML.setNumberOfIntervals(Integer
-								.valueOf(numberOfIntervalsParser.getText()));
+							continuousTreeToKML.setMrsdString(dateSpinner
+									.getValue()
+									+ " "
+									+ (eraParser.getSelectedIndex() == 0 ? "AD"
+											: "BC"));
 
-						continuousTreeToKML.setKmlWriterPath(workingDirectory
-								.toString().concat("/").concat(
-										kmlPathParser.getText()));
+							continuousTreeToKML
+									.setNumberOfIntervals(Integer
+											.valueOf(numberOfIntervalsParser
+													.getText()));
 
-						continuousTreeToKML.setTreePath(treeFilename);
+							continuousTreeToKML
+									.setKmlWriterPath(workingDirectory
+											.toString().concat("/").concat(
+													kmlPathParser.getText()));
 
-						continuousTreeToKML.GenerateKML();
+							continuousTreeToKML.setTreePath(treeFilename);
 
-						System.out.println("Finished in: "
-								+ continuousTreeToKML.time + " msec \n");
+							continuousTreeToKML.GenerateKML();
+
+							System.out.println("Finished in: "
+									+ continuousTreeToKML.time + " msec \n");
+
+						}
 
 					} catch (Exception e) {
 						e.printStackTrace();
