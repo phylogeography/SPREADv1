@@ -37,7 +37,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private TreeImporter treesImporter;
 	private TreeImporter treeImporter;
 	private String precisionString;
-	private String locationString;
+	private String coordinatesName;
 	private String longitudeName;
 	private String latitudeName;
 	private String rateString;
@@ -120,11 +120,11 @@ public class TimeSlicerToProcessing extends PApplet {
 		mrsdString = mrsd;
 	}
 
-	public void setLocationAttName(String name) {
-		locationString = name;
+	public void setCoordinatesName(String name) {
+		coordinatesName = name;
 		// this is for coordinate attribute names
-		longitudeName = (locationString + 2);
-		latitudeName = (locationString + 1);
+		longitudeName = (coordinatesName + 2);
+		latitudeName = (coordinatesName + 1);
 	}
 
 	public void setRateAttName(String name) {
@@ -445,13 +445,13 @@ public class TimeSlicerToProcessing extends PApplet {
 									.getHeight(parentNode);
 
 							Object[] location = (Object[]) Utils
-									.getArrayNodeAttribute(node, locationString);
+									.getArrayNodeAttribute(node, coordinatesName);
 							double latitude = (Double) location[0];
 							double longitude = (Double) location[1];
 
 							Object[] parentLocation = (Object[]) Utils
 									.getArrayNodeAttribute(parentNode,
-											locationString);
+											coordinatesName);
 							double parentLatitude = (Double) parentLocation[0];
 							double parentLongitude = (Double) parentLocation[1];
 

@@ -76,7 +76,7 @@ public class TimeSlicerToKML {
 	private int burnIn;
 	private boolean impute;
 	private boolean useTrueNoise;
-	private String locationString;
+	private String coordinatesName;
 	private String longitudeName;
 	private String latitudeName;
 	private String rateString;
@@ -146,9 +146,9 @@ public class TimeSlicerToKML {
 	}
 
 	public void setLocationAttName(String name) {
-		locationString = name;
-		longitudeName = (locationString + 2);
-		latitudeName = (locationString + 1);
+		coordinatesName = name;
+		longitudeName = (coordinatesName + 2);
+		latitudeName = (coordinatesName + 1);
 	}
 
 	public void setRateAttName(String name) {
@@ -347,13 +347,13 @@ public class TimeSlicerToKML {
 									.getHeight(parentNode);
 
 							Object[] location = (Object[]) Utils
-									.getArrayNodeAttribute(node, locationString);
+									.getArrayNodeAttribute(node, coordinatesName);
 							double latitude = (Double) location[0];
 							double longitude = (Double) location[1];
 
 							Object[] parentLocation = (Object[]) Utils
 									.getArrayNodeAttribute(parentNode,
-											locationString);
+											coordinatesName);
 							double parentLatitude = (Double) parentLocation[0];
 							double parentLongitude = (Double) parentLocation[1];
 

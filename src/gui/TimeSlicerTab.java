@@ -54,13 +54,13 @@ public class TimeSlicerTab extends JPanel {
 	private Color branchesMinColor;
 
 	// Strings for paths
-	private String mccTreeFilename;
+	private String treeFilename;
 	private String treesFilename;
 	private File workingDirectory;
 
 	// Text fields
 	private JTextField burnInParser;
-	private JTextField locationAttNameParser;
+	private JTextField coordinatesNameParser;
 	private JTextField rateAttNameParser;
 	private JTextField precisionAttNameParser;
 	private JTextField numberOfIntervalsParser;
@@ -122,7 +122,7 @@ public class TimeSlicerTab extends JPanel {
 
 		// Setup text fields
 		burnInParser = new JTextField("500", 10);
-		locationAttNameParser = new JTextField("location", 10);
+		coordinatesNameParser = new JTextField("location", 10);
 		rateAttNameParser = new JTextField("rate", 10);
 		precisionAttNameParser = new JTextField("precision", 10);
 		numberOfIntervalsParser = new JTextField("10", 5);
@@ -245,7 +245,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Location attribute name:"));
-		tmpPanel.add(locationAttNameParser);
+		tmpPanel.add(coordinatesNameParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -398,8 +398,8 @@ public class TimeSlicerTab extends JPanel {
 
 				chooser.showOpenDialog(Utils.getActiveFrame());
 				File file = chooser.getSelectedFile();
-				mccTreeFilename = file.getAbsolutePath();
-				System.out.println("Opened " + mccTreeFilename + "\n");
+				treeFilename = file.getAbsolutePath();
+				System.out.println("Opened " + treeFilename + "\n");
 
 				if (workingDirectory == null) {
 					workingDirectory = chooser.getCurrentDirectory();
@@ -507,7 +507,7 @@ public class TimeSlicerTab extends JPanel {
 
 						TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
 
-						timeSlicerToKML.setTreePath(mccTreeFilename);
+						timeSlicerToKML.setTreePath(treeFilename);
 
 						timeSlicerToKML.setTreesPath(treesFilename);
 
@@ -515,7 +515,7 @@ public class TimeSlicerTab extends JPanel {
 								.getText()));
 
 						timeSlicerToKML
-								.setLocationAttName(locationAttNameParser
+								.setLocationAttName(coordinatesNameParser
 										.getText());
 
 						timeSlicerToKML.setRateAttName(rateAttNameParser
@@ -660,7 +660,7 @@ public class TimeSlicerTab extends JPanel {
 						generateProcessing.setEnabled(false);
 						progressBar.setIndeterminate(true);
 
-						timeSlicerToProcessing.setMccTreePath(mccTreeFilename);
+						timeSlicerToProcessing.setMccTreePath(treeFilename);
 
 						timeSlicerToProcessing.setTreesPath(treesFilename);
 
@@ -668,7 +668,7 @@ public class TimeSlicerTab extends JPanel {
 								.valueOf(burnInParser.getText()));
 
 						timeSlicerToProcessing
-								.setLocationAttName(locationAttNameParser
+								.setCoordinatesName(coordinatesNameParser
 										.getText());
 
 						timeSlicerToProcessing.setRateAttName(rateAttNameParser
