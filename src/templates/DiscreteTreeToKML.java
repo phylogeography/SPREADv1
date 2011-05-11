@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -242,8 +240,7 @@ public class DiscreteTreeToKML {
 		final int NTHREDS = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
 
-		// executor.submit(new DiscreteSanityCheck());
-		executor.submit(new SanityCheck());
+		// executor.submit(new SanityCheck());
 		executor.submit(new Places());
 		executor.submit(new Branches());
 		executor.submit(new Circles());
@@ -556,46 +553,6 @@ public class DiscreteTreeToKML {
 
 		}// END: run
 	}// END: Circles class
-
-	private class SanityCheck implements Runnable {
-
-		public void run() {
-
-			Set<String> uniqueTreeStates = new HashSet<String>();
-			for (Node node : tree.getNodes()) {
-				if (!tree.isRoot(node)) {
-
-					uniqueTreeStates.add(Utils.getStringNodeAttribute(node,
-							stateAttName));
-
-				}
-			}// END: node loop
-
-			Object[] uniqueTreeStatesArray = uniqueTreeStates.toArray();
-
-			for (int i = 0; i < data.locations.length; i++) {
-
-				String state = null;
-
-				for (int j = 0; j < uniqueTreeStatesArray.length; j++) {
-
-					if (data.locations[i].toLowerCase().equals(
-							((String) uniqueTreeStatesArray[j]).toLowerCase())) {
-
-						state = data.locations[i];
-
-					}// END: if location and discrete states match
-
-				}// END: unique discrete states loop
-
-				if (state == null) { // if none matches
-					System.out.println("Location " + data.locations[i]
-							+ " does not fit any of the discrete states");
-				}
-			}// END: locations loop
-
-		}// END: run
-	}// END: SanityCheck class
 
 	private double[][] CountLineagesHoldingState(int numberOfIntervals,
 			double rootHeight) {

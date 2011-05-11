@@ -356,7 +356,7 @@ public class DiscreteModelTab extends JPanel {
 				System.out.println("Opened " + treeFilename + "\n");
 
 				File tmpDir = chooser.getCurrentDirectory();
-				
+
 				if (tmpDir != null) {
 					workingDirectory = tmpDir;
 					System.out.println("Setted working directory to "
@@ -384,7 +384,7 @@ public class DiscreteModelTab extends JPanel {
 				System.out.println("Opened " + locationsFilename + "\n");
 
 				File tmpDir = chooser.getCurrentDirectory();
-				
+
 				if (tmpDir != null) {
 					workingDirectory = tmpDir;
 					System.out.println("Setted working directory to "
@@ -458,106 +458,117 @@ public class DiscreteModelTab extends JPanel {
 						generateKml.setEnabled(false);
 						progressBar.setIndeterminate(true);
 
-						DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
+						if (new DiscreteSanityCheck()
+								.check(treeFilename, stateAttNameParser
+										.getText(), locationsFilename)) {
 
-						discreteTreeToKML
-								.setLocationFilePath(locationsFilename);
+							DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
 
-						discreteTreeToKML.setStateAttName(stateAttNameParser
-								.getText());
+							discreteTreeToKML
+									.setLocationFilePath(locationsFilename);
 
-						discreteTreeToKML.setMaxAltitudeMapping(Double
-								.valueOf(maxAltMappingParser.getText()));
+							discreteTreeToKML
+									.setStateAttName(stateAttNameParser
+											.getText());
 
-						discreteTreeToKML.setMrsdString(dateSpinner.getValue()
-								+ " "
-								+ (eraParser.getSelectedIndex() == 0 ? "AD"
-										: "BC"));
+							discreteTreeToKML.setMaxAltitudeMapping(Double
+									.valueOf(maxAltMappingParser.getText()));
 
-						discreteTreeToKML.setNumberOfIntervals(Integer
-								.valueOf(numberOfIntervalsParser.getText()));
+							discreteTreeToKML.setMrsdString(dateSpinner
+									.getValue()
+									+ " "
+									+ (eraParser.getSelectedIndex() == 0 ? "AD"
+											: "BC"));
 
-						discreteTreeToKML.setKmlWriterPath(workingDirectory
-								.toString().concat("/").concat(
-										kmlPathParser.getText()));
+							discreteTreeToKML
+									.setNumberOfIntervals(Integer
+											.valueOf(numberOfIntervalsParser
+													.getText()));
 
-						discreteTreeToKML.setTreePath(treeFilename);
+							discreteTreeToKML.setKmlWriterPath(workingDirectory
+									.toString().concat("/").concat(
+											kmlPathParser.getText()));
 
-						discreteTreeToKML
-								.setMinPolygonRedMapping(polygonsMinColor
-										.getRed());
+							discreteTreeToKML.setTreePath(treeFilename);
 
-						discreteTreeToKML
-								.setMinPolygonGreenMapping(polygonsMinColor
-										.getGreen());
+							discreteTreeToKML
+									.setMinPolygonRedMapping(polygonsMinColor
+											.getRed());
 
-						discreteTreeToKML
-								.setMinPolygonBlueMapping(polygonsMinColor
-										.getBlue());
+							discreteTreeToKML
+									.setMinPolygonGreenMapping(polygonsMinColor
+											.getGreen());
 
-						discreteTreeToKML
-								.setMinPolygonOpacityMapping(polygonsMinColor
-										.getAlpha());
+							discreteTreeToKML
+									.setMinPolygonBlueMapping(polygonsMinColor
+											.getBlue());
 
-						discreteTreeToKML
-								.setMaxPolygonRedMapping(polygonsMaxColor
-										.getRed());
+							discreteTreeToKML
+									.setMinPolygonOpacityMapping(polygonsMinColor
+											.getAlpha());
 
-						discreteTreeToKML
-								.setMaxPolygonGreenMapping(polygonsMaxColor
-										.getGreen());
+							discreteTreeToKML
+									.setMaxPolygonRedMapping(polygonsMaxColor
+											.getRed());
 
-						discreteTreeToKML
-								.setMaxPolygonBlueMapping(polygonsMaxColor
-										.getBlue());
+							discreteTreeToKML
+									.setMaxPolygonGreenMapping(polygonsMaxColor
+											.getGreen());
 
-						discreteTreeToKML
-								.setMaxPolygonOpacityMapping(polygonsMaxColor
-										.getAlpha());
+							discreteTreeToKML
+									.setMaxPolygonBlueMapping(polygonsMaxColor
+											.getBlue());
 
-						discreteTreeToKML
-								.setPolygonsRadiusMultiplier(polygonsRadiusMultiplierParser
-										.getValue());
+							discreteTreeToKML
+									.setMaxPolygonOpacityMapping(polygonsMaxColor
+											.getAlpha());
 
-						discreteTreeToKML
-								.setMinBranchRedMapping(branchesMinColor
-										.getRed());
+							discreteTreeToKML
+									.setPolygonsRadiusMultiplier(polygonsRadiusMultiplierParser
+											.getValue());
 
-						discreteTreeToKML
-								.setMinBranchGreenMapping(branchesMinColor
-										.getGreen());
+							discreteTreeToKML
+									.setMinBranchRedMapping(branchesMinColor
+											.getRed());
 
-						discreteTreeToKML
-								.setMinBranchBlueMapping(branchesMinColor
-										.getBlue());
+							discreteTreeToKML
+									.setMinBranchGreenMapping(branchesMinColor
+											.getGreen());
 
-						discreteTreeToKML
-								.setMinBranchOpacityMapping(branchesMinColor
-										.getAlpha());
+							discreteTreeToKML
+									.setMinBranchBlueMapping(branchesMinColor
+											.getBlue());
 
-						discreteTreeToKML
-								.setMaxBranchRedMapping(branchesMaxColor
-										.getRed());
+							discreteTreeToKML
+									.setMinBranchOpacityMapping(branchesMinColor
+											.getAlpha());
 
-						discreteTreeToKML
-								.setMaxBranchGreenMapping(branchesMaxColor
-										.getGreen());
+							discreteTreeToKML
+									.setMaxBranchRedMapping(branchesMaxColor
+											.getRed());
 
-						discreteTreeToKML
-								.setMaxBranchBlueMapping(branchesMaxColor
-										.getBlue());
+							discreteTreeToKML
+									.setMaxBranchGreenMapping(branchesMaxColor
+											.getGreen());
 
-						discreteTreeToKML
-								.setMaxBranchOpacityMapping(branchesMaxColor
-										.getAlpha());
+							discreteTreeToKML
+									.setMaxBranchBlueMapping(branchesMaxColor
+											.getBlue());
 
-						discreteTreeToKML.setBranchWidth(branchesWidthParser
-								.getValue());
+							discreteTreeToKML
+									.setMaxBranchOpacityMapping(branchesMaxColor
+											.getAlpha());
 
-						discreteTreeToKML.GenerateKML();
+							discreteTreeToKML
+									.setBranchWidth(branchesWidthParser
+											.getValue());
 
-						System.out.println("Finished in: "
-								+ discreteTreeToKML.time + " msec \n");
+							discreteTreeToKML.GenerateKML();
+
+							System.out.println("Finished in: "
+									+ discreteTreeToKML.time + " msec \n");
+
+						}// END: check
 
 					} catch (Exception e) {
 						e.printStackTrace();
