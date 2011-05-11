@@ -1,62 +1,66 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- WARNING: Eclipse auto-generated file.
-              Any modifications will be overwritten.
-              To include a user specific buildfile here, simply create one in the same
-              directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. -->
-<project basedir="." default="build" name="Spread">
-    <property environment="env"/>
-    <property name="ECLIPSE_HOME" value="../../../../../../usr/lib/eclipse"/>
-    <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.6"/>
-    <property name="source" value="1.6"/>
-    <path id="Spread.classpath">
-        <pathelement location="bin"/>
-        <pathelement location="lib/core.jar"/>
-        <pathelement location="lib/jebl.jar"/>
-        <pathelement location="lib/org.boehn.kmlframework_20090320.jar"/>
-        <pathelement location="lib/colt.jar"/>
-        <pathelement location="lib/ColorPicker.jar"/>
-        <pathelement location="lib/quaqua.jar"/>
-    </path>
-    <target name="init">
-        <mkdir dir="bin"/>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir="src">
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="clean">
-        <delete dir="bin"/>
-    </target>
-    <target depends="clean" name="cleanall"/>
-    <target depends="build-subprojects,build-project" name="build"/>
-    <target name="build-subprojects"/>
-    <target depends="init" name="build-project">
-        <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
-            <src path="src"/>
-            <classpath refid="Spread.classpath"/>
-        </javac>
-    </target>
-    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
-    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
-        <copy todir="${ant.library.dir}">
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-        </copy>
-        <unzip dest="${ant.library.dir}">
-            <patternset includes="jdtCompilerAdapter.jar"/>
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-        </unzip>
-    </target>
-    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
-        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
-        <antcall target="build"/>
-    </target>
-    <target name="SpreadApp">
-        <java classname="gui.SpreadApp" failonerror="true" fork="yes">
-            <classpath refid="Spread.classpath"/>
-        </java>
-    </target>
+<project name="TestlabOutbreak" default="help" basedir=".">
+
+<property name="build.sysclasspath" value="last"/>
+
+<property name="main_class_OutBreak" value="gui.SpreadApp" />
+
+<target name="help">
+    <echo message="Common build targets:" />
+    <echo message="jar - Builds spread.jar" />
+    <echo message="build - Same as clean+jar" />
+    <echo message="compile - Compiles TestlabOutbreak classes" />
+    <echo message="clean - Remove all *.class and spread.jar" />
+</target>
+
+<property file="build.properties"/>
+<property name="buildDir" value="build" />
+
+<path id="classpath">
+    <pathelement path="." />
+    <fileset dir="lib">
+        <include name="*.jar" />
+    </fileset>
+    <pathelement location="." />
+</path>
+
+<target name="build" depends="clean,jar"/>
+
+<target name="jar" depends="compile">
+<mkdir dir="dist"/>
+    <jar jarfile="dist/spread.jar">
+     <manifest>
+<attribute name="Built-By" value="${user.name}" />
+<attribute name="Main-Class" value="${main_class_OutBreak}" />
+</manifest>
+        <fileset dir="classes"/>
+        <zipgroupfileset dir="lib" includes="core.jar"/>
+        <zipgroupfileset dir="lib" includes="jebl.jar"/>
+        <zipgroupfileset dir="lib" includes="org.boehn.kmlframework_20090320.jar"/>
+        <zipgroupfileset dir="lib" includes="colt.jar"/>
+        <zipgroupfileset dir="lib" includes="colt.jar"/>
+        <zipgroupfileset dir="lib" includes="ColorPicker.jar"/>
+        <zipgroupfileset dir="lib" includes="quaqua.jar"/>
+    </jar>
+</target>
+
+<target name="compile">
+    <mkdir dir="classes"/>
+    <mkdir dir="classes/icons"/>
+    <javac
+        srcdir="src"
+        destdir="classes"
+        classpathref="classpath"/>
+    <copy todir="classes/icons">
+        <fileset dir="icons">
+            <include name="**/*.png" />
+        </fileset>
+    </copy>
+</target>
+
+<target name="clean">
+    <delete dir="classes"/>
+    <delete dir="dist"/>
+</target>
+
 </project>
+
