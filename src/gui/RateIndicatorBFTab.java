@@ -323,8 +323,6 @@ public class RateIndicatorBFTab extends JPanel {
 
 				if (workingDirectory == null) {
 					workingDirectory = chooser.getCurrentDirectory();
-					System.out.println("Set working directory to "
-							+ workingDirectory.toString() + "\n");
 				}
 
 			} catch (Exception e) {
@@ -349,8 +347,6 @@ public class RateIndicatorBFTab extends JPanel {
 
 				if (workingDirectory == null) {
 					workingDirectory = chooser.getCurrentDirectory();
-					System.out.println("Set working directory to "
-							+ workingDirectory.toString() + "\n");
 				}
 
 			} catch (Exception e1) {
@@ -367,7 +363,6 @@ public class RateIndicatorBFTab extends JPanel {
 
 			if (c != null)
 				branchesMinColor = c;
-
 		}
 	}
 
@@ -379,7 +374,6 @@ public class RateIndicatorBFTab extends JPanel {
 
 			if (c != null)
 				branchesMaxColor = c;
-
 		}
 	}
 
@@ -495,6 +489,10 @@ public class RateIndicatorBFTab extends JPanel {
 				public void done() {
 					generateKml.setEnabled(true);
 					progressBar.setIndeterminate(false);
+
+					System.out.println("Generated "
+							+ workingDirectory.toString().concat("/").concat(
+									kmlPathParser.getText()));
 				}
 			};
 
@@ -605,7 +603,6 @@ public class RateIndicatorBFTab extends JPanel {
 				public void done() {
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
-
 				}
 			};
 

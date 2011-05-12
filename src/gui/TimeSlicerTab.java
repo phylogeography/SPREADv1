@@ -245,7 +245,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Location attribute name:"));
+		tmpPanel.setBorder(new TitledBorder("Coordinate attribute name:"));
 		tmpPanel.add(coordinatesNameParser);
 		leftPanel.add(tmpPanel);
 
@@ -404,8 +404,6 @@ public class TimeSlicerTab extends JPanel {
 
 				if (workingDirectory == null) {
 					workingDirectory = chooser.getCurrentDirectory();
-					System.out.println("Setted working directory to "
-							+ workingDirectory.toString() + "\n");
 				}
 
 			} catch (Exception e1) {
@@ -435,8 +433,6 @@ public class TimeSlicerTab extends JPanel {
 
 				if (workingDirectory == null) {
 					workingDirectory = chooser.getCurrentDirectory();
-					System.out.println("Setted working directory to "
-							+ workingDirectory.toString() + "\n");
 				}
 
 			} catch (Exception e) {
@@ -652,6 +648,11 @@ public class TimeSlicerTab extends JPanel {
 				public void done() {
 					generateKml.setEnabled(true);
 					progressBar.setIndeterminate(false);
+					
+					System.out.println("Generated " + workingDirectory
+							.toString().concat("/").concat(
+									kmlPathParser.getText()));
+					
 				}
 			};
 

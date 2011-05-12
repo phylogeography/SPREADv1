@@ -346,8 +346,6 @@ public class ContinuousModelTab extends JPanel {
 
 				if (tmpDir != null) {
 					workingDirectory = tmpDir;
-					System.out.println("Setted working directory to "
-							+ workingDirectory.toString() + "\n");
 				}
 
 			} catch (Exception e) {
@@ -376,7 +374,6 @@ public class ContinuousModelTab extends JPanel {
 
 			if (c != null)
 				polygonsMaxColor = c;
-
 		}
 	}
 
@@ -388,7 +385,6 @@ public class ContinuousModelTab extends JPanel {
 
 			if (c != null)
 				branchesMinColor = c;
-
 		}
 	}
 
@@ -400,7 +396,6 @@ public class ContinuousModelTab extends JPanel {
 
 			if (c != null)
 				branchesMaxColor = c;
-
 		}
 	}
 
@@ -545,6 +540,10 @@ public class ContinuousModelTab extends JPanel {
 				public void done() {
 					generateKml.setEnabled(true);
 					progressBar.setIndeterminate(false);
+					
+					System.out.println("Generated " + workingDirectory
+							.toString().concat("/").concat(
+									kmlPathParser.getText()));
 				}
 			};
 
