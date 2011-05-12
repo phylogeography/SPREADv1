@@ -239,7 +239,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 				System.out.println("BF=" + bayesFactors.get(i) + " : between "
 						+ parentState + " (long: " + parentLongitude
-						+ "; lat: " + parentLongitude + ") and " + state
+						+ "; lat: " + parentLatitude + ") and " + state
 						+ " (long: " + longitude + "; lat: " + latitude + ")");
 			}
 		}// END: ArrayList loop

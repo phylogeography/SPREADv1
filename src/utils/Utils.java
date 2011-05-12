@@ -726,7 +726,7 @@ public class Utils {
 		/**
 		 * Match state name with its coordinates
 		 * 
-		 * 0 for lon, 1 for lat
+		 * 1 for lon, 0 for lat
 		 */
 		float coordinate = Float.NaN;
 

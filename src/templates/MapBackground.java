@@ -14,7 +14,7 @@ public class MapBackground {
 	public MapBackground(PApplet p) {
 
 		parent = p;
-
+		
 		if (fromJar) {
 			imgPath = "jar:"
 					+ this.getClass().getResource("world_map.png").getPath();

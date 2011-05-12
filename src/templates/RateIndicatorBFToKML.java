@@ -243,21 +243,21 @@ public class RateIndicatorBFToKML {
 					String parentState = combin.get(i).split(":")[0];
 
 					double longitude = Utils.MatchStateCoordinate(locations,
-							state, 0);
-					double latitude = Utils.MatchStateCoordinate(locations,
 							state, 1);
+					double latitude = Utils.MatchStateCoordinate(locations,
+							state, 0);
 
 					float parentLongitude = Utils.MatchStateCoordinate(
-							locations, parentState, 0);
-					float parentLatitude = Utils.MatchStateCoordinate(
 							locations, parentState, 1);
+					float parentLatitude = Utils.MatchStateCoordinate(
+							locations, parentState, 0);
 
 					ratesLayer.addItem(new Line(
 							combin.get(i) + ", BF=" + bayesFactors.get(i), // name
-							new Coordinates(parentLatitude, parentLongitude),
+							new Coordinates(parentLongitude, parentLatitude ),
 							Double.NaN, // startime
 							linesStyle, // style startstyle
-							new Coordinates(latitude, longitude), // endCoords
+							new Coordinates( longitude, latitude), // endCoords
 							Double.NaN, // double endtime
 							linesStyle, // style endstyle
 							maxAltitude, // double maxAltitude
@@ -268,7 +268,7 @@ public class RateIndicatorBFToKML {
 
 					System.out.println("BF=" + bayesFactors.get(i)
 							+ " : between " + parentState + " (long: "
-							+ parentLongitude + "; lat: " + parentLongitude
+							+ parentLongitude + "; lat: " + parentLatitude
 							+ ") and " + state + " (long: " + longitude
 							+ "; lat: " + latitude + ")");
 
