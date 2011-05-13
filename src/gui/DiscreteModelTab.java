@@ -34,7 +34,7 @@ import com.bric.swing.ColorPicker;
 @SuppressWarnings("serial")
 public class DiscreteModelTab extends JPanel {
 
-	// Sizing constants/
+	// Sizing constants
 	private final int leftPanelWidth = 200;
 	private final int leftPanelHeight = 1200;
 
