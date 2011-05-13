@@ -321,8 +321,10 @@ public class RateIndicatorBFTab extends JPanel {
 				logFilename = file.getAbsolutePath();
 				System.out.println("Opened " + logFilename + "\n");
 
-				if (workingDirectory == null) {
-					workingDirectory = chooser.getCurrentDirectory();
+				File tmpDir = chooser.getCurrentDirectory();
+
+				if (tmpDir != null) {
+					workingDirectory = tmpDir;
 				}
 
 			} catch (Exception e) {
@@ -345,8 +347,10 @@ public class RateIndicatorBFTab extends JPanel {
 				locationsFilename = file.getAbsolutePath();
 				System.out.println("Opened " + locationsFilename + "\n");
 
-				if (workingDirectory == null) {
-					workingDirectory = chooser.getCurrentDirectory();
+				File tmpDir = chooser.getCurrentDirectory();
+
+				if (tmpDir != null) {
+					workingDirectory = tmpDir;
 				}
 
 			} catch (Exception e1) {
@@ -518,6 +522,11 @@ public class RateIndicatorBFTab extends JPanel {
 
 						rateIndicatorBFToProcessing.setBfCutoff(Double
 								.valueOf(bfCutoffParser.getText()));
+
+//						rateIndicatorBFToProcessing
+//								.setNumberOfIntervals(Integer
+//										.valueOf(numberOfIntervalsParser
+//												.getText()));
 
 						rateIndicatorBFToProcessing
 								.setLocationFilePath(locationsFilename);

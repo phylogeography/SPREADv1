@@ -175,11 +175,12 @@ public class KMLGenerator implements Generator {
 				double endLon = line.getEndLocation().getLongitude();
 				double endLat = line.getEndLocation().getLatitude();
 
+				int sliceCount = timeLine.getSliceCount();
+
 				// Calculate full distance
 				double distance = Utils.RhumbDistance(startLon, startLat,
 						endLon, endLat);
 
-				int sliceCount = timeLine.getSliceCount();
 				double distanceSlice = distance / (double) sliceCount;
 
 				// Convert to radians

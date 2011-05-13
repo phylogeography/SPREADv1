@@ -229,6 +229,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				float parentLatitude = Utils.MatchStateCoordinate(locations,
 						parentState, 0);
 
+				//
+
 				float x0 = map(parentLongitude, minX, maxX, 0, width);
 				float y0 = map(parentLatitude, maxY, minY, 0, height);
 
@@ -236,6 +238,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				float y1 = map(latitude, maxY, minY, 0, height);
 
 				line(x0, y0, x1, y1);
+
+				//
 
 				System.out.println("BF=" + bayesFactors.get(i) + " : between "
 						+ parentState + " (long: " + parentLongitude
