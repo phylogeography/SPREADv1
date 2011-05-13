@@ -540,9 +540,9 @@ public class ContinuousModelTab extends JPanel {
 				public void done() {
 					generateKml.setEnabled(true);
 					progressBar.setIndeterminate(false);
-					
-					System.out.println("Generated " + workingDirectory
-							.toString().concat("/").concat(
+
+					System.out.println("Generated "
+							+ workingDirectory.toString().concat("/").concat(
 									kmlPathParser.getText()));
 				}
 			};

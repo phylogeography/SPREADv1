@@ -584,9 +584,9 @@ public class DiscreteModelTab extends JPanel {
 				public void done() {
 					generateKml.setEnabled(true);
 					progressBar.setIndeterminate(false);
-					
-					System.out.println("Generated " + workingDirectory
-							.toString().concat("/").concat(
+
+					System.out.println("Generated "
+							+ workingDirectory.toString().concat("/").concat(
 									kmlPathParser.getText()));
 				}
 			};
@@ -627,9 +627,8 @@ public class DiscreteModelTab extends JPanel {
 							discreteTreeToProcessing
 									.setLocationFilePath(locationsFilename);
 
-							// TODO Should only be done when changed, not with
-							// each
-							// draw
+							// TODO Should only be done when changed,
+							// not with each draw
 							discreteTreeToProcessing.setTreePath(treeFilename);
 
 							discreteTreeToProcessing
