@@ -33,15 +33,17 @@ import structure.Place;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
+import utils.RhumbIntermediate;
 import utils.Utils;
 
 public class KMLGenerator implements Generator {
 
-	List<StyleSelector> styles = new ArrayList<StyleSelector>();
+	private List<StyleSelector> styles = new ArrayList<StyleSelector>();
 	private TimeLine timeLine;
 	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",
 			Locale.US);
-	Document document = new Document();
+	private Document document = new Document();
+	private RhumbIntermediate rhumbIntermediate;
 
 	// Earths radius in km
 	static final double EarthRadius = 6371.0;
@@ -177,62 +179,12 @@ public class KMLGenerator implements Generator {
 
 				int sliceCount = timeLine.getSliceCount();
 
-				// Calculate full distance
-				double distance = Utils.RhumbDistance(startLon, startLat,
-						endLon, endLat);
-
-				double distanceSlice = distance / (double) sliceCount;
-
-				// Convert to radians
-				double rlon1 = Utils.LongNormalise(Math.toRadians(startLon));
-				double rlat1 = Math.toRadians(startLat);
-				double rlon2 = Utils.LongNormalise(Math.toRadians(endLon));
-				double rlat2 = Math.toRadians(endLat);
-
-				double coords[][] = new double[sliceCount + 1][2];
-				coords[0][0] = startLon;
-				coords[0][1] = startLat;
-				coords[sliceCount][0] = endLon;
-				coords[sliceCount][1] = endLat;
-
-				for (int i = 1; i < sliceCount; i++) {
-
-					distance = distanceSlice;
-					double rDist = distance / EarthRadius;
-
-					// Calculate the bearing
-					double bearing = Utils.rhumbBearing(rlon1, rlat1, rlon2,
-							rlat2);
-
-					// use the bearing and the start point to find the
-					// destination
-					double newLonRad = Utils.LongNormalise(rlon1
-							+ Math.atan2(Math.sin(bearing) * Math.sin(rDist)
-									* Math.cos(rlat1), Math.cos(rDist)
-									- Math.sin(rlat1) * Math.sin(rlat2)));
-
-					double newLatRad = Math.asin(Math.sin(rlat1)
-							* Math.cos(rDist) + Math.cos(rlat1)
-							* Math.sin(rDist) * Math.cos(bearing));
-
-					// Convert from radians to degrees
-					double newLat = Math.toDegrees(newLatRad);
-					double newLon = Math.toDegrees(newLonRad);
-
-					coords[i][0] = newLon;
-					coords[i][1] = newLat;
-
-					// This updates the input to calculate new bearing
-					rlon1 = newLonRad;
-					rlat1 = newLatRad;
-
-					distance = Utils.RhumbDistance(newLon, newLat, endLon,
-							endLat);
-					distanceSlice = distance / (sliceCount - i);
-
-				}
+				rhumbIntermediate = new RhumbIntermediate(startLon, startLat,
+						endLon, endLat, sliceCount);
+				double coords[][] = rhumbIntermediate.getCoords();
 
 				double lineSpan = timeLine.getEndTime() - startTime;
+
 				// Controls how fast the lines should get to their end point (to
 				// be in sync with each other)
 				double speed = 0.1;
