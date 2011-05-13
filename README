@@ -43,7 +43,8 @@ ColorPicker.jar
 ________________________________________________________________________________
                               TODO
 * Processing applets
-   - We could draw the lines along great circle arcs and not flat
+   - We could draw the lines along great circle arcs or rhumb lines, this would require 
+     getting the code in kml generator class to work with processing
 * TimeSlicer template
   - give the concurrent implementation of AnalyzeTree another try. This might        
     be achieveable with ConcurrentHashMap class  
