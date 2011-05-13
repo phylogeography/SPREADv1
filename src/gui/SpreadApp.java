@@ -119,6 +119,14 @@ public class SpreadApp {
 		// Setup Tabbed Pane
 		tabbedPane = new JTabbedPane();
 
+		// add Discrete Model Tab
+		discreteModelTab = new DiscreteModelTab();
+		tabbedPane.add("Discrete Model", discreteModelTab);
+
+		// add rateIndicatorBF Tab
+		rateIndicatorBFTab = new RateIndicatorBFTab();
+		tabbedPane.add("Rate Indicator BF test", rateIndicatorBFTab);
+
 		// add Continuous Model Tab
 		continuousModelTab = new ContinuousModelTab();
 		tabbedPane.add("Continuous Model", continuousModelTab);
@@ -126,14 +134,6 @@ public class SpreadApp {
 		// add Time Slicer tab
 		timeSlicerTab = new TimeSlicerTab();
 		tabbedPane.add("Time Slicer", timeSlicerTab);
-
-		// add Discrete Model Tab
-		discreteModelTab = new DiscreteModelTab();
-		tabbedPane.add("Discrete Model", discreteModelTab);
-
-		// add Discrete Model Tab
-		rateIndicatorBFTab = new RateIndicatorBFTab();
-		tabbedPane.add("Rate Indicator BF test", rateIndicatorBFTab);
 
 		// add Terminal Tab
 		terminalTab = new TerminalTab();
