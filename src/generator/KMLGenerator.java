@@ -45,10 +45,8 @@ public class KMLGenerator implements Generator {
 	private Document document = new Document();
 	private RhumbIntermediate rhumbIntermediate;
 
-	// Earths radius in km
-	static final double EarthRadius = 6371.0;
 	// 01-01-01 in millis before 1970-01-01
-	static final double YearZeroinMillis = -62135773200000.0;
+	private static final double YearZeroinMillis = -62135773200000.0;
 
 	public KMLGenerator() {
 	}
