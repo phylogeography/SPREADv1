@@ -52,7 +52,7 @@
         destdir="classes"
         classpathref="classpath"/>
     <copy todir="classes/icons">
-        <fileset dir="icons">
+        <fileset dir="src/icons">
             <include name="**/*.png" />
         </fileset>
     </copy>
