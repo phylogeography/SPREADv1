@@ -151,7 +151,7 @@ public class SpreadApp {
 		public void actionPerformed(ActionEvent ev) {
 
 			String helpText = "S.P.R.E.A.D. \n"
-					+ "Spatial Phylogenetic Reconstruction \n"
+					+ "Spatial Phylogenetic Reconstruction of Evolutionary Dynamics\n"
 					+ "Version 1.0, 2011 \n"
 					+ "BEAST software: http://beast.bio.ed.ac.uk/Main_Page \n"
 					+ "Processing libraries: http://processing.org/ \n"
