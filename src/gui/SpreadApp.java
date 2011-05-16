@@ -91,7 +91,7 @@ public class SpreadApp {
 		clearIcon = CreateImageIcon("/icons/clear.png");
 
 		// Setup Main Frame
-		frame = new JFrame("S.P.R.E.A.D.");
+		frame = new JFrame("SPREAD");
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.addWindowListener(new ListenCloseWdw());
 		frame.setIconImage(CreateImage("/icons/nuclear.png"));
