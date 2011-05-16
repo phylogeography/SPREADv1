@@ -33,7 +33,7 @@ import structure.Place;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
-import utils.RhumbIntermediate;
+import utils.GeoIntermediate;
 import utils.Utils;
 
 public class KMLGenerator implements Generator {
@@ -43,7 +43,7 @@ public class KMLGenerator implements Generator {
 	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",
 			Locale.US);
 	private Document document = new Document();
-	private RhumbIntermediate rhumbIntermediate;
+	private GeoIntermediate rhumbIntermediate;
 
 	// 01-01-01 in millis before 1970-01-01
 	private static final double YearZeroinMillis = -62135773200000.0;
@@ -177,7 +177,7 @@ public class KMLGenerator implements Generator {
 
 				int sliceCount = timeLine.getSliceCount();
 
-				rhumbIntermediate = new RhumbIntermediate(startLon, startLat,
+				rhumbIntermediate = new GeoIntermediate(startLon, startLat,
 						endLon, endLat, sliceCount);
 				double coords[][] = rhumbIntermediate.getCoords();
 

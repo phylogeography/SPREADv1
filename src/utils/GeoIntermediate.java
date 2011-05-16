@@ -1,17 +1,34 @@
 package utils;
 
-public class RhumbIntermediate {
+public class GeoIntermediate {
 
 	// Earths radius in km
 	static final double EarthRadius = 6371.0;
 	private double coords[][];
 
-	public RhumbIntermediate(double startLon, double startLat, double endLon,
+	private enum navigationEnum {
+		RHUMB, ARC
+	}
+
+	private navigationEnum navigationSwitcher;
+
+	public GeoIntermediate(double startLon, double startLat, double endLon,
 			double endLat, int sliceCount) {
 
+		navigationSwitcher = navigationEnum.RHUMB;
+
 		// Calculate full distance
-		double distance = Utils.RhumbDistance(startLon, startLat, endLon,
-				endLat);
+		double distance = 0;
+		switch (navigationSwitcher) {
+		case RHUMB:
+			distance = Utils.RhumbDistance(startLon, startLat, endLon, endLat);
+			break;
+
+		case ARC:
+			distance = Utils.GreatCircDistSpherLawCos(startLon, startLat,
+					endLon, endLat);
+			break;
+		}
 
 		double distanceSlice = distance / (double) sliceCount;
 
@@ -32,8 +49,17 @@ public class RhumbIntermediate {
 			distance = distanceSlice;
 			double rDist = distance / EarthRadius;
 
+			double bearing = 0;
 			// Calculate the bearing
-			double bearing = Utils.rhumbBearing(rlon1, rlat1, rlon2, rlat2);
+			switch (navigationSwitcher) {
+			case RHUMB:
+				bearing = Utils.rhumbBearing(rlon1, rlat1, rlon2, rlat2);
+				break;
+
+			case ARC:
+				bearing = Utils.Bearing(rlon1, rlat1, rlon2, rlat2);
+				break;
+			}
 
 			// use the bearing and the start point to find the
 			// destination
@@ -56,7 +82,17 @@ public class RhumbIntermediate {
 			rlon1 = newLonRad;
 			rlat1 = newLatRad;
 
-			distance = Utils.RhumbDistance(newLon, newLat, endLon, endLat);
+			switch (navigationSwitcher) {
+			case RHUMB:
+				distance = Utils.RhumbDistance(newLon, newLat, endLon, endLat);
+				break;
+
+			case ARC:
+				distance = Utils.GreatCircDistSpherLawCos(newLon, newLat,
+						endLon, endLat);
+				break;
+			}
+
 			distanceSlice = distance / (sliceCount - i);
 
 		}// END: sliceCount loop
@@ -66,6 +102,14 @@ public class RhumbIntermediate {
 	public double[][] getCoords() {
 
 		return coords;
+	}
+
+	public void setRhumbNavigation() {
+		navigationSwitcher = navigationEnum.RHUMB;
+	}
+
+	public void setArcNavigation() {
+		navigationSwitcher = navigationEnum.ARC;
 	}
 
 }// END: RhumbIntermediate class

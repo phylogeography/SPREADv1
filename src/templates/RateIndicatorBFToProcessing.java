@@ -6,6 +6,7 @@ import java.util.List;
 
 import processing.core.PApplet;
 import processing.core.PFont;
+import utils.GeoIntermediate;
 import utils.ReadLocations;
 import utils.ReadLog;
 import utils.Utils;
@@ -19,6 +20,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private List<Double> bayesFactors;
 	private List<String> combin;
 	private MapBackground mapBackground;
+	// private int numberOfIntervals;
 
 	private double minBranchRedMapping;
 	private double minBranchGreenMapping;
@@ -48,6 +50,10 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 	public RateIndicatorBFToProcessing() {
 	}// END: RateIndicatorBFToProcessing()
+
+	// public void setNumberOfIntervals(int number) {
+	// numberOfIntervals = number;
+	// }
 
 	public void setDefaultPoissonPriorOffset() {
 		poissonPriorOffsetSwitcher = PoissonPriorEnum.DEFAULT;
@@ -140,6 +146,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		mapBackground.drawMapBackground();
 		DrawPlaces();
 		DrawRates();
+		// DrawRateSlices();
 		DrawPlacesLabels();
 
 	}// END:draw
@@ -229,8 +236,6 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				float parentLatitude = Utils.MatchStateCoordinate(locations,
 						parentState, 0);
 
-				//
-
 				float x0 = map(parentLongitude, minX, maxX, 0, width);
 				float y0 = map(parentLatitude, maxY, minY, 0, height);
 
@@ -239,8 +244,6 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 				line(x0, y0, x1, y1);
 
-				//
-
 				System.out.println("BF=" + bayesFactors.get(i) + " : between "
 						+ parentState + " (long: " + parentLongitude
 						+ "; lat: " + parentLatitude + ") and " + state
@@ -248,6 +251,81 @@ public class RateIndicatorBFToProcessing extends PApplet {
 			}
 		}// END: ArrayList loop
 	}// END: DrawRates
+
+	@SuppressWarnings("unused")
+	private void DrawRateSlices() {
+
+		System.out.println("BF cutoff = " + bfCutoff);
+		System.out.println("mean Poisson Prior = " + meanPoissonPrior);
+		System.out.println("Poisson Prior offset = " + poissonPriorOffset);
+
+		strokeWeight((float) branchWidth);
+
+		float bfMax = (float) Math.log(Utils.getListMax(bayesFactors));
+
+		for (int i = 0; i < combin.size(); i++) {
+
+			if (bayesFactors.get(i) > bfCutoff) {
+
+				/**
+				 * Color mapping
+				 * */
+				float bf = (float) Math.log(bayesFactors.get(i));
+
+				int red = (int) Utils.map(bf, 0, bfMax, minBranchRedMapping,
+						maxBranchRedMapping);
+
+				int green = (int) Utils.map(bf, 0, bfMax,
+						minBranchGreenMapping, maxBranchGreenMapping);
+
+				int blue = (int) Utils.map(bf, 0, bfMax, minBranchBlueMapping,
+						maxBranchBlueMapping);
+
+				int alpha = (int) Utils.map(bf, 0, bfMax,
+						maxBranchOpacityMapping, minBranchOpacityMapping);
+
+				stroke(red, green, blue, alpha);
+
+				String state = combin.get(i).split(":")[1];
+				String parentState = combin.get(i).split(":")[0];
+
+				float longitude = Utils.MatchStateCoordinate(locations, state,
+						1);
+				float latitude = Utils
+						.MatchStateCoordinate(locations, state, 0);
+
+				float parentLongitude = Utils.MatchStateCoordinate(locations,
+						parentState, 1);
+				float parentLatitude = Utils.MatchStateCoordinate(locations,
+						parentState, 0);
+
+				GeoIntermediate rhumbIntermediate = new GeoIntermediate(
+						parentLongitude, parentLatitude, longitude, latitude,
+						100);
+				double[][] coords = rhumbIntermediate.getCoords();
+
+				for (int row = 0; row < coords.length - 1; row++) {
+
+					float x0 = map((float) coords[row][0], minX, maxX, 0, width);
+					float y0 = map((float) coords[row][1], maxY, minY, 0,
+							height);
+
+					float x1 = map((float) coords[row + 1][0], minX, maxX, 0,
+							width);
+					float y1 = map((float) coords[row + 1][1], maxY, minY, 0,
+							height);
+
+					line(x0, y0, x1, y1);
+
+				}// numberOfIntervals loop
+
+				System.out.println("BF=" + bayesFactors.get(i) + " : between "
+						+ parentState + " (long: " + parentLongitude
+						+ "; lat: " + parentLatitude + ") and " + state
+						+ " (long: " + longitude + "; lat: " + latitude + ")");
+			}
+		}// END: ArrayList loop
+	}// END: DrawRatesSlices
 
 	private void ComputeBFTest() {
 
