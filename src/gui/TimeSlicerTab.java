@@ -402,8 +402,10 @@ public class TimeSlicerTab extends JPanel {
 				treeFilename = file.getAbsolutePath();
 				System.out.println("Opened " + treeFilename + "\n");
 
-				if (workingDirectory == null) {
-					workingDirectory = chooser.getCurrentDirectory();
+				File tmpDir = chooser.getCurrentDirectory();
+
+				if (tmpDir != null) {
+					workingDirectory = tmpDir;
 				}
 
 			} catch (Exception e1) {
@@ -431,8 +433,10 @@ public class TimeSlicerTab extends JPanel {
 				treesFilename = file.getAbsolutePath();
 				System.out.println("Opened " + treesFilename + "\n");
 
-				if (workingDirectory == null) {
-					workingDirectory = chooser.getCurrentDirectory();
+				File tmpDir = chooser.getCurrentDirectory();
+
+				if (tmpDir != null) {
+					workingDirectory = tmpDir;
 				}
 
 			} catch (Exception e) {

@@ -51,6 +51,7 @@ ________________________________________________________________________________
   - Polygons should also be easily executed in parallel (read only operation),
     the problem is in getting the style id's right
 * Add an editor for locations file    
+* Add Cannot impute, no precision attribute warning message in Time Slicer
     
     
     
