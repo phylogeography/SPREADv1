@@ -121,15 +121,15 @@ public class SpreadApp {
 
 		// add Discrete Model Tab
 		discreteModelTab = new DiscreteModelTab();
-		tabbedPane.add("Discrete Model", discreteModelTab);
+		tabbedPane.add("Discrete Tree", discreteModelTab);
 
 		// add rateIndicatorBF Tab
 		rateIndicatorBFTab = new RateIndicatorBFTab();
-		tabbedPane.add("Rate Indicator BF test", rateIndicatorBFTab);
+		tabbedPane.add("Discrete Bayes Factors", rateIndicatorBFTab);
 
 		// add Continuous Model Tab
 		continuousModelTab = new ContinuousModelTab();
-		tabbedPane.add("Continuous Model", continuousModelTab);
+		tabbedPane.add("Continuous Tree", continuousModelTab);
 
 		// add Time Slicer tab
 		timeSlicerTab = new TimeSlicerTab();
