@@ -35,6 +35,7 @@ public class LocationCoordinatesEditor {
 	// Icons
 	private ImageIcon loadIcon;
 	private ImageIcon saveIcon;
+	private ImageIcon doneIcon;
 
 	// Menubar
 	private JMenuBar menu;
@@ -63,15 +64,17 @@ public class LocationCoordinatesEditor {
 		// Setup icons
 		loadIcon = CreateImageIcon("/icons/locations.png");
 		saveIcon = CreateImageIcon("/icons/save.png");
+		doneIcon = CreateImageIcon("/icons/check.png");
 
 		// Setup Main Menu buttons
 		load = new JButton("Load", loadIcon);
 		save = new JButton("Save", saveIcon);
-		done = new JButton("Done");
+		done = new JButton("Done", doneIcon);
 
 		// Add Main Menu buttons listeners
 		load.addActionListener(new ListenOpenLocations());
 		save.addActionListener(new ListenSaveLocationCoordinates());
+		done.addActionListener(new ListenOk());
 
 		// Setup menu
 		menu = new JMenuBar();
@@ -173,6 +176,14 @@ public class LocationCoordinatesEditor {
 		}// END: actionPerformed
 	}// END: ListenSaveLocationCoordinates
 
+	private class ListenOk implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			window.setVisible(false);
+
+		}// END: actionPerformed
+	}// END: ListenSaveLocationCoordinates
+
 	private class InteractiveTableModelListener implements TableModelListener {
 		public void tableChanged(TableModelEvent ev) {
 
@@ -257,10 +268,6 @@ public class LocationCoordinatesEditor {
 			e.printStackTrace();
 		}
 	}// END: JTableToTDV
-
-	public ReadLocations getCoordinates() {
-		return data;
-	}
 
 	public void launch() {
 
