@@ -27,7 +27,8 @@ import utils.ReadLocations;
 import utils.Utils;
 
 public class LocationCoordinatesEditor {
-
+	
+	// TODO: this should be a JWindow, than it can accept a parent
 	// Frame
 	private JFrame frame;
 
@@ -218,6 +219,7 @@ public class LocationCoordinatesEditor {
 	public void launch() {
 
 		// Display Frame
+		// frame.setAlwaysOnTop(true);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.setSize(new Dimension(300, 300));
 		frame.setMinimumSize(new Dimension(100, 100));
@@ -239,6 +241,8 @@ public class LocationCoordinatesEditor {
 
 	private void JTableToTDV(String filename, InteractiveTableModel model) {
 
+		boolean empty = false;
+
 		try {
 
 			PrintWriter printWriter = new PrintWriter(filename);
@@ -246,16 +250,18 @@ public class LocationCoordinatesEditor {
 				for (int j = 0; j < model.getColumnCount() - 1; j++) {
 
 					String s = model.getValueAt(i, j).toString();
+					empty = s.trim().equals("");
 
-					if (s.equals("")) {
-						System.out.println("pusta");
+					if (!empty) {
 						printWriter.print(s + "\t");
-
 					}// END: check for empty values
 
 				}// END: col loop
 
-				printWriter.println("");
+				if (!empty) {
+					printWriter.println("");
+				}// END: check for empty values
+
 			}// END: row loop
 
 			printWriter.close();
