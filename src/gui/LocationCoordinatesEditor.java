@@ -11,12 +11,14 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JWindow;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -27,10 +29,10 @@ import utils.ReadLocations;
 import utils.Utils;
 
 public class LocationCoordinatesEditor {
-	
+
 	// TODO: this should be a JWindow, than it can accept a parent
 	// Frame
-	private JFrame frame;
+	private JDialog window;
 
 	// Icons
 	private ImageIcon loadIcon;
@@ -63,7 +65,7 @@ public class LocationCoordinatesEditor {
 	public LocationCoordinatesEditor() {
 
 		// Setup frame
-		frame = new JFrame();
+		window = new JDialog();
 
 		// Setup icons
 		loadIcon = CreateImageIcon("/icons/locations.png");
@@ -112,8 +114,8 @@ public class LocationCoordinatesEditor {
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 		// Setup frame
-		frame.setJMenuBar(menu);
-		frame.getContentPane().add(scrollPane);
+		window.getContentPane().add(menu, BorderLayout.NORTH);
+		window.getContentPane().add(scrollPane);
 
 	}// END: LocationCoordinatesEditor()
 
@@ -219,12 +221,11 @@ public class LocationCoordinatesEditor {
 	public void launch() {
 
 		// Display Frame
-		// frame.setAlwaysOnTop(true);
-		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		frame.setSize(new Dimension(300, 300));
-		frame.setMinimumSize(new Dimension(100, 100));
-		frame.setResizable(true);
-		frame.setVisible(true);
+		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		window.setSize(new Dimension(300, 300));
+		window.setMinimumSize(new Dimension(100, 100));
+		window.setResizable(true);
+		window.setVisible(true);
 	}// END: launch
 
 	private void highlightLastRow(int row) {

@@ -124,7 +124,7 @@ public class DiscreteModelTab extends JPanel {
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
 		openTree = new JButton("Open", treeIcon);
-		openLocationCoordinatesEditor = new JButton("Load", locationsIcon);
+		openLocationCoordinatesEditor = new JButton("Setup", locationsIcon);
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
 		polygonsMaxColorChooser = new JButton("Setup max");
