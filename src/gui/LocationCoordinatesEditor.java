@@ -18,7 +18,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JWindow;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -30,8 +29,7 @@ import utils.Utils;
 
 public class LocationCoordinatesEditor {
 
-	// TODO: this should be a JWindow, than it can accept a parent
-	// Frame
+	// Window
 	private JDialog window;
 
 	// Icons
@@ -58,14 +56,9 @@ public class LocationCoordinatesEditor {
 	private JTable table;
 	private InteractiveTableModel tableModel;
 	private String[] COLUMN_NAMES = { "Location", "Latitude", "Longitude", "" };
-
-	// Locations data
-	private ReadLocations data;
+	private ReadLocations data = null;
 
 	public LocationCoordinatesEditor() {
-
-		// Setup frame
-		window = new JDialog();
 
 		// Setup icons
 		loadIcon = CreateImageIcon("/icons/locations.png");
@@ -113,7 +106,9 @@ public class LocationCoordinatesEditor {
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-		// Setup frame
+		// Setup window
+		window = new JDialog(Utils.getActiveFrame(),
+				"Setup location coordinates...");
 		window.getContentPane().add(menu, BorderLayout.NORTH);
 		window.getContentPane().add(scrollPane);
 
@@ -218,16 +213,6 @@ public class LocationCoordinatesEditor {
 		}
 	}// END: getTableCellRendererComponent
 
-	public void launch() {
-
-		// Display Frame
-		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		window.setSize(new Dimension(300, 300));
-		window.setMinimumSize(new Dimension(100, 100));
-		window.setResizable(true);
-		window.setVisible(true);
-	}// END: launch
-
 	private void highlightLastRow(int row) {
 
 		int lastrow = tableModel.getRowCount();
@@ -272,6 +257,20 @@ public class LocationCoordinatesEditor {
 			e.printStackTrace();
 		}
 	}// END: JTableToTDV
+
+	public ReadLocations getCoordinates() {
+		return data;
+	}
+
+	public void launch() {
+
+		// Display Frame
+		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		window.setSize(new Dimension(300, 300));
+		window.setMinimumSize(new Dimension(100, 100));
+		window.setResizable(true);
+		window.setVisible(true);
+	}// END: launch
 
 	private ImageIcon CreateImageIcon(String path) {
 		URL imgURL = this.getClass().getResource(path);
