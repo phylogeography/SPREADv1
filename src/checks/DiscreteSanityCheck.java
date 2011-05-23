@@ -44,6 +44,8 @@ public class DiscreteSanityCheck {
 
 		Object[] uniqueTreeStatesArray = uniqueTreeStates.toArray();
 
+		// Utils.PrintArray(uniqueTreeStatesArray);
+
 		for (int i = 0; i < data.locations.length; i++) {
 
 			String state = null;

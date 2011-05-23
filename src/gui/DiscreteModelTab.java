@@ -70,7 +70,7 @@ public class DiscreteModelTab extends JPanel {
 	// Buttons
 	private JButton generateKml;
 	private JButton openTree;
-	private JButton openLocations;
+	private JButton openLocationCoordinatesEditor;
 	private JButton generateProcessing;
 	private JButton saveProcessingPlot;
 	private JButton polygonsMaxColorChooser;
@@ -124,7 +124,7 @@ public class DiscreteModelTab extends JPanel {
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
 		openTree = new JButton("Open", treeIcon);
-		openLocations = new JButton("Open", locationsIcon);
+		openLocationCoordinatesEditor = new JButton("Load", locationsIcon);
 		generateProcessing = new JButton("Plot", processingIcon);
 		saveProcessingPlot = new JButton("Save", saveIcon);
 		polygonsMaxColorChooser = new JButton("Setup max");
@@ -159,7 +159,8 @@ public class DiscreteModelTab extends JPanel {
 
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
-		openLocations.addActionListener(new ListenOpenLocations());
+		openLocationCoordinatesEditor
+				.addActionListener(new ListenOpenLocationCoordinatesEditor());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
 		polygonsMaxColorChooser
@@ -181,8 +182,8 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Load locations file:"));
-		tmpPanel.add(openLocations);
+		tmpPanel.setBorder(new TitledBorder("Setup location coordinates:"));
+		tmpPanel.add(openLocationCoordinatesEditor);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -367,28 +368,34 @@ public class DiscreteModelTab extends JPanel {
 		}
 	}// END: ListenOpenTree
 
-	private class ListenOpenLocations implements ActionListener {
+	private class ListenOpenLocationCoordinatesEditor implements ActionListener {
+		// private JFileChooser chooser;
+
 		public void actionPerformed(ActionEvent ev) {
 
 			try {
 
-				JFileChooser chooser = new JFileChooser();
-				chooser.setDialogTitle("Loading locations file...");
-				chooser.setCurrentDirectory(workingDirectory);
+				LocationCoordinatesEditor locationCoordinatesEditor = new LocationCoordinatesEditor();
+				locationCoordinatesEditor.launch();
 
-				chooser.showOpenDialog(Utils.getActiveFrame());
-				File file = chooser.getSelectedFile();
-				locationsFilename = file.getAbsolutePath();
-				System.out.println("Opened " + locationsFilename + "\n");
-
-				File tmpDir = chooser.getCurrentDirectory();
-
-				if (tmpDir != null) {
-					workingDirectory = tmpDir;
-				}
+				// JFileChooser chooser = new JFileChooser();
+				// chooser.setDialogTitle("Loading locations file...");
+				// chooser.setCurrentDirectory(workingDirectory);
+				//
+				// chooser.showOpenDialog(Utils.getActiveFrame());
+				// File file = chooser.getSelectedFile();
+				// locationsFilename = file.getAbsolutePath();
+				// System.out.println("Opened " + locationsFilename + "\n");
+				//
+				// File tmpDir = chooser.getCurrentDirectory();
+				//
+				// if (tmpDir != null) {
+				// workingDirectory = tmpDir;
+				// }
 
 			} catch (Exception e) {
-				System.err.println("Could not Open! \n");
+				// System.err.println("Could not Open! \n");
+				e.printStackTrace();
 			}
 		}
 	}// END: ListenOpenLocations

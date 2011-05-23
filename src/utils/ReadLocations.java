@@ -7,7 +7,7 @@ import processing.core.PApplet;
 public class ReadLocations extends PApplet {
 
 	private static final long serialVersionUID = 1L;
-	String[] lines;
+	private String[] lines;
 	public String[] locations;
 	public float[][] coordinates;
 	public int nrow;

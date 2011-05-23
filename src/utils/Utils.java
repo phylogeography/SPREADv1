@@ -428,7 +428,7 @@ public class Utils {
 			PrintWriter pri = new PrintWriter(filename);
 			for (int row = 0; row < array.length; row++) {
 				for (int col = 0; col < array[row].length; col++) {
-					pri.print(array[row][col] + " ");
+					pri.print(array[row][col] + "\t");
 				}
 				pri.print("\n");
 			}
