@@ -26,7 +26,7 @@ import utils.ExceptionHandler;
 public class SpreadApp {
 
 	// Dimension
-	Dimension dimension;
+	private Dimension dimension;
 
 	// Icons
 	private ImageIcon quitIcon;

@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -40,6 +41,7 @@ public class LocationCoordinatesEditor {
 
 	// Window
 	private JDialog window;
+	private Frame owner;
 
 	// Icons
 	private ImageIcon loadIcon;
@@ -117,10 +119,13 @@ public class LocationCoordinatesEditor {
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 		// Setup window
-		window = new JDialog(Utils.getActiveFrame(),
+		owner = Utils.getActiveFrame();
+		window = new JDialog(owner,
 				"Setup location coordinates...");
 		window.getContentPane().add(menu, BorderLayout.NORTH);
 		window.getContentPane().add(scrollPane);
+		window.pack();
+		window.setLocationRelativeTo(owner);
 
 	}// END: LocationCoordinatesEditor()
 
