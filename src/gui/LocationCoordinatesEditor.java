@@ -200,6 +200,8 @@ public class LocationCoordinatesEditor {
 
 			returnValue = tableModel;
 
+			System.out.println("Loaded " + returnValue.getRowCount()
+					+ " discrete locations:");
 			returnValue.printTable();
 
 		}// END: actionPerformed

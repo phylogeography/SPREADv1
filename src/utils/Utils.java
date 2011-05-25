@@ -1,5 +1,7 @@
 package utils;
 
+import gui.InteractiveTableModel;
+
 import java.awt.Color;
 import java.awt.Frame;
 import java.io.PrintWriter;
@@ -282,19 +284,19 @@ public class Utils {
 		return points;
 	}// END: convertToPoint
 
-	public static List<Coordinates> GenerateCircle(double centerLong,
-			double centerLat, double radius, int numPoints) {
+	public static List<Coordinates> GenerateCircle(double centerY,
+			double centerX, double radius, int numPoints) {
 
 		List<Coordinates> coords = new ArrayList<Coordinates>();
 
 		double Clat = Math.toDegrees((radius / EarthRadius));
-		double Clong = Clat / Math.cos(Math.toRadians(centerLat));
+		double Clong = Clat / Math.cos(Math.toRadians(centerX));
 
 		for (int i = 0; i < numPoints; i++) {
 
 			double theta = 2.0 * Math.PI * (i / (double) numPoints);
-			double Cx = centerLong + (Clong * Math.cos(theta));
-			double Cy = centerLat + (Clat * Math.sin(theta));
+			double Cx = centerY + (Clong * Math.cos(theta));
+			double Cy = centerX + (Clat * Math.sin(theta));
 
 			coords.add(new Coordinates(Cx, Cy, 0.0));
 
@@ -720,6 +722,28 @@ public class Utils {
 
 		return (float) y;
 	}
+
+	public static float MatchStateCoordinate(InteractiveTableModel table,
+			String state, int latlon) {
+		/**
+		 * Match state name with its coordinates
+		 * 
+		 * 1 for lon, 2 for lat
+		 */
+		float coordinate = Float.NaN;
+
+		for (int i = 0; i < table.getRowCount(); i++) {
+
+			String name = String.valueOf(table.getValueAt(i, 0));
+
+			if (name.toLowerCase().equals(state.toLowerCase())) {
+				coordinate = Float.valueOf(String.valueOf(table.getValueAt(i,
+						latlon)));
+			}
+		}
+
+		return coordinate;
+	}// END: MatchStateCoordinate
 
 	public static float MatchStateCoordinate(ReadLocations data, String state,
 			int latlon) {

@@ -474,14 +474,12 @@ public class DiscreteModelTab extends JPanel {
 						generateKml.setEnabled(false);
 						progressBar.setIndeterminate(true);
 
-						if (new DiscreteSanityCheck()
-								.check(treeFilename, stateAttNameParser
-										.getText(), locationsFilename)) {
+						if (new DiscreteSanityCheck().check(treeFilename,
+								stateAttNameParser.getText(), table)) {
 
 							DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
 
-							discreteTreeToKML
-									.setLocationFilePath(locationsFilename);
+							discreteTreeToKML.setTable(table);
 
 							discreteTreeToKML
 									.setStateAttName(stateAttNameParser
@@ -634,7 +632,7 @@ public class DiscreteModelTab extends JPanel {
 
 						if (new DiscreteSanityCheck()
 								.check(treeFilename, stateAttNameParser
-										.getText(), locationsFilename)) {
+										.getText(), table)) {
 
 							// TODO Should only be done with state data changes,
 							// not with each draw

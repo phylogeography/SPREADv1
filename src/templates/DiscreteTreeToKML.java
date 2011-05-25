@@ -1,6 +1,7 @@
 package templates;
 
 import generator.KMLGenerator;
+import gui.InteractiveTableModel;
 
 import java.awt.Color;
 import java.io.FileNotFoundException;
@@ -25,7 +26,6 @@ import structure.Place;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
-import utils.ReadLocations;
 import utils.SpreadDate;
 import utils.Utils;
 
@@ -40,7 +40,8 @@ public class DiscreteTreeToKML {
 
 	private RootedTree tree;
 	private String stateAttName;
-	private ReadLocations data;
+	// private ReadLocations data;
+	private InteractiveTableModel table;
 	private String mrsdString;
 	private int numberOfIntervals;
 	private double timescaler;
@@ -122,8 +123,12 @@ public class DiscreteTreeToKML {
 		importer = new NexusImporter(new FileReader(path));
 	}
 
-	public void setLocationFilePath(String path) throws ParseException {
-		data = new ReadLocations(path);
+	// public void setLocationFilePath(String path) throws ParseException {
+	// data = new ReadLocations(path);
+	// }
+
+	public void setTable(InteractiveTableModel tableModel) {
+		table = tableModel;
 	}
 
 	public void setUserAttribute(String attribute) {
@@ -268,10 +273,18 @@ public class DiscreteTreeToKML {
 			String placesDescription = null;
 			Layer placesLayer = new Layer("Places", placesDescription);
 
-			for (int i = 0; i < data.nrow; i++) {
-				placesLayer.addItem(new Place(data.locations[i], null,
-						new Coordinates(data.coordinates[i][1],
-								data.coordinates[i][0]), 0, 0));
+			for (int i = 0; i < table.getRowCount(); i++) {
+
+				String name = String.valueOf(table.getValueAt(i, 0));
+
+				Double longitude = Double.valueOf(String.valueOf(table
+						.getValueAt(i, 1)));
+
+				Double latitude = Double.valueOf(String.valueOf(table
+						.getValueAt(i, 2)));
+
+				placesLayer.addItem(new Place(name, null, new Coordinates(
+						longitude, latitude), 0, 0));
 			}
 
 			layers.add(placesLayer);
@@ -307,15 +320,15 @@ public class DiscreteTreeToKML {
 						if (!state.toLowerCase().equals(
 								parentState.toLowerCase())) {
 
-							float longitude = Utils.MatchStateCoordinate(data,
-									state, 0);
-							float latitude = Utils.MatchStateCoordinate(data,
+							float longitude = Utils.MatchStateCoordinate(table,
 									state, 1);
+							float latitude = Utils.MatchStateCoordinate(table,
+									state, 2);
 
 							float parentLongitude = Utils.MatchStateCoordinate(
-									data, parentState, 0);
+									table, parentState, 1);
 							float parentLatitude = Utils.MatchStateCoordinate(
-									data, parentState, 1);
+									table, parentState, 2);
 
 							double nodeHeight = tree.getHeight(node);
 
@@ -476,7 +489,7 @@ public class DiscreteTreeToKML {
 
 				int circleStyleId = 1;
 				for (int i = 0; i < (numberOfIntervals - 1); i++) {
-					for (int j = 0; j < (data.locations.length); j++) {
+					for (int j = 0; j < (table.getRowCount()); j++) {
 
 						if (numberOfLineages[i][j + 1] > 0) {
 
@@ -526,11 +539,20 @@ public class DiscreteTreeToKML {
 							double duration = ((rootHeight - numberOfLineages[i][0]) / (i + 1))
 									* DayInMillis;
 
-							circlesLayer.addItem(new Polygon(data.locations[j]
-									+ "_" + radius + "_" + "km", // String name
+							String name = String
+									.valueOf(table.getValueAt(j, 0));
+
+							Double longitude = Double.valueOf(String
+									.valueOf(table.getValueAt(j, 1)));
+
+							Double latitude = Double.valueOf(String
+									.valueOf(table.getValueAt(j, 2)));
+
+							circlesLayer.addItem(new Polygon(name + "_"
+									+ radius + "_" + "km", // String name
 									Utils.GenerateCircle( // List<Coordinates>
-											data.coordinates[j][1], // centerLong
-											data.coordinates[j][0], // centerLat
+											latitude, // centerLat
+											longitude, // centerLong
 											radius, // radius
 											36), // numPoints
 									circlesStyle, // Style style
@@ -558,14 +580,15 @@ public class DiscreteTreeToKML {
 			double rootHeight) {
 
 		double delta = rootHeight / numberOfIntervals;
-		double[][] numberOfLineages = new double[(numberOfIntervals - 1)][data.locations.length + 1];
+		double[][] numberOfLineages = new double[(numberOfIntervals - 1)][table
+				.getRowCount() + 1];
 
 		for (int i = 0; i < (numberOfIntervals - 1); i++) {
 			numberOfLineages[i][0] = rootHeight - ((i + 1) * delta);
 		}
 
 		for (int i = 0; i < (numberOfIntervals - 1); i++) {
-			for (int j = 0; j < (data.locations.length); j++) {
+			for (int j = 0; j < table.getRowCount(); j++) {
 
 				int numberOfLineagesOfState = 0;
 
@@ -582,11 +605,13 @@ public class DiscreteTreeToKML {
 						if ((tree.getHeight(node) <= numberOfLineages[i][0])
 								&& (tree.getHeight(parentNode) > numberOfLineages[i][0])) {
 
+							String name = String
+									.valueOf(table.getValueAt(j, 0));
+
 							if ((state.toLowerCase().equals(parentState
 									.toLowerCase()))
-									&& (parentState.toLowerCase()
-											.equals(data.locations[j]
-													.toLowerCase()))) {
+									&& (parentState.toLowerCase().equals(name
+											.toLowerCase()))) {
 
 								numberOfLineagesOfState++;
 
