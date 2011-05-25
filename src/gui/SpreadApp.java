@@ -78,8 +78,6 @@ public class SpreadApp {
 
 			UIManager
 					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-			// UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
-			// .getLookAndFeel());
 		}
 
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();

@@ -376,7 +376,10 @@ public class DiscreteModelTab extends JPanel {
 			try {
 
 				LocationCoordinatesEditor locationCoordinatesEditor = new LocationCoordinatesEditor();
-				locationCoordinatesEditor.launch();
+				locationCoordinatesEditor.launch(treeFilename,
+						stateAttNameParser.getText());
+
+				// locationCoordinatesEditor.launch();
 
 				// JFileChooser chooser = new JFileChooser();
 				// chooser.setDialogTitle("Loading locations file...");
@@ -396,6 +399,14 @@ public class DiscreteModelTab extends JPanel {
 			} catch (Exception e) {
 				// System.err.println("Could not Open! \n");
 				e.printStackTrace();
+
+				String msg = String.format("Unexpected problem: %s", e
+						.toString()
+						+ "\nHave you imported the tree file?");
+
+				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
+						"Error", JOptionPane.ERROR_MESSAGE, errorIcon);
+
 			}
 		}
 	}// END: ListenOpenLocations

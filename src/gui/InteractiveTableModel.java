@@ -88,14 +88,19 @@ public class InteractiveTableModel extends AbstractTableModel {
 		this.fireTableDataChanged();
 	}
 
-	public void delRow(int row) {
-		dataVector.remove(row);
+	// This inserts a row at specified index
+	public void insertRow(int index, TableRecord row) {
+		dataVector.add(index, row);
 		this.fireTableDataChanged();
 	}
 
-	// This overwrites a row at specified index
-	public void insertRow(int index, TableRecord row) {
-		dataVector.add(index, row);
+	// This cleans the whole table
+	public void cleanTable() {
+		int n = dataVector.size();
+		for (int i = 0; i < n; i++) {
+			dataVector.remove(i);
+//			dataVector.removeElementAt(i);
+		}
 		this.fireTableDataChanged();
 	}
 

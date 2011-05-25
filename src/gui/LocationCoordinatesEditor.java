@@ -6,8 +6,13 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,6 +29,10 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import jebl.evolution.graphs.Node;
+import jebl.evolution.io.ImportException;
+import jebl.evolution.io.NexusImporter;
+import jebl.evolution.trees.RootedTree;
 import utils.ReadLocations;
 import utils.Utils;
 
@@ -57,7 +66,6 @@ public class LocationCoordinatesEditor {
 	private JTable table;
 	private InteractiveTableModel tableModel;
 	private String[] COLUMN_NAMES = { "Location", "Latitude", "Longitude", "" };
-	private ReadLocations data = null;
 
 	public LocationCoordinatesEditor() {
 
@@ -89,13 +97,12 @@ public class LocationCoordinatesEditor {
 		// Setup table
 		tableModel = new InteractiveTableModel(COLUMN_NAMES);
 		tableModel.addTableModelListener(new InteractiveTableModelListener());
-
 		table = new JTable(tableModel);
 		table.setModel(tableModel);
 		table.setSurrendersFocusOnKeystroke(true);
-		if (!tableModel.hasEmptyRow()) {
-			tableModel.addEmptyRow();
-		}
+		// if (!tableModel.hasEmptyRow()) {
+		// tableModel.addEmptyRow();
+		// }
 
 		TableColumn hidden = table.getColumnModel().getColumn(
 				InteractiveTableModel.HIDDEN_INDEX);
@@ -135,16 +142,20 @@ public class LocationCoordinatesEditor {
 				if (tmpDir != null) {
 
 					workingDirectory = tmpDir;
-					data = new ReadLocations(locationsFilename);
+					ReadLocations data = new ReadLocations(locationsFilename);
 
 					for (int i = 0; i < data.nrow; i++) {
 
-						tableModel.insertRow(i, new TableRecord(
-								data.locations[i], String
-										.valueOf(data.coordinates[i][0]),
-								String.valueOf(data.coordinates[i][1])));
+						tableModel.setValueAt(data.locations[i], i, 0);
+
+						for (int j = 0; j < 2; j++) {
+
+							tableModel.setValueAt(String
+									.valueOf(data.coordinates[i][j]), i, j + 1);
+						}// END: col loop
 
 					}// END: row loop
+
 				}// END: null check
 
 			} catch (Exception e) {
@@ -268,6 +279,57 @@ public class LocationCoordinatesEditor {
 			e.printStackTrace();
 		}
 	}// END: JTableToTDV
+
+	private Object[] getUniqueTreeStates(RootedTree tree, String stateAttName) {
+
+		Set<String> uniqueTreeStates = new HashSet<String>();
+		for (Node node : tree.getNodes()) {
+			if (!tree.isRoot(node)) {
+
+				uniqueTreeStates.add(Utils.getStringNodeAttribute(node,
+						stateAttName));
+			}
+		}// END: node loop
+
+		Object[] uniqueTreeStatesArray = uniqueTreeStates.toArray();
+
+		return uniqueTreeStatesArray;
+	}// END: getUniqueTreeStates
+
+	public void launch(String treeFilename, String stateAttName) {
+
+		try {
+
+			RootedTree tree = (RootedTree) new NexusImporter(new FileReader(
+					treeFilename)).importNextTree();
+
+			Object[] uniqueTreeStates = getUniqueTreeStates(tree, stateAttName);
+
+			for (int i = 0; i < uniqueTreeStates.length; i++) {
+
+				tableModel.insertRow(i, new TableRecord(String
+						.valueOf(uniqueTreeStates[i]), "", ""));
+
+			}// END: row loop
+
+			// Display Frame
+			window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+			window.setSize(new Dimension(300, 300));
+			window.setMinimumSize(new Dimension(100, 100));
+			window.setResizable(true);
+			window.setVisible(true);
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		} catch (ImportException e) {
+			e.printStackTrace();
+		}
+
+	}// END: launch
 
 	public void launch() {
 
