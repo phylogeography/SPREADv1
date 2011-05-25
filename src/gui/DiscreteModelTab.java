@@ -58,7 +58,6 @@ public class DiscreteModelTab extends JPanel {
 
 	// Strings for paths
 	private String treeFilename;
-	private String locationsFilename;
 	private File workingDirectory;
 
 	// Text fields
@@ -630,9 +629,8 @@ public class DiscreteModelTab extends JPanel {
 						generateProcessing.setEnabled(false);
 						progressBar.setIndeterminate(true);
 
-						if (new DiscreteSanityCheck()
-								.check(treeFilename, stateAttNameParser
-										.getText(), table)) {
+						if (new DiscreteSanityCheck().check(treeFilename,
+								stateAttNameParser.getText(), table)) {
 
 							// TODO Should only be done with state data changes,
 							// not with each draw
@@ -642,8 +640,7 @@ public class DiscreteModelTab extends JPanel {
 
 							// TODO Should only be done when changed,
 							// not with each draw
-							discreteTreeToProcessing
-									.setLocationFilePath(locationsFilename);
+							discreteTreeToProcessing.setTable(table);
 
 							// TODO Should only be done when changed,
 							// not with each draw

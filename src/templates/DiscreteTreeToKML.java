@@ -40,7 +40,6 @@ public class DiscreteTreeToKML {
 
 	private RootedTree tree;
 	private String stateAttName;
-	// private ReadLocations data;
 	private InteractiveTableModel table;
 	private String mrsdString;
 	private int numberOfIntervals;
@@ -122,10 +121,6 @@ public class DiscreteTreeToKML {
 
 		importer = new NexusImporter(new FileReader(path));
 	}
-
-	// public void setLocationFilePath(String path) throws ParseException {
-	// data = new ReadLocations(path);
-	// }
 
 	public void setTable(InteractiveTableModel tableModel) {
 		table = tableModel;

@@ -1,8 +1,9 @@
 package templates;
 
+import gui.InteractiveTableModel;
+
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
 
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
@@ -11,7 +12,6 @@ import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
 import processing.core.PApplet;
 import processing.core.PFont;
-import utils.ReadLocations;
 import utils.Utils;
 
 @SuppressWarnings("serial")
@@ -19,7 +19,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 	private TreeImporter importer;
 	private RootedTree tree;
-	private ReadLocations data;
+	private InteractiveTableModel table;
 	private String stateAttName;
 	private MapBackground mapBackground;
 
@@ -53,8 +53,8 @@ public class DiscreteTreeToProcessing extends PApplet {
 		tree = (RootedTree) importer.importNextTree();
 	}
 
-	public void setLocationFilePath(String path) throws ParseException {
-		data = new ReadLocations(path);
+	public void setTable(InteractiveTableModel tableModel) {
+		table = tableModel;
 	}
 
 	public void setMinBranchRedMapping(double min) {
@@ -131,11 +131,17 @@ public class DiscreteTreeToProcessing extends PApplet {
 		fill(255, 255, 255);
 		noStroke();
 
-		for (int row = 0; row < data.nrow; row++) {
+		for (int row = 0; row < table.getRowCount(); row++) {
+
+			Float longitude = Float.valueOf(String.valueOf(table.getValueAt(
+					row, 1)));
+
+			Float latitude = Float.valueOf(String.valueOf(table.getValueAt(row,
+					2)));
 
 			// Equirectangular projection:
-			float X = map(data.getFloat(row, 1), minX, maxX, 0, width);
-			float Y = map(data.getFloat(row, 0), maxY, minY, 0, height);
+			float X = map(latitude, minX, maxX, 0, width);
+			float Y = map(longitude, maxY, minY, 0, height);
 
 			ellipse(X, Y, radius, radius);
 
@@ -149,11 +155,18 @@ public class DiscreteTreeToProcessing extends PApplet {
 		// Black labels
 		fill(0, 0, 0);
 
-		for (int row = 0; row < data.nrow; row++) {
+		for (int row = 0; row < table.getRowCount(); row++) {
 
-			String name = data.locations[row];
-			float X = map(data.getFloat(row, 1), minX, maxX, 0, width);
-			float Y = map(data.getFloat(row, 0), maxY, minY, 0, height);
+			String name = String.valueOf(table.getValueAt(row, 0));
+
+			Float longitude = Float.valueOf(String.valueOf(table.getValueAt(
+					row, 1)));
+
+			Float latitude = Float.valueOf(String.valueOf(table.getValueAt(row,
+					2)));
+
+			float X = map(latitude, minX, maxX, 0, width);
+			float Y = map(longitude, maxY, minY, 0, height);
 
 			text(name, X, Y);
 		}
@@ -179,20 +192,21 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 				if (!state.toLowerCase().equals(parentState.toLowerCase())) {
 
-					float longitude = Utils
-							.MatchStateCoordinate(data, state, 1);
-					float latitude = Utils.MatchStateCoordinate(data, state, 0);
+					float longitude = Utils.MatchStateCoordinate(table, state,
+							1);
+					float latitude = Utils
+							.MatchStateCoordinate(table, state, 2);
 
-					float parentLongitude = Utils.MatchStateCoordinate(data,
+					float parentLongitude = Utils.MatchStateCoordinate(table,
 							parentState, 1);
-					float parentLatitude = Utils.MatchStateCoordinate(data,
-							parentState, 0);
+					float parentLatitude = Utils.MatchStateCoordinate(table,
+							parentState, 2);
 
-					float x0 = map(parentLongitude, minX, maxX, 0, width);
-					float y0 = map(parentLatitude, maxY, minY, 0, height);
+					float x0 = map(parentLatitude, minX, maxX, 0, width);
+					float y0 = map(parentLongitude, maxY, minY, 0, height);
 
-					float x1 = map(longitude, minX, maxX, 0, width);
-					float y1 = map(latitude, maxY, minY, 0, height);
+					float x1 = map(latitude, minX, maxX, 0, width);
+					float y1 = map(longitude, maxY, minY, 0, height);
 
 					/**
 					 * Color mapping
