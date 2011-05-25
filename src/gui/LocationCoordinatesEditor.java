@@ -39,6 +39,8 @@ import utils.Utils;
 
 public class LocationCoordinatesEditor {
 
+	private InteractiveTableModel returnValue = null;
+
 	// Window
 	private JDialog window;
 	private Frame owner;
@@ -120,8 +122,7 @@ public class LocationCoordinatesEditor {
 
 		// Setup window
 		owner = Utils.getActiveFrame();
-		window = new JDialog(owner,
-				"Setup location coordinates...");
+		window = new JDialog(owner, "Setup location coordinates...");
 		window.getContentPane().add(menu, BorderLayout.NORTH);
 		window.getContentPane().add(scrollPane);
 		window.pack();
@@ -196,6 +197,10 @@ public class LocationCoordinatesEditor {
 		public void actionPerformed(ActionEvent ev) {
 
 			window.setVisible(false);
+
+			returnValue = tableModel;
+
+			returnValue.printTable();
 
 		}// END: actionPerformed
 	}// END: ListenSaveLocationCoordinates
@@ -335,6 +340,10 @@ public class LocationCoordinatesEditor {
 		}
 
 	}// END: launch
+
+	public InteractiveTableModel getTable() {
+		return tableModel;
+	}
 
 	public void launch() {
 

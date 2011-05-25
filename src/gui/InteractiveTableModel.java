@@ -74,6 +74,15 @@ public class InteractiveTableModel extends AbstractTableModel {
 		fireTableCellUpdated(row, column);
 	}
 
+	public void printTable() {
+		for (int i = 0; i < this.getRowCount(); i++) {
+			for (int j = 0; j < this.getColumnCount() - 1; j++) {
+				System.out.print(this.getValueAt(i, j) + "\t");
+			}
+			System.out.println();
+		}
+	}
+
 	public int getRowCount() {
 		return dataVector.size();
 	}
@@ -91,16 +100,6 @@ public class InteractiveTableModel extends AbstractTableModel {
 	// This inserts a row at specified index
 	public void insertRow(int index, TableRecord row) {
 		dataVector.add(index, row);
-		this.fireTableDataChanged();
-	}
-
-	// This cleans the whole table
-	public void cleanTable() {
-		int n = dataVector.size();
-		for (int i = 0; i < n; i++) {
-			dataVector.remove(i);
-//			dataVector.removeElementAt(i);
-		}
 		this.fireTableDataChanged();
 	}
 

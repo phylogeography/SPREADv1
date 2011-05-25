@@ -53,6 +53,9 @@ public class DiscreteModelTab extends JPanel {
 	private Color polygonsMinColor;
 	private Color branchesMinColor;
 
+	// Locations & coordinates table
+	private InteractiveTableModel table;
+
 	// Strings for paths
 	private String treeFilename;
 	private String locationsFilename;
@@ -105,7 +108,6 @@ public class DiscreteModelTab extends JPanel {
 		polygonsMinColor = new Color(0, 0, 0, 100);
 		branchesMinColor = new Color(0, 0, 0, 255);
 		GridBagConstraints c = new GridBagConstraints();
-		// workingDirectory = System.getProperty("user.home");
 
 		// Setup icons
 		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
@@ -379,7 +381,7 @@ public class DiscreteModelTab extends JPanel {
 				locationCoordinatesEditor.launch(treeFilename,
 						stateAttNameParser.getText());
 
-				// locationCoordinatesEditor.launch();
+				table = locationCoordinatesEditor.getTable();
 
 				// JFileChooser chooser = new JFileChooser();
 				// chooser.setDialogTitle("Loading locations file...");
@@ -732,8 +734,10 @@ public class DiscreteModelTab extends JPanel {
 
 				discreteTreeToProcessing.save(plotToSaveFilename);
 				System.out.println("Saved " + plotToSaveFilename + "\n");
+				// table.printTable();
 
 			} catch (Exception e) {
+				e.printStackTrace();
 				System.err.println("Could not save! \n");
 			}
 
