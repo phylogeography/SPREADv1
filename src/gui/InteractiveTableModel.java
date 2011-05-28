@@ -24,6 +24,17 @@ public class InteractiveTableModel extends AbstractTableModel {
 		return columnNames[column];
 	}
 
+	public String[] getColumn(int index) {
+
+		String[] column = new String[dataVector.size()];
+
+		for (int i = 0; i < dataVector.size(); i++) {
+			column[i] = String.valueOf(getValueAt(i, index));
+		}
+
+		return column;
+	}
+
 	public boolean isCellEditable(int row, int column) {
 		if (column == HIDDEN_INDEX)
 			return false;

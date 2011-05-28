@@ -1,6 +1,7 @@
 package templates;
 
 import generator.KMLGenerator;
+import gui.InteractiveTableModel;
 
 import java.awt.Color;
 import java.io.FileNotFoundException;
@@ -19,7 +20,6 @@ import structure.Line;
 import structure.Place;
 import structure.Style;
 import structure.TimeLine;
-import utils.ReadLocations;
 import utils.ReadLog;
 import utils.Utils;
 
@@ -27,7 +27,7 @@ public class RateIndicatorBFToKML {
 
 	public static long time;
 
-	private ReadLocations locations;
+	private static InteractiveTableModel table;
 	private ReadLog indicators;
 	private List<Layer> layers;
 	private PrintWriter writer;
@@ -91,8 +91,8 @@ public class RateIndicatorBFToKML {
 		bfCutoff = cutoff;
 	}
 
-	public void setLocationFilePath(String path) throws ParseException {
-		locations = new ReadLocations(path);
+	public static void setTable(InteractiveTableModel tableModel) {
+		table = tableModel;
 	}
 
 	public void setLogFilePath(String path, double burnIn) {
@@ -183,10 +183,18 @@ public class RateIndicatorBFToKML {
 			String placesDescription = null;
 			Layer placesLayer = new Layer("Places", placesDescription);
 
-			for (int i = 0; i < locations.nrow; i++) {
-				placesLayer.addItem(new Place(locations.locations[i], null,
-						new Coordinates(locations.coordinates[i][1],
-								locations.coordinates[i][0]), 0, 0));
+			for (int i = 0; i < table.getRowCount(); i++) {
+
+				String name = String.valueOf(table.getValueAt(i, 0));
+
+				Double longitude = Double.valueOf(String.valueOf(table
+						.getValueAt(i, 1)));
+
+				Double latitude = Double.valueOf(String.valueOf(table
+						.getValueAt(i, 2)));
+
+				placesLayer.addItem(new Place(name, null, new Coordinates(
+						latitude, longitude), 0, 0));
 			}
 
 			layers.add(placesLayer);
@@ -242,22 +250,22 @@ public class RateIndicatorBFToKML {
 					String state = combin.get(i).split(":")[1];
 					String parentState = combin.get(i).split(":")[0];
 
-					double longitude = Utils.MatchStateCoordinate(locations,
-							state, 1);
-					double latitude = Utils.MatchStateCoordinate(locations,
-							state, 0);
+					float longitude = Utils.MatchStateCoordinate(table, state,
+							1);
+					float latitude = Utils
+							.MatchStateCoordinate(table, state, 2);
 
-					float parentLongitude = Utils.MatchStateCoordinate(
-							locations, parentState, 1);
-					float parentLatitude = Utils.MatchStateCoordinate(
-							locations, parentState, 0);
+					float parentLongitude = Utils.MatchStateCoordinate(table,
+							parentState, 1);
+					float parentLatitude = Utils.MatchStateCoordinate(table,
+							parentState, 2);
 
 					ratesLayer.addItem(new Line(
 							combin.get(i) + ", BF=" + bayesFactors.get(i), // name
-							new Coordinates(parentLongitude, parentLatitude ),
+							new Coordinates(parentLatitude, parentLongitude),
 							Double.NaN, // startime
 							linesStyle, // style startstyle
-							new Coordinates( longitude, latitude), // endCoords
+							new Coordinates(latitude, longitude), // endCoords
 							Double.NaN, // double endtime
 							linesStyle, // style endstyle
 							maxAltitude, // double maxAltitude
@@ -281,7 +289,7 @@ public class RateIndicatorBFToKML {
 
 	private void ComputeBFTest() {
 
-		int n = locations.nrow;
+		int n = table.getRowCount();
 
 		switch (meanPoissonPriorSwitcher) {
 		case DEFAULT:
@@ -293,7 +301,7 @@ public class RateIndicatorBFToKML {
 
 		switch (poissonPriorOffsetSwitcher) {
 		case DEFAULT:
-			poissonPriorOffset = locations.nrow - 1;
+			poissonPriorOffset = n - 1;
 			break;
 		case USER:
 			break;
@@ -310,13 +318,14 @@ public class RateIndicatorBFToKML {
 		}
 
 		combin = new ArrayList<String>();
+		String[] locations = table.getColumn(0);
 
 		for (int row = 0; row < n - 1; row++) {
 
-			String[] subset = Utils.Subset(locations.locations, row, n - row);
+			String[] subset = Utils.Subset(locations, row, n - row);
 
 			for (int i = 1; i < subset.length; i++) {
-				combin.add(locations.locations[row] + ":" + subset[i]);
+				combin.add(locations[row] + ":" + subset[i]);
 			}
 		}
 

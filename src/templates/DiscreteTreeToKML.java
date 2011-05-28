@@ -118,7 +118,6 @@ public class DiscreteTreeToKML {
 	}
 
 	public void setTreePath(String path) throws FileNotFoundException {
-
 		importer = new NexusImporter(new FileReader(path));
 	}
 

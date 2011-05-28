@@ -148,7 +148,7 @@ public class LocationCoordinatesEditor {
 					ReadLocations data = new ReadLocations(locationsFilename);
 
 					if (tableModel.getRowCount() < data.nrow) {
-						for (int i = 0; i < data.nrow; i++) {
+						for (int i = 0; i < data.nrow - 1; i++) {
 							tableModel.addEmptyRow();
 						}
 					}

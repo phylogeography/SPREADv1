@@ -49,10 +49,10 @@ ________________________________________________________________________________
   - give the concurrent implementation of AnalyzeTree another try. This might        
     be achieveable with ConcurrentHashMap class  
   - Polygons should also be easily executed in parallel (read only operation),
-    the problem is in getting the style id's right
-* Add an editor for locations file    
+    the problem is in getting the style id's right  
 * Add Cannot impute, no precision attribute warning message in Time Slicer
-    
+* Add an editor for locations file  
+* Add drop-down panels    
     
     
     

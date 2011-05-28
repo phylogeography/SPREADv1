@@ -396,15 +396,14 @@ public class RateIndicatorBFTab extends JPanel {
 						progressBar.setIndeterminate(true);
 
 						RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
+						
+						RateIndicatorBFToKML.setTable(table);
 
 						rateIndicatorBFToKML.setLogFilePath(logFilename,
 								burnInParser.getValue() / 100.0);
 
 						rateIndicatorBFToKML.setBfCutoff(Double
 								.valueOf(bfCutoffParser.getText()));
-
-						rateIndicatorBFToKML
-								.setLocationFilePath(locationsFilename);
 
 						rateIndicatorBFToKML.setMaxAltitudeMapping(Double
 								.valueOf(maxAltMappingParser.getText()));
