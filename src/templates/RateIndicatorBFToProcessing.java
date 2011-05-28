@@ -1,20 +1,20 @@
 package templates;
 
-import java.text.ParseException;
+import gui.InteractiveTableModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import processing.core.PApplet;
 import processing.core.PFont;
 import utils.GeoIntermediate;
-import utils.ReadLocations;
 import utils.ReadLog;
 import utils.Utils;
 
 @SuppressWarnings("serial")
 public class RateIndicatorBFToProcessing extends PApplet {
 
-	private ReadLocations locations;
+	private InteractiveTableModel table;
 	private ReadLog indicators;
 	private double bfCutoff;
 	private List<Double> bayesFactors;
@@ -77,8 +77,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		bfCutoff = cutoff;
 	}
 
-	public void setLocationFilePath(String path) throws ParseException {
-		locations = new ReadLocations(path);
+	public void setTable(InteractiveTableModel tableModel) {
+		table = tableModel;
 	}
 
 	public void setLogFilePath(String path, double burnIn) {
@@ -162,11 +162,17 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		fill(255, 255, 255);
 		noStroke();
 
-		for (int row = 0; row < locations.nrow; row++) {
+		for (int row = 0; row < table.getRowCount(); row++) {
+
+			Float longitude = Float.valueOf(String.valueOf(table.getValueAt(
+					row, 2)));
+
+			Float latitude = Float.valueOf(String.valueOf(table.getValueAt(row,
+					1)));
 
 			// Equirectangular projection:
-			float X = map(locations.getFloat(row, 1), minX, maxX, 0, width);
-			float Y = map(locations.getFloat(row, 0), maxY, minY, 0, height);
+			float X = map(longitude, minX, maxX, 0, width);
+			float Y = map(latitude, maxY, minY, 0, height);
 
 			ellipse(X, Y, radius, radius);
 
@@ -180,11 +186,18 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		// Black labels
 		fill(0, 0, 0);
 
-		for (int row = 0; row < locations.nrow; row++) {
+		for (int row = 0; row < table.getRowCount(); row++) {
 
-			String name = locations.locations[row];
-			float X = map(locations.getFloat(row, 1), minX, maxX, 0, width);
-			float Y = map(locations.getFloat(row, 0), maxY, minY, 0, height);
+			String name = String.valueOf(table.getValueAt(row, 0));
+
+			Float longitude = Float.valueOf(String.valueOf(table.getValueAt(
+					row, 2)));
+
+			Float latitude = Float.valueOf(String.valueOf(table.getValueAt(row,
+					1)));
+
+			float X = map(longitude, minX, maxX, 0, width);
+			float Y = map(latitude, maxY, minY, 0, height);
 
 			text(name, X, Y);
 		}
@@ -226,15 +239,13 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				String state = combin.get(i).split(":")[1];
 				String parentState = combin.get(i).split(":")[0];
 
-				float longitude = Utils.MatchStateCoordinate(locations, state,
-						1);
-				float latitude = Utils
-						.MatchStateCoordinate(locations, state, 0);
+				float longitude = Utils.MatchStateCoordinate(table, state, 2);
+				float latitude = Utils.MatchStateCoordinate(table, state, 1);
 
-				float parentLongitude = Utils.MatchStateCoordinate(locations,
+				float parentLongitude = Utils.MatchStateCoordinate(table,
+						parentState, 2);
+				float parentLatitude = Utils.MatchStateCoordinate(table,
 						parentState, 1);
-				float parentLatitude = Utils.MatchStateCoordinate(locations,
-						parentState, 0);
 
 				float x0 = map(parentLongitude, minX, maxX, 0, width);
 				float y0 = map(parentLatitude, maxY, minY, 0, height);
@@ -289,15 +300,13 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				String state = combin.get(i).split(":")[1];
 				String parentState = combin.get(i).split(":")[0];
 
-				float longitude = Utils.MatchStateCoordinate(locations, state,
-						1);
-				float latitude = Utils
-						.MatchStateCoordinate(locations, state, 0);
+				float longitude = Utils.MatchStateCoordinate(table, state, 2);
+				float latitude = Utils.MatchStateCoordinate(table, state, 1);
 
-				float parentLongitude = Utils.MatchStateCoordinate(locations,
+				float parentLongitude = Utils.MatchStateCoordinate(table,
+						parentState, 2);
+				float parentLatitude = Utils.MatchStateCoordinate(table,
 						parentState, 1);
-				float parentLatitude = Utils.MatchStateCoordinate(locations,
-						parentState, 0);
 
 				GeoIntermediate rhumbIntermediate = new GeoIntermediate(
 						parentLongitude, parentLatitude, longitude, latitude,
@@ -329,7 +338,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 	private void ComputeBFTest() {
 
-		int n = locations.nrow;
+		int n = table.getRowCount();
 
 		switch (meanPoissonPriorSwitcher) {
 		case DEFAULT:
@@ -341,7 +350,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		switch (poissonPriorOffsetSwitcher) {
 		case DEFAULT:
-			poissonPriorOffset = locations.nrow - 1;
+			poissonPriorOffset = n - 1;
 			break;
 		case USER:
 			break;
@@ -358,13 +367,14 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		}
 
 		combin = new ArrayList<String>();
+		String[] locations = table.getColumn(0);
 
 		for (int row = 0; row < n - 1; row++) {
 
-			String[] subset = Utils.Subset(locations.locations, row, n - row);
+			String[] subset = Utils.Subset(locations, row, n - row);
 
 			for (int i = 1; i < subset.length; i++) {
-				combin.add(locations.locations[row] + ":" + subset[i]);
+				combin.add(locations[row] + ":" + subset[i]);
 			}
 		}
 

@@ -56,7 +56,6 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Strings for paths
 	private String logFilename;
-	private String locationsFilename;
 	private File workingDirectory;
 
 	// Text fields
@@ -396,7 +395,7 @@ public class RateIndicatorBFTab extends JPanel {
 						progressBar.setIndeterminate(true);
 
 						RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
-						
+
 						RateIndicatorBFToKML.setTable(table);
 
 						rateIndicatorBFToKML.setLogFilePath(logFilename,
@@ -517,6 +516,8 @@ public class RateIndicatorBFTab extends JPanel {
 						generateProcessing.setEnabled(false);
 						progressBar.setIndeterminate(true);
 
+						rateIndicatorBFToProcessing.setTable(table);
+
 						rateIndicatorBFToProcessing.setLogFilePath(logFilename,
 								burnInParser.getValue() / 100.0);
 
@@ -527,9 +528,6 @@ public class RateIndicatorBFTab extends JPanel {
 						// .setNumberOfIntervals(Integer
 						// .valueOf(numberOfIntervalsParser
 						// .getText()));
-
-						rateIndicatorBFToProcessing
-								.setLocationFilePath(locationsFilename);
 
 						rateIndicatorBFToProcessing
 								.setMinBranchRedMapping(branchesMinColor
