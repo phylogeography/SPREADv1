@@ -134,14 +134,14 @@ public class DiscreteTreeToProcessing extends PApplet {
 		for (int row = 0; row < table.getRowCount(); row++) {
 
 			Float longitude = Float.valueOf(String.valueOf(table.getValueAt(
-					row, 1)));
+					row, 2)));
 
 			Float latitude = Float.valueOf(String.valueOf(table.getValueAt(row,
-					2)));
+					1)));
 
 			// Equirectangular projection:
-			float X = map(latitude, minX, maxX, 0, width);
-			float Y = map(longitude, maxY, minY, 0, height);
+			float X = map(longitude, minX, maxX, 0, width);
+			float Y = map(latitude, maxY, minY, 0, height);
 
 			ellipse(X, Y, radius, radius);
 
@@ -160,13 +160,13 @@ public class DiscreteTreeToProcessing extends PApplet {
 			String name = String.valueOf(table.getValueAt(row, 0));
 
 			Float longitude = Float.valueOf(String.valueOf(table.getValueAt(
-					row, 1)));
+					row, 2)));
 
 			Float latitude = Float.valueOf(String.valueOf(table.getValueAt(row,
-					2)));
+					1)));
 
-			float X = map(latitude, minX, maxX, 0, width);
-			float Y = map(longitude, maxY, minY, 0, height);
+			float X = map(longitude, minX, maxX, 0, width);
+			float Y = map(latitude, maxY, minY, 0, height);
 
 			text(name, X, Y);
 		}
@@ -193,20 +193,20 @@ public class DiscreteTreeToProcessing extends PApplet {
 				if (!state.toLowerCase().equals(parentState.toLowerCase())) {
 
 					float longitude = Utils.MatchStateCoordinate(table, state,
-							1);
+							2);
 					float latitude = Utils
-							.MatchStateCoordinate(table, state, 2);
+							.MatchStateCoordinate(table, state, 1);
 
 					float parentLongitude = Utils.MatchStateCoordinate(table,
-							parentState, 1);
-					float parentLatitude = Utils.MatchStateCoordinate(table,
 							parentState, 2);
+					float parentLatitude = Utils.MatchStateCoordinate(table,
+							parentState, 1);
 
-					float x0 = map(parentLatitude, minX, maxX, 0, width);
-					float y0 = map(parentLongitude, maxY, minY, 0, height);
+					float x0 = map(parentLongitude, minX, maxX, 0, width);
+					float y0 = map(parentLatitude, maxY, minY, 0, height);
 
-					float x1 = map(latitude, minX, maxX, 0, width);
-					float y1 = map(longitude, maxY, minY, 0, height);
+					float x1 = map(longitude, minX, maxX, 0, width);
+					float y1 = map(latitude, maxY, minY, 0, height);
 
 					/**
 					 * Color mapping

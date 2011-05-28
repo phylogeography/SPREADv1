@@ -272,10 +272,10 @@ public class DiscreteTreeToKML {
 				String name = String.valueOf(table.getValueAt(i, 0));
 
 				Double longitude = Double.valueOf(String.valueOf(table
-						.getValueAt(i, 1)));
+						.getValueAt(i, 2)));
 
 				Double latitude = Double.valueOf(String.valueOf(table
-						.getValueAt(i, 2)));
+						.getValueAt(i, 1)));
 
 				placesLayer.addItem(new Place(name, null, new Coordinates(
 						longitude, latitude), 0, 0));
@@ -315,14 +315,14 @@ public class DiscreteTreeToKML {
 								parentState.toLowerCase())) {
 
 							float longitude = Utils.MatchStateCoordinate(table,
-									state, 1);
-							float latitude = Utils.MatchStateCoordinate(table,
 									state, 2);
+							float latitude = Utils.MatchStateCoordinate(table,
+									state, 1);
 
 							float parentLongitude = Utils.MatchStateCoordinate(
-									table, parentState, 1);
-							float parentLatitude = Utils.MatchStateCoordinate(
 									table, parentState, 2);
+							float parentLatitude = Utils.MatchStateCoordinate(
+									table, parentState, 1);
 
 							double nodeHeight = tree.getHeight(node);
 
@@ -437,10 +437,10 @@ public class DiscreteTreeToKML {
 
 							branchesLayer.addItem(new Line(
 									(parentState + ":" + state), // string name
-									new Coordinates(parentLatitude,
-											parentLongitude), startTime, // startime
+									new Coordinates(parentLongitude,parentLatitude
+											), startTime, // startime
 									linesStyle, // style startstyle
-									new Coordinates(latitude, longitude), // endcoords
+									new Coordinates( longitude,latitude), // endcoords
 									0.0, // double endtime
 									linesStyle, // style endstyle
 									maxAltitude, // double maxAltitude

@@ -188,13 +188,13 @@ public class RateIndicatorBFToKML {
 				String name = String.valueOf(table.getValueAt(i, 0));
 
 				Double longitude = Double.valueOf(String.valueOf(table
-						.getValueAt(i, 1)));
-
-				Double latitude = Double.valueOf(String.valueOf(table
 						.getValueAt(i, 2)));
 
+				Double latitude = Double.valueOf(String.valueOf(table
+						.getValueAt(i, 1)));
+
 				placesLayer.addItem(new Place(name, null, new Coordinates(
-						latitude, longitude), 0, 0));
+						longitude, latitude), 0, 0));
 			}
 
 			layers.add(placesLayer);
@@ -251,21 +251,21 @@ public class RateIndicatorBFToKML {
 					String parentState = combin.get(i).split(":")[0];
 
 					float longitude = Utils.MatchStateCoordinate(table, state,
-							1);
+							2);
 					float latitude = Utils
-							.MatchStateCoordinate(table, state, 2);
+							.MatchStateCoordinate(table, state, 1);
 
 					float parentLongitude = Utils.MatchStateCoordinate(table,
-							parentState, 1);
-					float parentLatitude = Utils.MatchStateCoordinate(table,
 							parentState, 2);
+					float parentLatitude = Utils.MatchStateCoordinate(table,
+							parentState, 1);
 
 					ratesLayer.addItem(new Line(
 							combin.get(i) + ", BF=" + bayesFactors.get(i), // name
-							new Coordinates(parentLatitude, parentLongitude),
+							new Coordinates(parentLongitude, parentLatitude),
 							Double.NaN, // startime
 							linesStyle, // style startstyle
-							new Coordinates(latitude, longitude), // endCoords
+							new Coordinates(longitude, latitude), // endCoords
 							Double.NaN, // double endtime
 							linesStyle, // style endstyle
 							maxAltitude, // double maxAltitude
