@@ -370,8 +370,6 @@ public class DiscreteModelTab extends JPanel {
 	}// END: ListenOpenTree
 
 	private class ListenOpenLocationCoordinatesEditor implements ActionListener {
-		// private JFileChooser chooser;
-
 		public void actionPerformed(ActionEvent ev) {
 
 			try {
@@ -382,23 +380,7 @@ public class DiscreteModelTab extends JPanel {
 
 				table = locationCoordinatesEditor.getTable();
 
-				// JFileChooser chooser = new JFileChooser();
-				// chooser.setDialogTitle("Loading locations file...");
-				// chooser.setCurrentDirectory(workingDirectory);
-				//
-				// chooser.showOpenDialog(Utils.getActiveFrame());
-				// File file = chooser.getSelectedFile();
-				// locationsFilename = file.getAbsolutePath();
-				// System.out.println("Opened " + locationsFilename + "\n");
-				//
-				// File tmpDir = chooser.getCurrentDirectory();
-				//
-				// if (tmpDir != null) {
-				// workingDirectory = tmpDir;
-				// }
-
 			} catch (Exception e) {
-				// System.err.println("Could not Open! \n");
 				e.printStackTrace();
 
 				String msg = String.format("Unexpected problem: %s", e
@@ -407,7 +389,6 @@ public class DiscreteModelTab extends JPanel {
 
 				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
 						"Error", JOptionPane.ERROR_MESSAGE, errorIcon);
-
 			}
 		}
 	}// END: ListenOpenLocations

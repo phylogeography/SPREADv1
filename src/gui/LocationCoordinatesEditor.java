@@ -104,9 +104,6 @@ public class LocationCoordinatesEditor {
 		table = new JTable(tableModel);
 		table.setModel(tableModel);
 		table.setSurrendersFocusOnKeystroke(true);
-		// if (!tableModel.hasEmptyRow()) {
-		// tableModel.addEmptyRow();
-		// }
 
 		TableColumn hidden = table.getColumnModel().getColumn(
 				InteractiveTableModel.HIDDEN_INDEX);
@@ -150,7 +147,21 @@ public class LocationCoordinatesEditor {
 					workingDirectory = tmpDir;
 					ReadLocations data = new ReadLocations(locationsFilename);
 
+					if (tableModel.getRowCount() < data.nrow) {
+						for (int i = 0; i < data.nrow; i++) {
+							tableModel.addEmptyRow();
+						}
+					}
+
 					for (int i = 0; i < data.nrow; i++) {
+
+						// String name = String.valueOf(data.locations[i]);
+						// String longitude =
+						// String.valueOf(data.coordinates[i][0]);
+						// String latitude =
+						// String.valueOf(data.coordinates[i][1]);
+						// tableModel.insertRow(i, new TableRecord(name,
+						// longitude, latitude));
 
 						tableModel.setValueAt(data.locations[i], i, 0);
 
@@ -348,6 +359,10 @@ public class LocationCoordinatesEditor {
 	}
 
 	public void launch() {
+
+		if (!tableModel.hasEmptyRow()) {
+			tableModel.addEmptyRow();
+		}
 
 		// Display Frame
 		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);

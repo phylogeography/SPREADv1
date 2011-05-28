@@ -51,6 +51,9 @@ public class RateIndicatorBFTab extends JPanel {
 	private Color branchesMaxColor;
 	private Color branchesMinColor;
 
+	// Locations & coordinates table
+	private InteractiveTableModel table;
+
 	// Strings for paths
 	private String logFilename;
 	private String locationsFilename;
@@ -148,7 +151,8 @@ public class RateIndicatorBFTab extends JPanel {
 		// Listeners
 		openLog.addActionListener(new ListenOpenLog());
 		generateKml.addActionListener(new ListenGenerateKml());
-		openLocations.addActionListener(new ListenOpenLocations());
+		openLocations
+				.addActionListener(new ListenOpenLocationCoordinatesEditor());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
 		branchesMaxColorChooser
@@ -333,31 +337,28 @@ public class RateIndicatorBFTab extends JPanel {
 		}
 	}
 
-	private class ListenOpenLocations implements ActionListener {
+	private class ListenOpenLocationCoordinatesEditor implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
 			try {
 
-				JFileChooser chooser = new JFileChooser();
-				chooser.setDialogTitle("Loading locations file...");
-				chooser.setCurrentDirectory(workingDirectory);
+				LocationCoordinatesEditor locationCoordinatesEditor = new LocationCoordinatesEditor();
+				locationCoordinatesEditor.launch();
 
-				chooser.showOpenDialog(Utils.getActiveFrame());
-				File file = chooser.getSelectedFile();
-				locationsFilename = file.getAbsolutePath();
-				System.out.println("Opened " + locationsFilename + "\n");
+				table = locationCoordinatesEditor.getTable();
 
-				File tmpDir = chooser.getCurrentDirectory();
+			} catch (Exception e) {
+				e.printStackTrace();
 
-				if (tmpDir != null) {
-					workingDirectory = tmpDir;
-				}
+				String msg = String.format("Unexpected problem: %s", e
+						.toString()
+						+ "\nHave you imported the tree file?");
 
-			} catch (Exception e1) {
-				System.err.println("Could not Open! \n");
+				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
+						"Error", JOptionPane.ERROR_MESSAGE, errorIcon);
 			}
 		}
-	}
+	}// END: ListenOpenLocations
 
 	private class ListenBranchesMinColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
@@ -523,10 +524,10 @@ public class RateIndicatorBFTab extends JPanel {
 						rateIndicatorBFToProcessing.setBfCutoff(Double
 								.valueOf(bfCutoffParser.getText()));
 
-//						rateIndicatorBFToProcessing
-//								.setNumberOfIntervals(Integer
-//										.valueOf(numberOfIntervalsParser
-//												.getText()));
+						// rateIndicatorBFToProcessing
+						// .setNumberOfIntervals(Integer
+						// .valueOf(numberOfIntervalsParser
+						// .getText()));
 
 						rateIndicatorBFToProcessing
 								.setLocationFilePath(locationsFilename);

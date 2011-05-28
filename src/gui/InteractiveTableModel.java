@@ -103,6 +103,18 @@ public class InteractiveTableModel extends AbstractTableModel {
 		this.fireTableDataChanged();
 	}
 
+	public void deleteRow(int row) {
+		dataVector.remove(row);
+		this.fireTableDataChanged();
+	}
+
+	public void cleanTable() {
+		// dataVector.clear();
+		for (int i = 0; i < dataVector.size(); i++) {
+			deleteRow(i);
+		}
+	}
+
 	public boolean hasEmptyRow() {
 
 		if (dataVector.size() == 0)
