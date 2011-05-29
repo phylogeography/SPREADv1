@@ -44,7 +44,7 @@ h1. TODO
 * Add Cannot impute, no precision attribute warning message in Time Slicer
 * Add drop-down panels, FigTree style
 * host example files and
-* Create GitHub Page for Spread (spread.github.com)
+* Create GitHub Page for Spread (fbielejec.github.com/spread) and a CNAME redirect
 
 
 
