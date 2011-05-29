@@ -19,14 +19,14 @@ friendly interface. Supported visualisations include embedded Processing applets
 and KML output for viewing in Google Earth or any other virtual globe software 
 capable of reading the format.
 
-BEAST software: :http://beast.bio.ed.ac.uk/Main_Page
+BEAST software: [[http://beast.bio.ed.ac.uk/Main_Page]]
 
 
 h1. DOWNLOAD
                             
 Compiled version can be downloaded from:
 
-:http://dl.dropbox.com/u/5169517/spread.jar
+[[http://dl.dropbox.com/u/5169517/spread.jar]]
 
 h1. COMPILING
 
