@@ -350,8 +350,7 @@ public class RateIndicatorBFTab extends JPanel {
 				e.printStackTrace();
 
 				String msg = String.format("Unexpected problem: %s", e
-						.toString()
-						+ "\nHave you imported the tree file?");
+						.toString());
 
 				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
 						"Error", JOptionPane.ERROR_MESSAGE, errorIcon);

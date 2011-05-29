@@ -9,6 +9,8 @@ import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -23,6 +25,8 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
+
+import jebl.evolution.io.ImportException;
 
 import templates.DiscreteTreeToKML;
 import templates.DiscreteTreeToProcessing;
@@ -380,22 +384,22 @@ public class DiscreteModelTab extends JPanel {
 
 				table = locationCoordinatesEditor.getTable();
 
-			} catch (NullPointerException e0) {
+			} catch (NullPointerException e) {
 
-				e0.printStackTrace();
+				e.printStackTrace();
 
-				String msg = String.format("Unexpected problem: %s", e0
+				String msg = String.format("Unexpected problem: %s", e
 						.toString()
 						+ "\nHave you imported the tree file?");
 
 				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
 						"Error", JOptionPane.ERROR_MESSAGE, errorIcon);
 
-			} catch (RuntimeException e1) {
+			} catch (RuntimeException e) {
 
-				e1.printStackTrace();
+				e.printStackTrace();
 
-				String msg = String.format("Unexpected problem: %s", e1
+				String msg = String.format("Unexpected problem: %s", e
 						.toString()
 						+ "\nHave you specified proper state attribute name?");
 
@@ -681,7 +685,7 @@ public class DiscreteModelTab extends JPanel {
 
 						}// END: check
 
-					} catch (Exception e) {
+					} catch (NullPointerException e) {
 						e.printStackTrace();
 
 						String msg = String.format("Unexpected problem: %s", e
@@ -690,6 +694,13 @@ public class DiscreteModelTab extends JPanel {
 						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
 								msg, "Error", JOptionPane.ERROR_MESSAGE,
 								errorIcon);
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (ImportException e) {
+						e.printStackTrace();
+					} catch (ParseException e) {
+						e.printStackTrace();
 					}
 
 					return null;
