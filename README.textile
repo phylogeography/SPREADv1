@@ -13,11 +13,9 @@ h1. SPREAD
  
 h1. PURPOSE
                             
-S.P.R.E.A.D. is a Java program supporting processing and visualizations of BEAST's 
-phylogeographic models ("BEAST software":http://beast.bio.ed.ac.uk/Main_Page). 
-Contains visualisations (templates), wrapped in a user friendly interface. 
-Supported visualisations include embedded Processing applets and KML output for viewing 
-in Google Earth or any other virtual globe software capable of reading the format.
+S.P.R.E.A.D. is a Java program supporting processing and visualizations of BEAST's phylogeographic models ("BEAST software":http://beast.bio.ed.ac.uk/Main_Page). 
+
+Contains visualisations (templates), wrapped in a user friendly interface. Supported visualisations include embedded Processing applets and KML output for viewing in Google Earth or any other virtual globe software capable of reading the format.
 
 
 h1. DOWNLOAD
@@ -28,25 +26,25 @@ h1. COMPILING
 
 Depends on the following libraries:
 
-* jebl.jar/ 
-* org.boehn.kmlframework_20090320.jar/
-* core.jar/
-* colt.jar/
-* ColorPicker.jar/
+* jebl.jar
+* org.boehn.kmlframework_20090320.jar
+* core.jar
+* colt.jar
+* ColorPicker.jar
 
 h1. TODO
 
-* Processing applets/
+* Processing applets
    - We could draw the lines along great circle arcs or rhumb lines, this would require 
      getting the code in kml generator class to work with processing
-* TimeSlicer template/
+* TimeSlicer template
   - give the concurrent implementation of AnalyzeTree another try. This might        
     be achieveable with ConcurrentHashMap class  
   - Polygons should also be easily executed in parallel (read only operation),
     the problem is in getting the style id's right  
-* Add Cannot impute, no precision attribute warning message in Time Slicer/
-* Add an editor for locations file/  
-* Add drop-down panels/
+* Add Cannot impute, no precision attribute warning message in Time Slicer
+* Add an editor for locations file 
+* Add drop-down panels
 
 
 
