@@ -1,4 +1,4 @@
-                            SPREAD
+h1. SPREAD
 
  
   This is free software; you can redistribute it and/or modify
@@ -11,9 +11,7 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU Lesser General Public License for more details.
  
- 
-________________________________________________________________________________
-                            PURPOSE
+h1. PURPOSE
                             
 S.P.R.E.A.D. is a Java program supporting processing and visualizations of BEAST's 
 phylogeographic models. Contains visualisations (templates), wrapped in a user 
@@ -24,14 +22,13 @@ capable of reading the format.
 BEAST software: http://beast.bio.ed.ac.uk/Main_Page
 
 
-________________________________________________________________________________
-                            DOWNLOAD
+h1. DOWNLOAD
                             
 Compiled version can be downloaded from:
 
 http://dl.dropbox.com/u/5169517/spread.jar
-________________________________________________________________________________
-                            COMPILING
+
+h1. COMPILING
 
 Depends on the following libraries:
 
@@ -40,21 +37,21 @@ org.boehn.kmlframework_20090320.jar
 core.jar
 colt.jar
 ColorPicker.jar
-________________________________________________________________________________
-                              TODO
-* Processing applets
+
+h1. TODO
+
+* Processing applets/
    - We could draw the lines along great circle arcs or rhumb lines, this would require 
      getting the code in kml generator class to work with processing
-* TimeSlicer template
+* TimeSlicer template/
   - give the concurrent implementation of AnalyzeTree another try. This might        
     be achieveable with ConcurrentHashMap class  
   - Polygons should also be easily executed in parallel (read only operation),
     the problem is in getting the style id's right  
-* Add Cannot impute, no precision attribute warning message in Time Slicer
-* Add an editor for locations file  
-* Add drop-down panels    
-    
-    
-    
-    
-    
+* Add Cannot impute, no precision attribute warning message in Time Slicer/
+* Add an editor for locations file/  
+* Add drop-down panels/
+
+
+
+
