@@ -380,12 +380,24 @@ public class DiscreteModelTab extends JPanel {
 
 				table = locationCoordinatesEditor.getTable();
 
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (NullPointerException e0) {
 
-				String msg = String.format("Unexpected problem: %s", e
+				e0.printStackTrace();
+
+				String msg = String.format("Unexpected problem: %s", e0
 						.toString()
 						+ "\nHave you imported the tree file?");
+
+				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
+						"Error", JOptionPane.ERROR_MESSAGE, errorIcon);
+
+			} catch (RuntimeException e1) {
+
+				e1.printStackTrace();
+
+				String msg = String.format("Unexpected problem: %s", e1
+						.toString()
+						+ "\nHave you specified proper state attribute name?");
 
 				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
 						"Error", JOptionPane.ERROR_MESSAGE, errorIcon);
