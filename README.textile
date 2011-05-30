@@ -43,8 +43,7 @@ h1. TODO
   - polygons parsing should also be easily executed in parallel (read only operation), the problem is in getting the style id's right  
 * Add Cannot impute, no precision attribute warning message in Time Slicer
 * Add drop-down panels, FigTree style
-* host example files and link to them in supplementary materials
-* Create GitHub Page for Spread (fbielejec.github.com/spread) and a CNAME redirect
+* pass workingDir argument to launch methods of location coordinates editors
 
 
 
