@@ -319,10 +319,12 @@ public class LocationCoordinatesEditor {
 		return uniqueTreeStatesArray;
 	}// END: getUniqueTreeStates
 
-	public void launch(String treeFilename, String stateAttName) {
+	public void launch(String treeFilename, String stateAttName, File workingDirectory) {
 
 		try {
 
+			this.workingDirectory = workingDirectory;
+			
 			RootedTree tree = (RootedTree) new NexusImporter(new FileReader(
 					treeFilename)).importNextTree();
 
@@ -358,12 +360,14 @@ public class LocationCoordinatesEditor {
 		return tableModel;
 	}
 
-	public void launch() {
+	public void launch(File workingDirectory) {
 
 		if (!tableModel.hasEmptyRow()) {
 			tableModel.addEmptyRow();
 		}
 
+		this.workingDirectory = workingDirectory;
+		
 		// Display Frame
 		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		window.setSize(new Dimension(300, 300));

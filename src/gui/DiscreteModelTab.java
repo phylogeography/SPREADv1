@@ -381,7 +381,7 @@ public class DiscreteModelTab extends JPanel {
 				// editor
 				LocationCoordinatesEditor locationCoordinatesEditor = new LocationCoordinatesEditor();
 				locationCoordinatesEditor.launch(treeFilename,
-						stateAttNameParser.getText());
+						stateAttNameParser.getText(), workingDirectory);
 
 				table = locationCoordinatesEditor.getTable();
 

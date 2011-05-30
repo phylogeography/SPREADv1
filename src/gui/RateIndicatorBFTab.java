@@ -342,7 +342,7 @@ public class RateIndicatorBFTab extends JPanel {
 			try {
 
 				LocationCoordinatesEditor locationCoordinatesEditor = new LocationCoordinatesEditor();
-				locationCoordinatesEditor.launch();
+				locationCoordinatesEditor.launch(workingDirectory);
 
 				table = locationCoordinatesEditor.getTable();
 
