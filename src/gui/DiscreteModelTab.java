@@ -377,7 +377,8 @@ public class DiscreteModelTab extends JPanel {
 		public void actionPerformed(ActionEvent ev) {
 
 			try {
-
+				// TODO this should take the workingDir as input and pass it to
+				// the chooser
 				LocationCoordinatesEditor locationCoordinatesEditor = new LocationCoordinatesEditor();
 				locationCoordinatesEditor.launch(treeFilename,
 						stateAttNameParser.getText());
