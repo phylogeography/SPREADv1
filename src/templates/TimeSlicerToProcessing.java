@@ -32,7 +32,11 @@ import contouring.ContourWithSynder;
 public class TimeSlicerToProcessing extends PApplet {
 
 	private final int DayInMillis = 86400000;
-	private final int NTHREDS = Runtime.getRuntime().availableProcessors();;
+
+	// Concurrency stuff
+	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
+	private Double sliceTime;
+	private RootedTree currentTree;
 
 	private TreeImporter treesImporter;
 	private TreeImporter treeImporter;
@@ -50,8 +54,6 @@ public class TimeSlicerToProcessing extends PApplet {
 	private double startTime;
 	private double endTime;
 	private double burnIn;
-	private RootedTree currentTree;
-	private Double sliceTime;
 	private RootedTree tree;
 	private double HPD;
 
@@ -76,8 +78,6 @@ public class TimeSlicerToProcessing extends PApplet {
 	private double maxBranchOpacityMapping;
 
 	private double branchWidth;
-
-	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -229,7 +229,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		minX = -180;
 		maxX = 180;
 
-		minY = -80;
+		minY = -90;
 		maxY = 90;
 
 		mapBackground = new MapBackground(this);
@@ -395,6 +395,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		System.out.println("Analyzing trees...");
 
 		// Executor for threads
+		int NTHREDS = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
 
 		int readTrees = 0;
@@ -452,14 +453,14 @@ public class TimeSlicerToProcessing extends PApplet {
 							Object[] location = (Object[]) Utils
 									.getArrayNodeAttribute(node,
 											coordinatesName);
-							
+
 							double latitude = (Double) location[0];
 							double longitude = (Double) location[1];
 
 							Object[] parentLocation = (Object[]) Utils
 									.getArrayNodeAttribute(parentNode,
 											coordinatesName);
-							
+
 							double parentLatitude = (Double) parentLocation[0];
 							double parentLongitude = (Double) parentLocation[1];
 

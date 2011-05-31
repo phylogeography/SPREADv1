@@ -43,6 +43,11 @@ public class TimeSlicerToKML {
 
 	private final int DayInMillis = 86400000;
 
+	// Concurrency stuff
+	private volatile Double sliceTime;
+	private volatile ConcurrentMap<Double, List<Coordinates>> slicesMap;
+	private RootedTree currentTree;
+
 	private TreeImporter treeImporter;
 	private RootedTree tree;
 	private double maxAltMapping;
@@ -69,7 +74,6 @@ public class TimeSlicerToKML {
 
 	private double branchWidth;
 	private TreeImporter treesImporter;
-	private RootedTree currentTree;
 	private String mrsdString;
 	private double timescaler;
 	private int numberOfIntervals;
@@ -85,13 +89,10 @@ public class TimeSlicerToKML {
 	private int polygonsStyleId;
 	private SimpleDateFormat formatter;
 	private PrintWriter writer;
-	private Double sliceTime;
 	private TimeLine timeLine;
 	private double startTime;
 	private double endTime;
 	private double HPD;
-
-	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -255,7 +256,7 @@ public class TimeSlicerToKML {
 		slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
 
 		// Executor for threads
-		final int NTHREDS = Runtime.getRuntime().availableProcessors();
+		int NTHREDS = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
 
 		int readTrees = 0;
@@ -266,15 +267,14 @@ public class TimeSlicerToKML {
 				if (readTrees >= burnIn) {
 
 					// executor.submit(new AnalyzeTree());
-					AnalyzeTree analyzeTree = new AnalyzeTree();
-					analyzeTree.run();
+					new AnalyzeTree().run();
+
+					if (readTrees % 200 == 0) {
+						System.out.print(readTrees + " trees...");
+					}
 				}
 
 				readTrees++;
-
-				if (readTrees % 200 == 0) {
-					System.out.print(readTrees + " trees...");
-				}
 
 			}// END: synchronized
 		}// END: while has trees
@@ -312,12 +312,11 @@ public class TimeSlicerToKML {
 
 				sliceTime = (Double) iterator.next();
 
-				// executor.submit(new Polygons());
-				Polygons polygons = new Polygons();
-				polygons.run();
+				executor.submit(new Polygons());
+				// new Polygons().run();
 
-			}
-		}
+			}// END: while has next
+		}// END: synchronized
 
 		executor.submit(new Branches());
 
@@ -507,10 +506,10 @@ public class TimeSlicerToKML {
 
 				double[] latitude = path.getAllX();
 				double[] longitude = path.getAllY();
+
 				List<Coordinates> coords = new ArrayList<Coordinates>();
 
 				for (int i = 0; i < latitude.length; i++) {
-
 					coords.add(new Coordinates(longitude[i], latitude[i], 0.0));
 				}
 
