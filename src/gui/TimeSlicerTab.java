@@ -294,6 +294,7 @@ public class TimeSlicerTab extends JPanel {
 
 		leftPanel.add(tmpPanel);
 		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("KML name:"));
 		tmpPanel.add(kmlPathParser);
@@ -652,11 +653,11 @@ public class TimeSlicerTab extends JPanel {
 				public void done() {
 					generateKml.setEnabled(true);
 					progressBar.setIndeterminate(false);
-					
-					System.out.println("Generated " + workingDirectory
-							.toString().concat("/").concat(
+
+					System.out.println("Generated "
+							+ workingDirectory.toString().concat("/").concat(
 									kmlPathParser.getText()));
-					
+
 				}
 			};
 
