@@ -233,9 +233,6 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.add(precisionAttNameParser);
 		leftPanel.add(tmpPanel);
 
-		rateAttNameParser.setEnabled(false);
-		precisionAttNameParser.setEnabled(false);
-
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
