@@ -213,9 +213,10 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Impute / Use true noise:"));
+		imputeParser.setSelected(true);
 		tmpPanel.add(imputeParser);
+		trueNoiseParser.setSelected(true);
 		tmpPanel.add(trueNoiseParser);
-		trueNoiseParser.setEnabled(false);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
