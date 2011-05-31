@@ -813,5 +813,38 @@ public class Utils {
 		}
 		return result;
 	}
+	
+	public static void print_progress(int percent){
+
+		StringBuilder bar = new StringBuilder("[");
+
+		    for(int i = 0; i < 50; i++){
+		        if( i < (percent/2)){
+		            bar.append("=");
+		        }else if( i == (percent/2)){
+		            bar.append(">");
+		        }else{
+		            bar.append(" ");
+		        }
+		    }
+
+		    bar.append("]   " + percent + "%     ");
+		    System.out.print("\r" + bar.toString());
+		}
+
+	
+	public static void updateProgress(double progressPercentage) {
+		final int width = 50; // progress bar width in chars
+
+		System.out.print("\r[");
+		int i = 0;
+		for (; i <= (int) (progressPercentage * width); i++) {
+			System.out.print(".");
+		}
+		for (; i < width; i++) {
+			System.out.print(" ");
+		}
+		System.out.print("]");
+	}
 
 }// END: Utils class

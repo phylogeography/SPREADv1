@@ -67,6 +67,7 @@ public class TimeSlicerTab extends JPanel {
 	private JTextField numberOfIntervalsParser;
 	private JTextField kmlPathParser;
 	private JTextField maxAltMappingParser;
+	private JTextField HPDParser;
 
 	// Spinners
 	private DateSpinner dateSpinner;
@@ -129,6 +130,7 @@ public class TimeSlicerTab extends JPanel {
 		numberOfIntervalsParser = new JTextField("10", 5);
 		maxAltMappingParser = new JTextField("500000", 5);
 		kmlPathParser = new JTextField("output.kml", 10);
+		HPDParser = new JTextField("0.95", 5);
 
 		// Setup buttons
 		generateKml = new JButton("Generate", nuclearIcon);
@@ -212,6 +214,20 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Coordinate attribute name:"));
+		tmpPanel.add(coordinatesNameParser);
+		leftPanel.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("HPD:"));
+		tmpPanel.add(HPDParser);
+		leftPanel.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Impute / Use true noise:"));
 		imputeParser.setSelected(true);
 		tmpPanel.add(imputeParser);
@@ -238,13 +254,6 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
 		tmpPanel.add(burnInParser);
-		leftPanel.add(tmpPanel);
-
-		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
-		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Coordinate attribute name:"));
-		tmpPanel.add(coordinatesNameParser);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -513,6 +522,9 @@ public class TimeSlicerTab extends JPanel {
 							timeSlicerToKML.setTreePath(treeFilename);
 
 							timeSlicerToKML.setTreesPath(treesFilename);
+
+							timeSlicerToKML.setHPD(Double.valueOf(HPDParser
+									.getText()));
 
 							timeSlicerToKML.setBurnIn(Integer
 									.valueOf(burnInParser.getText()));
@@ -794,7 +806,8 @@ public class TimeSlicerTab extends JPanel {
 						e.printStackTrace();
 
 						JOptionPane.showMessageDialog(Utils.getActiveFrame(), e
-								.toString(), "Error",
+								.toString()
+								+ "\nIncrease Java Heap Space", "Error",
 								JOptionPane.ERROR_MESSAGE, errorIcon);
 
 					} catch (Exception e) {

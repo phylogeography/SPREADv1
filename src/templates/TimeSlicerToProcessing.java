@@ -53,6 +53,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private RootedTree currentTree;
 	private Double sliceTime;
 	private RootedTree tree;
+	private double HPD;
 
 	private double minPolygonRedMapping;
 	private double minPolygonGreenMapping;
@@ -107,6 +108,10 @@ public class TimeSlicerToProcessing extends PApplet {
 		}
 
 	}// END: TimeSlicerToProcessing()
+
+	public void setHPD(double percent) {
+		HPD = percent;
+	}
 
 	public void setMccTreePath(String path) throws FileNotFoundException {
 		treeImporter = new NexusImporter(new FileReader(path));
@@ -285,7 +290,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		}
 
 		ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
-		ContourPath[] paths = contourMaker.getContourPaths(0.8);
+		ContourPath[] paths = contourMaker.getContourPaths(HPD);
 
 		for (ContourPath path : paths) {
 
@@ -445,13 +450,16 @@ public class TimeSlicerToProcessing extends PApplet {
 									.getHeight(parentNode);
 
 							Object[] location = (Object[]) Utils
-									.getArrayNodeAttribute(node, coordinatesName);
+									.getArrayNodeAttribute(node,
+											coordinatesName);
+							
 							double latitude = (Double) location[0];
 							double longitude = (Double) location[1];
 
 							Object[] parentLocation = (Object[]) Utils
 									.getArrayNodeAttribute(parentNode,
 											coordinatesName);
+							
 							double parentLatitude = (Double) parentLocation[0];
 							double parentLongitude = (Double) parentLocation[1];
 

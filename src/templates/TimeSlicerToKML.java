@@ -89,6 +89,7 @@ public class TimeSlicerToKML {
 	private TimeLine timeLine;
 	private double startTime;
 	private double endTime;
+	private double HPD;
 
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 
@@ -115,6 +116,10 @@ public class TimeSlicerToKML {
 			timescaler = 365;
 			break;
 		}
+	}
+
+	public void setHPD(double percent) {
+		HPD = percent;
 	}
 
 	public void setTreePath(String path) throws FileNotFoundException {
@@ -266,8 +271,13 @@ public class TimeSlicerToKML {
 				}
 
 				readTrees++;
-			}
-		}
+
+				if (readTrees % 200 == 0) {
+					System.out.print(readTrees + " trees...");
+				}
+
+			}// END: synchronized
+		}// END: while has trees
 
 		if ((readTrees - burnIn) <= 0.0) {
 			throw new RuntimeException("Burnt too many trees!");
@@ -347,7 +357,8 @@ public class TimeSlicerToKML {
 									.getHeight(parentNode);
 
 							Object[] location = (Object[]) Utils
-									.getArrayNodeAttribute(node, coordinatesName);
+									.getArrayNodeAttribute(node,
+											coordinatesName);
 							double latitude = (Double) location[0];
 							double longitude = (Double) location[1];
 
@@ -489,7 +500,7 @@ public class TimeSlicerToKML {
 			}
 
 			ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
-			ContourPath[] paths = contourMaker.getContourPaths(0.8);
+			ContourPath[] paths = contourMaker.getContourPaths(HPD);
 
 			int pathCounter = 1;
 			for (ContourPath path : paths) {

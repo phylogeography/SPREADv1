@@ -105,7 +105,7 @@ public class ContinuousTreeToKML {
 
 	}// END: ContinuousTreeToKML()
 
-	public void setHPD(String percent) throws RuntimeException {
+	public void setHPD(String percent) {
 		HPD = percent;
 	}
 
