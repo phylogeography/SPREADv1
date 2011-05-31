@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -182,17 +181,24 @@ public class RateIndicatorBFTab extends JPanel {
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
-		tmpPanel.setLayout(new GridLayout(1, 2));
+		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Poisson prior mean / offset:"));
-		String[] meanPoissonPrior = { "log(2)", "" };
+		String[] meanPoissonPrior = { "log(2)", " " };
 		meanPoissonPriorParser = new JComboBox(meanPoissonPrior);
 		meanPoissonPriorParser.setEditable(true);
-		tmpPanel.add(meanPoissonPriorParser);
-		String[] poissonPriorOffset = { "n-1", "" };
+		meanPoissonPriorParser.setPreferredSize(new Dimension(70, 25));
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		tmpPanel.add(meanPoissonPriorParser, c);
+		String[] poissonPriorOffset = { "n-1", " " };
 		poissonPriorOffsetParser = new JComboBox(poissonPriorOffset);
 		poissonPriorOffsetParser.setEditable(true);
-		tmpPanel.add(poissonPriorOffsetParser);
+		poissonPriorOffsetParser.setPreferredSize(new Dimension(70, 25));
+		c.gridx = 2;
+		c.gridy = 0;
+		tmpPanel.add(poissonPriorOffsetParser, c);
 		leftPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
