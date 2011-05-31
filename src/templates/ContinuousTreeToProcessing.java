@@ -149,7 +149,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 		minX = -180;
 		maxX = 180;
 
-		minY = -80;
+		minY = -90;
 		maxY = 90;
 
 		mapBackground = new MapBackground(this);
@@ -175,24 +175,25 @@ public class ContinuousTreeToProcessing extends PApplet {
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {
 
-				Float longitude = (float) Utils.getDoubleNodeAttribute(node,
+				double longitude = Utils.getDoubleNodeAttribute(node,
 						longitudeName);
 
-				Float latitude = (float) Utils.getDoubleNodeAttribute(node,
+				double latitude = Utils.getDoubleNodeAttribute(node,
 						latitudeName);
 
 				Node parentNode = tree.getParent(node);
-				Float parentLongitude = (float) Utils.getDoubleNodeAttribute(
+
+				double parentLongitude = Utils.getDoubleNodeAttribute(
 						parentNode, longitudeName);
-				Float parentLatitude = (float) Utils.getDoubleNodeAttribute(
+				double parentLatitude = Utils.getDoubleNodeAttribute(
 						parentNode, latitudeName);
 
 				// Equirectangular projection:
-				float x0 = map(parentLongitude, minX, maxX, 0, width);
-				float y0 = map(parentLatitude, maxY, minY, 0, height);
+				double x0 = Utils.map(parentLongitude, minX, maxX, 0, width);
+				double y0 = Utils.map(parentLatitude, maxY, minY, 0, height);
 
-				float x1 = map(longitude, minX, maxX, 0, width);
-				float y1 = map(latitude, maxY, minY, 0, height);
+				double x1 = Utils.map(longitude, minX, maxX, 0, width);
+				double y1 = Utils.map(latitude, maxY, minY, 0, height);
 
 				/**
 				 * Color mapping
@@ -213,7 +214,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 				stroke(red, green, blue, alpha);
 
-				line(x0, y0, x1, y1);
+				line((float) x0, (float) y0, (float) x1, (float) y1);
 
 			}
 		}// END: nodes loop
@@ -267,18 +268,18 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 						for (int row = 0; row < coordinates.size() - 1; row++) {
 
-							float X = map((float) coordinates.get(row)
+							double X = Utils.map(coordinates.get(row)
 									.getLongitude(), minX, maxX, 0, width);
-							float Y = map((float) coordinates.get(row)
+							double Y = Utils.map(coordinates.get(row)
 									.getLatitude(), maxY, minY, 0, height);
 
-							float XEND = map((float) coordinates.get(row + 1)
+							double XEND = Utils.map(coordinates.get(row + 1)
 									.getLongitude(), minX, maxX, 0, width);
-							float YEND = map((float) (coordinates.get(row + 1)
+							double YEND = Utils.map((coordinates.get(row + 1)
 									.getLatitude()), maxY, minY, 0, height);
 
-							vertex(X, Y);
-							vertex(XEND, YEND);
+							vertex((float) X, (float) Y);
+							vertex((float) XEND, (float) YEND);
 
 						}// END: coordinates loop
 

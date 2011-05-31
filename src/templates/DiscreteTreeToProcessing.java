@@ -187,6 +187,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 				String state = Utils.getStringNodeAttribute(node, stateAttName);
 
 				Node parentNode = tree.getParent(node);
+				
 				String parentState = (String) parentNode
 						.getAttribute(stateAttName);
 
