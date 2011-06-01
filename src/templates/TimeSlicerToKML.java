@@ -269,8 +269,9 @@ public class TimeSlicerToKML {
 					// executor.submit(new AnalyzeTree());
 					new AnalyzeTree().run();
 
-					if (readTrees % 200 == 0) {
-						System.out.print(readTrees + " trees...");
+					if (readTrees % 500 == 0) {
+						System.out.print(readTrees + " trees... ");
+						// System.gc();
 					}
 				}
 
@@ -312,8 +313,9 @@ public class TimeSlicerToKML {
 
 				sliceTime = (Double) iterator.next();
 
-				executor.submit(new Polygons());
-				// new Polygons().run();
+				// executor.submit(new Polygons());
+				new Polygons().run();
+				System.gc();
 
 			}// END: while has next
 		}// END: synchronized
