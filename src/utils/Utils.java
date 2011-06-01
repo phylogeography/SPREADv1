@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 import jebl.evolution.graphs.Node;
 import jebl.evolution.trees.RootedTree;
@@ -401,27 +402,22 @@ public class Utils {
 		}
 	}// END: Head2DArray
 
-	public static void PrintTwoArrays(Object[] left, Object[] right) {
-		/**
-		 * Prints elements of two arrays until smaller one runs out of any
-		 * elements
-		 * */
-		int n = left.length < right.length ? left.length : right.length;
+	public static void save2DArray(String filename, int[][] array) {
 
-		for (int row = 0; row < n; row++) {
+		try {
 
-			System.out.println(left[row] + " " + right[row]);
-
+			PrintWriter pri = new PrintWriter(filename);
+			for (int row = 0; row < array.length; row++) {
+				for (int col = 0; col < array[row].length; col++) {
+					pri.print(array[row][col] + "\t");
+				}
+				pri.print("\n");
+			}
+			pri.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-	}
-
-	public static void PrintReadLocations(ReadLocations locations) {
-		for (int row = 0; row < locations.nrow; row++) {
-			System.out.println(locations.locations[row] + " "
-					+ locations.coordinates[row][0] + " "
-					+ locations.coordinates[row][1]);
-		}
-	}
+	}// END: save2DArray
 
 	public static void Save2DArray(String filename, double[][] array) {
 
@@ -442,6 +438,30 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}// END: save2DArray
+
+	public static void saveHashMap(
+			ConcurrentMap<Double, List<Coordinates>> slicesMap) {
+
+		Iterator<Double> iterator = slicesMap.keySet().iterator();
+
+		while (iterator.hasNext()) {
+
+			Double sliceTime = (Double) iterator.next();
+
+			List<Coordinates> list = slicesMap.get(sliceTime);
+
+			double[][] array = new double[list.size()][2];
+
+			for (int i = 0; i < list.size(); i++) {
+
+				array[i][0] = list.get(i).getLatitude();
+				array[i][1] = list.get(i).getLongitude();
+
+			}
+			Utils.Save2DArray("array_" + sliceTime, array);
+
+		}// END while has next
+	}// END: diskOperation
 
 	public static double GreatCircDistSpherLawCos(double startLon,
 			double startLat, double endLon, double endLat) {
@@ -813,26 +833,25 @@ public class Utils {
 		}
 		return result;
 	}
-	
-	public static void print_progress(int percent){
+
+	public static void print_progress(int percent) {
 
 		StringBuilder bar = new StringBuilder("[");
 
-		    for(int i = 0; i < 50; i++){
-		        if( i < (percent/2)){
-		            bar.append("=");
-		        }else if( i == (percent/2)){
-		            bar.append(">");
-		        }else{
-		            bar.append(" ");
-		        }
-		    }
-
-		    bar.append("]   " + percent + "%     ");
-		    System.out.print("\r" + bar.toString());
+		for (int i = 0; i < 50; i++) {
+			if (i < (percent / 2)) {
+				bar.append("=");
+			} else if (i == (percent / 2)) {
+				bar.append(">");
+			} else {
+				bar.append(" ");
+			}
 		}
 
-	
+		bar.append("]   " + percent + "%     ");
+		System.out.print("\r" + bar.toString());
+	}
+
 	public static void updateProgress(double progressPercentage) {
 		final int width = 50; // progress bar width in chars
 

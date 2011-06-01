@@ -44,8 +44,8 @@ public class TimeSlicerToKML {
 	private final int DayInMillis = 86400000;
 
 	// Concurrency stuff
-	private volatile Double sliceTime;
-	private volatile ConcurrentMap<Double, List<Coordinates>> slicesMap;
+	private Double sliceTime; // volatile
+	private ConcurrentMap<Double, List<Coordinates>> slicesMap; // volatile
 	private RootedTree currentTree;
 
 	private TreeImporter treeImporter;
@@ -292,6 +292,9 @@ public class TimeSlicerToKML {
 		while (!executor.isTerminated()) {
 		}
 
+		
+		
+		
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
 		Set<Double> hostKeys = slicesMap.keySet();
@@ -714,5 +717,7 @@ public class TimeSlicerToKML {
 		return timeLine;
 
 	}// END: GenerateTimeLine
+
+	
 
 }// END: class
