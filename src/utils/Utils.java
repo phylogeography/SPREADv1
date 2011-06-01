@@ -443,22 +443,24 @@ public class Utils {
 			ConcurrentMap<Double, List<Coordinates>> slicesMap) {
 
 		Iterator<Double> iterator = slicesMap.keySet().iterator();
-
+		int j = 0;
 		while (iterator.hasNext()) {
 
 			Double sliceTime = (Double) iterator.next();
 
 			List<Coordinates> list = slicesMap.get(sliceTime);
 
-			double[][] array = new double[list.size()][2];
+			double[][] array = new double[list.size()][3];
 
 			for (int i = 0; i < list.size(); i++) {
 
-				array[i][0] = list.get(i).getLatitude();
-				array[i][1] = list.get(i).getLongitude();
+				array[i][0] = sliceTime;
+				array[i][1] = list.get(i).getLatitude();
+				array[i][2] = list.get(i).getLongitude();
 
 			}
-			Utils.Save2DArray("array_" + sliceTime, array);
+			Utils.Save2DArray("out/array_" + j, array);
+			j++;
 
 		}// END while has next
 	}// END: diskOperation

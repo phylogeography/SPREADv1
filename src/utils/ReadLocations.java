@@ -83,4 +83,13 @@ public class ReadLocations extends PApplet {
 		return coordinates[row][col];
 	}// END: getFloat
 
+	public double[] getCoordsColumn(int columnIndex) {
+		double[] x = new double[nrow];
+
+		for (int row = 0; row < nrow; row++) {
+			x[row] = coordinates[row][columnIndex];
+		}
+		return x;
+	}// END: getCoordsColumn
+
 }// END: class

@@ -31,11 +31,13 @@ import structure.Line;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
+import utils.ReadLocations;
 import utils.SpreadDate;
 import utils.Utils;
 import contouring.ContourMaker;
 import contouring.ContourPath;
 import contouring.ContourWithSynder;
+import contouring.KernelDensityEstimator2D;
 
 public class TimeSlicerToKML {
 
@@ -269,7 +271,7 @@ public class TimeSlicerToKML {
 					// executor.submit(new AnalyzeTree());
 					new AnalyzeTree().run();
 
-					if (readTrees % 500 == 0) {
+					if (readTrees % burnIn == 0) {
 						System.out.print(readTrees + " trees... ");
 						// System.gc();
 					}
@@ -292,9 +294,6 @@ public class TimeSlicerToKML {
 		while (!executor.isTerminated()) {
 		}
 
-		
-		
-		
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
 		Set<Double> hostKeys = slicesMap.keySet();
@@ -318,7 +317,7 @@ public class TimeSlicerToKML {
 
 				// executor.submit(new Polygons());
 				new Polygons().run();
-				System.gc();
+				// System.gc();
 
 			}// END: while has next
 		}// END: synchronized
@@ -503,7 +502,7 @@ public class TimeSlicerToKML {
 
 			}
 
-			ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
+			ContourMaker contourMaker = new KernelDensityEstimator2D(x, y, 20);
 			ContourPath[] paths = contourMaker.getContourPaths(HPD);
 
 			int pathCounter = 1;
@@ -717,7 +716,5 @@ public class TimeSlicerToKML {
 		return timeLine;
 
 	}// END: GenerateTimeLine
-
-	
 
 }// END: class
