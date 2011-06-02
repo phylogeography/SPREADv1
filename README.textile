@@ -36,6 +36,7 @@ Depends on the following libraries:
 
 h1. TODO
 
+* Top priority: memory leak in Time Slicer template  
 * Processing applets
    - We could draw the lines along great circle arcs or rhumb lines, this would require getting the code in kml generator class to work with processing
 * TimeSlicer template
