@@ -315,7 +315,6 @@ public class TimeSlicerToKML {
 
 				// executor.submit(new Polygons());
 				new Polygons().run();
-				// System.gc();
 
 			}// END: while has next
 		}// END: synchronized
