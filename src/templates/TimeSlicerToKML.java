@@ -31,13 +31,11 @@ import structure.Line;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
-import utils.ReadLocations;
 import utils.SpreadDate;
 import utils.Utils;
 import contouring.ContourMaker;
 import contouring.ContourPath;
 import contouring.ContourWithSynder;
-import contouring.KernelDensityEstimator2D;
 
 public class TimeSlicerToKML {
 
@@ -486,8 +484,8 @@ public class TimeSlicerToKML {
 			int alpha = (int) Utils.map(sliceTime, startTime, endTime,
 					maxPolygonOpacityMapping, minPolygonOpacityMapping);
 
-			Color col = new Color(red, green, blue, alpha);
-			Style polygonsStyle = new Style(col, 0);
+			Color color = new Color(red, green, blue, alpha);
+			Style polygonsStyle = new Style(color, 0);
 			polygonsStyle.setId("polygon_style" + polygonsStyleId);
 
 			List<Coordinates> list = slicesMap.get(sliceTime);
@@ -502,7 +500,7 @@ public class TimeSlicerToKML {
 
 			}
 
-			ContourMaker contourMaker = new KernelDensityEstimator2D(x, y, 20);
+			ContourMaker contourMaker = new ContourWithSynder(x, y, 100);
 			ContourPath[] paths = contourMaker.getContourPaths(HPD);
 
 			int pathCounter = 1;

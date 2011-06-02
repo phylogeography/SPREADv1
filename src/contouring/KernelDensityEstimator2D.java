@@ -174,8 +174,9 @@ public class KernelDensityEstimator2D implements ContourMaker {
 	public double[][] outerMinusScaled(double[] X, double[] Y, double scale) {
 		double[][] A = new double[X.length][Y.length];
 		for (int indexX = 0; indexX < X.length; indexX++) {
-			for (int indexY = 0; indexY < Y.length; indexY++)
+			for (int indexY = 0; indexY < Y.length; indexY++) {
 				A[indexX][indexY] = (X[indexX] - Y[indexY]) / scale;
+			}
 		}
 		return A;
 	}
