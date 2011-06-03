@@ -33,6 +33,8 @@ Depends on the following libraries:
 * ColorPicker.jar
 * quaqua.jar (libquaqua64.jnilib, libquaqua.jnilib)
 
+Before exporting to a runnable jar change line 12 in templates.MapBackground.java:
+boolean fromJar = false to boolean fromJar = true 
 
 h1. TODO
 
