@@ -373,6 +373,12 @@ public class TimeSlicerToKML {
 						double parentLatitude = (Double) parentLocation[0];
 						double parentLongitude = (Double) parentLocation[1];
 
+						double rate = 0;
+						if (impute) {
+							rate = Utils.getDoubleNodeAttribute(node,
+									rateString);
+						}
+
 						for (int i = 0; i <= numberOfIntervals; i++) {
 
 							double sliceHeight = treeRootHeight
@@ -392,10 +398,6 @@ public class TimeSlicerToKML {
 													parentLatitude, 0.0));
 
 									if (impute) {
-
-										double rate = Utils
-												.getDoubleNodeAttribute(node,
-														rateString);
 
 										Object[] imputedLocation = imputeValue(
 												location, parentLocation,
@@ -430,10 +432,6 @@ public class TimeSlicerToKML {
 											parentLatitude, 0.0));
 
 									if (impute) {
-
-										double rate = Utils
-												.getDoubleNodeAttribute(node,
-														rateString);
 
 										Object[] imputedLocation = imputeValue(
 												location, parentLocation,
