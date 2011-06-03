@@ -362,16 +362,16 @@ public class TimeSlicerToKML {
 						double nodeHeight = currentTree.getHeight(node);
 						double parentHeight = currentTree.getHeight(parentNode);
 
-						Object[] location = (Object[]) Utils
-								.getArrayNodeAttribute(node, coordinatesName);
+						double[] location = Utils.getDoubleArrayNodeAttribute(
+								node, coordinatesName);
 						double latitude = (Double) location[0];
 						double longitude = (Double) location[1];
 
-						Object[] parentLocation = (Object[]) Utils
-								.getArrayNodeAttribute(parentNode,
+						double[] parentLocation = Utils
+								.getDoubleArrayNodeAttribute(parentNode,
 										coordinatesName);
-						double parentLatitude = (Double) parentLocation[0];
-						double parentLongitude = (Double) parentLocation[1];
+						// double parentLatitude = parentLocation[0];
+						// double parentLongitude = parentLocation[1];
 
 						double rate = 0;
 						if (impute) {
@@ -393,13 +393,13 @@ public class TimeSlicerToKML {
 
 								if (slicesMap.containsKey(sliceTime)) {
 
-									slicesMap.get(sliceTime).add(
-											new Coordinates(parentLongitude,
-													parentLatitude, 0.0));
+									// slicesMap.get(sliceTime).add(
+									// new Coordinates(parentLongitude,
+									// parentLatitude, 0.0));
 
 									if (impute) {
 
-										Object[] imputedLocation = imputeValue(
+										double[] imputedLocation = imputeValue(
 												location, parentLocation,
 												sliceHeight, nodeHeight,
 												parentHeight, rate,
@@ -411,29 +411,26 @@ public class TimeSlicerToKML {
 												.get(sliceTime)
 												.add(
 														new Coordinates(
-																Double
-																		.valueOf(imputedLocation[1]
-																				.toString()),
-																Double
-																		.valueOf(imputedLocation[0]
-																				.toString()),
+																imputedLocation[1],
+																imputedLocation[0],
 																0.0));
 									}
-
-									slicesMap.get(sliceTime).add(
-											new Coordinates(longitude,
-													latitude, 0.0));
+									// TODO
+									// slicesMap.get(sliceTime).add(
+									// new Coordinates(longitude,
+									// latitude, 0.0));
 
 								} else {
 
 									List<Coordinates> coords = new ArrayList<Coordinates>();
 
-									coords.add(new Coordinates(parentLongitude,
-											parentLatitude, 0.0));
+									// coords.add(new
+									// Coordinates(parentLongitude,
+									// parentLatitude, 0.0));
 
 									if (impute) {
 
-										Object[] imputedLocation = imputeValue(
+										double[] imputedLocation = imputeValue(
 												location, parentLocation,
 												sliceHeight, nodeHeight,
 												parentHeight, rate,
@@ -441,11 +438,9 @@ public class TimeSlicerToKML {
 												treeNormalization,
 												precisionArray);
 
-										coords.add(new Coordinates(Double
-												.valueOf(imputedLocation[1]
-														.toString()), Double
-												.valueOf(imputedLocation[0]
-														.toString()), 0.0));
+										coords.add(new Coordinates(
+												imputedLocation[1],
+												imputedLocation[0], 0.0));
 									}
 
 									coords.add(new Coordinates(longitude,
@@ -633,7 +628,7 @@ public class TimeSlicerToKML {
 		}// END: run
 	}// END: Branches class
 
-	private Object[] imputeValue(Object[] location, Object[] parentLocation,
+	private double[] imputeValue(double[] location, double[] parentLocation,
 			double sliceTime, double nodeTime, double parentTime, double rate,
 			boolean trueNoise, double treeNormalization, Object[] precisionArray) {
 
@@ -653,8 +648,8 @@ public class TimeSlicerToKML {
 
 		for (int i = 0; i < dim; i++) {
 
-			nodeValue[i] = Double.parseDouble(location[i].toString());
-			parentValue[i] = Double.parseDouble(parentLocation[i].toString());
+			nodeValue[i] = location[i];
+			parentValue[i] = parentLocation[i];
 
 		}
 
@@ -690,7 +685,7 @@ public class TimeSlicerToKML {
 					.nextMultivariateNormalPrecision(mean, scaledPrecision);
 		}
 
-		Object[] result = new Object[dim];
+		double[] result = new double[dim];
 		for (int i = 0; i < dim; i++)
 			result[i] = mean[i];
 

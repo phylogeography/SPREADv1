@@ -109,6 +109,22 @@ public class Utils {
 		return (Object[]) node.getAttribute(attributeName);
 	}
 
+	public static double[] getDoubleArrayNodeAttribute(Node node,
+			String attributeName) {
+		if (node.getAttribute(attributeName) == null) {
+			throw new RuntimeException("Attribute, " + attributeName
+					+ ", missing from node");
+		}
+		
+		Object[] o = (Object[]) node.getAttribute(attributeName);
+		
+		double[] array = new double[o.length];
+		for (int i = 0; i < o.length; i++) {
+			array[i] = Double.valueOf(o[i].toString());
+		}
+		return array;
+	}
+
 	public static int getExternalNodeCount(RootedTree tree) {
 
 		int externalNodeCount = 0;
