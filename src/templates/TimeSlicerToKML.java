@@ -347,7 +347,7 @@ public class TimeSlicerToKML {
 				double treeNormalization = 0;
 				Object[] precisionArray = null;
 				if (impute) {
-					treeNormalization = tree.getHeight(tree.getRootNode());
+					treeNormalization = currentTree.getHeight(currentTree.getRootNode());
 					precisionArray = Utils.getTreeArrayAttribute(currentTree,
 							precisionString);
 				}
