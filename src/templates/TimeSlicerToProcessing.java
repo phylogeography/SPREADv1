@@ -226,21 +226,13 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	public void setup() {
 
-		try {
+		minX = -180;
+		maxX = 180;
 
-			minX = -180;
-			maxX = 180;
+		minY = -90;
+		maxY = 90;
 
-			minY = -90;
-			maxY = 90;
-
-			mapBackground = new MapBackground(this);
-
-			// AnalyzeTrees();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		mapBackground = new MapBackground(this);
 
 	}// END:setup
 
@@ -250,7 +242,6 @@ public class TimeSlicerToProcessing extends PApplet {
 		smooth();
 		mapBackground.drawMapBackground();
 		drawPolygons();
-		System.out.println("Generating branches...");
 		drawBranches();
 
 	}// END:draw

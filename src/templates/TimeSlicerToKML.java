@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
@@ -291,8 +290,7 @@ public class TimeSlicerToKML {
 
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
-		Set<Double> hostKeys = slicesMap.keySet();
-		Iterator<Double> iterator = hostKeys.iterator();
+		Iterator<Double> iterator = slicesMap.keySet().iterator();
 		executor = Executors.newFixedThreadPool(NTHREDS);
 		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
 		timeLine = GenerateTimeLine(tree);
