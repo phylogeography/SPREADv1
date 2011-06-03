@@ -257,6 +257,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		while (iterator.hasNext()) {
 			sliceTime = (Double) iterator.next();
 			drawPolygon(sliceTime);
+			slicesMap.remove(sliceTime);
 		}
 	}// END: drawPolygons
 

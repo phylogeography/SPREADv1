@@ -509,7 +509,8 @@ public class TimeSlicerToKML {
 
 			layers.add(polygonsLayer);
 			polygonsStyleId++;
-
+			slicesMap.remove(sliceTime);
+			
 		}// END: run
 	}// END: Polygons
 
