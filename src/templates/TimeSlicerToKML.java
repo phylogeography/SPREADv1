@@ -347,34 +347,33 @@ public class TimeSlicerToKML {
 				double treeNormalization = 0;
 				Object[] precisionArray = null;
 				if (impute) {
-					treeNormalization = currentTree.getHeight(currentTree.getRootNode());
+					treeNormalization = currentTree.getHeight(currentTree
+							.getRootNode());
 					precisionArray = Utils.getTreeArrayAttribute(currentTree,
 							precisionString);
 				}
 
 				for (Node node : currentTree.getNodes()) {
-
 					if (!currentTree.isRoot(node)) {
 
+						// attributes parsed once per node
+						Node parentNode = currentTree.getParent(node);
+
+						double nodeHeight = currentTree.getHeight(node);
+						double parentHeight = currentTree.getHeight(parentNode);
+
+						Object[] location = (Object[]) Utils
+								.getArrayNodeAttribute(node, coordinatesName);
+						double latitude = (Double) location[0];
+						double longitude = (Double) location[1];
+
+						Object[] parentLocation = (Object[]) Utils
+								.getArrayNodeAttribute(parentNode,
+										coordinatesName);
+						double parentLatitude = (Double) parentLocation[0];
+						double parentLongitude = (Double) parentLocation[1];
+
 						for (int i = 0; i <= numberOfIntervals; i++) {
-
-							Node parentNode = currentTree.getParent(node);
-
-							double nodeHeight = currentTree.getHeight(node);
-							double parentHeight = currentTree
-									.getHeight(parentNode);
-
-							Object[] location = (Object[]) Utils
-									.getArrayNodeAttribute(node,
-											coordinatesName);
-							double latitude = (Double) location[0];
-							double longitude = (Double) location[1];
-
-							Object[] parentLocation = (Object[]) Utils
-									.getArrayNodeAttribute(parentNode,
-											coordinatesName);
-							double parentLatitude = (Double) parentLocation[0];
-							double parentLongitude = (Double) parentLocation[1];
 
 							double sliceHeight = treeRootHeight
 									- (treeRootHeight / numberOfIntervals)
@@ -383,8 +382,7 @@ public class TimeSlicerToKML {
 							if (nodeHeight < sliceHeight
 									&& sliceHeight <= parentHeight) {
 
-								SpreadDate mrsd = new SpreadDate(mrsdString);
-								double sliceTime = mrsd
+								double sliceTime = new SpreadDate(mrsdString)
 										.minus((int) (sliceHeight * timescaler));
 
 								if (slicesMap.containsKey(sliceTime)) {
