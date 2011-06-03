@@ -264,9 +264,6 @@ public class TimeSlicerToProcessing extends PApplet {
 		Iterator<Double> iterator = hostKeys.iterator();
 
 		while (iterator.hasNext()) {
-
-			System.out.println("Key " + iterator + "...");
-
 			sliceTime = (Double) iterator.next();
 			drawPolygon(sliceTime);
 		}

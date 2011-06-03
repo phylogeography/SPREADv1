@@ -695,6 +695,9 @@ public class TimeSlicerTab extends JPanel {
 
 							timeSlicerToProcessing.setTreesPath(treesFilename);
 
+							timeSlicerToProcessing.setHPD(Double
+									.valueOf(HPDParser.getText()));
+
 							timeSlicerToProcessing.setBurnIn(Integer
 									.valueOf(burnInParser.getText()));
 
