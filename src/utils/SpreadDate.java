@@ -8,8 +8,8 @@ import java.util.Locale;
 
 public class SpreadDate {
 
-	Calendar cal;
-	SimpleDateFormat formatter;
+	private Calendar cal;
+	private SimpleDateFormat formatter;
 
 	public SpreadDate(String date) throws ParseException {
 

@@ -391,6 +391,7 @@ public class TimeSlicerToKML {
 								double sliceTime = new SpreadDate(mrsdString)
 										.minus((int) (sliceHeight * timescaler));
 
+								// grow map entry if key exists
 								if (slicesMap.containsKey(sliceTime)) {
 
 									// slicesMap.get(sliceTime).add(
@@ -420,6 +421,7 @@ public class TimeSlicerToKML {
 									// new Coordinates(longitude,
 									// latitude, 0.0));
 
+									// start new entry if no such key
 								} else {
 
 									List<Coordinates> coords = new ArrayList<Coordinates>();
