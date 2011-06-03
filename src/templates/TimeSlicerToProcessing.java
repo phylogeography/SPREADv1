@@ -456,12 +456,12 @@ public class TimeSlicerToProcessing extends PApplet {
 				// attributes parsed once per tree
 				double treeRootHeight = tree.getHeight(tree.getRootNode());
 				double treeNormalization = 0;
-				Object[] precisionArray = null;
+				double[] precisionArray = null;
 				if (impute) {
 					treeNormalization = currentTree.getHeight(currentTree
 							.getRootNode());
-					precisionArray = Utils.getTreeArrayAttribute(currentTree,
-							precisionString);
+					precisionArray = Utils.getTreeDoubleArrayAttribute(
+							currentTree, precisionString);
 				}
 
 				for (Node node : currentTree.getNodes()) {
@@ -520,7 +520,7 @@ public class TimeSlicerToProcessing extends PApplet {
 																0.0));
 									}
 
-									// start new entry if no such key
+									// start new entry if no such key in the map
 								} else {
 
 									List<Coordinates> coords = new ArrayList<Coordinates>();
@@ -557,14 +557,14 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	private double[] imputeValue(double[] location, double[] parentLocation,
 			double sliceTime, double nodeTime, double parentTime, double rate,
-			boolean trueNoise, double treeNormalization, Object[] precisionArray) {
+			boolean trueNoise, double treeNormalization, double[] precisionArray) {
 
 		int dim = (int) Math.sqrt(1 + 8 * precisionArray.length) / 2;
 		double[][] precision = new double[dim][dim];
 		int c = 0;
 		for (int i = 0; i < dim; i++) {
 			for (int j = i; j < dim; j++) {
-				precision[j][i] = precision[i][j] = ((Double) precisionArray[c++])
+				precision[j][i] = precision[i][j] = precisionArray[c++]
 						* treeNormalization;
 			}
 		}
