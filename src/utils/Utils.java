@@ -154,6 +154,17 @@ public class Utils {
 		return m;
 	}// END: getTreeHeightMax
 
+	public static Object[] getTreeArrayAttribute(RootedTree tree,
+			String attribute) {
+		Object o = tree.getAttribute(attribute);
+		if (o == null) {
+			throw new RuntimeException("Attribute " + attribute
+					+ " missing from the tree. \n");
+		}
+
+		return (Object[]) o;
+	}
+
 	public static double getListMin(List<Double> list) {
 		double m = Double.MAX_VALUE;
 		for (int i = 0; i < list.size(); i++) {

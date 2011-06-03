@@ -342,7 +342,11 @@ public class TimeSlicerToKML {
 
 			try {
 
+				// parsed once per tree
 				double treeRootHeight = tree.getHeight(tree.getRootNode());
+				double treeNormalization = tree.getHeight(tree.getRootNode());
+				Object[] precisionArray = Utils.getTreeArrayAttribute(
+						currentTree, precisionString);
 
 				for (Node node : currentTree.getNodes()) {
 
@@ -394,8 +398,10 @@ public class TimeSlicerToKML {
 										Object[] imputedLocation = imputeValue(
 												location, parentLocation,
 												sliceHeight, nodeHeight,
-												parentHeight, currentTree,
-												rate, useTrueNoise);
+												parentHeight, rate,
+												useTrueNoise,
+												treeNormalization,
+												precisionArray);
 
 										slicesMap
 												.get(sliceTime)
@@ -430,8 +436,10 @@ public class TimeSlicerToKML {
 										Object[] imputedLocation = imputeValue(
 												location, parentLocation,
 												sliceHeight, nodeHeight,
-												parentHeight, currentTree,
-												rate, useTrueNoise);
+												parentHeight, rate,
+												useTrueNoise,
+												treeNormalization,
+												precisionArray);
 
 										coords.add(new Coordinates(Double
 												.valueOf(imputedLocation[1]
@@ -626,26 +634,15 @@ public class TimeSlicerToKML {
 	}// END: Branches class
 
 	private Object[] imputeValue(Object[] location, Object[] parentLocation,
-			double sliceTime, double nodeTime, double parentTime,
-			RootedTree tree, double rate, boolean trueNoise) {
+			double sliceTime, double nodeTime, double parentTime, double rate,
+			boolean trueNoise, double treeNormalization, Object[] precisionArray) {
 
-		Object o = tree.getAttribute(precisionString);
-
-		if (o == null) {
-			throw new RuntimeException("Attribute " + precisionString
-					+ " missing from the tree. \n");
-		}
-
-		double treeNormalization = tree.getHeight(tree.getRootNode());
-
-		Object[] array = (Object[]) o;
-
-		int dim = (int) Math.sqrt(1 + 8 * array.length) / 2;
+		int dim = (int) Math.sqrt(1 + 8 * precisionArray.length) / 2;
 		double[][] precision = new double[dim][dim];
 		int c = 0;
 		for (int i = 0; i < dim; i++) {
 			for (int j = i; j < dim; j++) {
-				precision[j][i] = precision[i][j] = ((Double) array[c++])
+				precision[j][i] = precision[i][j] = ((Double) precisionArray[c++])
 						* treeNormalization;
 			}
 		}
