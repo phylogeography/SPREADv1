@@ -115,9 +115,9 @@ public class Utils {
 			throw new RuntimeException("Attribute, " + attributeName
 					+ ", missing from node");
 		}
-		
+
 		Object[] o = (Object[]) node.getAttribute(attributeName);
-		
+
 		double[] array = new double[o.length];
 		for (int i = 0; i < o.length; i++) {
 			array[i] = Double.valueOf(o[i].toString());
@@ -179,6 +179,23 @@ public class Utils {
 		}
 
 		return (Object[]) o;
+	}
+
+	public static double[] getTreeDoubleArrayAttribute(RootedTree tree,
+			String attribute) {
+
+		Object[] o = (Object[]) tree.getAttribute(attribute);
+		if (o == null) {
+			throw new RuntimeException("Attribute " + attribute
+					+ " missing from the tree. \n");
+		}
+
+		double[] array = new double[o.length];
+		for (int i = 0; i < o.length; i++) {
+			array[i] = Double.valueOf(o[i].toString());
+		}
+
+		return array;
 	}
 
 	public static double getListMin(List<Double> list) {

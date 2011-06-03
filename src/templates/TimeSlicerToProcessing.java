@@ -226,13 +226,21 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	public void setup() {
 
-		minX = -180;
-		maxX = 180;
+		try {
 
-		minY = -90;
-		maxY = 90;
+			minX = -180;
+			maxX = 180;
 
-		mapBackground = new MapBackground(this);
+			minY = -90;
+			maxY = 90;
+
+			mapBackground = new MapBackground(this);
+
+			// AnalyzeTrees();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}// END:setup
 
@@ -242,16 +250,23 @@ public class TimeSlicerToProcessing extends PApplet {
 		smooth();
 		mapBackground.drawMapBackground();
 		drawPolygons();
+		System.out.println("Generating branches...");
 		drawBranches();
 
 	}// END:draw
 
 	private void drawPolygons() throws OutOfMemoryError {
 
+		System.out.println("Generating Polygons...");
+		System.out.println("Iterating through Map...");
+
 		Set<Double> hostKeys = slicesMap.keySet();
 		Iterator<Double> iterator = hostKeys.iterator();
 
 		while (iterator.hasNext()) {
+
+			System.out.println("Key " + iterator + "...");
+
 			sliceTime = (Double) iterator.next();
 			drawPolygon(sliceTime);
 		}
@@ -289,13 +304,14 @@ public class TimeSlicerToProcessing extends PApplet {
 
 		}
 
-		ContourMaker contourMaker = new ContourWithSynder(x, y, 200);
+		ContourMaker contourMaker = new ContourWithSynder(x, y, 100);
 		ContourPath[] paths = contourMaker.getContourPaths(HPD);
 
 		for (ContourPath path : paths) {
 
 			double[] latitude = path.getAllX();
 			double[] longitude = path.getAllY();
+
 			List<Coordinates> coordinates = new ArrayList<Coordinates>();
 
 			for (int i = 0; i < latitude.length; i++) {
@@ -381,8 +397,6 @@ public class TimeSlicerToProcessing extends PApplet {
 	public void AnalyzeTrees() throws IOException, ImportException,
 			ParseException {
 
-		System.out.println("Importing trees...");
-
 		// This is a general time span for all of the trees
 		tree = (RootedTree) treeImporter.importNextTree();
 		timeLine = GenerateTimeLine(tree);
@@ -406,8 +420,11 @@ public class TimeSlicerToProcessing extends PApplet {
 			if (readTrees >= burnIn) {
 
 				// executor.submit(new AnalyzeTree());
-				AnalyzeTree analyzeTree = new AnalyzeTree();
-				analyzeTree.run();
+				new AnalyzeTree().run();
+
+				if (readTrees % burnIn == 0) {
+					System.out.print(readTrees + " trees... ");
+				}
 			}
 
 			readTrees++;
@@ -436,33 +453,40 @@ public class TimeSlicerToProcessing extends PApplet {
 
 			try {
 
+				// attributes parsed once per tree
 				double treeRootHeight = tree.getHeight(tree.getRootNode());
+				double treeNormalization = 0;
+				Object[] precisionArray = null;
+				if (impute) {
+					treeNormalization = currentTree.getHeight(currentTree
+							.getRootNode());
+					precisionArray = Utils.getTreeArrayAttribute(currentTree,
+							precisionString);
+				}
 
 				for (Node node : currentTree.getNodes()) {
-
 					if (!currentTree.isRoot(node)) {
 
+						// attributes parsed once per node
+						Node parentNode = currentTree.getParent(node);
+
+						double nodeHeight = currentTree.getHeight(node);
+						double parentHeight = currentTree.getHeight(parentNode);
+
+						double[] location = Utils.getDoubleArrayNodeAttribute(
+								node, coordinatesName);
+
+						double[] parentLocation = Utils
+								.getDoubleArrayNodeAttribute(parentNode,
+										coordinatesName);
+
+						double rate = 0;
+						if (impute) {
+							rate = Utils.getDoubleNodeAttribute(node,
+									rateString);
+						}
+
 						for (int i = 0; i <= numberOfIntervals; i++) {
-
-							Node parentNode = currentTree.getParent(node);
-
-							double nodeHeight = currentTree.getHeight(node);
-							double parentHeight = currentTree
-									.getHeight(parentNode);
-
-							Object[] location = (Object[]) Utils
-									.getArrayNodeAttribute(node,
-											coordinatesName);
-
-							double latitude = (Double) location[0];
-							double longitude = (Double) location[1];
-
-							Object[] parentLocation = (Object[]) Utils
-									.getArrayNodeAttribute(parentNode,
-											coordinatesName);
-
-							double parentLatitude = (Double) parentLocation[0];
-							double parentLongitude = (Double) parentLocation[1];
 
 							double sliceHeight = treeRootHeight
 									- (treeRootHeight / numberOfIntervals)
@@ -471,73 +495,50 @@ public class TimeSlicerToProcessing extends PApplet {
 							if (nodeHeight < sliceHeight
 									&& sliceHeight <= parentHeight) {
 
-								SpreadDate mrsd = new SpreadDate(mrsdString);
-								double sliceTime = mrsd
+								double sliceTime = new SpreadDate(mrsdString)
 										.minus((int) (sliceHeight * timescaler));
 
+								// grow map entry if key exists
 								if (slicesMap.containsKey(sliceTime)) {
-
-									slicesMap.get(sliceTime).add(
-											new Coordinates(parentLongitude,
-													parentLatitude, 0.0));
 
 									if (impute) {
 
-										double rate = Utils
-												.getDoubleNodeAttribute(node,
-														rateString);
-
-										Object[] imputedLocation = imputeValue(
+										double[] imputedLocation = imputeValue(
 												location, parentLocation,
 												sliceHeight, nodeHeight,
-												parentHeight, currentTree,
-												rate, useTrueNoise);
+												parentHeight, rate,
+												useTrueNoise,
+												treeNormalization,
+												precisionArray);
 
 										slicesMap
 												.get(sliceTime)
 												.add(
 														new Coordinates(
-																Double
-																		.valueOf(imputedLocation[1]
-																				.toString()),
-																Double
-																		.valueOf(imputedLocation[0]
-																				.toString()),
+																imputedLocation[1],
+																imputedLocation[0],
 																0.0));
 									}
 
-									slicesMap.get(sliceTime).add(
-											new Coordinates(longitude,
-													latitude, 0.0));
-
+									// start new entry if no such key
 								} else {
 
 									List<Coordinates> coords = new ArrayList<Coordinates>();
 
-									coords.add(new Coordinates(parentLongitude,
-											parentLatitude, 0.0));
-
 									if (impute) {
 
-										double rate = Utils
-												.getDoubleNodeAttribute(node,
-														rateString);
-
-										Object[] imputedLocation = imputeValue(
+										double[] imputedLocation = imputeValue(
 												location, parentLocation,
 												sliceHeight, nodeHeight,
-												parentHeight, currentTree,
-												rate, useTrueNoise);
+												parentHeight, rate,
+												useTrueNoise,
+												treeNormalization,
+												precisionArray);
 
-										coords.add(new Coordinates(Double
-												.valueOf(imputedLocation[1]
-														.toString()), Double
-												.valueOf(imputedLocation[0]
-														.toString()), 0.0));
+										coords.add(new Coordinates(
+												imputedLocation[1],
+												imputedLocation[0], 0.0));
 									}
-
-									coords.add(new Coordinates(longitude,
-											latitude, 0.0));
 
 									slicesMap.putIfAbsent(sliceTime, coords);
 
@@ -554,20 +555,16 @@ public class TimeSlicerToProcessing extends PApplet {
 		}// END: run
 	}// END: AnalyzeTree
 
-	private Object[] imputeValue(Object[] location, Object[] parentLocation,
-			double sliceTime, double nodeTime, double parentTime,
-			RootedTree tree, double rate, boolean trueNoise) {
+	private double[] imputeValue(double[] location, double[] parentLocation,
+			double sliceTime, double nodeTime, double parentTime, double rate,
+			boolean trueNoise, double treeNormalization, Object[] precisionArray) {
 
-		Object o = tree.getAttribute(precisionString);
-		double treeNormalization = tree.getHeight(tree.getRootNode());
-
-		Object[] array = (Object[]) o;
-		int dim = (int) Math.sqrt(1 + 8 * array.length) / 2;
+		int dim = (int) Math.sqrt(1 + 8 * precisionArray.length) / 2;
 		double[][] precision = new double[dim][dim];
 		int c = 0;
 		for (int i = 0; i < dim; i++) {
 			for (int j = i; j < dim; j++) {
-				precision[j][i] = precision[i][j] = ((Double) array[c++])
+				precision[j][i] = precision[i][j] = ((Double) precisionArray[c++])
 						* treeNormalization;
 			}
 		}
@@ -578,15 +575,15 @@ public class TimeSlicerToProcessing extends PApplet {
 
 		for (int i = 0; i < dim; i++) {
 
-			nodeValue[i] = Double.parseDouble(location[i].toString());
-			parentValue[i] = Double.parseDouble(parentLocation[i].toString());
+			nodeValue[i] = location[i];
+			parentValue[i] = parentLocation[i];
 
 		}
 
 		final double scaledTimeChild = (sliceTime - nodeTime) * rate;
 		final double scaledTimeParent = (parentTime - sliceTime) * rate;
-		final double scaledWeightTotal = 1.0 / scaledTimeChild + 1.0
-				/ scaledTimeParent;
+		final double scaledWeightTotal = (1.0 / scaledTimeChild)
+				+ (1.0 / scaledTimeParent);
 
 		if (scaledTimeChild == 0)
 			return location;
@@ -615,7 +612,7 @@ public class TimeSlicerToProcessing extends PApplet {
 					.nextMultivariateNormalPrecision(mean, scaledPrecision);
 		}
 
-		Object[] result = new Object[dim];
+		double[] result = new double[dim];
 		for (int i = 0; i < dim; i++)
 			result[i] = mean[i];
 

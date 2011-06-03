@@ -246,8 +246,6 @@ public class TimeSlicerToKML {
 
 		// start timing
 		time = -System.currentTimeMillis();
-
-		System.out.println("Importing trees...");
 		tree = (RootedTree) treeImporter.importNextTree();
 
 		System.out.println("Analyzing trees...");
@@ -271,7 +269,6 @@ public class TimeSlicerToKML {
 
 					if (readTrees % burnIn == 0) {
 						System.out.print(readTrees + " trees... ");
-						// System.gc();
 					}
 				}
 
@@ -319,6 +316,7 @@ public class TimeSlicerToKML {
 			}// END: while has next
 		}// END: synchronized
 
+		System.out.println("Generating branches...");
 		executor.submit(new Branches());
 
 		executor.shutdown();
@@ -345,12 +343,12 @@ public class TimeSlicerToKML {
 				// attributes parsed once per tree
 				double treeRootHeight = tree.getHeight(tree.getRootNode());
 				double treeNormalization = 0;
-				Object[] precisionArray = null;
+				double[] precisionArray = null;
 				if (impute) {
 					treeNormalization = currentTree.getHeight(currentTree
 							.getRootNode());
-					precisionArray = Utils.getTreeArrayAttribute(currentTree,
-							precisionString);
+					precisionArray = Utils.getTreeDoubleArrayAttribute(
+							currentTree, precisionString);
 				}
 
 				for (Node node : currentTree.getNodes()) {
@@ -364,14 +362,10 @@ public class TimeSlicerToKML {
 
 						double[] location = Utils.getDoubleArrayNodeAttribute(
 								node, coordinatesName);
-						double latitude = (Double) location[0];
-						double longitude = (Double) location[1];
 
 						double[] parentLocation = Utils
 								.getDoubleArrayNodeAttribute(parentNode,
 										coordinatesName);
-						// double parentLatitude = parentLocation[0];
-						// double parentLongitude = parentLocation[1];
 
 						double rate = 0;
 						if (impute) {
@@ -394,10 +388,6 @@ public class TimeSlicerToKML {
 								// grow map entry if key exists
 								if (slicesMap.containsKey(sliceTime)) {
 
-									// slicesMap.get(sliceTime).add(
-									// new Coordinates(parentLongitude,
-									// parentLatitude, 0.0));
-
 									if (impute) {
 
 										double[] imputedLocation = imputeValue(
@@ -416,19 +406,11 @@ public class TimeSlicerToKML {
 																imputedLocation[0],
 																0.0));
 									}
-									// TODO
-									// slicesMap.get(sliceTime).add(
-									// new Coordinates(longitude,
-									// latitude, 0.0));
 
-									// start new entry if no such key
+									// start new entry if no such key in the map
 								} else {
 
 									List<Coordinates> coords = new ArrayList<Coordinates>();
-
-									// coords.add(new
-									// Coordinates(parentLongitude,
-									// parentLatitude, 0.0));
 
 									if (impute) {
 
@@ -444,9 +426,6 @@ public class TimeSlicerToKML {
 												imputedLocation[1],
 												imputedLocation[0], 0.0));
 									}
-
-									coords.add(new Coordinates(longitude,
-											latitude, 0.0));
 
 									slicesMap.putIfAbsent(sliceTime, coords);
 
@@ -632,14 +611,14 @@ public class TimeSlicerToKML {
 
 	private double[] imputeValue(double[] location, double[] parentLocation,
 			double sliceTime, double nodeTime, double parentTime, double rate,
-			boolean trueNoise, double treeNormalization, Object[] precisionArray) {
+			boolean trueNoise, double treeNormalization, double[] precisionArray) {
 
 		int dim = (int) Math.sqrt(1 + 8 * precisionArray.length) / 2;
 		double[][] precision = new double[dim][dim];
 		int c = 0;
 		for (int i = 0; i < dim; i++) {
 			for (int j = i; j < dim; j++) {
-				precision[j][i] = precision[i][j] = ((Double) precisionArray[c++])
+				precision[j][i] = precision[i][j] = precisionArray[c++]
 						* treeNormalization;
 			}
 		}
