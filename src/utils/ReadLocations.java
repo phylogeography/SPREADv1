@@ -4,9 +4,9 @@ import java.text.ParseException;
 
 import processing.core.PApplet;
 
+@SuppressWarnings("serial")
 public class ReadLocations extends PApplet {
 
-	private static final long serialVersionUID = 1L;
 	private String[] lines;
 	public String[] locations;
 	public float[][] coordinates;

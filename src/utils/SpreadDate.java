@@ -26,7 +26,6 @@ public class SpreadDate {
 		stringdate = formatter.parse(date);
 
 		cal = Calendar.getInstance();
-		// cal.setTime(stringdate);
 	}
 
 	public long plus(int days) {
