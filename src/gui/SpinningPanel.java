@@ -73,17 +73,19 @@ public class SpinningPanel extends JPanel {
 
 	public class SpinWidget extends JPanel {
 
-		private int SPIN_WIDGET_HEIGHT = 15;
+		private final int SPIN_WIDGET_HEIGHT = 15;
+		private final int HALF_HEIGHT = SPIN_WIDGET_HEIGHT / 2;
 		private Dimension mySize = new Dimension(SPIN_WIDGET_HEIGHT,
 				SPIN_WIDGET_HEIGHT);
 		private boolean open;
-		private final int HALF_HEIGHT = SPIN_WIDGET_HEIGHT / 2;
-		private int[] openXPoints = { 1, HALF_HEIGHT, SPIN_WIDGET_HEIGHT - 1 };
 
+		private int[] openXPoints = { 1, HALF_HEIGHT, SPIN_WIDGET_HEIGHT - 1 };
 		private int[] openYPoints = { HALF_HEIGHT, SPIN_WIDGET_HEIGHT - 1,
 				HALF_HEIGHT };
+
 		private int[] closedXPoints = { 1, 1, HALF_HEIGHT };
 		private int[] closedYPoints = { 1, SPIN_WIDGET_HEIGHT - 1, HALF_HEIGHT };
+
 		private Polygon openTriangle = new Polygon(openXPoints, openYPoints, 3);
 		private Polygon closedTriangle = new Polygon(closedXPoints,
 				closedYPoints, 3);
