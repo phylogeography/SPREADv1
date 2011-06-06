@@ -37,7 +37,7 @@ public class ContinuousModelTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 200;
-	private final int leftPanelHeight = 1050;
+	private final int leftPanelHeight = 1100;
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -89,6 +89,7 @@ public class ContinuousModelTab extends JPanel {
 	// Left tools pane
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
+	private SpinningPanel sp;
 
 	// Processing pane
 	private ContinuousTreeToProcessing continuousTreeToProcessing;
@@ -164,12 +165,19 @@ public class ContinuousModelTab extends JPanel {
 		branchesMinColorChooser
 				.addActionListener(new ListenBranchesMinColorChooser());
 
+		// /////////////
+		// ---INPUT---//
+		// /////////////
+
+		JPanel inputPanel = new JPanel();
+		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load tree file:"));
 		tmpPanel.add(openTree);
-		leftPanel.add(tmpPanel);
+		inputPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
@@ -186,14 +194,14 @@ public class ContinuousModelTab extends JPanel {
 		c.gridx = 2;
 		c.gridy = 0;
 		tmpPanel.add(eraParser, c);
-		leftPanel.add(tmpPanel);
+		inputPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Coordinate attribute name:"));
 		tmpPanel.add(coordinatesNameParser);
-		leftPanel.add(tmpPanel);
+		inputPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
@@ -203,36 +211,20 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel.add(HPDParser);
 		tmpPanel.add(tmpLabel);
 		tmpLabel.setLabelFor(tmpPanel);
-		leftPanel.add(tmpPanel);
+		inputPanel.add(tmpPanel);
 
-		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
-		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
-		tmpPanel.add(numberOfIntervalsParser);
-		leftPanel.add(tmpPanel);
+		sp = new SpinningPanel(inputPanel, "   Input", new Dimension(
+				leftPanelWidth + 60, 20));
+		sp.showBottom(true);
+		leftPanel.add(sp);
 
-		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
-		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Maximal altitude mapping:"));
-		tmpPanel.add(maxAltMappingParser);
-		leftPanel.add(tmpPanel);
+		// ////////////////////////
+		// ---BRANCHES MAPPING---//
+		// ////////////////////////
 
-		// Polygons color mapping:
-		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
-		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setLayout(new GridBagLayout());
-		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 0;
-		tmpPanel.add(polygonsMinColorChooser, c);
-		c.gridx = 2;
-		c.gridy = 0;
-		tmpPanel.add(polygonsMaxColorChooser, c);
-		leftPanel.add(tmpPanel);
+		JPanel branchesMappingPanel = new JPanel();
+		branchesMappingPanel.setLayout(new BoxLayout(branchesMappingPanel,
+				BoxLayout.Y_AXIS));
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
@@ -247,7 +239,7 @@ public class ContinuousModelTab extends JPanel {
 		c.gridx = 2;
 		c.gridy = 0;
 		tmpPanel.add(branchesMaxColorChooser, c);
-		leftPanel.add(tmpPanel);
+		branchesMappingPanel.add(tmpPanel);
 
 		// Branches width:
 		tmpPanel = new JPanel();
@@ -255,14 +247,68 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches width:"));
 		tmpPanel.add(branchesWidthParser);
-		leftPanel.add(tmpPanel);
+		branchesMappingPanel.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
+		tmpPanel.add(numberOfIntervalsParser);
+		branchesMappingPanel.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Maximal altitude mapping:"));
+		tmpPanel.add(maxAltMappingParser);
+		branchesMappingPanel.add(tmpPanel);
+
+		sp = new SpinningPanel(branchesMappingPanel, "   Branches mapping",
+				new Dimension(leftPanelWidth + 60, 20));
+		sp.showBottom(false);
+		leftPanel.add(sp);
+
+		// ////////////////////////
+		// ---POLYGONS MAPPING---//
+		// ////////////////////////
+
+		JPanel polygonsMappingPanel = new JPanel();
+		polygonsMappingPanel.setLayout(new BoxLayout(polygonsMappingPanel,
+				BoxLayout.Y_AXIS));
+
+		// Polygons color mapping:
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setLayout(new GridBagLayout());
+		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		tmpPanel.add(polygonsMinColorChooser, c);
+		c.gridx = 2;
+		c.gridy = 0;
+		tmpPanel.add(polygonsMaxColorChooser, c);
+		polygonsMappingPanel.add(tmpPanel);
+
+		sp = new SpinningPanel(polygonsMappingPanel, "   Polygons mapping",
+				new Dimension(leftPanelWidth + 60, 20));
+		sp.showBottom(false);
+		leftPanel.add(sp);
+
+		// //////////////
+		// ---OUTPUT---//
+		// //////////////
+
+		JPanel outputPanel = new JPanel();
+		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("KML name:"));
 		tmpPanel.add(kmlPathParser);
-		leftPanel.add(tmpPanel);
+		outputPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
@@ -281,14 +327,23 @@ public class ContinuousModelTab extends JPanel {
 		c.gridx = 0;
 		c.gridy = 1;
 		tmpPanel.add(progressBar, c);
-		leftPanel.add(tmpPanel);
+		outputPanel.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Save plot:"));
 		tmpPanel.add(saveProcessingPlot);
-		leftPanel.add(tmpPanel);
+		outputPanel.add(tmpPanel);
+
+		sp = new SpinningPanel(outputPanel, "   Output", new Dimension(
+				leftPanelWidth + 60, 20));
+		sp.showBottom(false);
+		leftPanel.add(sp);
+
+		// ////////////////////////
+		// ---LEFT SCROLL PANE---//
+		// ////////////////////////
 
 		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
