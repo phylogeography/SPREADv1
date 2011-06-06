@@ -43,8 +43,8 @@ public class TimeSlicerToKML {
 	private final int DayInMillis = 86400000;
 
 	// Concurrency stuff
-	private Double sliceTime; // volatile
-	private ConcurrentMap<Double, List<Coordinates>> slicesMap; // volatile
+	private Double sliceTime;
+	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 	private RootedTree currentTree;
 
 	private TreeImporter treeImporter;
@@ -74,6 +74,7 @@ public class TimeSlicerToKML {
 	private double branchWidth;
 	private TreeImporter treesImporter;
 	private String mrsdString;
+	private SpreadDate mrsd;
 	private double timescaler;
 	private int numberOfIntervals;
 	private int burnIn;
@@ -252,6 +253,8 @@ public class TimeSlicerToKML {
 		// This is for collecting coordinates into polygons
 		slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
 
+		mrsd = new SpreadDate(mrsdString);
+
 		// Executor for threads
 		int NTHREDS = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
@@ -380,8 +383,8 @@ public class TimeSlicerToKML {
 							if (nodeHeight < sliceHeight
 									&& sliceHeight <= parentHeight) {
 
-								double sliceTime = new SpreadDate(mrsdString)
-										.minus((int) (sliceHeight * timescaler));
+								int days = (int) (sliceHeight * timescaler);
+								double sliceTime = mrsd.minus(days);
 
 								// grow map entry if key exists
 								if (slicesMap.containsKey(sliceTime)) {
@@ -510,7 +513,7 @@ public class TimeSlicerToKML {
 			layers.add(polygonsLayer);
 			polygonsStyleId++;
 			slicesMap.remove(sliceTime);
-			
+
 		}// END: run
 	}// END: Polygons
 
@@ -574,7 +577,6 @@ public class TimeSlicerToKML {
 						linesStyle.setId("branch_style" + branchStyleId);
 						branchStyleId++;
 
-						SpreadDate mrsd = new SpreadDate(mrsdString);
 						int days = (int) (nodeHeight * timescaler);
 						double startTime = mrsd.minus(days);
 
@@ -597,9 +599,6 @@ public class TimeSlicerToKML {
 				}// END: node loop
 
 				layers.add(branchesLayer);
-
-			} catch (ParseException e) {
-				e.printStackTrace();
 
 			} catch (RuntimeException e) {
 				e.printStackTrace();
@@ -672,11 +671,10 @@ public class TimeSlicerToKML {
 		return result;
 	}// END: ImputeValue
 
-	private TimeLine GenerateTimeLine(RootedTree tree) throws ParseException {
+	private TimeLine GenerateTimeLine(RootedTree tree) {
 
 		// This is a general time span for all of the trees
 		double treeRootHeight = tree.getHeight(tree.getRootNode());
-		SpreadDate mrsd = new SpreadDate(mrsdString);
 		double startTime = mrsd.getTime()
 				- (treeRootHeight * DayInMillis * timescaler);
 		double endTime = mrsd.getTime();

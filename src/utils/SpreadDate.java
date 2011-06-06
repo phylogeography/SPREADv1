@@ -10,6 +10,7 @@ public class SpreadDate {
 
 	private Calendar cal;
 	private SimpleDateFormat formatter;
+	private Date stringdate;
 
 	public SpreadDate(String date) throws ParseException {
 
@@ -22,23 +23,26 @@ public class SpreadDate {
 		}
 
 		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
-		Date stringdate = formatter.parse(date);
+		stringdate = formatter.parse(date);
 
 		cal = Calendar.getInstance();
-		cal.setTime(stringdate);
+		// cal.setTime(stringdate);
 	}
 
 	public long plus(int days) {
+		cal.setTime(stringdate);
 		cal.add(Calendar.DATE, days);
 		return cal.getTimeInMillis();
 	}// END: plus
 
 	public long minus(int days) {
+		cal.setTime(stringdate);
 		cal.add(Calendar.DATE, -days);
 		return cal.getTimeInMillis();
 	}// END: minus
 
 	public long getTime() {
+		cal.setTime(stringdate);
 		return cal.getTimeInMillis();
 	}// END: getDate
 

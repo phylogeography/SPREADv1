@@ -49,6 +49,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private boolean useTrueNoise;
 	private boolean impute;
 	private String mrsdString;
+	private SpreadDate mrsd;
 	private double timescaler;
 	private TimeLine timeLine;
 	private double startTime;
@@ -386,6 +387,8 @@ public class TimeSlicerToProcessing extends PApplet {
 	public void AnalyzeTrees() throws IOException, ImportException,
 			ParseException {
 
+		mrsd = new SpreadDate(mrsdString);
+		
 		// This is a general time span for all of the trees
 		tree = (RootedTree) treeImporter.importNextTree();
 		timeLine = GenerateTimeLine(tree);
@@ -484,8 +487,8 @@ public class TimeSlicerToProcessing extends PApplet {
 							if (nodeHeight < sliceHeight
 									&& sliceHeight <= parentHeight) {
 
-								double sliceTime = new SpreadDate(mrsdString)
-										.minus((int) (sliceHeight * timescaler));
+								int days = (int) (sliceHeight * timescaler);
+								double sliceTime = mrsd.minus(days);
 
 								// grow map entry if key exists
 								if (slicesMap.containsKey(sliceTime)) {
@@ -612,7 +615,6 @@ public class TimeSlicerToProcessing extends PApplet {
 
 		// This is a general time span for all of the trees
 		double treeRootHeight = mccTree.getHeight(mccTree.getRootNode());
-		SpreadDate mrsd = new SpreadDate(mrsdString);
 		double startTime = mrsd.getTime()
 				- (treeRootHeight * DayInMillis * timescaler);
 		double endTime = mrsd.getTime();

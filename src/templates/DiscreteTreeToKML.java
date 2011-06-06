@@ -42,6 +42,7 @@ public class DiscreteTreeToKML {
 	private String stateAttName;
 	private InteractiveTableModel table;
 	private String mrsdString;
+	private SpreadDate mrsd;
 	private int numberOfIntervals;
 	private double timescaler;
 	private String userAttribute;
@@ -226,7 +227,7 @@ public class DiscreteTreeToKML {
 		rootHeight = tree.getHeight(tree.getRootNode());
 
 		// This is a general time span for the tree
-		SpreadDate mrsd = new SpreadDate(mrsdString);
+		 mrsd = new SpreadDate(mrsdString);
 		TimeLine timeLine = new TimeLine(mrsd.getTime()
 				- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
 				numberOfIntervals);
@@ -431,7 +432,6 @@ public class DiscreteTreeToKML {
 							Style linesStyle = new Style(col, branchWidth);
 							linesStyle.setId("branch_style" + branchStyleId);
 
-							SpreadDate mrsd = new SpreadDate(mrsdString);
 							int days = (int) (nodeHeight * timescaler);
 							double startTime = mrsd.minus(days);
 
@@ -453,9 +453,6 @@ public class DiscreteTreeToKML {
 				}// END: nodes loop
 
 				layers.add(branchesLayer);
-
-			} catch (ParseException e) {
-				e.printStackTrace();
 
 			} catch (RuntimeException e) {
 				e.printStackTrace();
@@ -526,8 +523,6 @@ public class DiscreteTreeToKML {
 									* polygonsRadiusMultiplier;
 
 							int days = (int) (numberOfLineages[i][0] * timescaler);
-							SpreadDate mrsd = new SpreadDate(mrsdString);
-
 							double startTime = mrsd.minus(days);
 							// this is to get duration in milliseconds:
 							double duration = ((rootHeight - numberOfLineages[i][0]) / (i + 1))
@@ -559,9 +554,6 @@ public class DiscreteTreeToKML {
 				}// END: row loop
 
 				layers.add(circlesLayer);
-
-			} catch (ParseException e) {
-				e.printStackTrace();
 
 			} catch (RuntimeException e) {
 				e.printStackTrace();

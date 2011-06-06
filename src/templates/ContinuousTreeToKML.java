@@ -40,6 +40,7 @@ public class ContinuousTreeToKML {
 	private String coordinatesName;
 	private String HPD;
 	private String mrsdString;
+	private SpreadDate mrsd;
 	private int numberOfIntervals;
 	private double timescaler;
 	private double rootHeight;
@@ -237,7 +238,7 @@ public class ContinuousTreeToKML {
 		treeHeightMax = Utils.getTreeHeightMax(tree);
 
 		// This is a general time span for the tree
-		SpreadDate mrsd = new SpreadDate(mrsdString);
+		mrsd = new SpreadDate(mrsdString);
 		TimeLine timeLine = new TimeLine(mrsd.getTime()
 				- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
 				numberOfIntervals);
@@ -390,7 +391,6 @@ public class ContinuousTreeToKML {
 						linesStyle.setId("branch_style" + branchStyleId);
 						branchStyleId++;
 
-						SpreadDate mrsd = new SpreadDate(mrsdString);
 						int days = (int) (nodeHeight * timescaler);
 						double startTime = mrsd.minus(days);
 
@@ -413,9 +413,6 @@ public class ContinuousTreeToKML {
 				}// END: node loop
 
 				layers.add(branchesLayer);
-
-			} catch (ParseException e) {
-				e.printStackTrace();
 
 			} catch (RuntimeException e) {
 				e.printStackTrace();
@@ -536,7 +533,6 @@ public class ContinuousTreeToKML {
 								polygonsStyle.setId("polygon_style"
 										+ polygonsStyleId);
 
-								SpreadDate mrsd = new SpreadDate(mrsdString);
 								int days = (int) (nodeHeight * timescaler);
 								double startTime = mrsd.minus(days);
 
@@ -559,9 +555,6 @@ public class ContinuousTreeToKML {
 				}// END: nodes loop
 
 				layers.add(polygonsLayer);
-
-			} catch (ParseException e) {
-				e.printStackTrace();
 
 			} catch (RuntimeException e) {
 				e.printStackTrace();
