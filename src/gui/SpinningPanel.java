@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
 import java.awt.Polygon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -36,7 +35,6 @@ public class SpinningPanel extends JPanel {
 	protected void doMyLayout() {
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		GridBagConstraints c = new GridBagConstraints();
 
 		GradientPanel labelPanel = new GradientPanel(new Color(185, 195, 210),
 				Color.WHITE);
@@ -44,15 +42,9 @@ public class SpinningPanel extends JPanel {
 		labelPanel.setLayout(new BorderLayout());
 
 		spinWidget = new SpinWidget();
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridwidth = 3;
-		c.gridx = 0;
-		c.gridy = 0;
 		labelPanel.add(spinWidget, BorderLayout.LINE_START);
 
 		JLabel jlabel = new JLabel(label);
-		jlabel.setHorizontalTextPosition(JLabel.LEADING);
-//		jlabel.setVerticalTextPosition(JLabel.CENTER);
 		labelPanel.add(jlabel, BorderLayout.CENTER);
 
 		labelPanel.setBorder(BorderFactory.createLineBorder(new Color(154, 164,

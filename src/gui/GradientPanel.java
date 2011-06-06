@@ -23,7 +23,7 @@ public class GradientPanel extends JPanel {
 		this.endColor = endColor;
 	}
 
-	// @Override
+	@Override
 	protected void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
