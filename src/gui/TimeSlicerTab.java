@@ -85,6 +85,7 @@ public class TimeSlicerTab extends JPanel {
 
 	// Sliders
 	private JSlider branchesWidthParser;
+	private JSlider gridSizeParser;
 
 	// Combo boxes
 	private JComboBox eraParser;
@@ -151,6 +152,12 @@ public class TimeSlicerTab extends JPanel {
 		branchesWidthParser.setMinorTickSpacing(1);
 		branchesWidthParser.setPaintTicks(true);
 		branchesWidthParser.setPaintLabels(true);
+
+		gridSizeParser = new JSlider(JSlider.HORIZONTAL, 100, 200, 100);
+		gridSizeParser.setMajorTickSpacing(50);
+		gridSizeParser.setMinorTickSpacing(10);
+		gridSizeParser.setPaintTicks(true);
+		gridSizeParser.setPaintLabels(true);
 
 		// Setup progress bar & checkboxes
 		progressBar = new JProgressBar();
@@ -322,20 +329,6 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
-		tmpPanel.add(burnInParser);
-		tmpPanelsHolder.add(tmpPanel);
-
-		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
-		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("HPD:"));
-		tmpPanel.add(HPDParser);
-		tmpPanelsHolder.add(tmpPanel);
-
-		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
-		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Impute / Use true noise:"));
 		imputeParser.setSelected(true);
 		tmpPanel.add(imputeParser);
@@ -355,6 +348,27 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Precision attribute name:"));
 		tmpPanel.add(precisionAttNameParser);
+		tmpPanelsHolder.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
+		tmpPanel.add(burnInParser);
+		tmpPanelsHolder.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("HPD:"));
+		tmpPanel.add(HPDParser);
+		tmpPanelsHolder.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Grid size:"));
+		tmpPanel.add(gridSizeParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
@@ -598,6 +612,9 @@ public class TimeSlicerTab extends JPanel {
 							timeSlicerToKML.setHPD(Double.valueOf(HPDParser
 									.getText()));
 
+							timeSlicerToKML.setGridSize(gridSizeParser
+									.getValue());
+
 							timeSlicerToKML.setBurnIn(Integer
 									.valueOf(burnInParser.getText()));
 
@@ -769,6 +786,9 @@ public class TimeSlicerTab extends JPanel {
 
 							timeSlicerToProcessing.setHPD(Double
 									.valueOf(HPDParser.getText()));
+
+							timeSlicerToProcessing.setGridSize(gridSizeParser
+									.getValue());
 
 							timeSlicerToProcessing.setBurnIn(Integer
 									.valueOf(burnInParser.getText()));

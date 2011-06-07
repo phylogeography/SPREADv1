@@ -57,6 +57,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private double burnIn;
 	private RootedTree tree;
 	private double HPD;
+	private int gridSize;
 
 	private double minPolygonRedMapping;
 	private double minPolygonGreenMapping;
@@ -112,6 +113,10 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	public void setHPD(double percent) {
 		HPD = percent;
+	}
+
+	public void setGridSize(int size) {
+		gridSize = size;
 	}
 
 	public void setMccTreePath(String path) throws FileNotFoundException {
@@ -296,7 +301,7 @@ public class TimeSlicerToProcessing extends PApplet {
 
 		}
 
-		ContourMaker contourMaker = new ContourWithSynder(x, y, 100);
+		ContourMaker contourMaker = new ContourWithSynder(x, y, gridSize);
 		ContourPath[] paths = contourMaker.getContourPaths(HPD);
 
 		for (ContourPath path : paths) {
@@ -389,16 +394,14 @@ public class TimeSlicerToProcessing extends PApplet {
 	public void AnalyzeTrees() throws IOException, ImportException,
 			ParseException {
 
-		
+		mrsd = new SpreadDate(mrsdString);
 
-			mrsd = new SpreadDate(mrsdString);
+		// This is a general time span for all of the trees
+		tree = (RootedTree) treeImporter.importNextTree();
+		timeLine = GenerateTimeLine(tree);
 
-			// This is a general time span for all of the trees
-			tree = (RootedTree) treeImporter.importNextTree();
-			timeLine = GenerateTimeLine(tree);
-		
-			if (impute) {
-			
+		if (impute) {
+
 			startTime = timeLine.getStartTime();
 			endTime = timeLine.getEndTime();
 

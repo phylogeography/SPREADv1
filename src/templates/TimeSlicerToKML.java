@@ -93,6 +93,7 @@ public class TimeSlicerToKML {
 	private double startTime;
 	private double endTime;
 	private double HPD;
+	private int gridSize;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -121,6 +122,10 @@ public class TimeSlicerToKML {
 
 	public void setHPD(double percent) {
 		HPD = percent;
+	}
+
+	public void setGridSize(int size) {
+		gridSize = size;
 	}
 
 	public void setTreePath(String path) throws FileNotFoundException {
@@ -468,7 +473,7 @@ public class TimeSlicerToKML {
 
 			}
 
-			ContourMaker contourMaker = new ContourWithSynder(x, y, 100);
+			ContourMaker contourMaker = new ContourWithSynder(x, y, gridSize);
 			ContourPath[] paths = contourMaker.getContourPaths(HPD);
 
 			int pathCounter = 1;
