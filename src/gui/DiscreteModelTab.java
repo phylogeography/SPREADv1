@@ -95,6 +95,7 @@ public class DiscreteModelTab extends JPanel {
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
 	private SpinningPanel sp;
+	private JPanel tmpPanelsHolder;
 
 	// Processing pane
 	private DiscreteTreeToProcessing discreteTreeToProcessing;
@@ -182,22 +183,23 @@ public class DiscreteModelTab extends JPanel {
 		// ---INPUT---//
 		// /////////////
 
-		JPanel inputPanel = new JPanel();
-		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
+				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load tree file:"));
 		tmpPanel.add(openTree);
-		inputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Setup location coordinates:"));
 		tmpPanel.add(openLocationCoordinatesEditor);
-		inputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
@@ -214,16 +216,16 @@ public class DiscreteModelTab extends JPanel {
 		c.gridx = 2;
 		c.gridy = 0;
 		tmpPanel.add(eraParser, c);
-		inputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("State attribute name:"));
 		tmpPanel.add(stateAttNameParser);
-		inputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(inputPanel, "   Input", new Dimension(
+		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
 				leftPanelWidth + 60, 20));
 		sp.showBottom(true);
 		leftPanel.add(sp);
@@ -232,8 +234,8 @@ public class DiscreteModelTab extends JPanel {
 		// ---BRANCHES MAPPING---//
 		// ////////////////////////
 
-		JPanel branchesMappingPanel = new JPanel();
-		branchesMappingPanel.setLayout(new BoxLayout(branchesMappingPanel,
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
 				BoxLayout.Y_AXIS));
 
 		// Branches color mapping:
@@ -249,7 +251,7 @@ public class DiscreteModelTab extends JPanel {
 		c.gridx = 2;
 		c.gridy = 0;
 		tmpPanel.add(branchesMaxColorChooser, c);
-		branchesMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		// Branches width:
 		tmpPanel = new JPanel();
@@ -257,23 +259,23 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches width:"));
 		tmpPanel.add(branchesWidthParser);
-		branchesMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
-		branchesMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude:"));
 		tmpPanel.add(maxAltMappingParser);
-		branchesMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(branchesMappingPanel, "   Branches mapping",
+		sp = new SpinningPanel(tmpPanelsHolder, "   Branches mapping",
 				new Dimension(leftPanelWidth + 60, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
@@ -282,8 +284,8 @@ public class DiscreteModelTab extends JPanel {
 		// ---POLYGONS MAPPING---//
 		// ////////////////////////
 
-		JPanel polygonsMappingPanel = new JPanel();
-		polygonsMappingPanel.setLayout(new BoxLayout(polygonsMappingPanel,
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
 				BoxLayout.Y_AXIS));
 
 		// Circles color mapping:
@@ -299,7 +301,7 @@ public class DiscreteModelTab extends JPanel {
 		c.gridx = 2;
 		c.gridy = 0;
 		tmpPanel.add(polygonsMaxColorChooser, c);
-		polygonsMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		// Circles radius multiplier:
 		tmpPanel = new JPanel();
@@ -307,9 +309,9 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Circles radius multiplier:"));
 		tmpPanel.add(polygonsRadiusMultiplierParser);
-		polygonsMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(polygonsMappingPanel, "   Circles mapping",
+		sp = new SpinningPanel(tmpPanelsHolder, "   Circles mapping",
 				new Dimension(leftPanelWidth + 60, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
@@ -318,15 +320,16 @@ public class DiscreteModelTab extends JPanel {
 		// ---OUTPUT---//
 		// //////////////
 
-		JPanel outputPanel = new JPanel();
-		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
+				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("KML name:"));
 		tmpPanel.add(kmlPathParser);
-		outputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
@@ -345,16 +348,16 @@ public class DiscreteModelTab extends JPanel {
 		c.gridx = 0;
 		c.gridy = 1;
 		tmpPanel.add(progressBar, c);
-		outputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Save plot:"));
 		tmpPanel.add(saveProcessingPlot);
-		outputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(outputPanel, "   Output", new Dimension(
+		sp = new SpinningPanel(tmpPanelsHolder, "   Output", new Dimension(
 				leftPanelWidth + 60, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);

@@ -84,6 +84,7 @@ public class RateIndicatorBFTab extends JPanel {
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
 	private SpinningPanel sp;
+	private JPanel tmpPanelsHolder;
 
 	// Processing pane
 	private RateIndicatorBFToProcessing rateIndicatorBFToProcessing;
@@ -163,24 +164,25 @@ public class RateIndicatorBFTab extends JPanel {
 		// ---INPUT---//
 		// /////////////
 
-		JPanel inputPanel = new JPanel();
-		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
+				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load log file:"));
 		tmpPanel.add(openLog);
-		inputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load locations file:"));
 		tmpPanel.add(openLocations);
-		inputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(inputPanel, "   Input", new Dimension(
+		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
 				leftPanelWidth + 60, 20));
 		sp.showBottom(true);
 		leftPanel.add(sp);
@@ -189,8 +191,8 @@ public class RateIndicatorBFTab extends JPanel {
 		// ---COMPUTATIONS---//
 		// ////////////////////
 
-		JPanel computationsPanel = new JPanel();
-		computationsPanel.setLayout(new BoxLayout(computationsPanel,
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
 				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
@@ -198,7 +200,7 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Specify burn-in %:"));
 		tmpPanel.add(burnInParser);
-		computationsPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
@@ -220,16 +222,16 @@ public class RateIndicatorBFTab extends JPanel {
 		c.gridx = 2;
 		c.gridy = 0;
 		tmpPanel.add(poissonPriorOffsetParser, c);
-		computationsPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Bayes Factor cut-off:"));
 		tmpPanel.add(bfCutoffParser);
-		computationsPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(computationsPanel, "   Computations",
+		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
 				new Dimension(leftPanelWidth + 60, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
@@ -238,8 +240,8 @@ public class RateIndicatorBFTab extends JPanel {
 		// ---BRANCHES MAPPING---//
 		// ////////////////////////
 
-		JPanel branchesMappingPanel = new JPanel();
-		branchesMappingPanel.setLayout(new BoxLayout(branchesMappingPanel,
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
 				BoxLayout.Y_AXIS));
 
 		// Rates color mapping:
@@ -255,7 +257,7 @@ public class RateIndicatorBFTab extends JPanel {
 		c.gridx = 2;
 		c.gridy = 0;
 		tmpPanel.add(branchesMaxColorChooser, c);
-		branchesMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		// Branches width:
 		tmpPanel = new JPanel();
@@ -263,23 +265,23 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Rates width:"));
 		tmpPanel.add(branchesWidthParser);
-		branchesMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
-		branchesMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude:"));
 		tmpPanel.add(maxAltMappingParser);
-		branchesMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(branchesMappingPanel, "   Branches mapping",
+		sp = new SpinningPanel(tmpPanelsHolder, "   Branches mapping",
 				new Dimension(leftPanelWidth + 60, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
@@ -288,15 +290,16 @@ public class RateIndicatorBFTab extends JPanel {
 		// ---OUTPUT---//
 		// //////////////
 
-		JPanel outputPanel = new JPanel();
-		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
+				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("KML name:"));
 		tmpPanel.add(kmlPathParser);
-		outputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
@@ -315,16 +318,16 @@ public class RateIndicatorBFTab extends JPanel {
 		c.gridx = 0;
 		c.gridy = 1;
 		tmpPanel.add(progressBar, c);
-		outputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Save plot:"));
 		tmpPanel.add(saveProcessingPlot);
-		outputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(outputPanel, "   Output", new Dimension(
+		sp = new SpinningPanel(tmpPanelsHolder, "   Output", new Dimension(
 				leftPanelWidth + 60, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);

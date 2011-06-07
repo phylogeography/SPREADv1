@@ -97,6 +97,7 @@ public class TimeSlicerTab extends JPanel {
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
 	private SpinningPanel sp;
+	private JPanel tmpPanelsHolder;
 
 	// Processing pane
 	private TimeSlicerToProcessing timeSlicerToProcessing;
@@ -185,22 +186,23 @@ public class TimeSlicerTab extends JPanel {
 		// ---INPUT---//
 		// /////////////
 
-		JPanel inputPanel = new JPanel();
-		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
+				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load tree file:"));
 		tmpPanel.add(openTree);
-		inputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load trees file:"));
 		tmpPanel.add(openTrees);
-		inputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
@@ -217,16 +219,16 @@ public class TimeSlicerTab extends JPanel {
 		c.gridx = 2;
 		c.gridy = 0;
 		tmpPanel.add(eraParser, c);
-		inputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Coordinate attribute name:"));
 		tmpPanel.add(coordinatesNameParser);
-		inputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(inputPanel, "   Input", new Dimension(
+		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
 				leftPanelWidth + 60, 20));
 		sp.showBottom(true);
 		leftPanel.add(sp);
@@ -235,8 +237,8 @@ public class TimeSlicerTab extends JPanel {
 		// ---BRANCHES MAPPING---//
 		// ////////////////////////
 
-		JPanel branchesMappingPanel = new JPanel();
-		branchesMappingPanel.setLayout(new BoxLayout(branchesMappingPanel,
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
 				BoxLayout.Y_AXIS));
 
 		// Branches color mapping:
@@ -252,7 +254,7 @@ public class TimeSlicerTab extends JPanel {
 		c.gridx = 2;
 		c.gridy = 0;
 		tmpPanel.add(branchesMaxColorChooser, c);
-		branchesMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		// Branches width:
 		tmpPanel = new JPanel();
@@ -260,23 +262,23 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches width:"));
 		tmpPanel.add(branchesWidthParser);
-		branchesMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
-		branchesMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude mapping:"));
 		tmpPanel.add(maxAltMappingParser);
-		branchesMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(branchesMappingPanel, "   Branches mapping",
+		sp = new SpinningPanel(tmpPanelsHolder, "   Branches mapping",
 				new Dimension(leftPanelWidth + 60, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
@@ -285,8 +287,8 @@ public class TimeSlicerTab extends JPanel {
 		// ---POLYGONS MAPPING---//
 		// ////////////////////////
 
-		JPanel polygonsMappingPanel = new JPanel();
-		polygonsMappingPanel.setLayout(new BoxLayout(polygonsMappingPanel,
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
 				BoxLayout.Y_AXIS));
 
 		// Polygons color mapping:
@@ -302,9 +304,9 @@ public class TimeSlicerTab extends JPanel {
 		c.gridx = 2;
 		c.gridy = 0;
 		tmpPanel.add(polygonsMaxColorChooser);
-		polygonsMappingPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(polygonsMappingPanel, "   Polygons mapping",
+		sp = new SpinningPanel(tmpPanelsHolder, "   Polygons mapping",
 				new Dimension(leftPanelWidth + 60, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
@@ -313,8 +315,8 @@ public class TimeSlicerTab extends JPanel {
 		// ---COMPUTATIONS---//
 		// ////////////////////
 
-		JPanel computationsPanel = new JPanel();
-		computationsPanel.setLayout(new BoxLayout(computationsPanel,
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
 				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
@@ -322,14 +324,14 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
 		tmpPanel.add(burnInParser);
-		computationsPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("HPD:"));
 		tmpPanel.add(HPDParser);
-		computationsPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
@@ -339,23 +341,23 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.add(imputeParser);
 		trueNoiseParser.setSelected(true);
 		tmpPanel.add(trueNoiseParser);
-		computationsPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Rate attribute name:"));
 		tmpPanel.add(rateAttNameParser);
-		computationsPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Precision attribute name:"));
 		tmpPanel.add(precisionAttNameParser);
-		computationsPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(computationsPanel, "   Computations",
+		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
 				new Dimension(leftPanelWidth + 60, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
@@ -364,16 +366,17 @@ public class TimeSlicerTab extends JPanel {
 		// ---OUTPUT---//
 		// //////////////
 
-		JPanel outputPanel = new JPanel();
-		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
+				BoxLayout.Y_AXIS));
 
-//		leftPanel.add(tmpPanel);
+		// leftPanel.add(tmpPanel);
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("KML name:"));
 		tmpPanel.add(kmlPathParser);
-		outputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
@@ -392,16 +395,16 @@ public class TimeSlicerTab extends JPanel {
 		c.gridx = 0;
 		c.gridy = 1;
 		tmpPanel.add(progressBar, c);
-		outputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Save plot:"));
 		tmpPanel.add(saveProcessingPlot);
-		outputPanel.add(tmpPanel);
+		tmpPanelsHolder.add(tmpPanel);
 
-		sp = new SpinningPanel(outputPanel, "   Output", new Dimension(
+		sp = new SpinningPanel(tmpPanelsHolder, "   Output", new Dimension(
 				leftPanelWidth + 60, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
