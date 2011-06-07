@@ -242,7 +242,9 @@ public class TimeSlicerToProcessing extends PApplet {
 		noLoop();
 		smooth();
 		mapBackground.drawMapBackground();
-		drawPolygons();
+		if (impute) {
+			drawPolygons();
+		}
 		drawBranches();
 
 	}// END:draw
@@ -388,7 +390,7 @@ public class TimeSlicerToProcessing extends PApplet {
 			ParseException {
 
 		mrsd = new SpreadDate(mrsdString);
-		
+
 		// This is a general time span for all of the trees
 		tree = (RootedTree) treeImporter.importNextTree();
 		timeLine = GenerateTimeLine(tree);
@@ -447,14 +449,10 @@ public class TimeSlicerToProcessing extends PApplet {
 
 				// attributes parsed once per tree
 				double treeRootHeight = tree.getHeight(tree.getRootNode());
-				double treeNormalization = 0;
-				double[] precisionArray = null;
-				if (impute) {
-					treeNormalization = currentTree.getHeight(currentTree
-							.getRootNode());
-					precisionArray = Utils.getTreeDoubleArrayAttribute(
-							currentTree, precisionString);
-				}
+				double treeNormalization = currentTree.getHeight(currentTree
+						.getRootNode());
+				double[] precisionArray = Utils.getTreeDoubleArrayAttribute(
+						currentTree, precisionString);
 
 				for (Node node : currentTree.getNodes()) {
 					if (!currentTree.isRoot(node)) {
@@ -472,11 +470,8 @@ public class TimeSlicerToProcessing extends PApplet {
 								.getDoubleArrayNodeAttribute(parentNode,
 										coordinatesName);
 
-						double rate = 0;
-						if (impute) {
-							rate = Utils.getDoubleNodeAttribute(node,
-									rateString);
-						}
+						double rate = Utils.getDoubleNodeAttribute(node,
+								rateString);
 
 						for (int i = 0; i <= numberOfIntervals; i++) {
 
@@ -493,44 +488,30 @@ public class TimeSlicerToProcessing extends PApplet {
 								// grow map entry if key exists
 								if (slicesMap.containsKey(sliceTime)) {
 
-									if (impute) {
+									double[] imputedLocation = imputeValue(
+											location, parentLocation,
+											sliceHeight, nodeHeight,
+											parentHeight, rate, useTrueNoise,
+											treeNormalization, precisionArray);
 
-										double[] imputedLocation = imputeValue(
-												location, parentLocation,
-												sliceHeight, nodeHeight,
-												parentHeight, rate,
-												useTrueNoise,
-												treeNormalization,
-												precisionArray);
-
-										slicesMap
-												.get(sliceTime)
-												.add(
-														new Coordinates(
-																imputedLocation[1],
-																imputedLocation[0],
-																0.0));
-									}
+									slicesMap.get(sliceTime).add(
+											new Coordinates(imputedLocation[1],
+													imputedLocation[0], 0.0));
 
 									// start new entry if no such key in the map
 								} else {
 
 									List<Coordinates> coords = new ArrayList<Coordinates>();
 
-									if (impute) {
+									double[] imputedLocation = imputeValue(
+											location, parentLocation,
+											sliceHeight, nodeHeight,
+											parentHeight, rate, useTrueNoise,
+											treeNormalization, precisionArray);
 
-										double[] imputedLocation = imputeValue(
-												location, parentLocation,
-												sliceHeight, nodeHeight,
-												parentHeight, rate,
-												useTrueNoise,
-												treeNormalization,
-												precisionArray);
-
-										coords.add(new Coordinates(
-												imputedLocation[1],
-												imputedLocation[0], 0.0));
-									}
+									coords.add(new Coordinates(
+											imputedLocation[1],
+											imputedLocation[0], 0.0));
 
 									slicesMap.putIfAbsent(sliceTime, coords);
 

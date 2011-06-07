@@ -248,74 +248,79 @@ public class TimeSlicerToKML {
 		time = -System.currentTimeMillis();
 		tree = (RootedTree) treeImporter.importNextTree();
 
-		System.out.println("Analyzing trees...");
-
-		// This is for collecting coordinates into polygons
-		slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
-
 		mrsd = new SpreadDate(mrsdString);
+
+		// this is to generate kml output
+		layers = new ArrayList<Layer>();
+		timeLine = GenerateTimeLine(tree);
 
 		// Executor for threads
 		int NTHREDS = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
 
-		int readTrees = 0;
-		while (treesImporter.hasTree()) {
+		if (impute) {
 
-			currentTree = (RootedTree) treesImporter.importNextTree();
-			synchronized (slicesMap) {
-				if (readTrees >= burnIn) {
+			System.out.println("Analyzing trees...");
 
-					// executor.submit(new AnalyzeTree());
-					new AnalyzeTree().run();
+			// This is for collecting coordinates into polygons
+			slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
 
-					if (readTrees % burnIn == 0) {
-						System.out.print(readTrees + " trees... ");
+			int readTrees = 0;
+			while (treesImporter.hasTree()) {
+
+				currentTree = (RootedTree) treesImporter.importNextTree();
+				synchronized (slicesMap) {
+					if (readTrees >= burnIn) {
+
+						// executor.submit(new AnalyzeTree());
+						new AnalyzeTree().run();
+
+						if (readTrees % burnIn == 0) {
+							System.out.print(readTrees + " trees... ");
+						}
 					}
-				}
 
-				readTrees++;
+					readTrees++;
 
+				}// END: synchronized
+			}// END: while has trees
+
+			if ((readTrees - burnIn) <= 0.0) {
+				throw new RuntimeException("Burnt too many trees!");
+			} else {
+				System.out.println("Analyzed " + (int) (readTrees - burnIn)
+						+ " trees");
+			}
+
+			// Wait until all threads are finished
+			executor.shutdown();
+			while (!executor.isTerminated()) {
+			}
+
+			Iterator<Double> iterator = slicesMap.keySet().iterator();
+			executor = Executors.newFixedThreadPool(NTHREDS);
+			formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
+			startTime = timeLine.getStartTime();
+			endTime = timeLine.getEndTime();
+
+			System.out.println("Generating Polygons...");
+			System.out.println("Iterating through Map...");
+
+			polygonsStyleId = 1;
+			synchronized (iterator) {
+				while (iterator.hasNext()) {
+
+					System.out.println("Key " + polygonsStyleId + "...");
+
+					sliceTime = (Double) iterator.next();
+
+					// executor.submit(new Polygons());
+					new Polygons().run();
+
+				}// END: while has next
 			}// END: synchronized
-		}// END: while has trees
 
-		if ((readTrees - burnIn) <= 0.0) {
-			throw new RuntimeException("Burnt too many trees!");
-		} else {
-			System.out.println("Analyzed " + (int) (readTrees - burnIn)
-					+ " trees");
-		}
-
-		// Wait until all threads are finished
-		executor.shutdown();
-		while (!executor.isTerminated()) {
-		}
-
-		// this is to generate kml output
-		layers = new ArrayList<Layer>();
-		Iterator<Double> iterator = slicesMap.keySet().iterator();
-		executor = Executors.newFixedThreadPool(NTHREDS);
-		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
-		timeLine = GenerateTimeLine(tree);
-		startTime = timeLine.getStartTime();
-		endTime = timeLine.getEndTime();
-
-		System.out.println("Generating Polygons...");
-		System.out.println("Iterating through Map...");
-
-		polygonsStyleId = 1;
-		synchronized (iterator) {
-			while (iterator.hasNext()) {
-
-				System.out.println("Key " + polygonsStyleId + "...");
-
-				sliceTime = (Double) iterator.next();
-
-				// executor.submit(new Polygons());
-				new Polygons().run();
-
-			}// END: while has next
-		}// END: synchronized
+		}// END: if impute
 
 		System.out.println("Generating branches...");
 		executor.submit(new Branches());
@@ -343,14 +348,10 @@ public class TimeSlicerToKML {
 
 				// attributes parsed once per tree
 				double treeRootHeight = tree.getHeight(tree.getRootNode());
-				double treeNormalization = 0;
-				double[] precisionArray = null;
-				if (impute) {
-					treeNormalization = currentTree.getHeight(currentTree
-							.getRootNode());
-					precisionArray = Utils.getTreeDoubleArrayAttribute(
-							currentTree, precisionString);
-				}
+				double treeNormalization = currentTree.getHeight(currentTree
+						.getRootNode());
+				double[] precisionArray = Utils.getTreeDoubleArrayAttribute(
+						currentTree, precisionString);
 
 				for (Node node : currentTree.getNodes()) {
 					if (!currentTree.isRoot(node)) {
@@ -368,11 +369,8 @@ public class TimeSlicerToKML {
 								.getDoubleArrayNodeAttribute(parentNode,
 										coordinatesName);
 
-						double rate = 0;
-						if (impute) {
-							rate = Utils.getDoubleNodeAttribute(node,
-									rateString);
-						}
+						double rate = Utils.getDoubleNodeAttribute(node,
+								rateString);
 
 						for (int i = 0; i <= numberOfIntervals; i++) {
 
@@ -389,44 +387,30 @@ public class TimeSlicerToKML {
 								// grow map entry if key exists
 								if (slicesMap.containsKey(sliceTime)) {
 
-									if (impute) {
+									double[] imputedLocation = imputeValue(
+											location, parentLocation,
+											sliceHeight, nodeHeight,
+											parentHeight, rate, useTrueNoise,
+											treeNormalization, precisionArray);
 
-										double[] imputedLocation = imputeValue(
-												location, parentLocation,
-												sliceHeight, nodeHeight,
-												parentHeight, rate,
-												useTrueNoise,
-												treeNormalization,
-												precisionArray);
-
-										slicesMap
-												.get(sliceTime)
-												.add(
-														new Coordinates(
-																imputedLocation[1],
-																imputedLocation[0],
-																0.0));
-									}
+									slicesMap.get(sliceTime).add(
+											new Coordinates(imputedLocation[1],
+													imputedLocation[0], 0.0));
 
 									// start new entry if no such key in the map
 								} else {
 
 									List<Coordinates> coords = new ArrayList<Coordinates>();
 
-									if (impute) {
+									double[] imputedLocation = imputeValue(
+											location, parentLocation,
+											sliceHeight, nodeHeight,
+											parentHeight, rate, useTrueNoise,
+											treeNormalization, precisionArray);
 
-										double[] imputedLocation = imputeValue(
-												location, parentLocation,
-												sliceHeight, nodeHeight,
-												parentHeight, rate,
-												useTrueNoise,
-												treeNormalization,
-												precisionArray);
-
-										coords.add(new Coordinates(
-												imputedLocation[1],
-												imputedLocation[0], 0.0));
-									}
+									coords.add(new Coordinates(
+											imputedLocation[1],
+											imputedLocation[0], 0.0));
 
 									slicesMap.putIfAbsent(sliceTime, coords);
 
