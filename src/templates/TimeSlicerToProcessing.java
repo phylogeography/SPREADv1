@@ -389,52 +389,59 @@ public class TimeSlicerToProcessing extends PApplet {
 	public void AnalyzeTrees() throws IOException, ImportException,
 			ParseException {
 
-		mrsd = new SpreadDate(mrsdString);
+		
 
-		// This is a general time span for all of the trees
-		tree = (RootedTree) treeImporter.importNextTree();
-		timeLine = GenerateTimeLine(tree);
-		startTime = timeLine.getStartTime();
-		endTime = timeLine.getEndTime();
+			mrsd = new SpreadDate(mrsdString);
 
-		// This is for slice times
-		slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
+			// This is a general time span for all of the trees
+			tree = (RootedTree) treeImporter.importNextTree();
+			timeLine = GenerateTimeLine(tree);
+		
+			if (impute) {
+			
+			startTime = timeLine.getStartTime();
+			endTime = timeLine.getEndTime();
 
-		System.out.println("Analyzing trees...");
+			// This is for slice times
+			slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
 
-		// Executor for threads
-		int NTHREDS = Runtime.getRuntime().availableProcessors();
-		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
+			System.out.println("Analyzing trees...");
 
-		int readTrees = 0;
-		while (treesImporter.hasTree()) {
+			// Executor for threads
+			int NTHREDS = Runtime.getRuntime().availableProcessors();
+			ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
 
-			currentTree = (RootedTree) treesImporter.importNextTree();
+			int readTrees = 0;
+			while (treesImporter.hasTree()) {
 
-			if (readTrees >= burnIn) {
+				currentTree = (RootedTree) treesImporter.importNextTree();
 
-				// executor.submit(new AnalyzeTree());
-				new AnalyzeTree().run();
+				if (readTrees >= burnIn) {
 
-				if (readTrees % burnIn == 0) {
-					System.out.print(readTrees + " trees... ");
+					// executor.submit(new AnalyzeTree());
+					new AnalyzeTree().run();
+
+					if (readTrees % burnIn == 0) {
+						System.out.print(readTrees + " trees... ");
+					}
 				}
+
+				readTrees++;
 			}
 
-			readTrees++;
-		}
+			// Wait until all threads are finished
+			executor.shutdown();
+			while (!executor.isTerminated()) {
+			}
 
-		// Wait until all threads are finished
-		executor.shutdown();
-		while (!executor.isTerminated()) {
-		}
+			if ((readTrees - burnIn) <= 0.0) {
+				throw new RuntimeException("Burnt too many trees!");
+			} else {
+				System.out.println("Analyzed " + (int) (readTrees - burnIn)
+						+ " trees");
+			}
 
-		if ((readTrees - burnIn) <= 0.0) {
-			throw new RuntimeException("Burnt too many trees!");
-		} else {
-			System.out.println("Analyzed " + (int) (readTrees - burnIn)
-					+ " trees");
-		}
+		}// END: if impute
 
 	}// END: AnalyzeTrees
 

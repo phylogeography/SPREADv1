@@ -869,9 +869,7 @@ public class TimeSlicerTab extends JPanel {
 									.setBranchWidth(branchesWidthParser
 											.getValue() / 2);
 
-							if (imputeParser.isSelected()) {
-								timeSlicerToProcessing.AnalyzeTrees();
-							}
+							timeSlicerToProcessing.AnalyzeTrees();
 
 							timeSlicerToProcessing.init();
 
