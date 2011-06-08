@@ -10,20 +10,18 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class GradientPanel extends JPanel {
 
+	public final static int HORIZONTAL = 0;
+	public final static int VERTICAL = 1;
+	
 	private Color startColor;
 	private Color endColor;
+	private int direction;
 
-	private enum directionEnum {
-		HORIZONTAL, VERTICAL
-	}
-
-	private directionEnum directionSwitcher;
-
-	public GradientPanel(Color startColor, Color endColor) {
+	public GradientPanel(Color startColor, Color endColor, int direction) {
 		super();
 		this.startColor = startColor;
 		this.endColor = endColor;
-		directionSwitcher = directionEnum.VERTICAL;
+		this.direction = direction;
 	}
 
 	@Override
@@ -35,7 +33,7 @@ public class GradientPanel extends JPanel {
 		int panelWidth = this.getWidth();
 
 		GradientPaint gradientPaint = null;
-		switch (directionSwitcher) {
+		switch (direction) {
 
 		case HORIZONTAL:
 			gradientPaint = new GradientPaint(0, panelHeight / 2, startColor,

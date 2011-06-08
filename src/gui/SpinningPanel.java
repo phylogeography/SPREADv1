@@ -47,7 +47,7 @@ public class SpinningPanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		GradientPanel labelPanel = new GradientPanel(gradientPanelStartColor,
-				gradientPanelEndColor);
+				gradientPanelEndColor, GradientPanel.VERTICAL);
 		labelPanel.setMaximumSize(dimension);
 		labelPanel.setLayout(new BorderLayout());
 
