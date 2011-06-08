@@ -264,13 +264,6 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
-		tmpPanel.add(numberOfIntervalsParser);
-		tmpPanelsHolder.add(tmpPanel);
-
-		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
-		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude:"));
 		tmpPanel.add(maxAltMappingParser);
 		tmpPanelsHolder.add(tmpPanel);
@@ -312,6 +305,26 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Circles mapping",
+				new Dimension(leftPanelWidth + 60, 20));
+		sp.showBottom(false);
+		leftPanel.add(sp);
+
+		// ////////////////////
+		// ---COMPUTATIONS---//
+		// ////////////////////
+
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
+				BoxLayout.Y_AXIS));
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
+		tmpPanel.add(numberOfIntervalsParser);
+		tmpPanelsHolder.add(tmpPanel);
+
+		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
 				new Dimension(leftPanelWidth + 60, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);

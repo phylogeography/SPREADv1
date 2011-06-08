@@ -22,7 +22,7 @@ public class ReadLog extends PApplet {
 
 		String[] lines = LoadStrings(filename);
 
-		// skip commented lines
+		// count commented lines
 		int commentedLines = 0;
 		for (int row = 0; row < lines.length; row++) {
 			if (lines[row].startsWith("#")) {

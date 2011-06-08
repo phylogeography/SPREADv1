@@ -13,14 +13,17 @@ public class GradientPanel extends JPanel {
 	private Color startColor;
 	private Color endColor;
 
-	public GradientPanel() {
-		this(Color.GRAY, Color.WHITE);
+	private enum directionEnum {
+		HORIZONTAL, VERTICAL
 	}
+
+	private directionEnum directionSwitcher;
 
 	public GradientPanel(Color startColor, Color endColor) {
 		super();
 		this.startColor = startColor;
 		this.endColor = endColor;
+		directionSwitcher = directionEnum.VERTICAL;
 	}
 
 	@Override
@@ -31,8 +34,19 @@ public class GradientPanel extends JPanel {
 		int panelHeight = this.getHeight();
 		int panelWidth = this.getWidth();
 
-		GradientPaint gradientPaint = new GradientPaint(0, panelHeight,
-				startColor, 0, panelWidth, endColor);
+		GradientPaint gradientPaint = null;
+		switch (directionSwitcher) {
+
+		case HORIZONTAL:
+			gradientPaint = new GradientPaint(0, panelHeight / 2, startColor,
+					panelWidth, panelHeight / 2, endColor);
+			break;
+
+		case VERTICAL:
+			gradientPaint = new GradientPaint(panelWidth / 2, 0, endColor,
+					panelWidth / 2, panelHeight, startColor);
+			break;
+		}
 
 		if (g instanceof Graphics2D) {
 			Graphics2D graphics2D = (Graphics2D) g;
@@ -41,5 +55,4 @@ public class GradientPanel extends JPanel {
 		}
 
 	}// END: paintComponent
-
 }
