@@ -274,13 +274,6 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
-		tmpPanel.add(numberOfIntervalsParser);
-		tmpPanelsHolder.add(tmpPanel);
-
-		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
-		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude mapping:"));
 		tmpPanel.add(maxAltMappingParser);
 		tmpPanelsHolder.add(tmpPanel);
@@ -362,6 +355,13 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("HPD:"));
 		tmpPanel.add(HPDParser);
+		tmpPanelsHolder.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
+		tmpPanel.add(numberOfIntervalsParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -757,6 +757,9 @@ public class TimeSlicerTab extends JPanel {
 							+ workingDirectory.toString().concat("/").concat(
 									kmlPathParser.getText()));
 
+					// TODO: is it neccessary?
+					System.gc();
+
 				}
 			};
 
@@ -920,6 +923,10 @@ public class TimeSlicerTab extends JPanel {
 				public void done() {
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
+
+					// TODO: is it neccessary?
+					System.gc();
+
 				}// END: done
 			};
 

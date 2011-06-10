@@ -88,7 +88,7 @@ public class TimeSlicerToKML {
 	private List<Layer> layers;
 	private int polygonsStyleId;
 	private SimpleDateFormat formatter;
-	private PrintWriter writer;
+	private String kmlPath;
 	private TimeLine timeLine;
 	private double startTime;
 	private double endTime;
@@ -170,8 +170,8 @@ public class TimeSlicerToKML {
 		precisionString = name;
 	}
 
-	public void setKmlWriterPath(String kmlpath) throws FileNotFoundException {
-		writer = new PrintWriter(kmlpath);
+	public void setKmlWriterPath(String path) throws FileNotFoundException {
+		kmlPath = path;
 	}
 
 	public void setMaxAltitudeMapping(double max) {
@@ -302,6 +302,9 @@ public class TimeSlicerToKML {
 			while (!executor.isTerminated()) {
 			}
 
+			// System.out.println("Saving to disk...");
+			// Utils.saveHashMap(slicesMap);
+
 			Iterator<Double> iterator = slicesMap.keySet().iterator();
 			executor = Executors.newFixedThreadPool(NTHREDS);
 			formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
@@ -336,6 +339,7 @@ public class TimeSlicerToKML {
 
 		System.out.println("Writing to kml...");
 
+		PrintWriter writer = new PrintWriter(kmlPath);
 		KMLGenerator kmloutput = new KMLGenerator();
 		kmloutput.generate(writer, timeLine, layers);
 
