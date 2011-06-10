@@ -550,8 +550,8 @@ public class DiscreteTreeToKML {
 							));
 
 						}
-					}// END: col loop
-				}// END: row loop
+					}// END: row loop
+				}// END: col loop
 
 				layers.add(circlesLayer);
 

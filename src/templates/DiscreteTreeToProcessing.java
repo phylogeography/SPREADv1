@@ -4,6 +4,7 @@ import gui.InteractiveTableModel;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
@@ -12,6 +13,7 @@ import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
 import processing.core.PApplet;
 import processing.core.PFont;
+import structure.Coordinates;
 import utils.Utils;
 
 @SuppressWarnings("serial")
@@ -21,6 +23,9 @@ public class DiscreteTreeToProcessing extends PApplet {
 	private RootedTree tree;
 	private InteractiveTableModel table;
 	private String stateAttName;
+	private int numberOfIntervals;
+	private double rootHeight;
+
 	private MapBackground mapBackground;
 
 	private double minBranchRedMapping;
@@ -33,7 +38,18 @@ public class DiscreteTreeToProcessing extends PApplet {
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
 
+	private double minPolygonRedMapping;
+	private double minPolygonGreenMapping;
+	private double minPolygonBlueMapping;
+	private double minPolygonOpacityMapping;
+
+	private double maxPolygonRedMapping;
+	private double maxPolygonGreenMapping;
+	private double maxPolygonBlueMapping;
+	private double maxPolygonOpacityMapping;
+
 	private double branchWidth;
+	private double polygonsRadiusMultiplier;
 
 	// min/max longitude
 	private float minX, maxX;
@@ -48,9 +64,12 @@ public class DiscreteTreeToProcessing extends PApplet {
 		stateAttName = name;
 	}
 
+	public void setNumberOfIntervals(int number) {
+		numberOfIntervals = number;
+	}
+
 	public void setTreePath(String path) throws IOException, ImportException {
 		importer = new NexusImporter(new FileReader(path));
-		tree = (RootedTree) importer.importNextTree();
 	}
 
 	public void setTable(InteractiveTableModel tableModel) {
@@ -89,24 +108,73 @@ public class DiscreteTreeToProcessing extends PApplet {
 		maxBranchOpacityMapping = max;
 	}
 
+	public void setMinPolygonRedMapping(double min) {
+		minPolygonRedMapping = min;
+	}
+
+	public void setMinPolygonGreenMapping(double min) {
+		minPolygonGreenMapping = min;
+	}
+
+	public void setMinPolygonBlueMapping(double min) {
+		minPolygonBlueMapping = min;
+	}
+
+	public void setMinPolygonOpacityMapping(double min) {
+		minPolygonOpacityMapping = min;
+	}
+
+	public void setMaxPolygonRedMapping(double max) {
+		maxPolygonRedMapping = max;
+	}
+
+	public void setMaxPolygonGreenMapping(double max) {
+		maxPolygonGreenMapping = max;
+	}
+
+	public void setMaxPolygonBlueMapping(double max) {
+		maxPolygonBlueMapping = max;
+	}
+
+	public void setMaxPolygonOpacityMapping(double max) {
+		maxPolygonOpacityMapping = max;
+	}
+
+	public void setPolygonsRadiusMultiplier(double multiplier) {
+		polygonsRadiusMultiplier = multiplier;
+	}
+
 	public void setBranchWidth(double width) {
 		branchWidth = width;
 	}
 
 	public void setup() {
 
-		minX = -180;
-		maxX = 180;
+		try {
 
-		minY = -90;
-		maxY = 90;
+			minX = -180;
+			maxX = 180;
 
-		// will improve font rendering speed with default renderer
-		hint(ENABLE_NATIVE_FONTS);
-		PFont plotFont = createFont("Monaco", 12);
-		textFont(plotFont);
+			minY = -90;
+			maxY = 90;
 
-		mapBackground = new MapBackground(this);
+			// will improve font rendering speed with default renderer
+			hint(ENABLE_NATIVE_FONTS);
+			PFont plotFont = createFont("Monaco", 12);
+			textFont(plotFont);
+
+			tree = (RootedTree) importer.importNextTree();
+			// this is for time calculations
+			rootHeight = tree.getHeight(tree.getRootNode());
+
+			mapBackground = new MapBackground(this);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		} catch (ImportException e) {
+			e.printStackTrace();
+		}
 
 	}// END: setup
 
@@ -115,16 +183,17 @@ public class DiscreteTreeToProcessing extends PApplet {
 		noLoop();
 		smooth();
 		mapBackground.drawMapBackground();
-		DrawPlaces();
-		DrawBranches();
-		DrawPlacesLabels();
+		drawCircles();
+		drawPlaces();
+		drawBranches();
+		drawPlacesLabels();
 
 	}// END:draw
 
 	// //////////////
 	// ---PLACES---//
 	// //////////////
-	private void DrawPlaces() {
+	private void drawPlaces() {
 
 		float radius = 7;
 		// White
@@ -148,7 +217,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 		}
 	}// END DrawPlaces
 
-	private void DrawPlacesLabels() {
+	private void drawPlacesLabels() {
 
 		textSize(7);
 
@@ -175,7 +244,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 	// ////////////////
 	// ---BRANCHES---//
 	// ////////////////
-	private void DrawBranches() {
+	private void drawBranches() {
 
 		strokeWeight((float) branchWidth);
 
@@ -187,7 +256,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 				String state = Utils.getStringNodeAttribute(node, stateAttName);
 
 				Node parentNode = tree.getParent(node);
-				
+
 				String parentState = (String) parentNode
 						.getAttribute(stateAttName);
 
@@ -232,5 +301,143 @@ public class DiscreteTreeToProcessing extends PApplet {
 			}
 		}// END: nodes loop
 	}// END: DrawBranches
+
+	// ///////////////
+	// ---CIRCLES---//
+	// ///////////////
+	private void drawCircles() {
+
+		double[][] numberOfLineages = CountLineagesHoldingState(
+				numberOfIntervals, rootHeight);
+		double lineagesCountMax = Utils.get2DArrayMax(numberOfLineages);
+
+		for (int i = 0; i < (numberOfIntervals - 1); i++) {
+			for (int j = 0; j < (table.getRowCount()); j++) {
+
+				if (numberOfLineages[i][j + 1] > 0) {
+
+					/**
+					 * Color mapping
+					 * */
+					int red = (int) Utils.map(numberOfLineages[i][j + 1], 0,
+							lineagesCountMax, minPolygonRedMapping,
+							maxPolygonRedMapping);
+
+					int green = (int) Utils.map(numberOfLineages[i][j + 1], 0,
+							lineagesCountMax, minPolygonGreenMapping,
+							maxPolygonGreenMapping);
+
+					int blue = (int) Utils.map(numberOfLineages[i][j + 1], 0,
+							lineagesCountMax, minPolygonBlueMapping,
+							maxPolygonBlueMapping);
+
+					/**
+					 * Opacity mapping
+					 * 
+					 * Larger the values more opaque the colors
+					 * */
+					int alpha = (int) Utils.map(numberOfLineages[i][j + 1], 0,
+							lineagesCountMax, maxPolygonOpacityMapping,
+							minPolygonOpacityMapping);
+
+					stroke(red, green, blue, alpha);
+					fill(red, green, blue, alpha);
+
+					double radius = Math.round(100 * Math
+							.sqrt(numberOfLineages[i][j + 1]))
+							* polygonsRadiusMultiplier;
+
+					Double longitude = Double.valueOf(String.valueOf(table
+							.getValueAt(j, 1)));
+
+					Double latitude = Double.valueOf(String.valueOf(table
+							.getValueAt(j, 2)));
+
+					List<Coordinates> coordinates = Utils.GenerateCircle(
+							latitude, // centerLat
+							longitude, // centerLong
+							radius, // radius
+							36); // numPoints
+
+					beginShape();
+
+					for (int row = 0; row < coordinates.size() - 1; row++) {
+
+						double X = Utils.map(coordinates.get(row)
+								.getLongitude(), minX, maxX, 0, width);
+						double Y = Utils.map(
+								coordinates.get(row).getLatitude(), maxY, minY,
+								0, height);
+
+						double XEND = Utils.map(coordinates.get(row + 1)
+								.getLongitude(), minX, maxX, 0, width);
+						double YEND = Utils.map((coordinates.get(row + 1)
+								.getLatitude()), maxY, minY, 0, height);
+
+						vertex((float) X, (float) Y);
+						vertex((float) XEND, (float) YEND);
+
+					}// END: coordinates loop
+
+					endShape(CLOSE);
+
+				}// END: if numberOfLineages
+
+			}// END: table rows loop
+		}// END: numberOfIntervals loop
+
+	}// END: drawCircles
+
+	private double[][] CountLineagesHoldingState(int numberOfIntervals,
+			double rootHeight) {
+
+		double delta = rootHeight / numberOfIntervals;
+		double[][] numberOfLineages = new double[(numberOfIntervals - 1)][table
+				.getRowCount() + 1];
+
+		for (int i = 0; i < (numberOfIntervals - 1); i++) {
+			numberOfLineages[i][0] = rootHeight - ((i + 1) * delta);
+		}
+
+		for (int i = 0; i < (numberOfIntervals - 1); i++) {
+			for (int j = 0; j < table.getRowCount(); j++) {
+
+				int numberOfLineagesOfState = 0;
+
+				for (Node node : tree.getNodes()) {
+
+					if (!tree.isRoot(node)) {
+
+						Node parentNode = tree.getParent(node);
+						String state = (String) node.getAttribute(stateAttName);
+
+						String parentState = (String) parentNode
+								.getAttribute(stateAttName);
+
+						if ((tree.getHeight(node) <= numberOfLineages[i][0])
+								&& (tree.getHeight(parentNode) > numberOfLineages[i][0])) {
+
+							String name = String
+									.valueOf(table.getValueAt(j, 0));
+
+							if ((state.toLowerCase().equals(parentState
+									.toLowerCase()))
+									&& (parentState.toLowerCase().equals(name
+											.toLowerCase()))) {
+
+								numberOfLineagesOfState++;
+
+							}
+						}
+					}
+				}// END: node loop
+
+				numberOfLineages[i][j + 1] = numberOfLineagesOfState;
+
+			}// END: col loop
+		}// END: row loop
+
+		return numberOfLineages;
+	}// END: CountLineagesHoldingState
 
 }// END: PlotOnMap class

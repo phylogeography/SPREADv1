@@ -44,7 +44,7 @@ h1. TODO
 * Processing applets
    - We could draw the lines along great circle arcs or rhumb lines, this would require getting the code in kml generator class to work with processing
 * Add cannot impute, no precision attribute warning message in Time Slicer
-* Spinning panels don't honor the gradient colors, work on it
 * Add a list with default operations and place check-marks next to them before a map comes up
+* Add code drawing all circles in DiscreteTreeToProcessing template
 
 

@@ -715,6 +715,47 @@ public class DiscreteModelTab extends JPanel {
 							discreteTreeToProcessing.setTreePath(treeFilename);
 
 							discreteTreeToProcessing
+									.setNumberOfIntervals(Integer
+											.valueOf(numberOfIntervalsParser
+													.getText()));
+
+							discreteTreeToProcessing
+									.setMinPolygonRedMapping(polygonsMinColor
+											.getRed());
+
+							discreteTreeToProcessing
+									.setMinPolygonGreenMapping(polygonsMinColor
+											.getGreen());
+
+							discreteTreeToProcessing
+									.setMinPolygonBlueMapping(polygonsMinColor
+											.getBlue());
+
+							discreteTreeToProcessing
+									.setMinPolygonOpacityMapping(polygonsMinColor
+											.getAlpha());
+
+							discreteTreeToProcessing
+									.setMaxPolygonRedMapping(polygonsMaxColor
+											.getRed());
+
+							discreteTreeToProcessing
+									.setMaxPolygonGreenMapping(polygonsMaxColor
+											.getGreen());
+
+							discreteTreeToProcessing
+									.setMaxPolygonBlueMapping(polygonsMaxColor
+											.getBlue());
+
+							discreteTreeToProcessing
+									.setMaxPolygonOpacityMapping(polygonsMaxColor
+											.getAlpha());
+
+							discreteTreeToProcessing
+									.setPolygonsRadiusMultiplier(polygonsRadiusMultiplierParser
+											.getValue());
+
+							discreteTreeToProcessing
 									.setMinBranchRedMapping(branchesMinColor
 											.getRed());
 
