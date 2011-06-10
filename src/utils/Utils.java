@@ -494,16 +494,18 @@ public class Utils {
 
 			List<Coordinates> list = slicesMap.get(sliceTime);
 
-			double[][] array = new double[list.size()][2];
+			double[][] array = new double[list.size()][2];// 3
 
 			for (int i = 0; i < list.size(); i++) {
 
-//				array[i][0] = sliceTime;
-				array[i][0] = list.get(i).getLatitude();
-				array[i][1] = list.get(i).getLongitude();
+				// array[i][0] = sliceTime;
+				array[i][0] = list.get(i).getLatitude();// 1
+				array[i][1] = list.get(i).getLongitude();// 2
 
 			}
-			Utils.Save2DArray("/home/filip/Dropbox/SPREAD/out1/true_noise_array_" + j, array);
+			Utils.Save2DArray(
+					"/home/filip/Dropbox/SPREAD/out1/true_noise_array_" + j,
+					array);
 			j++;
 
 		}// END while has next

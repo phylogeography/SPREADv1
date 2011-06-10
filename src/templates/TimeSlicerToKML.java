@@ -384,7 +384,7 @@ public class TimeSlicerToKML {
 						for (int i = 0; i <= numberOfIntervals; i++) {
 
 							double sliceHeight = treeRootHeight
-									- (treeRootHeight / numberOfIntervals)
+									- (treeRootHeight / (double) numberOfIntervals)
 									* ((double) i);
 
 							if (nodeHeight < sliceHeight
@@ -601,7 +601,7 @@ public class TimeSlicerToKML {
 	}// END: Branches class
 
 	private double[] imputeValue(double[] location, double[] parentLocation,
-			double sliceTime, double nodeTime, double parentTime, double rate,
+			double sliceHeight, double nodeHeight, double parentHeight, double rate,
 			boolean trueNoise, double treeNormalization, double[] precisionArray) {
 
 		int dim = (int) Math.sqrt(1 + 8 * precisionArray.length) / 2;
@@ -625,8 +625,8 @@ public class TimeSlicerToKML {
 
 		}
 
-		final double scaledTimeChild = (sliceTime - nodeTime) * rate;
-		final double scaledTimeParent = (parentTime - sliceTime) * rate;
+		final double scaledTimeChild = (sliceHeight - nodeHeight) * rate;
+		final double scaledTimeParent = (parentHeight - sliceHeight) * rate;
 		final double scaledWeightTotal = (1.0 / scaledTimeChild)
 				+ (1.0 / scaledTimeParent);
 
