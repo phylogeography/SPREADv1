@@ -270,7 +270,7 @@ public class TimeSlicerToKML {
 			// This is for collecting coordinates into polygons
 			slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
 
-			int readTrees = 0;
+			int readTrees = 1;
 			while (treesImporter.hasTree()) {
 
 				currentTree = (RootedTree) treesImporter.importNextTree();
@@ -280,7 +280,7 @@ public class TimeSlicerToKML {
 						// executor.submit(new AnalyzeTree());
 						new AnalyzeTree().run();
 
-						if (readTrees % burnIn == 0) {
+						if (readTrees % 500 == 0) {
 							System.out.print(readTrees + " trees... ");
 						}
 					}
@@ -293,8 +293,8 @@ public class TimeSlicerToKML {
 			if ((readTrees - burnIn) <= 0.0) {
 				throw new RuntimeException("Burnt too many trees!");
 			} else {
-				System.out.println("Analyzed " + (int) (readTrees - burnIn)
-						+ " trees");
+				System.out.println("Analyzed " + (int) (readTrees - burnIn - 1)
+						+ " trees with burn-in of " + burnIn);
 			}
 
 			// Wait until all threads are finished
@@ -302,6 +302,7 @@ public class TimeSlicerToKML {
 			while (!executor.isTerminated()) {
 			}
 
+			// TODO
 			// System.out.println("Saving to disk...");
 			// Utils.saveHashMap(slicesMap);
 
@@ -601,8 +602,9 @@ public class TimeSlicerToKML {
 	}// END: Branches class
 
 	private double[] imputeValue(double[] location, double[] parentLocation,
-			double sliceHeight, double nodeHeight, double parentHeight, double rate,
-			boolean trueNoise, double treeNormalization, double[] precisionArray) {
+			double sliceHeight, double nodeHeight, double parentHeight,
+			double rate, boolean trueNoise, double treeNormalization,
+			double[] precisionArray) {
 
 		int dim = (int) Math.sqrt(1 + 8 * precisionArray.length) / 2;
 		double[][] precision = new double[dim][dim];
@@ -651,6 +653,12 @@ public class TimeSlicerToKML {
 							* scaledWeightTotal;
 			}
 		}
+
+		// TODO
+		// Utils.Save2DArray("/home/filip/Dropbox/SPREAD/precision/"
+		// + "between_" + parentLocation[0] + "," + parentLocation[1]
+		// + ":" + location[0] + "," + location[1] + "_sliceHeight_"
+		// + sliceHeight, scaledPrecision);
 
 		if (trueNoise) {
 			mean = MultivariateNormalDistribution

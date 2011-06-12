@@ -17,9 +17,8 @@ public class TimeSlicerSanityCheck {
 	public boolean check(String treeFilename, String coordinatesName,
 			String treesFilename) throws IOException, ImportException {
 
-		NexusImporter treeImporter = new NexusImporter(new FileReader(
-				treeFilename));
-		RootedTree tree = (RootedTree) treeImporter.importNextTree();
+		RootedTree tree = (RootedTree) new NexusImporter(new FileReader(
+				treeFilename)).importNextTree();
 
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {
@@ -41,9 +40,8 @@ public class TimeSlicerSanityCheck {
 
 		}// END: node loop
 
-		NexusImporter treesImporter = new NexusImporter(new FileReader(
-				treesFilename));
-		RootedTree currentTree = (RootedTree) treesImporter.importNextTree();
+		RootedTree currentTree = (RootedTree) new NexusImporter(new FileReader(
+				treesFilename)).importNextTree();
 
 		for (Node node : currentTree.getNodes()) {
 
