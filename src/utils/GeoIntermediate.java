@@ -21,11 +21,11 @@ public class GeoIntermediate {
 		double distance = 0;
 		switch (navigationSwitcher) {
 		case RHUMB:
-			distance = Utils.RhumbDistance(startLon, startLat, endLon, endLat);
+			distance = Utils.rhumbDistance(startLon, startLat, endLon, endLat);
 			break;
 
 		case ARC:
-			distance = Utils.GreatCircDistSpherLawCos(startLon, startLat,
+			distance = Utils.greatCircDistSpherLawCos(startLon, startLat,
 					endLon, endLat);
 			break;
 		}
@@ -33,9 +33,9 @@ public class GeoIntermediate {
 		double distanceSlice = distance / (double) sliceCount;
 
 		// Convert to radians
-		double rlon1 = Utils.LongNormalise(Math.toRadians(startLon));
+		double rlon1 = Utils.longNormalise(Math.toRadians(startLon));
 		double rlat1 = Math.toRadians(startLat);
-		double rlon2 = Utils.LongNormalise(Math.toRadians(endLon));
+		double rlon2 = Utils.longNormalise(Math.toRadians(endLon));
 		double rlat2 = Math.toRadians(endLat);
 
 		coords = new double[sliceCount + 1][2];
@@ -57,13 +57,13 @@ public class GeoIntermediate {
 				break;
 
 			case ARC:
-				bearing = Utils.Bearing(rlon1, rlat1, rlon2, rlat2);
+				bearing = Utils.bearing(rlon1, rlat1, rlon2, rlat2);
 				break;
 			}
 
 			// use the bearing and the start point to find the
 			// destination
-			double newLonRad = Utils.LongNormalise(rlon1
+			double newLonRad = Utils.longNormalise(rlon1
 					+ Math.atan2(Math.sin(bearing) * Math.sin(rDist)
 							* Math.cos(rlat1), Math.cos(rDist)
 							- Math.sin(rlat1) * Math.sin(rlat2)));
@@ -84,11 +84,11 @@ public class GeoIntermediate {
 
 			switch (navigationSwitcher) {
 			case RHUMB:
-				distance = Utils.RhumbDistance(newLon, newLat, endLon, endLat);
+				distance = Utils.rhumbDistance(newLon, newLat, endLon, endLat);
 				break;
 
 			case ARC:
-				distance = Utils.GreatCircDistSpherLawCos(newLon, newLat,
+				distance = Utils.greatCircDistSpherLawCos(newLon, newLat,
 						endLon, endLat);
 				break;
 			}

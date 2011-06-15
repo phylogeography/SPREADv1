@@ -315,14 +315,14 @@ public class DiscreteTreeToKML {
 						if (!state.toLowerCase().equals(
 								parentState.toLowerCase())) {
 
-							float longitude = Utils.MatchStateCoordinate(table,
+							float longitude = Utils.matchStateCoordinate(table,
 									state, 2);
-							float latitude = Utils.MatchStateCoordinate(table,
+							float latitude = Utils.matchStateCoordinate(table,
 									state, 1);
 
-							float parentLongitude = Utils.MatchStateCoordinate(
+							float parentLongitude = Utils.matchStateCoordinate(
 									table, parentState, 2);
-							float parentLatitude = Utils.MatchStateCoordinate(
+							float parentLatitude = Utils.matchStateCoordinate(
 									table, parentState, 1);
 
 							double nodeHeight = tree.getHeight(node);
@@ -345,7 +345,7 @@ public class DiscreteTreeToKML {
 								break;
 
 							case DISTANCE:
-								maxAltitude = Utils.map(Utils.RhumbDistance(
+								maxAltitude = Utils.map(Utils.rhumbDistance(
 										parentLongitude, parentLatitude,
 										longitude, latitude), 0, EarthRadius,
 										0, maxAltMapping);
@@ -539,7 +539,7 @@ public class DiscreteTreeToKML {
 
 							circlesLayer.addItem(new Polygon(name + "_"
 									+ radius + "_" + "km", // String name
-									Utils.GenerateCircle( // List<Coordinates>
+									Utils.generateCircle( // List<Coordinates>
 											latitude, // centerLat
 											longitude, // centerLong
 											radius, // radius

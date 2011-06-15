@@ -261,7 +261,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 						stroke(red, green, blue, alpha);
 						fill(red, green, blue, alpha);
 
-						List<Coordinates> coordinates = Utils.ParsePolygons(
+						List<Coordinates> coordinates = Utils.parsePolygons(
 								longitudeHPD, latitudeHPD);
 
 						beginShape();

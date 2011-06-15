@@ -250,14 +250,14 @@ public class RateIndicatorBFToKML {
 					String state = combin.get(i).split(":")[1];
 					String parentState = combin.get(i).split(":")[0];
 
-					float longitude = Utils.MatchStateCoordinate(table, state,
+					float longitude = Utils.matchStateCoordinate(table, state,
 							2);
 					float latitude = Utils
-							.MatchStateCoordinate(table, state, 1);
+							.matchStateCoordinate(table, state, 1);
 
-					float parentLongitude = Utils.MatchStateCoordinate(table,
+					float parentLongitude = Utils.matchStateCoordinate(table,
 							parentState, 2);
-					float parentLatitude = Utils.MatchStateCoordinate(table,
+					float parentLatitude = Utils.matchStateCoordinate(table,
 							parentState, 1);
 
 					ratesLayer.addItem(new Line(
@@ -322,7 +322,7 @@ public class RateIndicatorBFToKML {
 
 		for (int row = 0; row < n - 1; row++) {
 
-			String[] subset = Utils.Subset(locations, row, n - row);
+			String[] subset = Utils.subset(locations, row, n - row);
 
 			for (int i = 1; i < subset.length; i++) {
 				combin.add(locations[row] + ":" + subset[i]);
@@ -340,7 +340,7 @@ public class RateIndicatorBFToKML {
 			qk = (meanPoissonPrior + poissonPriorOffset) / ((n * (n - 1)) / 1);
 		}
 
-		double[] pk = Utils.ColMeans(indicators.indicators);
+		double[] pk = Utils.colMeans(indicators.indicators);
 
 		bayesFactors = new ArrayList<Double>();
 		double denominator = qk / (1 - qk);

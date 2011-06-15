@@ -314,7 +314,7 @@ public class ContinuousTreeToKML {
 						case DISTANCE:
 							maxAltitude = Utils
 									.map(Utils
-											.RhumbDistance(parentLongitude,
+											.rhumbDistance(parentLongitude,
 													parentLatitude, longitude,
 													latitude), 0, EarthRadius,
 											0, maxAltMapping);
@@ -539,7 +539,7 @@ public class ContinuousTreeToKML {
 								polygonsLayer.addItem(new Polygon("node"
 										+ polygonsStyleId + "_" + HPD + "HPD"
 										+ "_" + i, // String name
-										Utils.ParsePolygons(longitudeHPD,
+										Utils.parsePolygons(longitudeHPD,
 												latitudeHPD),// List<Coordinates>
 										polygonsStyle, // Style style
 										startTime, // double startime

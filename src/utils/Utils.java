@@ -357,7 +357,7 @@ public class Utils {
 		return points;
 	}// END: convertToPoint
 
-	public static List<Coordinates> GenerateCircle(double centerY,
+	public static List<Coordinates> generateCircle(double centerY,
 			double centerX, double radius, int numPoints) {
 
 		List<Coordinates> coords = new ArrayList<Coordinates>();
@@ -388,7 +388,7 @@ public class Utils {
 		return a;
 	}
 
-	public static List<Coordinates> ParsePolygons(Object[] longitudeHPD,
+	public static List<Coordinates> parsePolygons(Object[] longitudeHPD,
 			Object[] latitudeHPD) {
 
 		List<Coordinates> coords = new ArrayList<Coordinates>();
@@ -402,144 +402,7 @@ public class Utils {
 		return coords;
 	}// END: GenerateCircle
 
-	public static void PrintArray(double[] x) {
-		for (int i = 0; i < x.length; i++) {
-			System.out.println(x[i]);
-		}
-	}// END: PrintArray
-
-	public static void PrintArray(String[] x) {
-		for (int i = 0; i < x.length; i++) {
-			System.out.println(x[i]);
-		}
-	}// END: PrintArray
-
-	public static void PrintArray(Object[] x) {
-		for (int i = 0; i < x.length; i++) {
-			System.out.println(x[i]);
-		}
-	}// END: PrintArray
-
-	public static void HeadArray(Object[] array, int nrow) {
-		for (int row = 0; row < nrow; row++) {
-			System.out.println(array[row]);
-		}
-	}// END: HeadArray
-
-	public static void HeadArray(double[] array, int nrow) {
-		for (int row = 0; row < nrow; row++) {
-			System.out.println(array[row]);
-		}
-	}// END: HeadArray
-
-	public static void HeadArray(String[] array, int nrow) {
-		for (int row = 0; row < nrow; row++) {
-			System.out.println(array[row]);
-		}
-	}// END: Head2DArray
-
-	public static void Print2DArray(Object[][] array) {
-		for (int row = 0; row < array.length; row++) {
-			for (int col = 0; col < array[row].length; col++) {
-				System.out.print(array[row][col] + " ");
-			}
-			System.out.print("\n");
-		}
-	}// END: Print2DArray
-
-	public static void Print2DArray(double[][] array) {
-		for (int row = 0; row < array.length; row++) {
-			for (int col = 0; col < array[row].length; col++) {
-				System.out.print(array[row][col] + " ");
-			}
-			System.out.print("\n");
-		}
-	}// END: Print2DArray
-
-	public static void Print2DArray(float[][] array) {
-		for (int row = 0; row < array.length; row++) {
-			for (int col = 0; col < array[row].length; col++) {
-				System.out.print(array[row][col] + " ");
-			}
-			System.out.print("\n");
-		}
-	}// END: Print2DArray
-
-	public static void Head2DArray(float[][] array, int nrow) {
-		for (int row = 0; row < nrow; row++) {
-			for (int col = 0; col < array[row].length; col++) {
-				System.out.print(array[row][col] + " ");
-			}
-			System.out.print("\n");
-		}
-	}// END: Head2DArray
-
-	public static void save2DArray(String filename, int[][] array) {
-
-		try {
-
-			PrintWriter pri = new PrintWriter(filename);
-			for (int row = 0; row < array.length; row++) {
-				for (int col = 0; col < array[row].length; col++) {
-					pri.print(array[row][col] + "\t");
-				}
-				pri.print("\n");
-			}
-			pri.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}// END: save2DArray
-
-	public static void Save2DArray(String filename, double[][] array) {
-
-		try {
-
-			PrintWriter pri = new PrintWriter(filename);
-			for (int row = 0; row < array.length; row++) {
-				for (int col = 0; col < array[row].length; col++) {
-					pri.print(array[row][col] + "\t");
-				}
-				pri.print("\n");
-			}
-
-			pri.close();
-		}
-
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}// END: save2DArray
-
-	public static void saveHashMap(
-			ConcurrentMap<Double, List<Coordinates>> slicesMap) {
-
-		Iterator<Double> iterator = slicesMap.keySet().iterator();
-		int j = 0;
-		while (iterator.hasNext()) {
-
-			Double sliceTime = (Double) iterator.next();
-
-			List<Coordinates> list = slicesMap.get(sliceTime);
-
-			double[][] array = new double[list.size()][2];// 3
-
-			for (int i = 0; i < list.size(); i++) {
-
-				// array[i][0] = sliceTime;
-				array[i][0] = list.get(i).getLatitude();// 1
-				array[i][1] = list.get(i).getLongitude();// 2
-
-			}
-			Utils.Save2DArray(
-					"/home/filip/Dropbox/SPREAD/out1/true_noise_array_" + j,
-					array);
-			j++;
-
-		}// END while has next
-	}// END: saveHashMap
-
-	public static double GreatCircDistSpherLawCos(double startLon,
+	public static double greatCircDistSpherLawCos(double startLon,
 			double startLat, double endLon, double endLat) {
 		/**
 		 * Calculates the geodesic distance between two points specified by
@@ -562,7 +425,7 @@ public class Utils {
 		return distance;
 	}// END: GreatCircDistSpherLawCos
 
-	public static double GreatCircDistHavForm(double startLon, double startLat,
+	public static double greatCircDistHavForm(double startLon, double startLat,
 			double endLon, double endLat) {
 		/**
 		 * Calculates the geodesic distance between two points specified by
@@ -586,7 +449,7 @@ public class Utils {
 		return distance;
 	}// END: GreatCircDistHavForm
 
-	public static double GreatCircDistVincInvForm(double startLon,
+	public static double greatCircDistVincInvForm(double startLon,
 			double startLat, double endLon, double endLat) {
 		/**
 		 * Calculates the geodesic distance between two points specified by
@@ -690,7 +553,7 @@ public class Utils {
 
 	}// END: GreatCircDistVincInvForm
 
-	public static double RhumbDistance(double startLon, double startLat,
+	public static double rhumbDistance(double startLon, double startLat,
 			double endLon, double endLat) {
 		/**
 		 * Returns the distance from start point to the end point in km,
@@ -724,7 +587,7 @@ public class Utils {
 		return distance;
 	}
 
-	public static double Bearing(double rlon1, double rlat1, double rlon2,
+	public static double bearing(double rlon1, double rlat1, double rlon2,
 			double rlat2) {
 		/**
 		 * Returns the (initial) bearing from start point to the destination
@@ -789,7 +652,7 @@ public class Utils {
 		return Math.toRadians((Math.toDegrees(brng) + 360) % 360);
 	}
 
-	public static double LongNormalise(double lon) {
+	public static double longNormalise(double lon) {
 		// normalise to -180...+180
 		return (lon + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
 	}
@@ -819,7 +682,7 @@ public class Utils {
 		return (float) y;
 	}
 
-	public static float MatchStateCoordinate(InteractiveTableModel table,
+	public static float matchStateCoordinate(InteractiveTableModel table,
 			String state, int latlon) {
 		/**
 		 * Match state name with its coordinates
@@ -841,7 +704,7 @@ public class Utils {
 		return coordinate;
 	}// END: MatchStateCoordinate
 
-	public static float MatchStateCoordinate(ReadLocations data, String state,
+	public static float matchStateCoordinate(ReadLocations data, String state,
 			int latlon) {
 		/**
 		 * Match state name with its coordinates
@@ -861,13 +724,13 @@ public class Utils {
 		return coordinate;
 	}// END: MatchStateCoordinate
 
-	public static String[] Subset(String line[], int start, int length) {
+	public static String[] subset(String line[], int start, int length) {
 		String output[] = new String[length];
 		System.arraycopy(line, start, output, 0, length);
 		return output;
 	}
 
-	public static int Newton(int n, int k) {
+	public static int newton(int n, int k) {
 		BigInteger newton = BigInteger.valueOf(1);
 		String newtonString = null;
 		for (int i = 1; i <= k; i++) {
@@ -878,7 +741,7 @@ public class Utils {
 		return Integer.parseInt(newtonString);
 	}
 
-	public static double ColMean(double a[][], int col) {
+	public static double colMean(double a[][], int col) {
 		double sum = 0;
 		int nrows = a.length;
 		for (int row = 0; row < nrows; row++) {
@@ -887,11 +750,11 @@ public class Utils {
 		return sum / nrows;
 	}
 
-	public static double[] ColMeans(double a[][]) {
+	public static double[] colMeans(double a[][]) {
 		int ncol = a[0].length;
 		double[] b = new double[ncol];
 		for (int c = 0; c < ncol; c++) {
-			b[c] = ColMean(a, c);
+			b[c] = colMean(a, c);
 		}
 		return b;
 	}
@@ -910,7 +773,7 @@ public class Utils {
 		return result;
 	}
 
-	public static void print_progress(int percent) {
+	public static void printProgress(int percent) {
 
 		StringBuilder bar = new StringBuilder("[");
 
@@ -941,5 +804,146 @@ public class Utils {
 		}
 		System.out.print("]");
 	}
+
+	// /////////////////
+	// ---DEBUGGING---//
+	// /////////////////
+
+	public static void printArray(double[] x) {
+		for (int i = 0; i < x.length; i++) {
+			System.out.println(x[i]);
+		}
+	}// END: printArray
+
+	public static void printArray(String[] x) {
+		for (int i = 0; i < x.length; i++) {
+			System.out.println(x[i]);
+		}
+	}// END: printArray
+
+	public static void printArray(Object[] x) {
+		for (int i = 0; i < x.length; i++) {
+			System.out.println(x[i]);
+		}
+	}// END: printArray
+
+	public static void headArray(Object[] array, int nrow) {
+		for (int row = 0; row < nrow; row++) {
+			System.out.println(array[row]);
+		}
+	}// END: printArray
+
+	public static void print2DArray(Object[][] array) {
+		for (int row = 0; row < array.length; row++) {
+			for (int col = 0; col < array[row].length; col++) {
+				System.out.print(array[row][col] + " ");
+			}
+			System.out.print("\n");
+		}
+	}// END: print2DArray
+
+	public static void print2DArray(double[][] array) {
+		for (int row = 0; row < array.length; row++) {
+			for (int col = 0; col < array[row].length; col++) {
+				System.out.print(array[row][col] + " ");
+			}
+			System.out.print("\n");
+		}
+	}// END: print2DArray
+
+	public static void print2DArray(float[][] array) {
+		for (int row = 0; row < array.length; row++) {
+			for (int col = 0; col < array[row].length; col++) {
+				System.out.print(array[row][col] + " ");
+			}
+			System.out.print("\n");
+		}
+	}// END: print2DArray
+
+	public static void headArray(double[] array, int nrow) {
+		for (int row = 0; row < nrow; row++) {
+			System.out.println(array[row]);
+		}
+	}// END: headArray
+
+	public static void headArray(String[] array, int nrow) {
+		for (int row = 0; row < nrow; row++) {
+			System.out.println(array[row]);
+		}
+	}// END: headArray
+
+	public static void head2DArray(float[][] array, int nrow) {
+		for (int row = 0; row < nrow; row++) {
+			for (int col = 0; col < array[row].length; col++) {
+				System.out.print(array[row][col] + " ");
+			}
+			System.out.print("\n");
+		}
+	}// END: head2DArray
+
+	public static void save2DArray(String filename, int[][] array) {
+
+		try {
+
+			PrintWriter pri = new PrintWriter(filename);
+			for (int row = 0; row < array.length; row++) {
+				for (int col = 0; col < array[row].length; col++) {
+					pri.print(array[row][col] + "\t");
+				}
+				pri.print("\n");
+			}
+			pri.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}// END: save2DArray
+
+	public static void save2DArray(String filename, double[][] array) {
+
+		try {
+
+			PrintWriter pri = new PrintWriter(filename);
+			for (int row = 0; row < array.length; row++) {
+				for (int col = 0; col < array[row].length; col++) {
+					pri.print(array[row][col] + "\t");
+				}
+				pri.print("\n");
+			}
+
+			pri.close();
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}// END: save2DArray
+
+	public static void saveHashMap(
+			ConcurrentMap<Double, List<Coordinates>> slicesMap) {
+
+		Iterator<Double> iterator = slicesMap.keySet().iterator();
+		int j = 0;
+		while (iterator.hasNext()) {
+
+			Double sliceTime = (Double) iterator.next();
+
+			List<Coordinates> list = slicesMap.get(sliceTime);
+
+			double[][] array = new double[list.size()][2];// 3
+
+			for (int i = 0; i < list.size(); i++) {
+
+				// array[i][0] = sliceTime;
+				array[i][0] = list.get(i).getLatitude();// 1
+				array[i][1] = list.get(i).getLongitude();// 2
+
+			}
+			Utils.save2DArray(
+					"/home/filip/Dropbox/SPREAD/out1/true_noise_array_" + j,
+					array);
+			j++;
+
+		}// END while has next
+	}// END: saveHashMap
 
 }// END: Utils class

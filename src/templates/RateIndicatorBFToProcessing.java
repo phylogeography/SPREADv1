@@ -239,12 +239,12 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				String state = combin.get(i).split(":")[1];
 				String parentState = combin.get(i).split(":")[0];
 
-				float longitude = Utils.MatchStateCoordinate(table, state, 2);
-				float latitude = Utils.MatchStateCoordinate(table, state, 1);
+				float longitude = Utils.matchStateCoordinate(table, state, 2);
+				float latitude = Utils.matchStateCoordinate(table, state, 1);
 
-				float parentLongitude = Utils.MatchStateCoordinate(table,
+				float parentLongitude = Utils.matchStateCoordinate(table,
 						parentState, 2);
-				float parentLatitude = Utils.MatchStateCoordinate(table,
+				float parentLatitude = Utils.matchStateCoordinate(table,
 						parentState, 1);
 
 				float x0 = map(parentLongitude, minX, maxX, 0, width);
@@ -300,12 +300,12 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				String state = combin.get(i).split(":")[1];
 				String parentState = combin.get(i).split(":")[0];
 
-				float longitude = Utils.MatchStateCoordinate(table, state, 2);
-				float latitude = Utils.MatchStateCoordinate(table, state, 1);
+				float longitude = Utils.matchStateCoordinate(table, state, 2);
+				float latitude = Utils.matchStateCoordinate(table, state, 1);
 
-				float parentLongitude = Utils.MatchStateCoordinate(table,
+				float parentLongitude = Utils.matchStateCoordinate(table,
 						parentState, 2);
-				float parentLatitude = Utils.MatchStateCoordinate(table,
+				float parentLatitude = Utils.matchStateCoordinate(table,
 						parentState, 1);
 
 				GeoIntermediate rhumbIntermediate = new GeoIntermediate(
@@ -371,7 +371,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		for (int row = 0; row < n - 1; row++) {
 
-			String[] subset = Utils.Subset(locations, row, n - row);
+			String[] subset = Utils.subset(locations, row, n - row);
 
 			for (int i = 1; i < subset.length; i++) {
 				combin.add(locations[row] + ":" + subset[i]);
@@ -389,7 +389,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 			qk = (meanPoissonPrior + poissonPriorOffset) / ((n * (n - 1)) / 1);
 		}
 
-		double[] pk = Utils.ColMeans(indicators.indicators);
+		double[] pk = Utils.colMeans(indicators.indicators);
 
 		bayesFactors = new ArrayList<Double>();
 		double denominator = qk / (1 - qk);

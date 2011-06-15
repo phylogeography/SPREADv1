@@ -262,14 +262,14 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 				if (!state.toLowerCase().equals(parentState.toLowerCase())) {
 
-					float longitude = Utils.MatchStateCoordinate(table, state,
+					float longitude = Utils.matchStateCoordinate(table, state,
 							2);
 					float latitude = Utils
-							.MatchStateCoordinate(table, state, 1);
+							.matchStateCoordinate(table, state, 1);
 
-					float parentLongitude = Utils.MatchStateCoordinate(table,
+					float parentLongitude = Utils.matchStateCoordinate(table,
 							parentState, 2);
-					float parentLatitude = Utils.MatchStateCoordinate(table,
+					float parentLatitude = Utils.matchStateCoordinate(table,
 							parentState, 1);
 
 					float x0 = map(parentLongitude, minX, maxX, 0, width);
@@ -353,7 +353,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 					Double latitude = Double.valueOf(String.valueOf(table
 							.getValueAt(j, 2)));
 
-					List<Coordinates> coordinates = Utils.GenerateCircle(
+					List<Coordinates> coordinates = Utils.generateCircle(
 							latitude, // centerLat
 							longitude, // centerLong
 							radius, // radius
