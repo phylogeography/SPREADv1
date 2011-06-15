@@ -363,12 +363,17 @@ public class TimeSlicerToKML {
 
 				// attributes parsed once per tree
 				double treeRootHeight = tree.getHeight(tree.getRootNode());
-				double treeNormalization = currentTree.getHeight(currentTree
+//				double treeNormalization = currentTree.getHeight(currentTree
+//						.getRootNode());
+				double treeNormalization = Utils.getTreeLength(currentTree, currentTree
 						.getRootNode());
+				
 				// TODO
-				System.out.println(currentTree.getLength(currentTree
-						.getRootNode()));
-
+//				System.out.println(Utils.getTreeLength(currentTree, currentTree
+//						.getRootNode()));
+//				System.out.println(treeNormalization);
+				
+				
 				double[] precisionArray = Utils.getTreeDoubleArrayAttribute(
 						currentTree, precisionString);
 
