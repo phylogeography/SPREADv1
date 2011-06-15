@@ -274,6 +274,11 @@ public class TimeSlicerToKML {
 			while (treesImporter.hasTree()) {
 
 				currentTree = (RootedTree) treesImporter.importNextTree();
+
+				// TODO
+				// System.out.println("Nr of nodes in tree: "
+				// + Utils.getNodeCount(currentTree));
+
 				synchronized (slicesMap) {
 					if (readTrees >= burnIn) {
 
@@ -360,6 +365,10 @@ public class TimeSlicerToKML {
 				double treeRootHeight = tree.getHeight(tree.getRootNode());
 				double treeNormalization = currentTree.getHeight(currentTree
 						.getRootNode());
+				// TODO
+				System.out.println(currentTree.getLength(currentTree
+						.getRootNode()));
+
 				double[] precisionArray = Utils.getTreeDoubleArrayAttribute(
 						currentTree, precisionString);
 
@@ -390,6 +399,9 @@ public class TimeSlicerToKML {
 
 							if (nodeHeight < sliceHeight
 									&& sliceHeight <= parentHeight) {
+
+								// TODO
+								// System.out.println("made it!");
 
 								int days = (int) (sliceHeight * timescaler);
 								double sliceTime = mrsd.minus(days);

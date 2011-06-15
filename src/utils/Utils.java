@@ -125,6 +125,18 @@ public class Utils {
 		return array;
 	}
 
+	public static int getNodeCount(RootedTree tree) {
+
+		int NodeCount = 0;
+		for (Node node : tree.getNodes()) {
+			if (!tree.isRoot(node)) {
+				NodeCount++;
+			}
+		}
+
+		return NodeCount;
+	}
+
 	public static int getExternalNodeCount(RootedTree tree) {
 
 		int externalNodeCount = 0;
@@ -136,6 +148,22 @@ public class Utils {
 		}
 
 		return externalNodeCount;
+	}
+
+	public static double getTreeLength(RootedTree tree, Node node) {
+
+		int childCount = tree.getChildren(node).size();
+		if (childCount == 0)
+			return tree.getLength(node);
+
+		double length = 0;
+		for (int i = 0; i < childCount; i++) {
+			length += getTreeLength(tree, tree.getChildren(node).get(i));
+		}
+		if (node != tree.getRootNode())
+			length += tree.getLength(node);
+		return length;
+
 	}
 
 	public static double getTreeHeightMin(RootedTree tree) {
@@ -509,7 +537,7 @@ public class Utils {
 			j++;
 
 		}// END while has next
-	}// END: diskOperation
+	}// END: saveHashMap
 
 	public static double GreatCircDistSpherLawCos(double startLon,
 			double startLat, double endLon, double endLat) {

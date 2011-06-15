@@ -373,7 +373,7 @@ public class TimeSlicerTab extends JPanel {
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
 				new Dimension(leftPanelWidth + 60, 20));
-		sp.showBottom(false);
+		sp.showBottom(true);
 		leftPanel.add(sp);
 
 		// //////////////
@@ -420,7 +420,7 @@ public class TimeSlicerTab extends JPanel {
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Output", new Dimension(
 				leftPanelWidth + 60, 20));
-		sp.showBottom(false);
+		sp.showBottom(true);
 		leftPanel.add(sp);
 
 		// ////////////////////////
