@@ -275,10 +275,6 @@ public class TimeSlicerToKML {
 
 				currentTree = (RootedTree) treesImporter.importNextTree();
 
-				// TODO
-				// System.out.println("Nr of nodes in tree: "
-				// + Utils.getNodeCount(currentTree));
-
 				synchronized (slicesMap) {
 					if (readTrees >= burnIn) {
 
@@ -306,10 +302,6 @@ public class TimeSlicerToKML {
 			executor.shutdown();
 			while (!executor.isTerminated()) {
 			}
-
-			// TODO
-			// System.out.println("Saving to disk...");
-			// Utils.saveHashMap(slicesMap);
 
 			Iterator<Double> iterator = slicesMap.keySet().iterator();
 			executor = Executors.newFixedThreadPool(NTHREDS);
@@ -363,17 +355,8 @@ public class TimeSlicerToKML {
 
 				// attributes parsed once per tree
 				double treeRootHeight = tree.getHeight(tree.getRootNode());
-//				double treeNormalization = currentTree.getHeight(currentTree
-//						.getRootNode());
-				double treeNormalization = Utils.getTreeLength(currentTree, currentTree
-						.getRootNode());
-				
-				// TODO
-//				System.out.println(Utils.getTreeLength(currentTree, currentTree
-//						.getRootNode()));
-//				System.out.println(treeNormalization);
-				
-				
+				double treeNormalization = Utils.getTreeLength(currentTree,
+						currentTree.getRootNode());
 				double[] precisionArray = Utils.getTreeDoubleArrayAttribute(
 						currentTree, precisionString);
 
@@ -404,9 +387,6 @@ public class TimeSlicerToKML {
 
 							if (nodeHeight < sliceHeight
 									&& sliceHeight <= parentHeight) {
-
-								// TODO
-								// System.out.println("made it!");
 
 								int days = (int) (sliceHeight * timescaler);
 								double sliceTime = mrsd.minus(days);
@@ -670,12 +650,6 @@ public class TimeSlicerToKML {
 							* scaledWeightTotal;
 			}
 		}
-
-		// TODO
-		// Utils.Save2DArray("/home/filip/Dropbox/SPREAD/precision/"
-		// + "between_" + parentLocation[0] + "," + parentLocation[1]
-		// + ":" + location[0] + "," + location[1] + "_sliceHeight_"
-		// + sliceHeight, scaledPrecision);
 
 		if (trueNoise) {
 			mean = MultivariateNormalDistribution

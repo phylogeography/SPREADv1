@@ -459,8 +459,8 @@ public class TimeSlicerToProcessing extends PApplet {
 
 				// attributes parsed once per tree
 				double treeRootHeight = tree.getHeight(tree.getRootNode());
-				double treeNormalization = currentTree.getHeight(currentTree
-						.getRootNode());
+				double treeNormalization = Utils.getTreeLength(currentTree,
+						currentTree.getRootNode());
 				double[] precisionArray = Utils.getTreeDoubleArrayAttribute(
 						currentTree, precisionString);
 
