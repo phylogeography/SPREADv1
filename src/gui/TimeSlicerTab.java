@@ -126,7 +126,7 @@ public class TimeSlicerTab extends JPanel {
 		errorIcon = CreateImageIcon("/icons/error.png");
 
 		// Setup text fields
-		burnInParser = new JTextField("0", 10);
+		burnInParser = new JTextField("500", 10);
 		coordinatesNameParser = new JTextField("location", 10);
 		rateAttNameParser = new JTextField("rate", 10);
 		precisionAttNameParser = new JTextField("precision", 10);
@@ -373,7 +373,7 @@ public class TimeSlicerTab extends JPanel {
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
 				new Dimension(leftPanelWidth + 60, 20));
-		sp.showBottom(true);
+		sp.showBottom(false);
 		leftPanel.add(sp);
 
 		// //////////////
@@ -420,7 +420,7 @@ public class TimeSlicerTab extends JPanel {
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Output", new Dimension(
 				leftPanelWidth + 60, 20));
-		sp.showBottom(true);
+		sp.showBottom(false);
 		leftPanel.add(sp);
 
 		// ////////////////////////
