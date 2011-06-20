@@ -192,7 +192,6 @@ public class KMLGenerator implements Generator {
 					double endAltitude = a * Math.pow((double) (i + 1), 2) + b
 							* (double) (i + 1);
 
-					// TODO improve this timing
 					double segmentStartTime = endTime - i
 							* ((endTime - startTime) / sliceCount);
 

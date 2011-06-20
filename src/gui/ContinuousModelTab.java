@@ -117,7 +117,7 @@ public class ContinuousModelTab extends JPanel {
 		errorIcon = CreateImageIcon("/icons/error.png");
 
 		// Setup text fields
-		coordinatesNameParser = new JTextField("trait", 10);
+		coordinatesNameParser = new JTextField("location", 10);
 		HPDParser = new JTextField("95", 2);
 		numberOfIntervalsParser = new JTextField("100", 10);
 		maxAltMappingParser = new JTextField("5000000", 10);
@@ -355,7 +355,7 @@ public class ContinuousModelTab extends JPanel {
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Output", new Dimension(
 				leftPanelWidth + 60, 20));
-		sp.showBottom(true);
+		sp.showBottom(false);
 		leftPanel.add(sp);
 
 		// ////////////////////////

@@ -234,9 +234,9 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 					for (int i = 1; i <= modality; i++) {
 
-						Object[] longitudeHPD = Utils.getArrayNodeAttribute(
+						Object[] longitudeHPD = Utils.getObjectArrayNodeAttribute(
 								node, longitudeName + "_" + HPD + "HPD_" + i);
-						Object[] latitudeHPD = Utils.getArrayNodeAttribute(
+						Object[] latitudeHPD = Utils.getObjectArrayNodeAttribute(
 								node, latitudeName + "_" + HPD + "HPD_" + i);
 						/**
 						 * Color mapping

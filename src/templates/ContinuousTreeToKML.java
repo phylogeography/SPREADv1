@@ -451,11 +451,11 @@ public class ContinuousTreeToKML {
 							for (int i = 1; i <= modality; i++) {
 
 								Object[] longitudeHPD = Utils
-										.getArrayNodeAttribute(node,
+										.getObjectArrayNodeAttribute(node,
 												longitudeName + "_" + HPD
 														+ "HPD_" + i);
 								Object[] latitudeHPD = Utils
-										.getArrayNodeAttribute(node,
+										.getObjectArrayNodeAttribute(node,
 												latitudeName + "_" + HPD
 														+ "HPD_" + i);
 

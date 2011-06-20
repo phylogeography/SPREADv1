@@ -100,8 +100,16 @@ public class Utils {
 		}
 		return (String) node.getAttribute(attributeName);
 	}
+	
+	public static Object getObjectNodeAttribute(Node node, String attributeName) {
+		if (node.getAttribute(attributeName) == null) {
+			throw new RuntimeException("Attribute, " + attributeName
+					+ ", missing from node");
+		}
+		return node.getAttribute(attributeName);
+	}
 
-	public static Object[] getArrayNodeAttribute(Node node, String attributeName) {
+	public static Object[] getObjectArrayNodeAttribute(Node node, String attributeName) {
 		if (node.getAttribute(attributeName) == null) {
 			throw new RuntimeException("Attribute, " + attributeName
 					+ ", missing from node");
