@@ -251,7 +251,6 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel.add(branchesWidthParser);
 		tmpPanelsHolder.add(tmpPanel);
 
-
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
@@ -299,19 +298,19 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanelsHolder = new JPanel();
 		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
 				BoxLayout.Y_AXIS));
-		
+
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
 		tmpPanelsHolder.add(tmpPanel);
-	
+
 		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
 				new Dimension(leftPanelWidth + 60, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
-		
+
 		// //////////////
 		// ---OUTPUT---//
 		// //////////////

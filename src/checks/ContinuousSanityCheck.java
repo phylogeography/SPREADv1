@@ -12,7 +12,7 @@ import utils.Utils;
 public class ContinuousSanityCheck {
 
 	private boolean notNull = false;
-	
+
 	public boolean check(String treeFilename, String coordinatesName, String HPD)
 			throws IOException, ImportException {
 

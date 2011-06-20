@@ -154,7 +154,7 @@ public class SpreadApp {
 			String helpText = "SPREAD \n"
 					+ "Spatial Phylogenetic Reconstruction of EvolutionAry Dynamics\n"
 					+ "Version 1.0, 2011 \n"
-					+ "http://fbielejec.github.com/SPREAD/ \n"
+					+ "www.phylogeography.org/SPREAD \n"
 					+ "\n"
 					+ "BEAST software: http://beast.bio.ed.ac.uk/Main_Page \n"
 					+ "Processing libraries: http://processing.org/ \n"

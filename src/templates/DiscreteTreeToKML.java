@@ -227,7 +227,7 @@ public class DiscreteTreeToKML {
 		rootHeight = tree.getHeight(tree.getRootNode());
 
 		// This is a general time span for the tree
-		 mrsd = new SpreadDate(mrsdString);
+		mrsd = new SpreadDate(mrsdString);
 		TimeLine timeLine = new TimeLine(mrsd.getTime()
 				- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
 				numberOfIntervals);
@@ -327,7 +327,7 @@ public class DiscreteTreeToKML {
 
 							double nodeHeight = tree.getHeight(node);
 							double parentHeight = tree.getHeight(parentNode);
-							
+
 							/**
 							 * altitude mapping
 							 * */
@@ -433,15 +433,17 @@ public class DiscreteTreeToKML {
 							Style linesStyle = new Style(col, branchWidth);
 							linesStyle.setId("branch_style" + branchStyleId);
 
-							double startTime = mrsd.minus((int) (nodeHeight * timescaler));
-							double endTime = mrsd.minus((int) (parentHeight * timescaler));
+							double startTime = mrsd
+									.minus((int) (nodeHeight * timescaler));
+							double endTime = mrsd
+									.minus((int) (parentHeight * timescaler));
 
 							branchesLayer.addItem(new Line(
 									(parentState + ":" + state), // string name
-									new Coordinates(parentLongitude,parentLatitude
-											), startTime, // startime
+									new Coordinates(parentLongitude,
+											parentLatitude), startTime, // startime
 									linesStyle, // style startstyle
-									new Coordinates( longitude,latitude), // endcoords
+									new Coordinates(longitude, latitude), // endcoords
 									endTime, // double endtime
 									linesStyle, // style endstyle
 									maxAltitude, // double maxAltitude

@@ -47,8 +47,8 @@ public class TimeSlicerSanityCheck {
 
 			if (!currentTree.isRoot(node)) {
 
-				Object[] location = (Object[]) Utils.getObjectArrayNodeAttribute(
-						node, coordinatesName);
+				Object[] location = (Object[]) Utils
+						.getObjectArrayNodeAttribute(node, coordinatesName);
 
 				if (location == null) {
 					notNull = false;

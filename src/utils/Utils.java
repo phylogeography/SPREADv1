@@ -100,7 +100,7 @@ public class Utils {
 		}
 		return (String) node.getAttribute(attributeName);
 	}
-	
+
 	public static Object getObjectNodeAttribute(Node node, String attributeName) {
 		if (node.getAttribute(attributeName) == null) {
 			throw new RuntimeException("Attribute, " + attributeName
@@ -109,7 +109,8 @@ public class Utils {
 		return node.getAttribute(attributeName);
 	}
 
-	public static Object[] getObjectArrayNodeAttribute(Node node, String attributeName) {
+	public static Object[] getObjectArrayNodeAttribute(Node node,
+			String attributeName) {
 		if (node.getAttribute(attributeName) == null) {
 			throw new RuntimeException("Attribute, " + attributeName
 					+ ", missing from node");

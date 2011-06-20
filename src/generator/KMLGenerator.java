@@ -46,7 +46,7 @@ public class KMLGenerator implements Generator {
 	private GeoIntermediate rhumbIntermediate;
 
 	// 01-01-01 in millis before 1970-01-01
-	private static final double YearZeroinMillis = -62135773200000.0;
+	private static final double YearZeroInMillis = -62135773200000.0;
 
 	public KMLGenerator() {
 	}
@@ -125,10 +125,10 @@ public class KMLGenerator implements Generator {
 		// Time
 		// Parse minus if date is BC
 		placemark.setTimePrimitive(new TimeSpan(
-				startTime < YearZeroinMillis ? "-"
+				startTime < YearZeroInMillis ? "-"
 						+ formatter.format(startTime) : formatter
 						.format(startTime), duration > 0.0 ? (startTime
-						+ duration < YearZeroinMillis ? "-"
+						+ duration < YearZeroInMillis ? "-"
 						+ formatter.format(startTime + duration) : formatter
 						.format(startTime + duration)) : ""));
 
@@ -153,12 +153,13 @@ public class KMLGenerator implements Generator {
 
 		if (line.getEndStyle() == null
 				|| line.getStartStyle().equals(line.getEndStyle())) {
+
 			double startTime = line.getStartTime();
 			double endTime = line.getEndTime();
 			double duration = line.getDuration();
 			double maxAltitude = line.getMaxAltitude();
-
 			double timeRange = endTime - startTime;
+
 			if (timeLine.isInstantaneous() || timeRange == 0.0) {
 
 				feature = generateLineSegment(line.getStartLocation(), line
@@ -253,10 +254,10 @@ public class KMLGenerator implements Generator {
 
 			// Parse minus if date is BC
 			TimePrimitive timePrimitive = new TimeSpan(
-					startTime < YearZeroinMillis ? "-"
+					startTime < YearZeroInMillis ? "-"
 							+ formatter.format(startTime) : formatter
 							.format(startTime), duration > 0.0 ? (startTime
-							+ duration < YearZeroinMillis ? "-"
+							+ duration < YearZeroInMillis ? "-"
 							+ formatter.format(startTime + duration)
 							: formatter.format(startTime + duration)) : "");
 
