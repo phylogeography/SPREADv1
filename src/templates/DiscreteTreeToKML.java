@@ -326,7 +326,8 @@ public class DiscreteTreeToKML {
 									table, parentState, 1);
 
 							double nodeHeight = tree.getHeight(node);
-
+							double parentHeight = tree.getHeight(parentNode);
+							
 							/**
 							 * altitude mapping
 							 * */
@@ -432,8 +433,8 @@ public class DiscreteTreeToKML {
 							Style linesStyle = new Style(col, branchWidth);
 							linesStyle.setId("branch_style" + branchStyleId);
 
-							int days = (int) (nodeHeight * timescaler);
-							double startTime = mrsd.minus(days);
+							double startTime = mrsd.minus((int) (nodeHeight * timescaler));
+							double endTime = mrsd.minus((int) (parentHeight * timescaler));
 
 							branchesLayer.addItem(new Line(
 									(parentState + ":" + state), // string name
@@ -441,7 +442,7 @@ public class DiscreteTreeToKML {
 											), startTime, // startime
 									linesStyle, // style startstyle
 									new Coordinates( longitude,latitude), // endcoords
-									0.0, // double endtime
+									endTime, // double endtime
 									linesStyle, // style endstyle
 									maxAltitude, // double maxAltitude
 									0.0) // double duration

@@ -181,32 +181,27 @@ public class KMLGenerator implements Generator {
 						endLon, endLat, sliceCount);
 				double coords[][] = rhumbIntermediate.getCoords();
 
-				double lineSpan = timeLine.getEndTime() - startTime;
-
-				// Controls how fast the lines should get to their end point (to
-				// be in sync with each other)
-				double speed = 0.1;
-				int j = sliceCount;
-
 				double a = -2 * maxAltitude
 						/ (Math.pow(sliceCount, 2) - sliceCount);
 				double b = 2 * maxAltitude / (sliceCount - 1);
 
-				for (int i = 0; i < sliceCount; i++, j--) {
+				for (int i = 0; i < sliceCount; i++) {
 
 					double startAltitude = a * Math.pow((double) i, 2) + b
 							* (double) i;
 					double endAltitude = a * Math.pow((double) (i + 1), 2) + b
 							* (double) (i + 1);
 
+					// TODO improve this timing
+					double segmentStartTime = endTime - i
+							* ((endTime - startTime) / sliceCount);
+
 					Placemark lineSegment = generateLineSegment(
 							new Coordinates(coords[i][0], coords[i][1],
 									startAltitude),// startCoordinates
 							new Coordinates(coords[i + 1][0], coords[i + 1][1],
 									endAltitude),// endCoordinates
-							// TODO improve this timing
-							startTime - (lineSpan / sliceCount)
-									* ((double) j * speed),// startTime
+							segmentStartTime,// startTime
 							duration,// duration
 							line.getStartStyle()// Style
 					);

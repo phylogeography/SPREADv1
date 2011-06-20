@@ -543,6 +543,7 @@ public class TimeSlicerToKML {
 						 * Mapping
 						 * */
 						double nodeHeight = tree.getHeight(node);
+						double parentHeight = tree.getHeight(parentNode);
 
 						double maxAltitude = Utils.map(nodeHeight, 0,
 								treeHeightMax, 0, maxAltMapping);
@@ -568,8 +569,10 @@ public class TimeSlicerToKML {
 						linesStyle.setId("branch_style" + branchStyleId);
 						branchStyleId++;
 
-						int days = (int) (nodeHeight * timescaler);
-						double startTime = mrsd.minus(days);
+						double startTime = mrsd
+								.minus((int) (nodeHeight * timescaler));
+						double endTime = mrsd
+								.minus((int) (parentHeight * timescaler));
 
 						branchesLayer
 								.addItem(new Line((parentLongitude + ","
@@ -580,7 +583,7 @@ public class TimeSlicerToKML {
 										startTime, // double startime
 										linesStyle, // style startstyle
 										new Coordinates(longitude, latitude), // endCoords
-										0.0, // double endtime
+										endTime, // double endtime
 										linesStyle, // style endstyle
 										maxAltitude, // double maxAltitude
 										0.0) // double duration
