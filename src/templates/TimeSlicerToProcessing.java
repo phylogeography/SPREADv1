@@ -420,8 +420,8 @@ public class TimeSlicerToProcessing extends PApplet {
 
 				if (readTrees >= burnIn) {
 
-					// executor.submit(new AnalyzeTree());
-					new AnalyzeTree().run();
+					// executor.submit(new AnalyzeTree(currentTree));
+					new AnalyzeTree(currentTree).run();
 
 					if (readTrees % burnIn == 0) {
 						System.out.print(readTrees + " trees... ");
@@ -451,6 +451,12 @@ public class TimeSlicerToProcessing extends PApplet {
 	// ---CONCURRENT ANALYZE TREE---//
 	// ///////////////////////////////
 	private class AnalyzeTree implements Runnable {
+
+		private RootedTree currentTree;
+
+		private AnalyzeTree(RootedTree currentTree) {
+			this.currentTree = currentTree;
+		}
 
 		public void run() {
 

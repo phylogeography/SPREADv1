@@ -280,8 +280,8 @@ public class TimeSlicerToKML {
 
 				if (readTrees >= burnIn) {
 
-					// executor.submit(new AnalyzeTree());
-					new AnalyzeTree().run();
+					// executor.submit(new AnalyzeTree(currentTree));
+					new AnalyzeTree(currentTree).run();
 
 					if (readTrees % 500 == 0) {
 						System.out.print(readTrees + " trees... ");
@@ -348,11 +348,11 @@ public class TimeSlicerToKML {
 
 	private class AnalyzeTree implements Runnable {
 
-		// private RootedTree currentTree;
+		private RootedTree currentTree;
 
-		// public AnalyzeTree(RootedTree currentTree) {
-		// this.currentTree = currentTree;
-		// }
+		private AnalyzeTree(RootedTree currentTree) {
+			this.currentTree = currentTree;
+		}
 
 		public void run() throws ConcurrentModificationException {
 
