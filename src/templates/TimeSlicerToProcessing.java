@@ -419,7 +419,12 @@ public class TimeSlicerToProcessing extends PApplet {
 
 				if (readTrees >= burnIn) {
 
-					// executor.submit(new AnalyzeTree(currentTree));
+					// executor.submit(new AnalyzeTree(currentTree,
+					// precisionString,
+					// coordinatesName, rateString, numberOfIntervals,
+					// treeRootHeight, timescaler, mrsd, slicesMap,
+					// useTrueNoise));
+
 					new AnalyzeTree(currentTree, precisionString,
 							coordinatesName, rateString, numberOfIntervals,
 							treeRootHeight, timescaler, mrsd, slicesMap,

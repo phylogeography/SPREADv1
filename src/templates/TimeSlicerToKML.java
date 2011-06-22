@@ -278,8 +278,12 @@ public class TimeSlicerToKML {
 
 				if (readTrees >= burnIn) {
 
-					// executor.submit(new AnalyzeTree(currentTree));
-					// new AnalyzeTree(currentTree).run();
+					// executor.submit(new AnalyzeTree(currentTree,
+					// precisionString,
+					// coordinatesName, rateString, numberOfIntervals,
+					// treeRootHeight, timescaler, mrsd, slicesMap,
+					// useTrueNoise));
+
 					new AnalyzeTree(currentTree, precisionString,
 							coordinatesName, rateString, numberOfIntervals,
 							treeRootHeight, timescaler, mrsd, slicesMap,
@@ -322,7 +326,7 @@ public class TimeSlicerToKML {
 
 				Double sliceTime = (Double) iterator.next();
 
-				// executor.submit(new Polygons());
+				// executor.submit(new Polygons(sliceTime, polygonsStyleId));
 				new Polygons(sliceTime, polygonsStyleId).run();
 
 				polygonsStyleId++;
