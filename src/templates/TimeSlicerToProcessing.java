@@ -18,7 +18,6 @@ import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
-import math.MultivariateNormalDistribution;
 import processing.core.PApplet;
 import structure.Coordinates;
 import structure.TimeLine;
@@ -421,7 +420,10 @@ public class TimeSlicerToProcessing extends PApplet {
 				if (readTrees >= burnIn) {
 
 					// executor.submit(new AnalyzeTree(currentTree));
-					new AnalyzeTree(currentTree).run();
+					new AnalyzeTree(currentTree, precisionString,
+							coordinatesName, rateString, numberOfIntervals,
+							treeRootHeight, timescaler, mrsd, slicesMap,
+							useTrueNoise).run();
 
 					if (readTrees % burnIn == 0) {
 						System.out.print(readTrees + " trees... ");
@@ -446,167 +448,6 @@ public class TimeSlicerToProcessing extends PApplet {
 		}// END: if impute
 
 	}// END: AnalyzeTrees
-
-	// ///////////////////////////////
-	// ---CONCURRENT ANALYZE TREE---//
-	// ///////////////////////////////
-	private class AnalyzeTree implements Runnable {
-
-		private RootedTree currentTree;
-
-		private AnalyzeTree(RootedTree currentTree) {
-			this.currentTree = currentTree;
-		}
-
-		public void run() {
-
-			try {
-
-				// attributes parsed once per tree
-				double currentTreeNormalization = Utils.getTreeLength(
-						currentTree, currentTree.getRootNode());
-				double[] precisionArray = Utils.getTreeDoubleArrayAttribute(
-						currentTree, precisionString);
-
-				for (Node node : currentTree.getNodes()) {
-					if (!currentTree.isRoot(node)) {
-
-						// attributes parsed once per node
-						Node parentNode = currentTree.getParent(node);
-
-						double nodeHeight = currentTree.getHeight(node);
-						double parentHeight = currentTree.getHeight(parentNode);
-
-						double[] location = Utils.getDoubleArrayNodeAttribute(
-								node, coordinatesName);
-
-						double[] parentLocation = Utils
-								.getDoubleArrayNodeAttribute(parentNode,
-										coordinatesName);
-
-						double rate = Utils.getDoubleNodeAttribute(node,
-								rateString);
-
-						for (int i = 0; i <= numberOfIntervals; i++) {
-
-							double sliceHeight = treeRootHeight
-									- (treeRootHeight / numberOfIntervals)
-									* ((double) i);
-
-							if (nodeHeight < sliceHeight
-									&& sliceHeight <= parentHeight) {
-
-								int days = (int) (sliceHeight * timescaler);
-								double sliceTime = mrsd.minus(days);
-
-								// grow map entry if key exists
-								if (slicesMap.containsKey(sliceTime)) {
-
-									double[] imputedLocation = imputeValue(
-											location, parentLocation,
-											sliceHeight, nodeHeight,
-											parentHeight, rate, useTrueNoise,
-											currentTreeNormalization,
-											precisionArray);
-
-									slicesMap.get(sliceTime).add(
-											new Coordinates(imputedLocation[1],
-													imputedLocation[0], 0.0));
-
-									// start new entry if no such key in the map
-								} else {
-
-									List<Coordinates> coords = new ArrayList<Coordinates>();
-
-									double[] imputedLocation = imputeValue(
-											location, parentLocation,
-											sliceHeight, nodeHeight,
-											parentHeight, rate, useTrueNoise,
-											currentTreeNormalization,
-											precisionArray);
-
-									coords.add(new Coordinates(
-											imputedLocation[1],
-											imputedLocation[0], 0.0));
-
-									slicesMap.putIfAbsent(sliceTime, coords);
-
-								}// END: key check
-							}// END: sliceTime check
-						}// END: numberOfIntervals loop
-					}
-				}// END: node loop
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}// END: run
-	}// END: AnalyzeTree
-
-	private double[] imputeValue(double[] location, double[] parentLocation,
-			double sliceTime, double nodeTime, double parentTime, double rate,
-			boolean trueNoise, double treeNormalization, double[] precisionArray) {
-
-		int dim = (int) Math.sqrt(1 + 8 * precisionArray.length) / 2;
-		double[][] precision = new double[dim][dim];
-		int c = 0;
-		for (int i = 0; i < dim; i++) {
-			for (int j = i; j < dim; j++) {
-				precision[j][i] = precision[i][j] = precisionArray[c++]
-						* treeNormalization;
-			}
-		}
-
-		dim = location.length;
-		double[] nodeValue = new double[2];
-		double[] parentValue = new double[2];
-
-		for (int i = 0; i < dim; i++) {
-
-			nodeValue[i] = location[i];
-			parentValue[i] = parentLocation[i];
-
-		}
-
-		final double scaledTimeChild = (sliceTime - nodeTime) * rate;
-		final double scaledTimeParent = (parentTime - sliceTime) * rate;
-		final double scaledWeightTotal = (1.0 / scaledTimeChild)
-				+ (1.0 / scaledTimeParent);
-
-		if (scaledTimeChild == 0)
-			return location;
-
-		if (scaledTimeParent == 0)
-			return parentLocation;
-
-		// Find mean value, weighted average
-		double[] mean = new double[dim];
-		double[][] scaledPrecision = new double[dim][dim];
-
-		for (int i = 0; i < dim; i++) {
-			mean[i] = (nodeValue[i] / scaledTimeChild + parentValue[i]
-					/ scaledTimeParent)
-					/ scaledWeightTotal;
-
-			if (trueNoise) {
-				for (int j = i; j < dim; j++)
-					scaledPrecision[j][i] = scaledPrecision[i][j] = precision[i][j]
-							* scaledWeightTotal;
-			}
-		}
-
-		if (trueNoise) {
-			mean = MultivariateNormalDistribution
-					.nextMultivariateNormalPrecision(mean, scaledPrecision);
-		}
-
-		double[] result = new double[dim];
-		for (int i = 0; i < dim; i++)
-			result[i] = mean[i];
-
-		return result;
-	}// END: ImputeValue
 
 	private TimeLine GenerateTimeLine(RootedTree mccTree) throws ParseException {
 
