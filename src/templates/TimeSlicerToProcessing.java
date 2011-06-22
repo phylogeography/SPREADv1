@@ -38,27 +38,6 @@ public class TimeSlicerToProcessing extends PApplet {
 	private Double sliceTime;
 	private RootedTree currentTree;
 
-	private TreeImporter treesImporter;
-	private TreeImporter treeImporter;
-	private String precisionString;
-	private String coordinatesName;
-	private String longitudeName;
-	private String latitudeName;
-	private String rateString;
-	private int numberOfIntervals;
-	private boolean useTrueNoise;
-	private boolean impute;
-	private String mrsdString;
-	private SpreadDate mrsd;
-	private double timescaler;
-	private TimeLine timeLine;
-	private double startTime;
-	private double endTime;
-	private double burnIn;
-	private RootedTree tree;
-	private double HPD;
-	private int gridSize;
-
 	private double minPolygonRedMapping;
 	private double minPolygonGreenMapping;
 	private double minPolygonBlueMapping;
@@ -80,6 +59,27 @@ public class TimeSlicerToProcessing extends PApplet {
 	private double maxBranchOpacityMapping;
 
 	private double branchWidth;
+	private TreeImporter treesImporter;
+	private TreeImporter treeImporter;
+	private double treeRootHeight;
+	private String precisionString;
+	private String coordinatesName;
+	private String longitudeName;
+	private String latitudeName;
+	private String rateString;
+	private int numberOfIntervals;
+	private boolean useTrueNoise;
+	private boolean impute;
+	private String mrsdString;
+	private SpreadDate mrsd;
+	private double timescaler;
+	private TimeLine timeLine;
+	private double startTime;
+	private double endTime;
+	private double burnIn;
+	private RootedTree tree;
+	private double HPD;
+	private int gridSize;
 
 	private enum timescalerEnum {
 		DAYS, MONTHS, YEARS
@@ -394,10 +394,9 @@ public class TimeSlicerToProcessing extends PApplet {
 	public void AnalyzeTrees() throws IOException, ImportException,
 			ParseException {
 
-		mrsd = new SpreadDate(mrsdString);
-
-		// This is a general time span for all of the trees
 		tree = (RootedTree) treeImporter.importNextTree();
+		treeRootHeight = tree.getHeight(tree.getRootNode());
+		mrsd = new SpreadDate(mrsdString);
 		timeLine = GenerateTimeLine(tree);
 
 		if (impute) {
@@ -458,9 +457,8 @@ public class TimeSlicerToProcessing extends PApplet {
 			try {
 
 				// attributes parsed once per tree
-				double treeRootHeight = tree.getHeight(tree.getRootNode());
-				double treeNormalization = Utils.getTreeLength(currentTree,
-						currentTree.getRootNode());
+				double currentTreeNormalization = Utils.getTreeLength(
+						currentTree, currentTree.getRootNode());
 				double[] precisionArray = Utils.getTreeDoubleArrayAttribute(
 						currentTree, precisionString);
 
@@ -502,7 +500,8 @@ public class TimeSlicerToProcessing extends PApplet {
 											location, parentLocation,
 											sliceHeight, nodeHeight,
 											parentHeight, rate, useTrueNoise,
-											treeNormalization, precisionArray);
+											currentTreeNormalization,
+											precisionArray);
 
 									slicesMap.get(sliceTime).add(
 											new Coordinates(imputedLocation[1],
@@ -517,7 +516,8 @@ public class TimeSlicerToProcessing extends PApplet {
 											location, parentLocation,
 											sliceHeight, nodeHeight,
 											parentHeight, rate, useTrueNoise,
-											treeNormalization, precisionArray);
+											currentTreeNormalization,
+											precisionArray);
 
 									coords.add(new Coordinates(
 											imputedLocation[1],

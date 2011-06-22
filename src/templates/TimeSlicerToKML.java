@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -71,12 +72,13 @@ public class TimeSlicerToKML {
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
 
-	private double branchWidth;
-	private TreeImporter treesImporter;
-	private String mrsdString;
 	private SpreadDate mrsd;
 	private double timescaler;
 	private int numberOfIntervals;
+	private double treeRootHeight;
+	private double branchWidth;
+	private TreeImporter treesImporter;
+	private String mrsdString;
 	private int burnIn;
 	private boolean impute;
 	private boolean useTrueNoise;
@@ -251,13 +253,14 @@ public class TimeSlicerToKML {
 
 		// start timing
 		time = -System.currentTimeMillis();
-		tree = (RootedTree) treeImporter.importNextTree();
 
+		tree = (RootedTree) treeImporter.importNextTree();
+		treeRootHeight = tree.getHeight(tree.getRootNode());
 		mrsd = new SpreadDate(mrsdString);
+		timeLine = GenerateTimeLine(tree);
 
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
-		timeLine = GenerateTimeLine(tree);
 
 		// Executor for threads
 		int NTHREDS = Runtime.getRuntime().availableProcessors();
@@ -275,20 +278,18 @@ public class TimeSlicerToKML {
 
 				currentTree = (RootedTree) treesImporter.importNextTree();
 
-				synchronized (slicesMap) {
-					if (readTrees >= burnIn) {
+				if (readTrees >= burnIn) {
 
-						// executor.submit(new AnalyzeTree());
-						new AnalyzeTree().run();
+					// executor.submit(new AnalyzeTree());
+					new AnalyzeTree().run();
 
-						if (readTrees % 500 == 0) {
-							System.out.print(readTrees + " trees... ");
-						}
+					if (readTrees % 500 == 0) {
+						System.out.print(readTrees + " trees... ");
 					}
+				}// END: if burn-in
 
-					readTrees++;
+				readTrees++;
 
-				}// END: synchronized
 			}// END: while has trees
 
 			if ((readTrees - burnIn) <= 0.0) {
@@ -313,18 +314,16 @@ public class TimeSlicerToKML {
 			System.out.println("Iterating through Map...");
 
 			polygonsStyleId = 1;
-			synchronized (iterator) {
-				while (iterator.hasNext()) {
+			while (iterator.hasNext()) {
 
-					System.out.println("Key " + polygonsStyleId + "...");
+				System.out.println("Key " + polygonsStyleId + "...");
 
-					sliceTime = (Double) iterator.next();
+				sliceTime = (Double) iterator.next();
 
-					// executor.submit(new Polygons());
-					new Polygons().run();
+				// executor.submit(new Polygons());
+				new Polygons().run();
 
-				}// END: while has next
-			}// END: synchronized
+			}// END: while has next
 
 		}// END: if impute
 
@@ -349,14 +348,19 @@ public class TimeSlicerToKML {
 
 	private class AnalyzeTree implements Runnable {
 
-		public void run() {
+		// private RootedTree currentTree;
+
+		// public AnalyzeTree(RootedTree currentTree) {
+		// this.currentTree = currentTree;
+		// }
+
+		public void run() throws ConcurrentModificationException {
 
 			try {
 
 				// attributes parsed once per tree
-				double treeRootHeight = tree.getHeight(tree.getRootNode());
-				double treeNormalization = Utils.getTreeLength(currentTree,
-						currentTree.getRootNode());
+				double currentTreeNormalization = Utils.getTreeLength(
+						currentTree, currentTree.getRootNode());
 				double[] precisionArray = Utils.getTreeDoubleArrayAttribute(
 						currentTree, precisionString);
 
@@ -398,7 +402,8 @@ public class TimeSlicerToKML {
 											location, parentLocation,
 											sliceHeight, nodeHeight,
 											parentHeight, rate, useTrueNoise,
-											treeNormalization, precisionArray);
+											currentTreeNormalization,
+											precisionArray);
 
 									slicesMap.get(sliceTime).add(
 											new Coordinates(imputedLocation[1],
@@ -413,7 +418,8 @@ public class TimeSlicerToKML {
 											location, parentLocation,
 											sliceHeight, nodeHeight,
 											parentHeight, rate, useTrueNoise,
-											treeNormalization, precisionArray);
+											currentTreeNormalization,
+											precisionArray);
 
 									coords.add(new Coordinates(
 											imputedLocation[1],
@@ -439,7 +445,8 @@ public class TimeSlicerToKML {
 	// ///////////////////////////
 	private class Polygons implements Runnable {
 
-		public void run() throws OutOfMemoryError {
+		public void run() throws OutOfMemoryError,
+				ConcurrentModificationException {
 
 			Layer polygonsLayer = new Layer("Time_Slice_"
 					+ formatter.format(sliceTime), null);
