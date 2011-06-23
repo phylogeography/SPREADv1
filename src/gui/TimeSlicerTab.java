@@ -892,7 +892,7 @@ public class TimeSlicerTab extends JPanel {
 									.setBranchWidth(branchesWidthParser
 											.getValue() / 2);
 
-							timeSlicerToProcessing.AnalyzeTrees();
+							timeSlicerToProcessing.analyzeTrees();
 
 							timeSlicerToProcessing.init();
 
@@ -920,6 +920,7 @@ public class TimeSlicerTab extends JPanel {
 				// Executed in event dispatch thread
 				public void done() {
 
+					// TODO does not work
 					if (!timeSlicerToProcessing.isActive()) {
 
 						System.out.println("Finished. \n");

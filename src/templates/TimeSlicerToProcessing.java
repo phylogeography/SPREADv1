@@ -390,7 +390,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		}// END: nodes loop
 	}// END: DrawBranches
 
-	public void AnalyzeTrees() throws IOException, ImportException,
+	public void analyzeTrees() throws IOException, ImportException,
 			ParseException {
 
 		tree = (RootedTree) treeImporter.importNextTree();

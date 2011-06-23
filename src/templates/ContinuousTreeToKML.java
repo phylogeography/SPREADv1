@@ -24,7 +24,7 @@ import structure.Line;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
-import utils.SpreadDate;
+import utils.ThreadLocalSpreadDate;
 import utils.Utils;
 
 public class ContinuousTreeToKML {
@@ -40,7 +40,7 @@ public class ContinuousTreeToKML {
 	private String coordinatesName;
 	private String HPD;
 	private String mrsdString;
-	private SpreadDate mrsd;
+	private ThreadLocalSpreadDate mrsd;
 	private int numberOfIntervals;
 	private double timescaler;
 	private double rootHeight;
@@ -238,7 +238,7 @@ public class ContinuousTreeToKML {
 		treeHeightMax = Utils.getTreeHeightMax(tree);
 
 		// This is a general time span for the tree
-		mrsd = new SpreadDate(mrsdString);
+		mrsd = new ThreadLocalSpreadDate(mrsdString);
 		TimeLine timeLine = new TimeLine(mrsd.getTime()
 				- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
 				numberOfIntervals);

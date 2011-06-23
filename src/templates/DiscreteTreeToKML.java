@@ -26,7 +26,7 @@ import structure.Place;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
-import utils.SpreadDate;
+import utils.ThreadLocalSpreadDate;
 import utils.Utils;
 
 public class DiscreteTreeToKML {
@@ -42,7 +42,7 @@ public class DiscreteTreeToKML {
 	private String stateAttName;
 	private InteractiveTableModel table;
 	private String mrsdString;
-	private SpreadDate mrsd;
+	private ThreadLocalSpreadDate mrsd;
 	private int numberOfIntervals;
 	private double timescaler;
 	private String userAttribute;
@@ -227,7 +227,7 @@ public class DiscreteTreeToKML {
 		rootHeight = tree.getHeight(tree.getRootNode());
 
 		// This is a general time span for the tree
-		mrsd = new SpreadDate(mrsdString);
+		mrsd = new ThreadLocalSpreadDate(mrsdString);
 		TimeLine timeLine = new TimeLine(mrsd.getTime()
 				- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
 				numberOfIntervals);
