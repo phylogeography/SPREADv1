@@ -896,7 +896,6 @@ public class TimeSlicerTab extends JPanel {
 
 							timeSlicerToProcessing.init();
 
-
 						}// END: check
 
 					} catch (OutOfMemoryError e) {
@@ -920,13 +919,17 @@ public class TimeSlicerTab extends JPanel {
 
 				// Executed in event dispatch thread
 				public void done() {
-					
-					System.out.println("Finished. \n");
-					generateProcessing.setEnabled(true);
-					progressBar.setIndeterminate(false);
 
-					// TODO: is it neccessary?
-					System.gc();
+					if (!timeSlicerToProcessing.isActive()) {
+
+						System.out.println("Finished. \n");
+						generateProcessing.setEnabled(true);
+						progressBar.setIndeterminate(false);
+
+						// TODO: is it neccessary?
+						System.gc();
+
+					}// END: check if active
 
 				}// END: done
 			};

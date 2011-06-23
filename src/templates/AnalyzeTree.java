@@ -6,12 +6,11 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
-import math.MultivariateNormalDistribution;
-
 import jebl.evolution.graphs.Node;
 import jebl.evolution.trees.RootedTree;
+import math.MultivariateNormalDistribution;
 import structure.Coordinates;
-import utils.SpreadDate;
+import utils.ThreadLocalSpreadDate;
 import utils.Utils;
 
 public class AnalyzeTree implements Runnable {
@@ -23,13 +22,13 @@ public class AnalyzeTree implements Runnable {
 	private int numberOfIntervals;
 	private double treeRootHeight;
 	private double timescaler;
-	private SpreadDate mrsd;
+	private ThreadLocalSpreadDate mrsd;
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 	private boolean useTrueNoise;
 
 	public AnalyzeTree(RootedTree currentTree, String precisionString,
 			String coordinatesName, String rateString, int numberOfIntervals,
-			double treeRootHeight, double timescaler, SpreadDate mrsd,
+			double treeRootHeight, double timescaler, ThreadLocalSpreadDate mrsd,
 			ConcurrentMap<Double, List<Coordinates>> slicesMap,
 			boolean useTrueNoise) throws ParseException {
 
@@ -40,8 +39,7 @@ public class AnalyzeTree implements Runnable {
 		this.numberOfIntervals = numberOfIntervals;
 		this.treeRootHeight = treeRootHeight;
 		this.timescaler = timescaler;
-		// TODO this is causing troubles with concurrency
-		this.mrsd = mrsd;// new SpreadDate("2011-06-23 AD");
+		this.mrsd =  mrsd;
 		this.slicesMap = slicesMap;
 		this.useTrueNoise = useTrueNoise;
 

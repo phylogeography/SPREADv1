@@ -40,7 +40,8 @@ boolean fromJar = true
 
 h1. TODO
 
-* Time Slicer template still leaves a considerable memory footprint  
+* TimeSlicerTab
+   - Check if Animation Thread is still running and only then release progress bar (currently it gets released when AnalyzeTrees method stops running)
 * Processing applets
    - We could draw the lines along great circle arcs or rhumb lines, this would require getting the code in kml generator class to work with processing
 * Add cannot impute, no precision attribute warning message in Time Slicer

@@ -30,7 +30,7 @@ import structure.Line;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
-import utils.SpreadDate;
+import utils.ThreadLocalSpreadDate;
 import utils.Utils;
 import contouring.ContourMaker;
 import contouring.ContourPath;
@@ -71,7 +71,7 @@ public class TimeSlicerToKML {
 	private double maxBranchBlueMapping;
 	private double maxBranchOpacityMapping;
 
-	private SpreadDate mrsd;
+	private ThreadLocalSpreadDate mrsd;
 	private double timescaler;
 	private int numberOfIntervals;
 	private double treeRootHeight;
@@ -254,7 +254,7 @@ public class TimeSlicerToKML {
 
 		tree = (RootedTree) treeImporter.importNextTree();
 		treeRootHeight = tree.getHeight(tree.getRootNode());
-		mrsd = new SpreadDate(mrsdString);
+		mrsd = new ThreadLocalSpreadDate(mrsdString);
 		timeLine = GenerateTimeLine(tree);
 
 		// this is to generate kml output
@@ -262,7 +262,7 @@ public class TimeSlicerToKML {
 
 		// Executor for threads
 		int NTHREDS = Runtime.getRuntime().availableProcessors();
-		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS + 8);
+		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS*10);
 
 		if (impute) {
 

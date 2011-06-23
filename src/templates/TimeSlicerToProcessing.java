@@ -21,7 +21,7 @@ import jebl.evolution.trees.RootedTree;
 import processing.core.PApplet;
 import structure.Coordinates;
 import structure.TimeLine;
-import utils.SpreadDate;
+import utils.ThreadLocalSpreadDate;
 import utils.Utils;
 import contouring.ContourMaker;
 import contouring.ContourPath;
@@ -70,7 +70,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private boolean useTrueNoise;
 	private boolean impute;
 	private String mrsdString;
-	private SpreadDate mrsd;
+	private ThreadLocalSpreadDate mrsd;
 	private double timescaler;
 	private TimeLine timeLine;
 	private double startTime;
@@ -395,7 +395,7 @@ public class TimeSlicerToProcessing extends PApplet {
 
 		tree = (RootedTree) treeImporter.importNextTree();
 		treeRootHeight = tree.getHeight(tree.getRootNode());
-		mrsd = new SpreadDate(mrsdString);
+		mrsd = new ThreadLocalSpreadDate(mrsdString);
 		timeLine = GenerateTimeLine(tree);
 
 		if (impute) {
@@ -419,15 +419,15 @@ public class TimeSlicerToProcessing extends PApplet {
 
 				if (readTrees >= burnIn) {
 
-					// executor.submit(new AnalyzeTree(currentTree,
-					// precisionString, coordinatesName, rateString,
-					// numberOfIntervals, treeRootHeight, timescaler,
-					// mrsd, slicesMap, useTrueNoise));
+					executor.submit(new AnalyzeTree(currentTree,
+							precisionString, coordinatesName, rateString,
+							numberOfIntervals, treeRootHeight, timescaler,
+							mrsd, slicesMap, useTrueNoise));
 
-					new AnalyzeTree(currentTree, precisionString,
-							coordinatesName, rateString, numberOfIntervals,
-							treeRootHeight, timescaler, mrsd, slicesMap,
-							useTrueNoise).run();
+					// new AnalyzeTree(currentTree, precisionString,
+					// coordinatesName, rateString, numberOfIntervals,
+					// treeRootHeight, timescaler, mrsd, slicesMap,
+					// useTrueNoise).run();
 
 					if (readTrees % burnIn == 0) {
 						System.out.print(readTrees + " trees... ");
