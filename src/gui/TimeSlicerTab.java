@@ -896,7 +896,6 @@ public class TimeSlicerTab extends JPanel {
 
 							timeSlicerToProcessing.init();
 
-							System.out.println("Finished. \n");
 
 						}// END: check
 
@@ -921,6 +920,8 @@ public class TimeSlicerTab extends JPanel {
 
 				// Executed in event dispatch thread
 				public void done() {
+					
+					System.out.println("Finished. \n");
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
 

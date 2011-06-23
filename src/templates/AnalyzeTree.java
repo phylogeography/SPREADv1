@@ -1,5 +1,6 @@
 package templates;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -30,7 +31,7 @@ public class AnalyzeTree implements Runnable {
 			String coordinatesName, String rateString, int numberOfIntervals,
 			double treeRootHeight, double timescaler, SpreadDate mrsd,
 			ConcurrentMap<Double, List<Coordinates>> slicesMap,
-			boolean useTrueNoise) {
+			boolean useTrueNoise) throws ParseException {
 
 		this.currentTree = currentTree;
 		this.precisionString = precisionString;
@@ -39,7 +40,8 @@ public class AnalyzeTree implements Runnable {
 		this.numberOfIntervals = numberOfIntervals;
 		this.treeRootHeight = treeRootHeight;
 		this.timescaler = timescaler;
-		this.mrsd = mrsd;
+		// TODO this is causing troubles with concurrency
+		this.mrsd = mrsd;// new SpreadDate("2011-06-23 AD");
 		this.slicesMap = slicesMap;
 		this.useTrueNoise = useTrueNoise;
 
@@ -113,7 +115,8 @@ public class AnalyzeTree implements Runnable {
 								coords.add(new Coordinates(imputedLocation[1],
 										imputedLocation[0], 0.0));
 
-								slicesMap.putIfAbsent(sliceTime, coords);
+								// slicesMap.putIfAbsent(sliceTime, coords);
+								slicesMap.put(sliceTime, coords);
 
 							}// END: key check
 						}// END: sliceTime check

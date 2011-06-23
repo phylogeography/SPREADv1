@@ -262,7 +262,7 @@ public class TimeSlicerToKML {
 
 		// Executor for threads
 		int NTHREDS = Runtime.getRuntime().availableProcessors();
-		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
+		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS + 8);
 
 		if (impute) {
 
@@ -278,16 +278,15 @@ public class TimeSlicerToKML {
 
 				if (readTrees >= burnIn) {
 
-					// executor.submit(new AnalyzeTree(currentTree,
-					// precisionString,
+					executor.submit(new AnalyzeTree(currentTree,
+							precisionString, coordinatesName, rateString,
+							numberOfIntervals, treeRootHeight, timescaler,
+							mrsd, slicesMap, useTrueNoise));
+
+					// new AnalyzeTree(currentTree, precisionString,
 					// coordinatesName, rateString, numberOfIntervals,
 					// treeRootHeight, timescaler, mrsd, slicesMap,
-					// useTrueNoise));
-
-					new AnalyzeTree(currentTree, precisionString,
-							coordinatesName, rateString, numberOfIntervals,
-							treeRootHeight, timescaler, mrsd, slicesMap,
-							useTrueNoise).run();
+					// useTrueNoise).run();
 
 					if (readTrees % 500 == 0) {
 						System.out.print(readTrees + " trees... ");
@@ -310,13 +309,14 @@ public class TimeSlicerToKML {
 			while (!executor.isTerminated()) {
 			}
 
+			System.out.println("Generating Polygons...");
+
 			Iterator<Double> iterator = slicesMap.keySet().iterator();
 			executor = Executors.newFixedThreadPool(NTHREDS);
 			formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
 			startTime = timeLine.getStartTime();
 			endTime = timeLine.getEndTime();
 
-			System.out.println("Generating Polygons...");
 			System.out.println("Iterating through Map...");
 
 			int polygonsStyleId = 1;

@@ -6,9 +6,11 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.io.PrintWriter;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentMap;
 
 import jebl.evolution.graphs.Node;
@@ -22,6 +24,14 @@ public class Utils {
 
 	// Earths radius in km
 	static final double EarthRadius = 6371.0;
+
+	public static String getSpreadFormattedTime(double time) {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd G",
+				Locale.US);
+
+		return formatter.format(time);
+	}
 
 	public static String getKMLDate(double fractionalDate) {
 
