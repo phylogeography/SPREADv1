@@ -26,6 +26,7 @@ public class ThreadLocalSpreadDate {
 		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
 		stringdate = formatter.parse(date);
 
+		// Make calls to Calendar class in thread safe way
 		calThreadLocal = new ThreadLocal<Calendar>() {
 
 			@Override

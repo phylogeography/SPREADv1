@@ -34,7 +34,7 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	// Concurrency stuff
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
-	private Double sliceTime;
+	// private Double sliceTime;
 	private RootedTree currentTree;
 
 	private double minPolygonRedMapping;
@@ -247,25 +247,34 @@ public class TimeSlicerToProcessing extends PApplet {
 		smooth();
 		mapBackground.drawMapBackground();
 		if (impute) {
+			System.out.println("Generating polygons...");
 			drawPolygons();
 		}
+
+		System.out.println("Drawing branches...");
 		drawBranches();
 
 	}// END:draw
 
 	private void drawPolygons() throws OutOfMemoryError {
 
-		System.out.println("Generating Polygons...");
 		System.out.println("Iterating through Map...");
 
 		Set<Double> hostKeys = slicesMap.keySet();
 		Iterator<Double> iterator = hostKeys.iterator();
 
+		int polygonsStyleId = 1;
 		while (iterator.hasNext()) {
-			sliceTime = (Double) iterator.next();
+
+			System.out.println("Key " + polygonsStyleId + "...");
+
+			Double sliceTime = iterator.next();
 			drawPolygon(sliceTime);
+
+			polygonsStyleId++;
 			slicesMap.remove(sliceTime);
 		}
+
 	}// END: drawPolygons
 
 	private void drawPolygon(Double sliceTime) throws OutOfMemoryError {

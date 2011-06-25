@@ -1,6 +1,5 @@
 package templates;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -28,9 +27,10 @@ public class AnalyzeTree implements Runnable {
 
 	public AnalyzeTree(RootedTree currentTree, String precisionString,
 			String coordinatesName, String rateString, int numberOfIntervals,
-			double treeRootHeight, double timescaler, ThreadLocalSpreadDate mrsd,
+			double treeRootHeight, double timescaler,
+			ThreadLocalSpreadDate mrsd,
 			ConcurrentMap<Double, List<Coordinates>> slicesMap,
-			boolean useTrueNoise) throws ParseException {
+			boolean useTrueNoise) {
 
 		this.currentTree = currentTree;
 		this.precisionString = precisionString;
@@ -39,7 +39,7 @@ public class AnalyzeTree implements Runnable {
 		this.numberOfIntervals = numberOfIntervals;
 		this.treeRootHeight = treeRootHeight;
 		this.timescaler = timescaler;
-		this.mrsd =  mrsd;
+		this.mrsd = mrsd;
 		this.slicesMap = slicesMap;
 		this.useTrueNoise = useTrueNoise;
 

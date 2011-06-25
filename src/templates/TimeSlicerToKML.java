@@ -10,7 +10,6 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +42,6 @@ public class TimeSlicerToKML {
 	private final int DayInMillis = 86400000;
 
 	// Concurrency stuff
-	// private Double sliceTime;
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 	private RootedTree currentTree;
 
@@ -262,7 +260,7 @@ public class TimeSlicerToKML {
 
 		// Executor for threads
 		int NTHREDS = Runtime.getRuntime().availableProcessors();
-		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS*10);
+		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS * 10);
 
 		if (impute) {
 
@@ -309,7 +307,7 @@ public class TimeSlicerToKML {
 			while (!executor.isTerminated()) {
 			}
 
-			System.out.println("Generating Polygons...");
+			System.out.println("Generating polygons...");
 
 			Iterator<Double> iterator = slicesMap.keySet().iterator();
 			executor = Executors.newFixedThreadPool(NTHREDS);
@@ -324,7 +322,7 @@ public class TimeSlicerToKML {
 
 				System.out.println("Key " + polygonsStyleId + "...");
 
-				Double sliceTime = (Double) iterator.next();
+				Double sliceTime = iterator.next();
 
 				// executor.submit(new Polygons(sliceTime, polygonsStyleId));
 				new Polygons(sliceTime, polygonsStyleId).run();
@@ -367,8 +365,7 @@ public class TimeSlicerToKML {
 			this.polygonsStyleId = polygonsStyleId;
 		}
 
-		public void run() throws OutOfMemoryError,
-				ConcurrentModificationException {
+		public void run() throws OutOfMemoryError {
 
 			Layer polygonsLayer = new Layer("Time_Slice_"
 					+ formatter.format(sliceTime), null);

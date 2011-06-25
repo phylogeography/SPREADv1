@@ -920,17 +920,12 @@ public class TimeSlicerTab extends JPanel {
 				// Executed in event dispatch thread
 				public void done() {
 
-					// TODO does not work
-					if (!timeSlicerToProcessing.isActive()) {
+					System.out.println("Finished. \n");
+					generateProcessing.setEnabled(true);
+					progressBar.setIndeterminate(false);
 
-						System.out.println("Finished. \n");
-						generateProcessing.setEnabled(true);
-						progressBar.setIndeterminate(false);
-
-						// TODO: is it neccessary?
-						System.gc();
-
-					}// END: check if active
+					// TODO: is it neccessary?
+					System.gc();
 
 				}// END: done
 			};
