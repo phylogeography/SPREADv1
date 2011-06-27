@@ -49,7 +49,6 @@ public class ThreadLocalSpreadDate {
 		cal.setTime(stringdate);
 		cal.add(Calendar.DATE, -days);
 		return cal.getTimeInMillis();
-
 	}// END: minus
 
 	public long getTime() {
