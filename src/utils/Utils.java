@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.ConcurrentMap;
 
 import jebl.evolution.graphs.Node;
@@ -24,6 +25,13 @@ public class Utils {
 
 	// Earths radius in km
 	static final double EarthRadius = 6371.0;
+
+	public static String pickRand(String[] array, Random generator) {
+
+		int rnd = generator.nextInt(array.length);
+		return array[rnd];
+
+	}
 
 	public static String getSpreadFormattedTime(double time) {
 

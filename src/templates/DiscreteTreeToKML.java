@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -87,6 +88,7 @@ public class DiscreteTreeToKML {
 	private branchesMappingEnum branchesColorMapping;
 	private branchesMappingEnum branchesOpacityMapping;
 	private branchesMappingEnum altitudeMapping;
+	private Random generator;
 
 	public DiscreteTreeToKML() {
 
@@ -95,6 +97,8 @@ public class DiscreteTreeToKML {
 		branchesColorMapping = branchesMappingEnum.TIME;
 		branchesOpacityMapping = branchesMappingEnum.TIME;
 		altitudeMapping = branchesMappingEnum.DISTANCE;
+
+		generator = new Random();
 
 	}// END: DiscreteTreeToKML()
 
@@ -305,12 +309,15 @@ public class DiscreteTreeToKML {
 				for (Node node : tree.getNodes()) {
 					if (!tree.isRoot(node)) {
 
-						String state = Utils.getStringNodeAttribute(node,
-								stateAttName);
+						String state = getRandomState(Utils
+								.getStringNodeAttribute(node, stateAttName),
+								true);
 
 						Node parentNode = tree.getParent(node);
-						String parentState = (String) parentNode
-								.getAttribute(stateAttName);
+
+						String parentState = getRandomState(Utils
+								.getStringNodeAttribute(parentNode,
+										stateAttName), false);
 
 						if (!state.toLowerCase().equals(
 								parentState.toLowerCase())) {
@@ -585,11 +592,15 @@ public class DiscreteTreeToKML {
 
 					if (!tree.isRoot(node)) {
 
-						Node parentNode = tree.getParent(node);
-						String state = (String) node.getAttribute(stateAttName);
+						String state = getRandomState(Utils
+								.getStringNodeAttribute(node, stateAttName),
+								false);
 
-						String parentState = (String) parentNode
-								.getAttribute(stateAttName);
+						Node parentNode = tree.getParent(node);
+
+						String parentState = getRandomState(Utils
+								.getStringNodeAttribute(parentNode,
+										stateAttName), false);
 
 						if ((tree.getHeight(node) <= numberOfLineages[i][0])
 								&& (tree.getHeight(parentNode) > numberOfLineages[i][0])) {
@@ -616,5 +627,28 @@ public class DiscreteTreeToKML {
 
 		return numberOfLineages;
 	}// END: CountLineagesHoldingState
+
+	private String getRandomState(String state, boolean verbose) {
+
+		generator.setSeed(time);
+
+		if (!state.contains("+")) {
+			return state;
+
+		} else {// this breaks ties
+
+			if (verbose)
+				System.out.println("Found combined " + stateAttName
+						+ " attribute: " + state);
+
+			state = Utils.pickRand(state.split("\\+"), generator);
+
+			if (verbose)
+				System.out.println("Randomly picking: " + state);
+
+			return state;
+		}
+
+	}// END: getRandomState
 
 }// END: DiscreteTreeToKML class
