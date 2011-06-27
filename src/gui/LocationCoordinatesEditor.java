@@ -311,7 +311,8 @@ public class LocationCoordinatesEditor {
 
 				uniqueTreeStates.add(Utils.getStringNodeAttribute(node,
 						stateAttName));
-			}
+
+			}// END: isRoot
 		}// END: node loop
 
 		Object[] uniqueTreeStatesArray = uniqueTreeStates.toArray();

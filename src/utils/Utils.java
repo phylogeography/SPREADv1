@@ -111,6 +111,14 @@ public class Utils {
 		return (String) node.getAttribute(attributeName);
 	}
 
+	public static String getStringNodeAttribute(Node node,
+			String attributeName, String defaultValue) {
+		if (node.getAttribute(attributeName) == null) {
+			return defaultValue;
+		}
+		return (String) node.getAttribute(attributeName);
+	}
+
 	public static Object getObjectNodeAttribute(Node node, String attributeName) {
 		if (node.getAttribute(attributeName) == null) {
 			throw new RuntimeException("Attribute, " + attributeName

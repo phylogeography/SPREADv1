@@ -27,7 +27,6 @@ import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
 import jebl.evolution.io.ImportException;
-
 import templates.DiscreteTreeToKML;
 import templates.DiscreteTreeToProcessing;
 import utils.Utils;
@@ -470,12 +469,16 @@ public class DiscreteModelTab extends JPanel {
 
 				e.printStackTrace();
 
-				String msg = String.format("Unexpected problem: %s", e
-						.toString()
-						+ "\nHave you specified proper state attribute name?");
+				String msg = String
+						.format(
+								"Unexpected problem: %s",
+								e.toString()
+										+ "\nHave you specified proper state attribute name?"
+										+ "\nHave you set the posterior probability limit in treeAnnotator to zero?");
 
 				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
 						"Error", JOptionPane.ERROR_MESSAGE, errorIcon);
+
 			}
 		}
 	}// END: ListenOpenLocations
@@ -810,6 +813,8 @@ public class DiscreteModelTab extends JPanel {
 					} catch (IOException e) {
 						e.printStackTrace();
 					} catch (ImportException e) {
+						e.printStackTrace();
+					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					} catch (ParseException e) {
 						e.printStackTrace();
