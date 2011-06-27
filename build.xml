@@ -48,6 +48,7 @@
     <mkdir dir="classes"/>
     <mkdir dir="classes/icons"/>
     <javac
+        source="1.6" target="1.6"   
         srcdir="src"
         destdir="classes"
         classpathref="classpath"/>
