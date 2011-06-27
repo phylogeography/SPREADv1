@@ -309,8 +309,14 @@ public class LocationCoordinatesEditor {
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {
 
-				uniqueTreeStates.add(Utils.getStringNodeAttribute(node,
-						stateAttName));
+				String[] states = Utils.getStringNodeAttribute(node,
+						stateAttName).split("\\+");
+
+				for (int i = 0; i < states.length; i++) {
+			
+					uniqueTreeStates.add(states[i]);
+
+				}
 
 			}// END: isRoot
 		}// END: node loop
