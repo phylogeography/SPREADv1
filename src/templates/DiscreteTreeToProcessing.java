@@ -5,6 +5,7 @@ import gui.InteractiveTableModel;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
@@ -18,6 +19,8 @@ import utils.Utils;
 
 @SuppressWarnings("serial")
 public class DiscreteTreeToProcessing extends PApplet {
+
+	public long time;
 
 	private TreeImporter importer;
 	private RootedTree tree;
@@ -50,6 +53,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 	private double branchWidth;
 	private double polygonsRadiusMultiplier;
+	private Random generator;
 
 	// min/max longitude
 	private float minX, maxX;
@@ -158,6 +162,8 @@ public class DiscreteTreeToProcessing extends PApplet {
 			minY = -90;
 			maxY = 90;
 
+			generator = new Random();
+
 			// will improve font rendering speed with default renderer
 			hint(ENABLE_NATIVE_FONTS);
 			PFont plotFont = createFont("Monaco", 12);
@@ -180,6 +186,9 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 	public void draw() {
 
+		// start timing
+		time = -System.currentTimeMillis();
+
 		noLoop();
 		smooth();
 		mapBackground.drawMapBackground();
@@ -187,6 +196,9 @@ public class DiscreteTreeToProcessing extends PApplet {
 		drawPlaces();
 		drawBranches();
 		drawPlacesLabels();
+
+		// stop timing
+		time += System.currentTimeMillis();
 
 	}// END:draw
 
@@ -253,12 +265,14 @@ public class DiscreteTreeToProcessing extends PApplet {
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {
 
-				String state = Utils.getStringNodeAttribute(node, stateAttName);
+				String state = getRandomState(Utils.getStringNodeAttribute(
+						node, stateAttName), true);
 
 				Node parentNode = tree.getParent(node);
 
-				String parentState = (String) parentNode
-						.getAttribute(stateAttName);
+				String parentState = getRandomState(Utils
+						.getStringNodeAttribute(parentNode, stateAttName),
+						false);
 
 				if (!state.toLowerCase().equals(parentState.toLowerCase())) {
 
@@ -408,11 +422,15 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 					if (!tree.isRoot(node)) {
 
-						Node parentNode = tree.getParent(node);
-						String state = (String) node.getAttribute(stateAttName);
+						String state = getRandomState(Utils
+								.getStringNodeAttribute(node, stateAttName),
+								false);
 
-						String parentState = (String) parentNode
-								.getAttribute(stateAttName);
+						Node parentNode = tree.getParent(node);
+
+						String parentState = getRandomState(Utils
+								.getStringNodeAttribute(parentNode,
+										stateAttName), false);
 
 						if ((tree.getHeight(node) <= numberOfLineages[i][0])
 								&& (tree.getHeight(parentNode) > numberOfLineages[i][0])) {
@@ -439,5 +457,28 @@ public class DiscreteTreeToProcessing extends PApplet {
 
 		return numberOfLineages;
 	}// END: CountLineagesHoldingState
+
+	private String getRandomState(String state, boolean verbose) {
+
+		generator.setSeed(time);
+
+		if (!state.contains("+")) {
+			return state;
+
+		} else {// this breaks ties
+
+			if (verbose)
+				System.out.println("Found combined " + stateAttName
+						+ " attribute: " + state);
+
+			state = Utils.pickRand(state.split("\\+"), generator);
+
+			if (verbose)
+				System.out.println("Randomly picking: " + state);
+
+			return state;
+		}
+
+	}// END: getRandomState
 
 }// END: PlotOnMap class

@@ -26,371 +26,16 @@ public class Utils {
 	// Earths radius in km
 	static final double EarthRadius = 6371.0;
 
+	// ///////////////////////////
+	// ---DISCRETE TREE UTILS---//
+	// ///////////////////////////
+
 	public static String pickRand(String[] array, Random generator) {
 
 		int rnd = generator.nextInt(array.length);
 		return array[rnd];
 
 	}
-
-	public static String getSpreadFormattedTime(double time) {
-
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd G",
-				Locale.US);
-
-		return formatter.format(time);
-	}
-
-	public static String getKMLDate(double fractionalDate) {
-
-		int year = (int) fractionalDate;
-		String yearString;
-
-		if (year < 10) {
-			yearString = "000" + year;
-		} else if (year < 100) {
-			yearString = "00" + year;
-		} else if (year < 1000) {
-			yearString = "0" + year;
-		} else {
-			yearString = "" + year;
-		}
-
-		double fractionalMonth = fractionalDate - year;
-
-		int month = (int) (12.0 * fractionalMonth);
-		String monthString;
-
-		if (month < 10) {
-			monthString = "0" + month;
-		} else {
-			monthString = "" + month;
-		}
-
-		int day = (int) Math.round(30 * (12 * fractionalMonth - month));
-		String dayString;
-
-		if (day < 10) {
-			dayString = "0" + day;
-		} else {
-			dayString = "" + day;
-		}
-
-		return yearString + "-" + monthString + "-" + dayString;
-	}
-
-	public static int getIntegerNodeAttribute(Node node, String attributeName) {
-		if (node.getAttribute(attributeName) == null) {
-			throw new RuntimeException("Attribute, " + attributeName
-					+ ", missing from node");
-		}
-		return (Integer) node.getAttribute(attributeName);
-	}
-
-	public static int getIntegerNodeAttribute(Node node, String attributeName,
-			int defaultValue) {
-		if (node.getAttribute(attributeName) == null) {
-			return defaultValue;
-		}
-		return (Integer) node.getAttribute(attributeName);
-	}
-
-	public static double getDoubleNodeAttribute(Node node, String attributeName) {
-		if (node.getAttribute(attributeName) == null) {
-			throw new RuntimeException("Attribute, " + attributeName
-					+ ", missing from node");
-		}
-		return (Double) node.getAttribute(attributeName);
-	}
-
-	public static double getDoubleNodeAttribute(Node node,
-			String attributeName, double defaultValue) {
-		if (node.getAttribute(attributeName) == null) {
-			return defaultValue;
-		}
-		return (Double) node.getAttribute(attributeName);
-	}
-
-	public static String getStringNodeAttribute(Node node, String attributeName) {
-		if (node.getAttribute(attributeName) == null) {
-			throw new RuntimeException("Attribute, " + attributeName
-					+ ", missing from node");
-		}
-		return (String) node.getAttribute(attributeName);
-	}
-
-	public static String getStringNodeAttribute(Node node,
-			String attributeName, String defaultValue) {
-		if (node.getAttribute(attributeName) == null) {
-			return defaultValue;
-		}
-		return (String) node.getAttribute(attributeName);
-	}
-
-	public static Object getObjectNodeAttribute(Node node, String attributeName) {
-		if (node.getAttribute(attributeName) == null) {
-			throw new RuntimeException("Attribute, " + attributeName
-					+ ", missing from node");
-		}
-		return node.getAttribute(attributeName);
-	}
-
-	public static Object[] getObjectArrayNodeAttribute(Node node,
-			String attributeName) {
-		if (node.getAttribute(attributeName) == null) {
-			throw new RuntimeException("Attribute, " + attributeName
-					+ ", missing from node");
-		}
-		return (Object[]) node.getAttribute(attributeName);
-	}
-
-	public static double[] getDoubleArrayNodeAttribute(Node node,
-			String attributeName) {
-		if (node.getAttribute(attributeName) == null) {
-			throw new RuntimeException("Attribute, " + attributeName
-					+ ", missing from node");
-		}
-
-		Object[] o = (Object[]) node.getAttribute(attributeName);
-
-		double[] array = new double[o.length];
-		for (int i = 0; i < o.length; i++) {
-			array[i] = Double.valueOf(o[i].toString());
-		}
-		return array;
-	}
-
-	public static int getNodeCount(RootedTree tree) {
-
-		int NodeCount = 0;
-		for (Node node : tree.getNodes()) {
-			if (!tree.isRoot(node)) {
-				NodeCount++;
-			}
-		}
-
-		return NodeCount;
-	}
-
-	public static int getExternalNodeCount(RootedTree tree) {
-
-		int externalNodeCount = 0;
-		for (Node node : tree.getNodes()) {
-			if (tree.isExternal(node)) {
-
-				externalNodeCount++;
-			}
-		}
-
-		return externalNodeCount;
-	}
-
-	public static double getTreeLength(RootedTree tree, Node node) {
-
-		int childCount = tree.getChildren(node).size();
-		if (childCount == 0)
-			return tree.getLength(node);
-
-		double length = 0;
-		for (int i = 0; i < childCount; i++) {
-			length += getTreeLength(tree, tree.getChildren(node).get(i));
-		}
-		if (node != tree.getRootNode())
-			length += tree.getLength(node);
-		return length;
-
-	}
-
-	public static double getTreeHeightMin(RootedTree tree) {
-		/**
-		 * Finds the min height for given tree.
-		 * 
-		 * @param tree
-		 * @return min height
-		 */
-		double m = Double.MAX_VALUE;
-		for (Node node : tree.getNodes()) {
-			if (tree.getHeight(node) < m) {
-				m = tree.getHeight(node);
-			}
-		}
-		return m;
-	}// END: getTreeHeightMin
-
-	public static double getTreeHeightMax(RootedTree tree) {
-		/**
-		 * Finds the max height for given tree.
-		 * 
-		 * @param tree
-		 * @return max height
-		 */
-		double m = -Double.MAX_VALUE;
-		for (Node node : tree.getNodes()) {
-			if (tree.getHeight(node) > m) {
-				m = tree.getHeight(node);
-			}
-		}
-		return m;
-	}// END: getTreeHeightMax
-
-	public static Object[] getTreeArrayAttribute(RootedTree tree,
-			String attribute) {
-		Object o = tree.getAttribute(attribute);
-		if (o == null) {
-			throw new RuntimeException("Attribute " + attribute
-					+ " missing from the tree. \n");
-		}
-
-		return (Object[]) o;
-	}
-
-	public static double[] getTreeDoubleArrayAttribute(RootedTree tree,
-			String attribute) {
-
-		Object[] o = (Object[]) tree.getAttribute(attribute);
-		if (o == null) {
-			throw new RuntimeException("Attribute " + attribute
-					+ " missing from the tree. \n");
-		}
-
-		double[] array = new double[o.length];
-		for (int i = 0; i < o.length; i++) {
-			array[i] = Double.valueOf(o[i].toString());
-		}
-
-		return array;
-	}
-
-	public static double getListMin(List<Double> list) {
-		double m = Double.MAX_VALUE;
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i) < m) {
-				m = list.get(i);
-			}
-		}
-		return m;
-	}// END: getDoubleListMax
-
-	public static double getListMax(List<Double> list) {
-		double m = -Double.MAX_VALUE;
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i) > m) {
-				m = list.get(i);
-			}
-		}
-		return m;
-	}// END: getDoubleListMax
-
-	public static double get2DArrayMax(double[][] array) {
-		double m = -Double.MAX_VALUE;
-		for (int i = 0; i < array.length; i++) {
-			for (int j = 0; j < array[0].length; j++) {
-				if (array[i][j] > m) {
-					m = array[i][j];
-				}
-			}
-		}
-		return m;
-	}// END: get2DArrayMax
-
-	public static String getKMLColor(Color color) {
-		/**
-		 * converts a Java color into a 4 channel hex color string.
-		 * 
-		 * @param color
-		 * @return the color string
-		 */
-		String a = Integer.toHexString(color.getAlpha());
-		String b = Integer.toHexString(color.getBlue());
-		String g = Integer.toHexString(color.getGreen());
-		String r = Integer.toHexString(color.getRed());
-		return (a.length() < 2 ? "0" : "") + a + (b.length() < 2 ? "0" : "")
-				+ b + (g.length() < 2 ? "0" : "") + g
-				+ (r.length() < 2 ? "0" : "") + r;
-	}
-
-	public static String getKMLColor(Color color, double opacity) {
-		/**
-		 * converts a Java color into a 4 channel hex color string.
-		 * 
-		 * @param color
-		 * @return the color string
-		 */
-		int alpha = (int) (256 * (1.0 - opacity));
-		String a = Integer.toHexString(alpha);
-		String b = Integer.toHexString(color.getBlue());
-		String g = Integer.toHexString(color.getGreen());
-		String r = Integer.toHexString(color.getRed());
-		return (a.length() < 2 ? "0" : "") + a + (b.length() < 2 ? "0" : "")
-				+ b + (g.length() < 2 ? "0" : "") + g
-				+ (r.length() < 2 ? "0" : "") + r;
-	}
-
-	public static Color getBlendedColor(float proportion, Color startColor,
-			Color endColor) {
-		proportion = Math.max(proportion, 0.0F);
-		proportion = Math.min(proportion, 1.0F);
-		float[] start = startColor.getRGBColorComponents(null);
-		float[] end = endColor.getRGBColorComponents(null);
-
-		float[] color = new float[start.length];
-		for (int i = 0; i < start.length; i++) {
-			color[i] = start[i] + ((end[i] - start[i]) * proportion);
-		}
-
-		return new Color(color[0], color[1], color[2]);
-	}
-
-	public static Color getRandomColor() {
-		/**
-		 * random color selection
-		 * 
-		 * @return the Color
-		 */
-		int red = 127 + (int) (Math.random() * 127);
-		int green = 127 + (int) (Math.random() * 127);
-		int blue = 127 + (int) (Math.random() * 127);
-		int alpha = 127 + (int) (Math.random() * 127);
-		Color col = new Color(red, green, blue, alpha);
-
-		return col;
-	}// END: getRandomColor
-
-	public static double map(double x, double x1, double x2, double y1,
-			double y2) {
-		/**
-		 * maps a single value from its range into another interval
-		 * 
-		 * @param x1
-		 *            , x2 - range of x; y1, y2 - interval
-		 * 
-		 * @return the mapped value
-		 */
-		double y = ((y1 - y2) / (x1 - x2)) * x
-				- ((x2 * y1 - x1 * y2) / (x1 - x2));
-
-		return y;
-	}// END: map
-
-	public static List<Point> convertToPoint(List<Coordinates> coords) {
-
-		List<Point> points = new ArrayList<Point>();
-
-		Iterator<Coordinates> iterator = coords.iterator();
-
-		while (iterator.hasNext()) {
-
-			Point point = new Point();
-			Coordinates coord = iterator.next();
-			point.setLongitude(coord.getLongitude());
-			point.setLatitude(coord.getLatitude());
-			point.setAltitude(0.0);
-
-			points.add(point);
-		}
-
-		return points;
-	}// END: convertToPoint
 
 	public static List<Coordinates> generateCircle(double centerY,
 			double centerX, double radius, int numPoints) {
@@ -413,6 +58,52 @@ public class Utils {
 		return coords;
 	}// END: GenerateCircle
 
+	public static float matchStateCoordinate(InteractiveTableModel table,
+			String state, int latlon) {
+		/**
+		 * Match state name with its coordinates
+		 * 
+		 * 1 for lon, 2 for lat
+		 */
+		float coordinate = Float.NaN;
+
+		for (int i = 0; i < table.getRowCount(); i++) {
+
+			String name = String.valueOf(table.getValueAt(i, 0));
+
+			if (name.toLowerCase().equals(state.toLowerCase())) {
+				coordinate = Float.valueOf(String.valueOf(table.getValueAt(i,
+						latlon)));
+			}
+		}
+
+		return coordinate;
+	}// END: MatchStateCoordinate
+
+	public static float matchStateCoordinate(ReadLocations data, String state,
+			int latlon) {
+		/**
+		 * Match state name with its coordinates
+		 * 
+		 * 1 for lon, 0 for lat
+		 */
+		float coordinate = Float.NaN;
+
+		for (int i = 0; i < data.locations.length; i++) {
+
+			if (data.locations[i].toLowerCase().equals(state.toLowerCase())) {
+				coordinate = data.coordinates[i][latlon];
+
+			}
+		}
+
+		return coordinate;
+	}// END: MatchStateCoordinate
+
+	// ///////////////////////////
+	// ---BAYES FACTORS UTILS---//
+	// ///////////////////////////
+
 	public static double[] parseDouble(String[] lines) {
 
 		int nrow = lines.length;
@@ -422,6 +113,34 @@ public class Utils {
 		}
 		return a;
 	}
+
+	public static double colMean(double a[][], int col) {
+		double sum = 0;
+		int nrows = a.length;
+		for (int row = 0; row < nrows; row++) {
+			sum += a[row][col];
+		}
+		return sum / nrows;
+	}
+
+	public static double[] colMeans(double a[][]) {
+		int ncol = a[0].length;
+		double[] b = new double[ncol];
+		for (int c = 0; c < ncol; c++) {
+			b[c] = colMean(a, c);
+		}
+		return b;
+	}
+
+	public static String[] subset(String line[], int start, int length) {
+		String output[] = new String[length];
+		System.arraycopy(line, start, output, 0, length);
+		return output;
+	}
+
+	// /////////////////////////////
+	// ---CONTINUOUS TREE UTILS---//
+	// /////////////////////////////
 
 	public static List<Coordinates> parsePolygons(Object[] longitudeHPD,
 			Object[] latitudeHPD) {
@@ -435,7 +154,81 @@ public class Utils {
 		}
 
 		return coords;
-	}// END: GenerateCircle
+	}// END: parsePolygons
+
+	// /////////////////////////
+	// ---TIME SLICER UTILS---//
+	// /////////////////////////
+
+	public static double getTreeLength(RootedTree tree, Node node) {
+
+		int childCount = tree.getChildren(node).size();
+		if (childCount == 0)
+			return tree.getLength(node);
+
+		double length = 0;
+		for (int i = 0; i < childCount; i++) {
+			length += getTreeLength(tree, tree.getChildren(node).get(i));
+		}
+		if (node != tree.getRootNode())
+			length += tree.getLength(node);
+		return length;
+
+	}
+
+	// ///////////////////////////
+	// ---KML GENERATOR UTILS---//
+	// ///////////////////////////
+
+	public static double longNormalise(double lon) {
+		// normalise to -180...+180
+		return (lon + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
+	}
+
+	public static float getMercatorLatitude(double lat) {
+
+		double R_MAJOR = 6378137.0;
+		double R_MINOR = 6356752.3142;
+
+		if (lat > 89.5) {
+			lat = 89.5;
+		}
+		if (lat < -89.5) {
+			lat = -89.5;
+		}
+		double temp = R_MINOR / R_MAJOR;
+		double es = 1.0 - (temp * temp);
+		double eccent = Math.sqrt(es);
+		double phi = Math.toRadians(lat);
+		double sinphi = Math.sin(phi);
+		double con = eccent * sinphi;
+		double com = 0.5 * eccent;
+		con = Math.pow(((1.0 - con) / (1.0 + con)), com);
+		double ts = Math.tan(0.5 * ((Math.PI * 0.5) - phi)) / con;
+		double y = 0 - R_MAJOR * Math.log(ts);
+
+		return (float) y;
+	}
+
+	public static List<Point> convertToPoint(List<Coordinates> coords) {
+
+		List<Point> points = new ArrayList<Point>();
+
+		Iterator<Coordinates> iterator = coords.iterator();
+
+		while (iterator.hasNext()) {
+
+			Point point = new Point();
+			Coordinates coord = iterator.next();
+			point.setLongitude(coord.getLongitude());
+			point.setLatitude(coord.getLatitude());
+			point.setAltitude(0.0);
+
+			points.add(point);
+		}
+
+		return points;
+	}// END: convertToPoint
 
 	public static double greatCircDistSpherLawCos(double startLon,
 			double startLat, double endLon, double endLat) {
@@ -687,114 +480,10 @@ public class Utils {
 		return Math.toRadians((Math.toDegrees(brng) + 360) % 360);
 	}
 
-	public static double longNormalise(double lon) {
-		// normalise to -180...+180
-		return (lon + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
-	}
+	// /////////////////
+	// ---GUI UTILS---//
+	// /////////////////
 
-	public static float getMercatorLatitude(double lat) {
-
-		double R_MAJOR = 6378137.0;
-		double R_MINOR = 6356752.3142;
-
-		if (lat > 89.5) {
-			lat = 89.5;
-		}
-		if (lat < -89.5) {
-			lat = -89.5;
-		}
-		double temp = R_MINOR / R_MAJOR;
-		double es = 1.0 - (temp * temp);
-		double eccent = Math.sqrt(es);
-		double phi = Math.toRadians(lat);
-		double sinphi = Math.sin(phi);
-		double con = eccent * sinphi;
-		double com = 0.5 * eccent;
-		con = Math.pow(((1.0 - con) / (1.0 + con)), com);
-		double ts = Math.tan(0.5 * ((Math.PI * 0.5) - phi)) / con;
-		double y = 0 - R_MAJOR * Math.log(ts);
-
-		return (float) y;
-	}
-
-	public static float matchStateCoordinate(InteractiveTableModel table,
-			String state, int latlon) {
-		/**
-		 * Match state name with its coordinates
-		 * 
-		 * 1 for lon, 2 for lat
-		 */
-		float coordinate = Float.NaN;
-
-		for (int i = 0; i < table.getRowCount(); i++) {
-
-			String name = String.valueOf(table.getValueAt(i, 0));
-
-			if (name.toLowerCase().equals(state.toLowerCase())) {
-				coordinate = Float.valueOf(String.valueOf(table.getValueAt(i,
-						latlon)));
-			}
-		}
-
-		return coordinate;
-	}// END: MatchStateCoordinate
-
-	public static float matchStateCoordinate(ReadLocations data, String state,
-			int latlon) {
-		/**
-		 * Match state name with its coordinates
-		 * 
-		 * 1 for lon, 0 for lat
-		 */
-		float coordinate = Float.NaN;
-
-		for (int i = 0; i < data.locations.length; i++) {
-
-			if (data.locations[i].toLowerCase().equals(state.toLowerCase())) {
-				coordinate = data.coordinates[i][latlon];
-
-			}
-		}
-
-		return coordinate;
-	}// END: MatchStateCoordinate
-
-	public static String[] subset(String line[], int start, int length) {
-		String output[] = new String[length];
-		System.arraycopy(line, start, output, 0, length);
-		return output;
-	}
-
-	public static int newton(int n, int k) {
-		BigInteger newton = BigInteger.valueOf(1);
-		String newtonString = null;
-		for (int i = 1; i <= k; i++) {
-			newton = newton.multiply(BigInteger.valueOf(n - i + 1)).divide(
-					BigInteger.valueOf(i));
-			newtonString = newton.toString();
-		}
-		return Integer.parseInt(newtonString);
-	}
-
-	public static double colMean(double a[][], int col) {
-		double sum = 0;
-		int nrows = a.length;
-		for (int row = 0; row < nrows; row++) {
-			sum += a[row][col];
-		}
-		return sum / nrows;
-	}
-
-	public static double[] colMeans(double a[][]) {
-		int ncol = a[0].length;
-		double[] b = new double[ncol];
-		for (int c = 0; c < ncol; c++) {
-			b[c] = colMean(a, c);
-		}
-		return b;
-	}
-
-	/** Return the currently active frame. */
 	public static Frame getActiveFrame() {
 		Frame result = null;
 		Frame[] frames = Frame.getFrames();
@@ -827,6 +516,7 @@ public class Utils {
 	}
 
 	public static void updateProgress(double progressPercentage) {
+
 		final int width = 50; // progress bar width in chars
 
 		System.out.print("\r[");
@@ -840,9 +530,347 @@ public class Utils {
 		System.out.print("]");
 	}
 
+	// ////////////////////
+	// ---COMMON UTILS---//
+	// ////////////////////
+
+	public static String getKMLDate(double fractionalDate) {
+
+		int year = (int) fractionalDate;
+		String yearString;
+
+		if (year < 10) {
+			yearString = "000" + year;
+		} else if (year < 100) {
+			yearString = "00" + year;
+		} else if (year < 1000) {
+			yearString = "0" + year;
+		} else {
+			yearString = "" + year;
+		}
+
+		double fractionalMonth = fractionalDate - year;
+
+		int month = (int) (12.0 * fractionalMonth);
+		String monthString;
+
+		if (month < 10) {
+			monthString = "0" + month;
+		} else {
+			monthString = "" + month;
+		}
+
+		int day = (int) Math.round(30 * (12 * fractionalMonth - month));
+		String dayString;
+
+		if (day < 10) {
+			dayString = "0" + day;
+		} else {
+			dayString = "" + day;
+		}
+
+		return yearString + "-" + monthString + "-" + dayString;
+	}
+
+	public static int getIntegerNodeAttribute(Node node, String attributeName) {
+		if (node.getAttribute(attributeName) == null) {
+			throw new RuntimeException("Attribute, " + attributeName
+					+ ", missing from node");
+		}
+		return (Integer) node.getAttribute(attributeName);
+	}
+
+	public static int getIntegerNodeAttribute(Node node, String attributeName,
+			int defaultValue) {
+		if (node.getAttribute(attributeName) == null) {
+			return defaultValue;
+		}
+		return (Integer) node.getAttribute(attributeName);
+	}
+
+	public static double getDoubleNodeAttribute(Node node, String attributeName) {
+		if (node.getAttribute(attributeName) == null) {
+			throw new RuntimeException("Attribute, " + attributeName
+					+ ", missing from node");
+		}
+		return (Double) node.getAttribute(attributeName);
+	}
+
+	public static double getDoubleNodeAttribute(Node node,
+			String attributeName, double defaultValue) {
+		if (node.getAttribute(attributeName) == null) {
+			return defaultValue;
+		}
+		return (Double) node.getAttribute(attributeName);
+	}
+
+	public static String getStringNodeAttribute(Node node, String attributeName) {
+		if (node.getAttribute(attributeName) == null) {
+			throw new RuntimeException("Attribute, " + attributeName
+					+ ", missing from node");
+		}
+		return (String) node.getAttribute(attributeName);
+	}
+
+	public static String getStringNodeAttribute(Node node,
+			String attributeName, String defaultValue) {
+		if (node.getAttribute(attributeName) == null) {
+			return defaultValue;
+		}
+		return (String) node.getAttribute(attributeName);
+	}
+
+	public static Object getObjectNodeAttribute(Node node, String attributeName) {
+		if (node.getAttribute(attributeName) == null) {
+			throw new RuntimeException("Attribute, " + attributeName
+					+ ", missing from node");
+		}
+		return node.getAttribute(attributeName);
+	}
+
+	public static Object[] getObjectArrayNodeAttribute(Node node,
+			String attributeName) {
+		if (node.getAttribute(attributeName) == null) {
+			throw new RuntimeException("Attribute, " + attributeName
+					+ ", missing from node");
+		}
+		return (Object[]) node.getAttribute(attributeName);
+	}
+
+	public static double[] getDoubleArrayNodeAttribute(Node node,
+			String attributeName) {
+		if (node.getAttribute(attributeName) == null) {
+			throw new RuntimeException("Attribute, " + attributeName
+					+ ", missing from node");
+		}
+
+		Object[] o = (Object[]) node.getAttribute(attributeName);
+
+		double[] array = new double[o.length];
+		for (int i = 0; i < o.length; i++) {
+			array[i] = Double.valueOf(o[i].toString());
+		}
+		return array;
+	}
+
+	public static Object[] getTreeArrayAttribute(RootedTree tree,
+			String attribute) {
+		Object o = tree.getAttribute(attribute);
+		if (o == null) {
+			throw new RuntimeException("Attribute " + attribute
+					+ " missing from the tree. \n");
+		}
+
+		return (Object[]) o;
+	}
+
+	public static double[] getTreeDoubleArrayAttribute(RootedTree tree,
+			String attribute) {
+
+		Object[] o = (Object[]) tree.getAttribute(attribute);
+		if (o == null) {
+			throw new RuntimeException("Attribute " + attribute
+					+ " missing from the tree. \n");
+		}
+
+		double[] array = new double[o.length];
+		for (int i = 0; i < o.length; i++) {
+			array[i] = Double.valueOf(o[i].toString());
+		}
+
+		return array;
+	}
+
+	public static int getNodeCount(RootedTree tree) {
+
+		int NodeCount = 0;
+		for (Node node : tree.getNodes()) {
+			if (!tree.isRoot(node)) {
+				NodeCount++;
+			}
+		}
+
+		return NodeCount;
+	}
+
+	public static int getExternalNodeCount(RootedTree tree) {
+
+		int externalNodeCount = 0;
+		for (Node node : tree.getNodes()) {
+			if (tree.isExternal(node)) {
+
+				externalNodeCount++;
+			}
+		}
+
+		return externalNodeCount;
+	}
+
+	public static double getTreeHeightMin(RootedTree tree) {
+		/**
+		 * Finds the min height for given tree.
+		 * 
+		 * @param tree
+		 * @return min height
+		 */
+		double m = Double.MAX_VALUE;
+		for (Node node : tree.getNodes()) {
+			if (tree.getHeight(node) < m) {
+				m = tree.getHeight(node);
+			}
+		}
+		return m;
+	}// END: getTreeHeightMin
+
+	public static double getTreeHeightMax(RootedTree tree) {
+		/**
+		 * Finds the max height for given tree.
+		 * 
+		 * @param tree
+		 * @return max height
+		 */
+		double m = -Double.MAX_VALUE;
+		for (Node node : tree.getNodes()) {
+			if (tree.getHeight(node) > m) {
+				m = tree.getHeight(node);
+			}
+		}
+		return m;
+	}// END: getTreeHeightMax
+
+	public static double getListMin(List<Double> list) {
+		double m = Double.MAX_VALUE;
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i) < m) {
+				m = list.get(i);
+			}
+		}
+		return m;
+	}// END: getDoubleListMax
+
+	public static double getListMax(List<Double> list) {
+		double m = -Double.MAX_VALUE;
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i) > m) {
+				m = list.get(i);
+			}
+		}
+		return m;
+	}// END: getDoubleListMax
+
+	public static double get2DArrayMax(double[][] array) {
+		double m = -Double.MAX_VALUE;
+		for (int i = 0; i < array.length; i++) {
+			for (int j = 0; j < array[0].length; j++) {
+				if (array[i][j] > m) {
+					m = array[i][j];
+				}
+			}
+		}
+		return m;
+	}// END: get2DArrayMax
+
+	public static String getKMLColor(Color color) {
+		/**
+		 * converts a Java color into a 4 channel hex color string.
+		 * 
+		 * @param color
+		 * @return the color string
+		 */
+		String a = Integer.toHexString(color.getAlpha());
+		String b = Integer.toHexString(color.getBlue());
+		String g = Integer.toHexString(color.getGreen());
+		String r = Integer.toHexString(color.getRed());
+		return (a.length() < 2 ? "0" : "") + a + (b.length() < 2 ? "0" : "")
+				+ b + (g.length() < 2 ? "0" : "") + g
+				+ (r.length() < 2 ? "0" : "") + r;
+	}
+
+	public static String getKMLColor(Color color, double opacity) {
+		/**
+		 * converts a Java color into a 4 channel hex color string.
+		 * 
+		 * @param color
+		 * @return the color string
+		 */
+		int alpha = (int) (256 * (1.0 - opacity));
+		String a = Integer.toHexString(alpha);
+		String b = Integer.toHexString(color.getBlue());
+		String g = Integer.toHexString(color.getGreen());
+		String r = Integer.toHexString(color.getRed());
+		return (a.length() < 2 ? "0" : "") + a + (b.length() < 2 ? "0" : "")
+				+ b + (g.length() < 2 ? "0" : "") + g
+				+ (r.length() < 2 ? "0" : "") + r;
+	}
+
+	public static Color getBlendedColor(float proportion, Color startColor,
+			Color endColor) {
+		proportion = Math.max(proportion, 0.0F);
+		proportion = Math.min(proportion, 1.0F);
+		float[] start = startColor.getRGBColorComponents(null);
+		float[] end = endColor.getRGBColorComponents(null);
+
+		float[] color = new float[start.length];
+		for (int i = 0; i < start.length; i++) {
+			color[i] = start[i] + ((end[i] - start[i]) * proportion);
+		}
+
+		return new Color(color[0], color[1], color[2]);
+	}
+
+	public static Color getRandomColor() {
+		/**
+		 * random color selection
+		 * 
+		 * @return the Color
+		 */
+		int red = 127 + (int) (Math.random() * 127);
+		int green = 127 + (int) (Math.random() * 127);
+		int blue = 127 + (int) (Math.random() * 127);
+		int alpha = 127 + (int) (Math.random() * 127);
+		Color col = new Color(red, green, blue, alpha);
+
+		return col;
+	}// END: getRandomColor
+
+	public static double map(double x, double x1, double x2, double y1,
+			double y2) {
+		/**
+		 * maps a single value from its range into another interval
+		 * 
+		 * @param x1
+		 *            , x2 - range of x; y1, y2 - interval
+		 * 
+		 * @return the mapped value
+		 */
+		double y = ((y1 - y2) / (x1 - x2)) * x
+				- ((x2 * y1 - x1 * y2) / (x1 - x2));
+
+		return y;
+	}// END: map
+
+	public static int newton(int n, int k) {
+		BigInteger newton = BigInteger.valueOf(1);
+		String newtonString = null;
+		for (int i = 1; i <= k; i++) {
+			newton = newton.multiply(BigInteger.valueOf(n - i + 1)).divide(
+					BigInteger.valueOf(i));
+			newtonString = newton.toString();
+		}
+		return Integer.parseInt(newtonString);
+	}
+
 	// /////////////////
 	// ---DEBUGGING---//
 	// /////////////////
+
+	public static String getSpreadFormattedTime(double time) {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd G",
+				Locale.US);
+
+		return formatter.format(time);
+	}
 
 	public static void printArray(double[] x) {
 		for (int i = 0; i < x.length; i++) {
