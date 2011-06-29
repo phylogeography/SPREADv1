@@ -447,15 +447,15 @@ public class RateIndicatorBFTab extends JPanel {
 	private class ListenGenerateKml implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
+			generateKml.setEnabled(false);
+			progressBar.setIndeterminate(true);
+
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
 				// Executed in background thread
 				public Void doInBackground() {
 
 					try {
-
-						generateKml.setEnabled(false);
-						progressBar.setIndeterminate(true);
 
 						RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 
@@ -569,15 +569,15 @@ public class RateIndicatorBFTab extends JPanel {
 	private class ListenGenerateProcessing implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
+			generateProcessing.setEnabled(false);
+			progressBar.setIndeterminate(true);
+
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
 				// Executed in background thread
 				public Void doInBackground() {
 
 					try {
-
-						generateProcessing.setEnabled(false);
-						progressBar.setIndeterminate(true);
 
 						rateIndicatorBFToProcessing.setTable(table);
 

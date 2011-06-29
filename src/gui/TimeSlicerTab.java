@@ -590,15 +590,15 @@ public class TimeSlicerTab extends JPanel {
 	private class ListenGenerateKml implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
+			generateKml.setEnabled(false);
+			progressBar.setIndeterminate(true);
+
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
 				// Executed in background thread
 				public Void doInBackground() {
 
 					try {
-
-						generateKml.setEnabled(false);
-						progressBar.setIndeterminate(true);
 
 						if (new TimeSlicerSanityCheck().check(treeFilename,
 								coordinatesNameParser.getText(), treesFilename)) {
@@ -770,15 +770,15 @@ public class TimeSlicerTab extends JPanel {
 	private class ListenGenerateProcessing implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
+			generateProcessing.setEnabled(false);
+			progressBar.setIndeterminate(true);
+
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
 				// Executed in background thread
 				public Void doInBackground() {
 
 					try {
-
-						generateProcessing.setEnabled(false);
-						progressBar.setIndeterminate(true);
 
 						if (new TimeSlicerSanityCheck().check(treeFilename,
 								coordinatesNameParser.getText(), treesFilename)) {
