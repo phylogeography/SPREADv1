@@ -671,8 +671,10 @@ public class RateIndicatorBFTab extends JPanel {
 
 				// Executed in event dispatch thread
 				public void done() {
+					
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
+					
 				}
 			};
 

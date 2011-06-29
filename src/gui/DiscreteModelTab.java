@@ -9,8 +9,6 @@ import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -26,7 +24,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
-import jebl.evolution.io.ImportException;
 import templates.DiscreteTreeToKML;
 import templates.DiscreteTreeToProcessing;
 import utils.Utils;
@@ -536,7 +533,7 @@ public class DiscreteModelTab extends JPanel {
 
 			generateKml.setEnabled(false);
 			progressBar.setIndeterminate(true);
-			
+
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
 				// Executed in background thread
@@ -688,7 +685,7 @@ public class DiscreteModelTab extends JPanel {
 
 			generateProcessing.setEnabled(false);
 			progressBar.setIndeterminate(true);
-			
+
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
 				// Executed in background thread
@@ -800,7 +797,8 @@ public class DiscreteModelTab extends JPanel {
 
 						}// END: check
 
-					} catch (NullPointerException e) {
+					} catch (Exception e) {
+						
 						e.printStackTrace();
 
 						String msg = String.format("Unexpected problem: %s", e
@@ -810,14 +808,6 @@ public class DiscreteModelTab extends JPanel {
 								msg, "Error", JOptionPane.ERROR_MESSAGE,
 								errorIcon);
 
-					} catch (IOException e) {
-						e.printStackTrace();
-					} catch (ImportException e) {
-						e.printStackTrace();
-					} catch (NumberFormatException e) {
-						e.printStackTrace();
-					} catch (ParseException e) {
-						e.printStackTrace();
 					}
 
 					return null;

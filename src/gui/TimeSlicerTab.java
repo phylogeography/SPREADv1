@@ -722,9 +722,13 @@ public class TimeSlicerTab extends JPanel {
 
 							timeSlicerToKML.GenerateKML();
 
+							System.out.println("Finished in: "
+									+ timeSlicerToKML.time + " msec \n");
+
 						}// END: check
 
 					} catch (Exception e) {
+
 						e.printStackTrace();
 
 						String msg = String.format("Unexpected problem: %s", e
@@ -735,6 +739,7 @@ public class TimeSlicerTab extends JPanel {
 								errorIcon);
 
 					} catch (OutOfMemoryError e) {
+
 						e.printStackTrace();
 
 						String msg = String.format("Unexpected problem: %s", e
@@ -750,6 +755,7 @@ public class TimeSlicerTab extends JPanel {
 
 				// Executed in event dispatch thread
 				public void done() {
+
 					generateKml.setEnabled(true);
 					progressBar.setIndeterminate(false);
 
@@ -896,9 +902,12 @@ public class TimeSlicerTab extends JPanel {
 
 							timeSlicerToProcessing.init();
 
+							System.out.println("Finished. \n");
+
 						}// END: check
 
 					} catch (OutOfMemoryError e) {
+
 						e.printStackTrace();
 
 						JOptionPane.showMessageDialog(Utils.getActiveFrame(), e
@@ -907,6 +916,7 @@ public class TimeSlicerTab extends JPanel {
 								JOptionPane.ERROR_MESSAGE, errorIcon);
 
 					} catch (Exception e) {
+
 						e.printStackTrace();
 
 						JOptionPane.showMessageDialog(Utils.getActiveFrame(), e
@@ -920,7 +930,6 @@ public class TimeSlicerTab extends JPanel {
 				// Executed in event dispatch thread
 				public void done() {
 
-					System.out.println("Finished. \n");
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
 
