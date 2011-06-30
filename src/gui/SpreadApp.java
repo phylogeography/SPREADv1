@@ -151,10 +151,11 @@ public class SpreadApp {
 	private class ListenMenuHelp implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
-			String helpText = "SPREAD \n"
-					+ "Spatial Phylogenetic Reconstruction of EvolutionAry Dynamics\n"
-					+ "Version 1.0, 2011 \n"
-					+ "www.phylogeography.org/SPREAD \n"
+			String helpText = "\n"
+					+ "                                       SPREAD \n"
+					+ "Spatial Phylogenetic Reconstruction of Evolutionary Dynamics \n"
+					+ "                                Version 1.0, 2011 \n"
+					+ "                     www.phylogeography.org/SPREAD \n"
 					+ "\n"
 					+ "BEAST software: http://beast.bio.ed.ac.uk/Main_Page \n"
 					+ "Processing libraries: http://processing.org/ \n"
