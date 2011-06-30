@@ -22,6 +22,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
@@ -593,15 +594,23 @@ public class ContinuousModelTab extends JPanel {
 
 						}
 
-					} catch (Exception e) {
-						e.printStackTrace();
+					} catch (final Exception e) {
 
-						String msg = String.format("Unexpected problem: %s", e
-								.toString());
+						SwingUtilities.invokeLater(new Runnable() {
 
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
-								msg, "Error", JOptionPane.ERROR_MESSAGE,
-								errorIcon);
+							public void run() {
+
+								e.printStackTrace();
+
+								String msg = String.format(
+										"Unexpected problem: %s", e.toString());
+
+								JOptionPane.showMessageDialog(Utils
+										.getActiveFrame(), msg, "Error",
+										JOptionPane.ERROR_MESSAGE, errorIcon);
+
+							}
+						});
 
 					}
 
@@ -726,16 +735,23 @@ public class ContinuousModelTab extends JPanel {
 
 						}// END: check
 
-					} catch (Exception e) {
+					} catch (final Exception e) {
 
-						e.printStackTrace();
+						SwingUtilities.invokeLater(new Runnable() {
 
-						String msg = String.format("Unexpected problem: %s", e
-								.toString());
+							public void run() {
 
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
-								msg, "Error", JOptionPane.ERROR_MESSAGE,
-								errorIcon);
+								e.printStackTrace();
+
+								String msg = String.format(
+										"Unexpected problem: %s", e.toString());
+
+								JOptionPane.showMessageDialog(Utils
+										.getActiveFrame(), msg, "Error",
+										JOptionPane.ERROR_MESSAGE, errorIcon);
+
+							}
+						});
 
 					}
 

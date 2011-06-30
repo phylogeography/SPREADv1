@@ -21,6 +21,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
@@ -655,15 +656,24 @@ public class RateIndicatorBFTab extends JPanel {
 
 						System.out.println("Finished. \n");
 
-					} catch (Exception e) {
-						e.printStackTrace();
+					} catch (final Exception e) {
 
-						String msg = String.format("Unexpected problem: %s", e
-								.toString());
+						SwingUtilities.invokeLater(new Runnable() {
 
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
-								msg, "Error", JOptionPane.ERROR_MESSAGE,
-								errorIcon);
+							public void run() {
+
+								e.printStackTrace();
+
+								String msg = String.format(
+										"Unexpected problem: %s", e.toString());
+
+								JOptionPane.showMessageDialog(Utils
+										.getActiveFrame(), msg, "Error",
+										JOptionPane.ERROR_MESSAGE, errorIcon);
+
+							}
+						});
+
 					}
 
 					return null;
@@ -671,10 +681,10 @@ public class RateIndicatorBFTab extends JPanel {
 
 				// Executed in event dispatch thread
 				public void done() {
-					
+
 					generateProcessing.setEnabled(true);
 					progressBar.setIndeterminate(false);
-					
+
 				}
 			};
 

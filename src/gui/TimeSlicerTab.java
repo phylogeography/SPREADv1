@@ -22,6 +22,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
@@ -727,27 +728,44 @@ public class TimeSlicerTab extends JPanel {
 
 						}// END: check
 
-					} catch (Exception e) {
+					} catch (final OutOfMemoryError e) {
 
-						e.printStackTrace();
+						SwingUtilities.invokeLater(new Runnable() {
 
-						String msg = String.format("Unexpected problem: %s", e
-								.toString());
+							public void run() {
 
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
-								msg, "Error", JOptionPane.ERROR_MESSAGE,
-								errorIcon);
+								e.printStackTrace();
 
-					} catch (OutOfMemoryError e) {
+								String msg = String.format(
+										"Unexpected problem: %s", e.toString());
 
-						e.printStackTrace();
+								JOptionPane.showMessageDialog(Utils
+										.getActiveFrame(), msg
+										+ "\nIncrease Java Heap Space",
+										"Error", JOptionPane.ERROR_MESSAGE,
+										errorIcon);
 
-						String msg = String.format("Unexpected problem: %s", e
-								.toString());
+							}
+						});
 
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
-								msg, "Error", JOptionPane.ERROR_MESSAGE,
-								errorIcon);
+					} catch (final Exception e) {
+
+						SwingUtilities.invokeLater(new Runnable() {
+
+							public void run() {
+
+								e.printStackTrace();
+
+								String msg = String.format(
+										"Unexpected problem: %s", e.toString());
+
+								JOptionPane.showMessageDialog(Utils
+										.getActiveFrame(), msg, "Error",
+										JOptionPane.ERROR_MESSAGE, errorIcon);
+
+							}
+						});
+
 					}
 
 					return null;
@@ -906,22 +924,44 @@ public class TimeSlicerTab extends JPanel {
 
 						}// END: check
 
-					} catch (OutOfMemoryError e) {
+					} catch (final OutOfMemoryError e) {
 
-						e.printStackTrace();
+						SwingUtilities.invokeLater(new Runnable() {
 
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(), e
-								.toString()
-								+ "\nIncrease Java Heap Space", "Error",
-								JOptionPane.ERROR_MESSAGE, errorIcon);
+							public void run() {
 
-					} catch (Exception e) {
+								e.printStackTrace();
 
-						e.printStackTrace();
+								String msg = String.format(
+										"Unexpected problem: %s", e.toString());
 
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(), e
-								.toString(), "Error",
-								JOptionPane.ERROR_MESSAGE, errorIcon);
+								JOptionPane.showMessageDialog(Utils
+										.getActiveFrame(), msg
+										+ "\nIncrease Java Heap Space",
+										"Error", JOptionPane.ERROR_MESSAGE,
+										errorIcon);
+
+							}
+						});
+
+					} catch (final Exception e) {
+
+						SwingUtilities.invokeLater(new Runnable() {
+
+							public void run() {
+
+								e.printStackTrace();
+
+								String msg = String.format(
+										"Unexpected problem: %s", e.toString());
+
+								JOptionPane.showMessageDialog(Utils
+										.getActiveFrame(), msg, "Error",
+										JOptionPane.ERROR_MESSAGE, errorIcon);
+
+							}
+						});
+
 					}
 
 					return null;
