@@ -20,7 +20,7 @@ Contains visualisations (templates), wrapped in a user friendly interface. Suppo
 
 h1. DOWNLOAD
                             
-Compiled version can be downloaded from "here":http://dl.dropbox.com/u/5169517/spread.jar
+Compiled application can be downloaded from "here":http://dl.dropbox.com/u/5169517/spread.jar
 
 h1. COMPILING
 
