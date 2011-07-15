@@ -67,6 +67,7 @@ public class ContinuousModelTab extends JPanel {
 	private JTextField numberOfIntervalsParser;
 	private JTextField maxAltMappingParser;
 	private JTextField kmlPathParser;
+	private JTextField timescalerParser;
 
 	// Spinners
 	private DateSpinner dateSpinner;
@@ -123,6 +124,7 @@ public class ContinuousModelTab extends JPanel {
 		numberOfIntervalsParser = new JTextField("100", 10);
 		maxAltMappingParser = new JTextField("5000000", 10);
 		kmlPathParser = new JTextField("output.kml", 10);
+		timescalerParser = new JTextField("1.0", 10);
 
 		// Setup buttons
 		generateKml = new JButton("Generate", nuclearIcon);
@@ -305,6 +307,13 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
+		tmpPanelsHolder.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Time scale multiplier:"));
+		tmpPanel.add(timescalerParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
@@ -574,11 +583,14 @@ public class ContinuousModelTab extends JPanel {
 									+ " "
 									+ (eraParser.getSelectedIndex() == 0 ? "AD"
 											: "BC"));
-
+							// TODO
 							continuousTreeToKML
-									.setNumberOfIntervals(Integer
-											.valueOf(numberOfIntervalsParser
+									.setTimescaler(Double
+											.valueOf(timescalerParser
 													.getText()));
+
+							continuousTreeToKML.setNumberOfIntervals(Integer
+									.valueOf(numberOfIntervalsParser.getText()));
 
 							continuousTreeToKML
 									.setKmlWriterPath(workingDirectory

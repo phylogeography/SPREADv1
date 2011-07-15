@@ -66,6 +66,7 @@ public class DiscreteModelTab extends JPanel {
 	private JTextField numberOfIntervalsParser;
 	private JTextField maxAltMappingParser;
 	private JTextField kmlPathParser;
+	private JTextField timescalerParser;
 
 	// Spinners
 	private DateSpinner dateSpinner;
@@ -124,6 +125,7 @@ public class DiscreteModelTab extends JPanel {
 		numberOfIntervalsParser = new JTextField("100", 10);
 		maxAltMappingParser = new JTextField("5000000", 10);
 		kmlPathParser = new JTextField("output.kml", 10);
+		timescalerParser = new JTextField("1.0", 10);
 
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
@@ -319,6 +321,13 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
+		tmpPanelsHolder.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Time scale multiplier:"));
+		tmpPanel.add(timescalerParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
@@ -561,6 +570,12 @@ public class DiscreteModelTab extends JPanel {
 									+ " "
 									+ (eraParser.getSelectedIndex() == 0 ? "AD"
 											: "BC"));
+
+							// TODO
+							discreteTreeToKML
+									.setTimescaler(Double
+											.valueOf(timescalerParser
+													.getText()));
 
 							discreteTreeToKML
 									.setNumberOfIntervals(Integer

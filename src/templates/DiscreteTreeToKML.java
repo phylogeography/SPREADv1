@@ -36,6 +36,8 @@ public class DiscreteTreeToKML {
 
 	// how many millisecond one day holds
 	private static final int DayInMillis = 86400000;
+	// how many days one year holds
+	private static final int DaysInYear = 365;
 	// Earths radius in km
 	private static final double EarthRadius = 6371;
 
@@ -80,11 +82,11 @@ public class DiscreteTreeToKML {
 		TIME, DISTANCE, DEFAULT, USER
 	}
 
-	private enum timescalerEnum {
-		DAYS, MONTHS, YEARS
-	}
+	// private enum timescalerEnum {
+	// DAYS, MONTHS, YEARS
+	// }
 
-	private timescalerEnum timescalerSwitcher;
+	// private timescalerEnum timescalerSwitcher;
 	private branchesMappingEnum branchesColorMapping;
 	private branchesMappingEnum branchesOpacityMapping;
 	private branchesMappingEnum altitudeMapping;
@@ -93,7 +95,7 @@ public class DiscreteTreeToKML {
 	public DiscreteTreeToKML() {
 
 		// parse combobox choices here
-		timescalerSwitcher = timescalerEnum.YEARS;
+		// timescalerSwitcher = timescalerEnum.YEARS;
 		branchesColorMapping = branchesMappingEnum.TIME;
 		branchesOpacityMapping = branchesMappingEnum.TIME;
 		altitudeMapping = branchesMappingEnum.DISTANCE;
@@ -101,6 +103,10 @@ public class DiscreteTreeToKML {
 		generator = new Random();
 
 	}// END: DiscreteTreeToKML()
+
+	public void setTimescaler(double timescaler) {
+		this.timescaler = timescaler;
+	}
 
 	public void setStateAttName(String name) {
 		stateAttName = name;
@@ -213,17 +219,17 @@ public class DiscreteTreeToKML {
 		time = -System.currentTimeMillis();
 
 		// this is to choose the proper time scale
-		timescaler = Double.NaN;
-		switch (timescalerSwitcher) {
-		case DAYS:
-			timescaler = 1;
-			break;
-		case MONTHS:
-			timescaler = 30;
-		case YEARS:
-			timescaler = 365;
-			break;
-		}
+		// timescaler = Double.NaN;
+		// switch (timescalerSwitcher) {
+		// case DAYS:
+		// timescaler = 1;
+		// break;
+		// case MONTHS:
+		// timescaler = 30;
+		// case YEARS:
+		// timescaler = 365;
+		// break;
+		// }
 
 		tree = (RootedTree) importer.importNextTree();
 
@@ -233,8 +239,8 @@ public class DiscreteTreeToKML {
 		// This is a general time span for the tree
 		mrsd = new ThreadLocalSpreadDate(mrsdString);
 		TimeLine timeLine = new TimeLine(mrsd.getTime()
-				- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
-				numberOfIntervals);
+				- (rootHeight * DayInMillis * DaysInYear * timescaler), mrsd
+				.getTime(), numberOfIntervals);
 
 		// this is to generate kml output
 		KMLGenerator kmloutput = new KMLGenerator();
@@ -440,10 +446,10 @@ public class DiscreteTreeToKML {
 							Style linesStyle = new Style(col, branchWidth);
 							linesStyle.setId("branch_style" + branchStyleId);
 
-							double startTime = mrsd
-									.minus((int) (nodeHeight * timescaler));
-							double endTime = mrsd
-									.minus((int) (parentHeight * timescaler));
+							double startTime = mrsd.minus((int) (nodeHeight
+									* DaysInYear * timescaler));
+							double endTime = mrsd.minus((int) (parentHeight
+									* DaysInYear * timescaler));
 
 							branchesLayer.addItem(new Line(
 									(parentState + ":" + state), // string name
@@ -532,7 +538,8 @@ public class DiscreteTreeToKML {
 									.sqrt(numberOfLineages[i][j + 1]))
 									* polygonsRadiusMultiplier;
 
-							int days = (int) (numberOfLineages[i][0] * timescaler);
+							int days = (int) (numberOfLineages[i][0]
+									* DaysInYear * timescaler);
 							double startTime = mrsd.minus(days);
 							// this is to get duration in milliseconds:
 							double duration = ((rootHeight - numberOfLineages[i][0]) / (i + 1))
@@ -556,7 +563,8 @@ public class DiscreteTreeToKML {
 											36), // numPoints
 									circlesStyle, // Style style
 									startTime, // double startime
-									duration * timescaler // double duration
+									duration * DaysInYear * timescaler // double
+																		// duration
 							));
 
 						}

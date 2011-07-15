@@ -30,7 +30,10 @@ import contouring.ContourWithSynder;
 @SuppressWarnings("serial")
 public class TimeSlicerToProcessing extends PApplet {
 
+	// how many millisecond one day holds
 	private final int DayInMillis = 86400000;
+	// how many days one year holds
+	private static final int DaysInYear = 365;
 
 	// Concurrency stuff
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
@@ -80,11 +83,11 @@ public class TimeSlicerToProcessing extends PApplet {
 	private double HPD;
 	private int gridSize;
 
-	private enum timescalerEnum {
-		DAYS, MONTHS, YEARS
-	}
+//	private enum timescalerEnum {
+//		DAYS, MONTHS, YEARS
+//	}
 
-	private timescalerEnum timescalerSwitcher;
+//	private timescalerEnum timescalerSwitcher;
 
 	private MapBackground mapBackground;
 	private float minX, maxX;
@@ -93,22 +96,26 @@ public class TimeSlicerToProcessing extends PApplet {
 	public TimeSlicerToProcessing() {
 
 		// parse combobox choices here
-		timescalerSwitcher = timescalerEnum.YEARS;
-
-		// this is to choose the proper time scale
-		timescaler = Double.NaN;
-		switch (timescalerSwitcher) {
-		case DAYS:
-			timescaler = 1;
-			break;
-		case MONTHS:
-			timescaler = 30;
-		case YEARS:
-			timescaler = 365;
-			break;
-		}
+//		timescalerSwitcher = timescalerEnum.YEARS;
+//
+//		// this is to choose the proper time scale
+//		timescaler = Double.NaN;
+//		switch (timescalerSwitcher) {
+//		case DAYS:
+//			timescaler = 1;
+//			break;
+//		case MONTHS:
+//			timescaler = 30;
+//		case YEARS:
+//			timescaler = 365;
+//			break;
+//		}
 
 	}// END: TimeSlicerToProcessing()
+	
+	public void setTimescaler(double timescaler) {
+		this.timescaler = timescaler;
+	}
 
 	public void setHPD(double percent) {
 		HPD = percent;
@@ -467,7 +474,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		// This is a general time span for all of the trees
 		double treeRootHeight = mccTree.getHeight(mccTree.getRootNode());
 		double startTime = mrsd.getTime()
-				- (treeRootHeight * DayInMillis * timescaler);
+				- (treeRootHeight * DayInMillis * DaysInYear * timescaler);
 		double endTime = mrsd.getTime();
 		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
 

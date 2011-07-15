@@ -39,7 +39,10 @@ public class TimeSlicerToKML {
 
 	public long time;
 
+	// how many millisecond one day holds
 	private final int DayInMillis = 86400000;
+	// how many days one year holds
+	private static final int DaysInYear = 365;
 
 	// Concurrency stuff
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
@@ -93,29 +96,33 @@ public class TimeSlicerToKML {
 	private double HPD;
 	private int gridSize;
 
-	private enum timescalerEnum {
-		DAYS, MONTHS, YEARS
-	}
+	// private enum timescalerEnum {
+	// DAYS, MONTHS, YEARS
+	// }
 
-	private timescalerEnum timescalerSwitcher;
+	// private timescalerEnum timescalerSwitcher;
 
 	public TimeSlicerToKML() {
 
-		// parse combobox choices here
-		timescalerSwitcher = timescalerEnum.YEARS;
+		// // parse combobox choices here
+		// timescalerSwitcher = timescalerEnum.YEARS;
+		//
+		// // this is to choose the proper time scale
+		// timescaler = Double.NaN;
+		// switch (timescalerSwitcher) {
+		// case DAYS:
+		// timescaler = 1;
+		// break;
+		// case MONTHS:
+		// timescaler = 30;
+		// case YEARS:
+		// timescaler = 365;
+		// break;
+		// }
+	}
 
-		// this is to choose the proper time scale
-		timescaler = Double.NaN;
-		switch (timescalerSwitcher) {
-		case DAYS:
-			timescaler = 1;
-			break;
-		case MONTHS:
-			timescaler = 30;
-		case YEARS:
-			timescaler = 365;
-			break;
-		}
+	public void setTimescaler(double timescaler) {
+		this.timescaler = timescaler;
 	}
 
 	public void setHPD(double percent) {
@@ -492,10 +499,10 @@ public class TimeSlicerToKML {
 						linesStyle.setId("branch_style" + branchStyleId);
 						branchStyleId++;
 
-						double startTime = mrsd
-								.minus((int) (nodeHeight * timescaler));
-						double endTime = mrsd
-								.minus((int) (parentHeight * timescaler));
+						double startTime = mrsd.minus((int) (nodeHeight
+								* DaysInYear * timescaler));
+						double endTime = mrsd.minus((int) (parentHeight
+								* DaysInYear * timescaler));
 
 						branchesLayer
 								.addItem(new Line((parentLongitude + ","
@@ -529,7 +536,7 @@ public class TimeSlicerToKML {
 		// This is a general time span for all of the trees
 		double treeRootHeight = tree.getHeight(tree.getRootNode());
 		double startTime = mrsd.getTime()
-				- (treeRootHeight * DayInMillis * timescaler);
+				- (treeRootHeight * DayInMillis * DaysInYear * timescaler);
 		double endTime = mrsd.getTime();
 		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
 

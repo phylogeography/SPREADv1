@@ -33,6 +33,8 @@ public class ContinuousTreeToKML {
 
 	// how many millisecond one day holds
 	private static final int DayInMillis = 86400000;
+	// how many days one year holds
+	private static final int DaysInYear = 365;
 	// Earths radius in km
 	private static final double EarthRadius = 6371;
 
@@ -83,11 +85,11 @@ public class ContinuousTreeToKML {
 		TIME, RATE, USER
 	}
 
-	private enum timescalerEnum {
-		DAYS, MONTHS, YEARS
-	}
+//	private enum timescalerEnum {
+//		YEARS, USER
+//	}
 
-	private timescalerEnum timescalerSwitcher;
+//	private timescalerEnum timescalerSwitcher;
 	private branchesMappingEnum branchesColorMapping;
 	private branchesMappingEnum branchesOpacityMapping;
 	private branchesMappingEnum branchesAltitudeMapping;
@@ -97,7 +99,7 @@ public class ContinuousTreeToKML {
 	public ContinuousTreeToKML() {
 
 		// parse combobox choices here
-		timescalerSwitcher = timescalerEnum.YEARS;
+		// timescalerSwitcher = timescalerEnum.YEARS;
 		branchesColorMapping = branchesMappingEnum.TIME;
 		branchesOpacityMapping = branchesMappingEnum.TIME;
 		branchesAltitudeMapping = branchesMappingEnum.DISTANCE;
@@ -105,6 +107,11 @@ public class ContinuousTreeToKML {
 		polygonsOpacityMapping = polygonsMappingEnum.TIME;
 
 	}// END: ContinuousTreeToKML()
+
+
+	public void setTimescaler(double timescaler) {
+		this.timescaler = timescaler;
+	}
 
 	public void setHPD(String percent) {
 		HPD = percent;
@@ -213,17 +220,14 @@ public class ContinuousTreeToKML {
 		time = -System.currentTimeMillis();
 
 		// this is to choose the proper time scale
-		timescaler = Double.NaN;
-		switch (timescalerSwitcher) {
-		case DAYS:
-			timescaler = 1;
-			break;
-		case MONTHS:
-			timescaler = 30;
-		case YEARS:
-			timescaler = 365;
-			break;
-		}
+//		timescaler = Double.NaN;
+//		switch (timescalerSwitcher) {
+//		case YEARS:
+//			timescaler = 365;
+//			break;
+//		case USER:
+//			break;
+//		}
 
 		tree = (RootedTree) importer.importNextTree();
 
@@ -240,7 +244,7 @@ public class ContinuousTreeToKML {
 		// This is a general time span for the tree
 		mrsd = new ThreadLocalSpreadDate(mrsdString);
 		TimeLine timeLine = new TimeLine(mrsd.getTime()
-				- (rootHeight * DayInMillis * timescaler), mrsd.getTime(),
+				- (rootHeight * DayInMillis * DaysInYear * timescaler), mrsd.getTime(),
 				numberOfIntervals);
 
 		// this is to generate kml output
@@ -393,9 +397,9 @@ public class ContinuousTreeToKML {
 						branchStyleId++;
 
 						double startTime = mrsd
-								.minus((int) (nodeHeight * timescaler));
+								.minus((int) (nodeHeight * DaysInYear * timescaler));
 						double endTime = mrsd
-								.minus((int) (parentHeight * timescaler));
+								.minus((int) (parentHeight * DaysInYear * timescaler));
 
 						branchesLayer
 								.addItem(new Line((parentLongitude + ","
@@ -536,7 +540,7 @@ public class ContinuousTreeToKML {
 								polygonsStyle.setId("polygon_style"
 										+ polygonsStyleId);
 
-								int days = (int) (nodeHeight * timescaler);
+								int days = (int) (nodeHeight * DaysInYear * timescaler);
 								double startTime = mrsd.minus(days);
 
 								polygonsLayer.addItem(new Polygon("node"

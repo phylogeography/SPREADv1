@@ -69,6 +69,7 @@ public class TimeSlicerTab extends JPanel {
 	private JTextField kmlPathParser;
 	private JTextField maxAltMappingParser;
 	private JTextField HPDParser;
+	private JTextField timescalerParser;
 
 	// Spinners
 	private DateSpinner dateSpinner;
@@ -135,6 +136,7 @@ public class TimeSlicerTab extends JPanel {
 		maxAltMappingParser = new JTextField("500000", 5);
 		kmlPathParser = new JTextField("output.kml", 10);
 		HPDParser = new JTextField("0.95", 5);
+		timescalerParser = new JTextField("1.0", 10);
 
 		// Setup buttons
 		generateKml = new JButton("Generate", nuclearIcon);
@@ -363,6 +365,13 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
+		tmpPanelsHolder.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Time scale multiplier:"));
+		tmpPanel.add(timescalerParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -647,6 +656,10 @@ public class TimeSlicerTab extends JPanel {
 											.valueOf(numberOfIntervalsParser
 													.getText()));
 
+							// TODO
+							timeSlicerToKML.setTimescaler(Double
+									.valueOf(timescalerParser.getText()));
+
 							timeSlicerToKML.setKmlWriterPath(workingDirectory
 									.toString().concat("/").concat(
 											kmlPathParser.getText()));
@@ -847,6 +860,10 @@ public class TimeSlicerTab extends JPanel {
 									.setNumberOfIntervals(Integer
 											.valueOf(numberOfIntervalsParser
 													.getText()));
+
+							// TODO
+							timeSlicerToProcessing.setTimescaler(Double
+									.valueOf(timescalerParser.getText()));
 
 							timeSlicerToProcessing
 									.setMinPolygonRedMapping(polygonsMinColor

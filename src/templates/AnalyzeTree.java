@@ -14,6 +14,9 @@ import utils.Utils;
 
 public class AnalyzeTree implements Runnable {
 
+	// how many days one year holds
+	private static final int DaysInYear = 365;
+	
 	private RootedTree currentTree;
 	private String precisionString;
 	private String coordinatesName;
@@ -83,7 +86,7 @@ public class AnalyzeTree implements Runnable {
 						if (nodeHeight < sliceHeight
 								&& sliceHeight <= parentHeight) {
 
-							int days = (int) (sliceHeight * timescaler);
+							int days = (int) (sliceHeight * DaysInYear * timescaler);
 							double sliceTime = mrsd.minus(days);
 
 							// grow map entry if key exists
