@@ -29,9 +29,10 @@ public class ContinuousSanityCheck {
 
 					System.out.println("HERE");
 					// Set<String> set =node.getAttributeNames();
-					// for(String name: set){
+					// for(String name: set) {
 					// System.out.println(name);
 					// }
+					System.out.println();
 
 					Double longitude = Utils.getDoubleNodeAttribute(node,
 							longitudeName);
@@ -39,14 +40,14 @@ public class ContinuousSanityCheck {
 							latitudeName);
 					Double nodeHeight = tree.getHeight(node);
 
-					Node parentNode = tree.getParent(node);
-
-					Double parentLongitude = (Double) parentNode
-							.getAttribute(longitudeName);
-					Double parentLatitude = (Double) parentNode
-							.getAttribute(latitudeName);
-
-					Double parentHeight = tree.getHeight(parentNode);
+//					Node parentNode = tree.getParent(node);
+//
+//					Double parentLongitude = (Double) parentNode
+//							.getAttribute(longitudeName);
+//					Double parentLatitude = (Double) parentNode
+//							.getAttribute(latitudeName);
+//
+//					Double parentHeight = tree.getHeight(parentNode);
 
 					Integer modality = Utils.getIntegerNodeAttribute(node,
 							coordinatesName + "_" + HPD + "HPD_modality");
