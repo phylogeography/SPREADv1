@@ -272,137 +272,147 @@ public class ContinuousTreeToKML {
 
 						// System.out.println("HERE");
 
-						double longitude = Utils.getDoubleNodeAttribute(node,
-								longitudeName);
-						double latitude = Utils.getDoubleNodeAttribute(node,
-								latitudeName);
-						double nodeHeight = tree.getHeight(node);
+						Double longitude = (Double) node
+								.getAttribute(longitudeName);
+
+						Double latitude = (Double) node
+								.getAttribute(latitudeName);
+
+						Double nodeHeight = tree.getHeight(node);
 
 						Node parentNode = tree.getParent(node);
 
-						double parentLongitude = (Double) parentNode
+						Double parentLongitude = (Double) parentNode
 								.getAttribute(longitudeName);
-						double parentLatitude = (Double) parentNode
+						Double parentLatitude = (Double) parentNode
 								.getAttribute(latitudeName);
 
-						double parentHeight = tree.getHeight(parentNode);
+						Double parentHeight = tree.getHeight(parentNode);
 
-						/**
-						 * altitude mapping
-						 * */
-						double maxAltitude = Double.NaN;
-						switch (branchesAltitudeMapping) {
-						case TIME:
-							maxAltitude = Utils.map(nodeHeight, 0,
-									treeHeightMax, 0, maxAltMapping);
-							break;
-						case USER:
-							maxAltitude = Utils.map(
-									Utils.getDoubleNodeAttribute(node,
-											userAttribute), 0, treeHeightMax,
-									0, maxAltMapping);
-							break;
-						case DISTANCE:
-							maxAltitude = Utils
-									.map(Utils
-											.rhumbDistance(parentLongitude,
-													parentLatitude, longitude,
-													latitude), 0, EarthRadius,
-											0, maxAltMapping);
-							break;
-						case DEFAULT:
-							maxAltitude = 0;
-							break;
-						}
+						// TODO I will fix this spaghetti code some day... maybe
+						if (longitude != null && latitude != null
+								&& parentLongitude != null
+								&& parentLatitude != null
+								&& parentHeight != null && nodeHeight != null) {
 
-						/**
-						 * Color mapping
-						 * */
-						int red = (int) Double.NaN;
-						int green = (int) Double.NaN;
-						int blue = (int) Double.NaN;
-						switch (branchesColorMapping) {
-						case TIME:
-							red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-									minBranchRedMapping, maxBranchRedMapping);
+							/**
+							 * altitude mapping
+							 * */
+							double maxAltitude = Double.NaN;
+							switch (branchesAltitudeMapping) {
+							case TIME:
+								maxAltitude = Utils.map(nodeHeight, 0,
+										treeHeightMax, 0, maxAltMapping);
+								break;
+							case USER:
+								maxAltitude = Utils.map(Utils
+										.getDoubleNodeAttribute(node,
+												userAttribute), 0,
+										treeHeightMax, 0, maxAltMapping);
+								break;
+							case DISTANCE:
+								maxAltitude = Utils.map(Utils.rhumbDistance(
+										parentLongitude, parentLatitude,
+										longitude, latitude), 0, EarthRadius,
+										0, maxAltMapping);
+								break;
+							case DEFAULT:
+								maxAltitude = 0;
+								break;
+							}
 
-							green = (int) Utils.map(nodeHeight, 0,
-									treeHeightMax, minBranchGreenMapping,
-									maxBranchGreenMapping);
+							/**
+							 * Color mapping
+							 * */
+							int red = (int) Double.NaN;
+							int green = (int) Double.NaN;
+							int blue = (int) Double.NaN;
+							switch (branchesColorMapping) {
+							case TIME:
+								red = (int) Utils.map(nodeHeight, 0,
+										treeHeightMax, minBranchRedMapping,
+										maxBranchRedMapping);
 
-							blue = (int) Utils.map(nodeHeight, 0,
-									treeHeightMax, minBranchBlueMapping,
-									maxBranchBlueMapping);
+								green = (int) Utils.map(nodeHeight, 0,
+										treeHeightMax, minBranchGreenMapping,
+										maxBranchGreenMapping);
 
-							break;
-						case USER:
-							red = (int) Utils.map(Utils.getDoubleNodeAttribute(
-									node, userAttribute), 0, treeHeightMax,
-									minBranchRedMapping, maxBranchRedMapping);
+								blue = (int) Utils.map(nodeHeight, 0,
+										treeHeightMax, minBranchBlueMapping,
+										maxBranchBlueMapping);
 
-							green = (int) Utils.map(
-									Utils.getDoubleNodeAttribute(node,
-											userAttribute), 0, treeHeightMax,
-									minBranchGreenMapping,
-									maxBranchGreenMapping);
+								break;
+							case USER:
+								red = (int) Utils.map(Utils
+										.getDoubleNodeAttribute(node,
+												userAttribute), 0,
+										treeHeightMax, minBranchRedMapping,
+										maxBranchRedMapping);
 
-							blue = (int) Utils.map(
-									Utils.getDoubleNodeAttribute(node,
-											userAttribute), 0, treeHeightMax,
-									minBranchBlueMapping, maxBranchBlueMapping);
+								green = (int) Utils.map(Utils
+										.getDoubleNodeAttribute(node,
+												userAttribute), 0,
+										treeHeightMax, minBranchGreenMapping,
+										maxBranchGreenMapping);
 
-							break;
-						}
+								blue = (int) Utils.map(Utils
+										.getDoubleNodeAttribute(node,
+												userAttribute), 0,
+										treeHeightMax, minBranchBlueMapping,
+										maxBranchBlueMapping);
 
-						/**
-						 * opacity mapping
-						 * */
-						int alpha = (int) Double.NaN;
-						switch (branchesOpacityMapping) {
-						case TIME:
-							alpha = (int) Utils.map(nodeHeight, 0,
-									treeHeightMax, maxBranchOpacityMapping,
-									minBranchOpacityMapping);
-							break;
-						case USER:
-							alpha = (int) Utils.map(
-									Utils.getDoubleNodeAttribute(node,
-											userAttribute), 0, treeHeightMax,
-									maxBranchOpacityMapping,
-									minBranchOpacityMapping);
-							break;
-						case DEFAULT:
-							alpha = 255;
-							break;
-						}
+								break;
+							}
 
-						Color col = new Color(red, green, blue, alpha);
+							/**
+							 * opacity mapping
+							 * */
+							int alpha = (int) Double.NaN;
+							switch (branchesOpacityMapping) {
+							case TIME:
+								alpha = (int) Utils.map(nodeHeight, 0,
+										treeHeightMax, maxBranchOpacityMapping,
+										minBranchOpacityMapping);
+								break;
+							case USER:
+								alpha = (int) Utils.map(Utils
+										.getDoubleNodeAttribute(node,
+												userAttribute), 0,
+										treeHeightMax, maxBranchOpacityMapping,
+										minBranchOpacityMapping);
+								break;
+							case DEFAULT:
+								alpha = 255;
+								break;
+							}
 
-						Style linesStyle = new Style(col, branchWidth);
-						linesStyle.setId("branch_style" + branchStyleId);
-						branchStyleId++;
+							Color col = new Color(red, green, blue, alpha);
 
-						double startTime = mrsd.minus((int) (nodeHeight
-								* DaysInYear * timescaler));
-						double endTime = mrsd.minus((int) (parentHeight
-								* DaysInYear * timescaler));
+							Style linesStyle = new Style(col, branchWidth);
+							linesStyle.setId("branch_style" + branchStyleId);
+							branchStyleId++;
 
-						branchesLayer
-								.addItem(new Line((parentLongitude + ","
-										+ parentLatitude + ":" + longitude
-										+ "," + latitude), // name
-										new Coordinates(parentLongitude,
-												parentLatitude), // startCoords
-										startTime, // double startime
-										linesStyle, // style startstyle
-										new Coordinates(longitude, latitude), // endCoords
-										endTime, // double endtime
-										linesStyle, // style endstyle
-										maxAltitude, // double maxAltitude
-										0.0) // double duration
-								);
+							double startTime = mrsd.minus((int) (nodeHeight
+									* DaysInYear * timescaler));
+							double endTime = mrsd.minus((int) (parentHeight
+									* DaysInYear * timescaler));
 
-					}
+							branchesLayer.addItem(new Line((parentLongitude
+									+ "," + parentLatitude + ":" + longitude
+									+ "," + latitude), // name
+									new Coordinates(parentLongitude,
+											parentLatitude), // startCoords
+									startTime, // double startime
+									linesStyle, // style startstyle
+									new Coordinates(longitude, latitude), // endCoords
+									endTime, // double endtime
+									linesStyle, // style endstyle
+									maxAltitude, // double maxAltitude
+									0.0) // double duration
+									);
+
+						}// END: root check
+					}// END: null checks
 				}// END: node loop
 
 				layers.add(branchesLayer);
@@ -429,122 +439,123 @@ public class ContinuousTreeToKML {
 
 				int polygonsStyleId = 1;
 				for (Node node : tree.getNodes()) {
-
 					if (!tree.isRoot(node)) {
-
 						if (!tree.isExternal(node)) {
 
-							int modality = Utils.getIntegerNodeAttribute(node,
-									coordinatesName + "_" + HPD
+							Integer modality = (Integer) node
+									.getAttribute(coordinatesName + "_" + HPD
 											+ "HPD_modality");
 
-							for (int i = 1; i <= modality; i++) {
+							if (modality != null) {
 
-								Object[] longitudeHPD = Utils
-										.getObjectArrayNodeAttribute(node,
-												longitudeName + "_" + HPD
-														+ "HPD_" + i);
-								Object[] latitudeHPD = Utils
-										.getObjectArrayNodeAttribute(node,
-												latitudeName + "_" + HPD
-														+ "HPD_" + i);
+								for (int i = 1; i <= modality; i++) {
 
-								/**
-								 * Color mapping
-								 * */
-								double nodeHeight = tree.getHeight(node);
+									Object[] longitudeHPD = Utils
+											.getObjectArrayNodeAttribute(node,
+													longitudeName + "_" + HPD
+															+ "HPD_" + i);
+									Object[] latitudeHPD = Utils
+											.getObjectArrayNodeAttribute(node,
+													latitudeName + "_" + HPD
+															+ "HPD_" + i);
 
-								int red = (int) Double.NaN;
-								int green = (int) Double.NaN;
-								int blue = (int) Double.NaN;
-								switch (polygonsColorMapping) {
-								case TIME:
-									red = (int) Utils.map(nodeHeight, 0,
-											treeHeightMax,
-											minPolygonRedMapping,
-											maxPolygonRedMapping);
+									/**
+									 * Color mapping
+									 * */
+									double nodeHeight = tree.getHeight(node);
 
-									green = (int) Utils.map(nodeHeight, 0,
-											treeHeightMax,
-											minPolygonGreenMapping,
-											maxPolygonGreenMapping);
+									int red = (int) Double.NaN;
+									int green = (int) Double.NaN;
+									int blue = (int) Double.NaN;
+									switch (polygonsColorMapping) {
+									case TIME:
+										red = (int) Utils.map(nodeHeight, 0,
+												treeHeightMax,
+												minPolygonRedMapping,
+												maxPolygonRedMapping);
 
-									blue = (int) Utils.map(nodeHeight, 0,
-											treeHeightMax,
-											minPolygonBlueMapping,
-											maxPolygonBlueMapping);
+										green = (int) Utils.map(nodeHeight, 0,
+												treeHeightMax,
+												minPolygonGreenMapping,
+												maxPolygonGreenMapping);
 
-									break;
-								case USER:
-									red = (int) Utils.map(Utils
-											.getDoubleNodeAttribute(node,
-													userAttribute), 0,
-											treeHeightMax,
-											minPolygonRedMapping,
-											maxPolygonRedMapping);
+										blue = (int) Utils.map(nodeHeight, 0,
+												treeHeightMax,
+												minPolygonBlueMapping,
+												maxPolygonBlueMapping);
 
-									green = (int) Utils.map(Utils
-											.getDoubleNodeAttribute(node,
-													userAttribute), 0,
-											treeHeightMax,
-											minPolygonGreenMapping,
-											maxPolygonGreenMapping);
+										break;
+									case USER:
+										red = (int) Utils.map(Utils
+												.getDoubleNodeAttribute(node,
+														userAttribute), 0,
+												treeHeightMax,
+												minPolygonRedMapping,
+												maxPolygonRedMapping);
 
-									blue = (int) Utils.map(Utils
-											.getDoubleNodeAttribute(node,
-													userAttribute), 0,
-											treeHeightMax,
-											minPolygonBlueMapping,
-											maxPolygonBlueMapping);
+										green = (int) Utils.map(Utils
+												.getDoubleNodeAttribute(node,
+														userAttribute), 0,
+												treeHeightMax,
+												minPolygonGreenMapping,
+												maxPolygonGreenMapping);
 
-									break;
-								}
+										blue = (int) Utils.map(Utils
+												.getDoubleNodeAttribute(node,
+														userAttribute), 0,
+												treeHeightMax,
+												minPolygonBlueMapping,
+												maxPolygonBlueMapping);
 
-								/**
-								 * opacity mapping
-								 * */
-								int alpha = (int) Double.NaN;
-								switch (polygonsOpacityMapping) {
-								case TIME:
-									alpha = (int) Utils.map(nodeHeight, 0,
-											treeHeightMax,
-											maxPolygonOpacityMapping,
-											minPolygonOpacityMapping);
-									break;
-								case USER:
-									alpha = (int) Utils.map(Utils
-											.getDoubleNodeAttribute(node,
-													userAttribute), 0,
-											treeHeightMax,
-											maxPolygonOpacityMapping,
-											minPolygonOpacityMapping);
-									break;
-								}
+										break;
+									}
 
-								Color col = new Color(red, green, blue, alpha);
-								Style polygonsStyle = new Style(col, 0);
-								polygonsStyle.setId("polygon_style"
-										+ polygonsStyleId);
+									/**
+									 * opacity mapping
+									 * */
+									int alpha = (int) Double.NaN;
+									switch (polygonsOpacityMapping) {
+									case TIME:
+										alpha = (int) Utils.map(nodeHeight, 0,
+												treeHeightMax,
+												maxPolygonOpacityMapping,
+												minPolygonOpacityMapping);
+										break;
+									case USER:
+										alpha = (int) Utils.map(Utils
+												.getDoubleNodeAttribute(node,
+														userAttribute), 0,
+												treeHeightMax,
+												maxPolygonOpacityMapping,
+												minPolygonOpacityMapping);
+										break;
+									}
 
-								int days = (int) (nodeHeight * DaysInYear * timescaler);
-								double startTime = mrsd.minus(days);
+									Color col = new Color(red, green, blue,
+											alpha);
+									Style polygonsStyle = new Style(col, 0);
+									polygonsStyle.setId("polygon_style"
+											+ polygonsStyleId);
 
-								polygonsLayer.addItem(new Polygon("node"
-										+ polygonsStyleId + "_" + HPD + "HPD"
-										+ "_" + i, // String name
-										Utils.parsePolygons(longitudeHPD,
-												latitudeHPD),// List<Coordinates>
-										polygonsStyle, // Style style
-										startTime, // double startime
-										0.0 // double duration
-										));
+									int days = (int) (nodeHeight * DaysInYear * timescaler);
+									double startTime = mrsd.minus(days);
 
-								polygonsStyleId++;
+									polygonsLayer.addItem(new Polygon("node"
+											+ polygonsStyleId + "_" + HPD
+											+ "HPD" + "_" + i, // String name
+											Utils.parsePolygons(longitudeHPD,
+													latitudeHPD),// List<Coordinates>
+											polygonsStyle, // Style style
+											startTime, // double startime
+											0.0 // double duration
+											));
 
-							}// END: modality loop
+									polygonsStyleId++;
 
-						}
-					}
+								}// END: modality loop
+							}// END: null check
+						}// END: external node check
+					}// END: root check
 				}// END: nodes loop
 
 				layers.add(polygonsLayer);

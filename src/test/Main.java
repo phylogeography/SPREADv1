@@ -20,37 +20,37 @@ public class Main {
 
 			continuousTreeToKML.setCoordinatesName("location");
 
-			continuousTreeToKML.setMaxAltitudeMapping(5000);
+			continuousTreeToKML.setMaxAltitudeMapping(50000);
 
-			continuousTreeToKML.setMinPolygonRedMapping(255);
+			continuousTreeToKML.setMinPolygonRedMapping(100);
 
 			continuousTreeToKML.setMinPolygonGreenMapping(255);
 
 			continuousTreeToKML.setMinPolygonBlueMapping(255);
 
-			continuousTreeToKML.setMinPolygonOpacityMapping(255);
+			continuousTreeToKML.setMinPolygonOpacityMapping(25);
 
 			continuousTreeToKML.setMaxPolygonRedMapping(255);
 
 			continuousTreeToKML.setMaxPolygonGreenMapping(255);
 
-			continuousTreeToKML.setMaxPolygonBlueMapping(255);
+			continuousTreeToKML.setMaxPolygonBlueMapping(25);
 
 			continuousTreeToKML.setMaxPolygonOpacityMapping(255);
 
 			continuousTreeToKML.setMinBranchRedMapping(255);
 
-			continuousTreeToKML.setMinBranchGreenMapping(255);
+			continuousTreeToKML.setMinBranchGreenMapping(100);
 
 			continuousTreeToKML.setMinBranchBlueMapping(255);
 
-			continuousTreeToKML.setMinBranchOpacityMapping(255);
+			continuousTreeToKML.setMinBranchOpacityMapping(122);
 
-			continuousTreeToKML.setMaxBranchRedMapping(255);
+			continuousTreeToKML.setMaxBranchRedMapping(25);
 
-			continuousTreeToKML.setMaxBranchGreenMapping(255);
+			continuousTreeToKML.setMaxBranchGreenMapping(25);
 
-			continuousTreeToKML.setMaxBranchBlueMapping(255);
+			continuousTreeToKML.setMaxBranchBlueMapping(25);
 
 			continuousTreeToKML.setMaxBranchOpacityMapping(255);
 

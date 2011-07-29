@@ -120,7 +120,7 @@ public class ContinuousModelTab extends JPanel {
 
 		// Setup text fields
 		coordinatesNameParser = new JTextField("location", 10);
-		HPDParser = new JTextField("95", 2);
+		HPDParser = new JTextField("80", 2);
 		numberOfIntervalsParser = new JTextField("100", 10);
 		maxAltMappingParser = new JTextField("5000000", 10);
 		kmlPathParser = new JTextField("output.kml", 10);
