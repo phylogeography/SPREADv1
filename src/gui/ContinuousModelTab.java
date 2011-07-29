@@ -584,13 +584,13 @@ public class ContinuousModelTab extends JPanel {
 									+ (eraParser.getSelectedIndex() == 0 ? "AD"
 											: "BC"));
 							// TODO
-							continuousTreeToKML
-									.setTimescaler(Double
-											.valueOf(timescalerParser
-													.getText()));
+							continuousTreeToKML.setTimescaler(Double
+									.valueOf(timescalerParser.getText()));
 
-							continuousTreeToKML.setNumberOfIntervals(Integer
-									.valueOf(numberOfIntervalsParser.getText()));
+							continuousTreeToKML
+									.setNumberOfIntervals(Integer
+											.valueOf(numberOfIntervalsParser
+													.getText()));
 
 							continuousTreeToKML
 									.setKmlWriterPath(workingDirectory
@@ -604,7 +604,7 @@ public class ContinuousModelTab extends JPanel {
 							System.out.println("Finished in: "
 									+ continuousTreeToKML.time + " msec \n");
 
-						}
+						}// END: check
 
 					} catch (final Exception e) {
 

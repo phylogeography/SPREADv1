@@ -85,11 +85,6 @@ public class ContinuousTreeToKML {
 		TIME, RATE, USER
 	}
 
-//	private enum timescalerEnum {
-//		YEARS, USER
-//	}
-
-//	private timescalerEnum timescalerSwitcher;
 	private branchesMappingEnum branchesColorMapping;
 	private branchesMappingEnum branchesOpacityMapping;
 	private branchesMappingEnum branchesAltitudeMapping;
@@ -98,8 +93,6 @@ public class ContinuousTreeToKML {
 
 	public ContinuousTreeToKML() {
 
-		// parse combobox choices here
-		// timescalerSwitcher = timescalerEnum.YEARS;
 		branchesColorMapping = branchesMappingEnum.TIME;
 		branchesOpacityMapping = branchesMappingEnum.TIME;
 		branchesAltitudeMapping = branchesMappingEnum.DISTANCE;
@@ -219,16 +212,6 @@ public class ContinuousTreeToKML {
 		// start timing
 		time = -System.currentTimeMillis();
 
-		// this is to choose the proper time scale
-//		timescaler = Double.NaN;
-//		switch (timescalerSwitcher) {
-//		case YEARS:
-//			timescaler = 365;
-//			break;
-//		case USER:
-//			break;
-//		}
-
 		tree = (RootedTree) importer.importNextTree();
 
 		// this is for time calculations
@@ -258,6 +241,7 @@ public class ContinuousTreeToKML {
 		executor.submit(new Branches());
 		executor.submit(new Polygons());
 		executor.shutdown();
+		
 		// Wait until all threads are finished
 		while (!executor.isTerminated()) {
 		}

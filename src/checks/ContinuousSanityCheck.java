@@ -23,6 +23,12 @@ public class ContinuousSanityCheck {
 			if (!tree.isRoot(node)) {
 				if (!tree.isExternal(node)) {
 
+//					System.out.println("HERE");
+//					Set<String> set =node.getAttributeNames();
+//					for(String name: set){
+//						System.out.println(name);
+//					}
+					
 					Integer modality = Utils.getIntegerNodeAttribute(node,
 							coordinatesName + "_" + HPD + "HPD_modality");
 
