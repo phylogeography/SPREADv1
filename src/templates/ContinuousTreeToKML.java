@@ -101,7 +101,6 @@ public class ContinuousTreeToKML {
 
 	}// END: ContinuousTreeToKML()
 
-
 	public void setTimescaler(double timescaler) {
 		this.timescaler = timescaler;
 	}
@@ -227,8 +226,8 @@ public class ContinuousTreeToKML {
 		// This is a general time span for the tree
 		mrsd = new ThreadLocalSpreadDate(mrsdString);
 		TimeLine timeLine = new TimeLine(mrsd.getTime()
-				- (rootHeight * DayInMillis * DaysInYear * timescaler), mrsd.getTime(),
-				numberOfIntervals);
+				- (rootHeight * DayInMillis * DaysInYear * timescaler), mrsd
+				.getTime(), numberOfIntervals);
 
 		// this is to generate kml output
 		KMLGenerator kmloutput = new KMLGenerator();
@@ -241,7 +240,7 @@ public class ContinuousTreeToKML {
 		executor.submit(new Branches());
 		executor.submit(new Polygons());
 		executor.shutdown();
-		
+
 		// Wait until all threads are finished
 		while (!executor.isTerminated()) {
 		}
@@ -271,18 +270,21 @@ public class ContinuousTreeToKML {
 
 					if (!tree.isRoot(node)) {
 
+						// System.out.println("HERE");
+
 						double longitude = Utils.getDoubleNodeAttribute(node,
 								longitudeName);
 						double latitude = Utils.getDoubleNodeAttribute(node,
 								latitudeName);
+						double nodeHeight = tree.getHeight(node);
 
 						Node parentNode = tree.getParent(node);
+
 						double parentLongitude = (Double) parentNode
 								.getAttribute(longitudeName);
 						double parentLatitude = (Double) parentNode
 								.getAttribute(latitudeName);
 
-						double nodeHeight = tree.getHeight(node);
 						double parentHeight = tree.getHeight(parentNode);
 
 						/**
@@ -380,10 +382,10 @@ public class ContinuousTreeToKML {
 						linesStyle.setId("branch_style" + branchStyleId);
 						branchStyleId++;
 
-						double startTime = mrsd
-								.minus((int) (nodeHeight * DaysInYear * timescaler));
-						double endTime = mrsd
-								.minus((int) (parentHeight * DaysInYear * timescaler));
+						double startTime = mrsd.minus((int) (nodeHeight
+								* DaysInYear * timescaler));
+						double endTime = mrsd.minus((int) (parentHeight
+								* DaysInYear * timescaler));
 
 						branchesLayer
 								.addItem(new Line((parentLongitude + ","
