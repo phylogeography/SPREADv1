@@ -1,3 +1,12 @@
+// Set<String> set =node.getAttributeNames();
+// for(String name: set) {
+// System.out.println(name);
+// }
+
+//TODO count the number of unannotated branches
+// if = total number of branches throw exception
+// if < total number of branches show cancel-continue dialog
+
 package checks;
 
 import java.io.FileReader;
@@ -22,46 +31,49 @@ public class ContinuousSanityCheck {
 		RootedTree tree = (RootedTree) importer.importNextTree();
 		longitudeName = (coordinatesName + 2);
 		latitudeName = (coordinatesName + 1);
+		
+		Integer modality;
+		Double longitude;
+		Double latitude;
+		Double nodeHeight;
+		
+		double nodeCount = Utils.getNodeCount(tree);
 
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {
+
 				if (!tree.isExternal(node)) {
 
-					System.out.println("HERE");
-					// Set<String> set =node.getAttributeNames();
-					// for(String name: set) {
-					// System.out.println(name);
-					// }
-					System.out.println();
+					 modality = (Integer) node
+							.getAttribute(coordinatesName + "_" + HPD
+									+ "HPD_modality");
 
-					Double longitude = Utils.getDoubleNodeAttribute(node,
-							longitudeName);
-					Double latitude = Utils.getDoubleNodeAttribute(node,
-							latitudeName);
-					Double nodeHeight = tree.getHeight(node);
+//					if (modality == null) {
+//						notNull = false;
+//						break;
+//					} else {
+//						notNull = true;
+//					}
 
-//					Node parentNode = tree.getParent(node);
-//
-//					Double parentLongitude = (Double) parentNode
-//							.getAttribute(longitudeName);
-//					Double parentLatitude = (Double) parentNode
-//							.getAttribute(latitudeName);
-//
-//					Double parentHeight = tree.getHeight(parentNode);
+				} else {// END: external nodes check
 
-					Integer modality = Utils.getIntegerNodeAttribute(node,
-							coordinatesName + "_" + HPD + "HPD_modality");
+					longitude = (Double) node
+							.getAttribute(longitudeName);
 
-					if (modality == null) {
-						notNull = false;
-						break;
-					} else {
-						notNull = true;
-					}
-				}
-			}
+					latitude = (Double) node.getAttribute(latitudeName);
+
+					nodeHeight = tree.getHeight(node);
+
+				}// END: internal nodes check
+
+//				if(longitude){
+//					
+//				}
+				
+				
+			}// END: root check
 		}// END: node loop
 		return notNull;
-	}
+	}//END: check
 
-}
+}//END: class
