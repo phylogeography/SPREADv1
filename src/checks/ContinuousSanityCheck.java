@@ -21,59 +21,69 @@ import utils.Utils;
 public class ContinuousSanityCheck {
 
 	private boolean notNull = false;
-	private String longitudeName;
-	private String latitudeName;
 
 	public boolean check(String treeFilename, String coordinatesName, String HPD)
 			throws IOException, ImportException {
 
 		NexusImporter importer = new NexusImporter(new FileReader(treeFilename));
 		RootedTree tree = (RootedTree) importer.importNextTree();
-		longitudeName = (coordinatesName + 2);
-		latitudeName = (coordinatesName + 1);
-		
+		String longitudeName = (coordinatesName + 2);
+		String latitudeName = (coordinatesName + 1);
+		String modalityName = coordinatesName + "_" + HPD + "HPD_modality";
+
+		Double longitude = null;
+		Double latitude = null;
 		Integer modality;
-		Double longitude;
-		Double latitude;
-		Double nodeHeight;
-		
+
 		double nodeCount = Utils.getNodeCount(tree);
+		double iternalNodeCount = nodeCount - Utils.getExternalNodeCount(tree);
+		double unannotatedNodeCount = 0;
+		double unannotatedIternalNodeCount = 0;
 
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {
 
 				if (!tree.isExternal(node)) {
 
-					 modality = (Integer) node
-							.getAttribute(coordinatesName + "_" + HPD
-									+ "HPD_modality");
+					modality = (Integer) node.getAttribute(modalityName);
 
-//					if (modality == null) {
-//						notNull = false;
-//						break;
-//					} else {
-//						notNull = true;
-//					}
+					if (modality == null) {
+						unannotatedIternalNodeCount++;
+					}// unannotated internal nodes check
 
-				} else {// END: external nodes check
+				}// END: internal node check
 
-					longitude = (Double) node
-							.getAttribute(longitudeName);
+				longitude = (Double) node.getAttribute(longitudeName);
 
-					latitude = (Double) node.getAttribute(latitudeName);
+				latitude = (Double) node.getAttribute(latitudeName);
 
-					nodeHeight = tree.getHeight(node);
+				if (longitude == null || latitude == null) {
+					unannotatedNodeCount++;
+				}// unannotated nodes check
 
-				}// END: internal nodes check
-
-//				if(longitude){
-//					
-//				}
-				
-				
 			}// END: root check
 		}// END: node loop
-		return notNull;
-	}//END: check
 
-}//END: class
+		if (unannotatedNodeCount == nodeCount) {
+			notNull = false;
+			throw new RuntimeException("Attribute, " + coordinatesName
+					+ ", missing from node");
+
+		} else if (unannotatedIternalNodeCount == iternalNodeCount) {
+			notNull = false;
+			throw new RuntimeException("Attribute, " + modalityName
+					+ ", missing from node");
+		}
+
+		if (unannotatedNodeCount < nodeCount) {
+			notNull = true;
+			// TODO show unannotated branches dialog
+		} else if (unannotatedIternalNodeCount < iternalNodeCount) {
+			notNull = true;
+			// TODO show unannotated branches dialog
+		}
+
+		return notNull;
+	}// END: check
+
+}// END: class

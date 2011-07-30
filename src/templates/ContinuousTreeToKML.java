@@ -284,11 +284,12 @@ public class ContinuousTreeToKML {
 
 						Double parentLongitude = (Double) parentNode
 								.getAttribute(longitudeName);
+
 						Double parentLatitude = (Double) parentNode
 								.getAttribute(latitudeName);
 
 						Double parentHeight = tree.getHeight(parentNode);
-
+						
 						// TODO I will fix this spaghetti code some day... maybe
 						if (longitude != null && latitude != null
 								&& parentLongitude != null
