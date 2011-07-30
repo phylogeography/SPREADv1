@@ -75,12 +75,13 @@ public class ContinuousSanityCheck {
 					+ ", missing from node");
 		}
 
-		if (unannotatedNodeCount < nodeCount) {
+		if (unannotatedNodeCount < nodeCount
+				|| unannotatedIternalNodeCount < iternalNodeCount) {
 			notNull = true;
 			// TODO show unannotated branches dialog
-		} else if (unannotatedIternalNodeCount < iternalNodeCount) {
-			notNull = true;
-			// TODO show unannotated branches dialog
+			System.out.println("Spread detected unannotated branches "
+					+ "and will continue by skipping them. Consider "
+					+ "annotating all of the branches of your tree.");
 		}
 
 		return notNull;

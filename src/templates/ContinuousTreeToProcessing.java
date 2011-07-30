@@ -175,48 +175,58 @@ public class ContinuousTreeToProcessing extends PApplet {
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {
 
-				double longitude = Utils.getDoubleNodeAttribute(node,
-						longitudeName);
+				Double longitude = (Double) node.getAttribute(longitudeName);
 
-				double latitude = Utils.getDoubleNodeAttribute(node,
-						latitudeName);
+				Double latitude = (Double) node.getAttribute(latitudeName);
+
+				// TODO wrapper for that
+				Double nodeHeight = tree.getHeight(node);
 
 				Node parentNode = tree.getParent(node);
 
-				double parentLongitude = Utils.getDoubleNodeAttribute(
-						parentNode, longitudeName);
-				double parentLatitude = Utils.getDoubleNodeAttribute(
-						parentNode, latitudeName);
+				Double parentLongitude = (Double) parentNode
+						.getAttribute(longitudeName);
 
-				// Equirectangular projection:
-				double x0 = Utils.map(parentLongitude, minX, maxX, 0, width);
-				double y0 = Utils.map(parentLatitude, maxY, minY, 0, height);
+				Double parentLatitude = (Double) parentNode
+						.getAttribute(latitudeName);
 
-				double x1 = Utils.map(longitude, minX, maxX, 0, width);
-				double y1 = Utils.map(latitude, maxY, minY, 0, height);
+				// TODO I will fix this spaghetti code some day... maybe
+				if (longitude != null && latitude != null
+						&& parentLongitude != null && parentLatitude != null
+						&& nodeHeight != null) {
 
-				/**
-				 * Color mapping
-				 * */
-				double nodeHeight = tree.getHeight(node);
+					// Equirectangular projection:
+					double x0 = Utils
+							.map(parentLongitude, minX, maxX, 0, width);
+					double y0 = Utils
+							.map(parentLatitude, maxY, minY, 0, height);
 
-				int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-						minBranchRedMapping, maxBranchRedMapping);
+					double x1 = Utils.map(longitude, minX, maxX, 0, width);
+					double y1 = Utils.map(latitude, maxY, minY, 0, height);
 
-				int green = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-						minBranchGreenMapping, maxBranchGreenMapping);
+					/**
+					 * Color mapping
+					 * */
+					// double nodeHeight = tree.getHeight(node);
 
-				int blue = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-						minBranchBlueMapping, maxBranchBlueMapping);
+					int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+							minBranchRedMapping, maxBranchRedMapping);
 
-				int alpha = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-						maxBranchOpacityMapping, minBranchOpacityMapping);
+					int green = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+							minBranchGreenMapping, maxBranchGreenMapping);
 
-				stroke(red, green, blue, alpha);
+					int blue = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+							minBranchBlueMapping, maxBranchBlueMapping);
 
-				line((float) x0, (float) y0, (float) x1, (float) y1);
+					int alpha = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+							maxBranchOpacityMapping, minBranchOpacityMapping);
 
-			}
+					stroke(red, green, blue, alpha);
+
+					line((float) x0, (float) y0, (float) x1, (float) y1);
+
+				}// END: null check
+			}// END: root check
 		}// END: nodes loop
 	}// END: DrawBranches
 
@@ -229,68 +239,76 @@ public class ContinuousTreeToProcessing extends PApplet {
 			if (!tree.isRoot(node)) {
 				if (!tree.isExternal(node)) {
 
-					Integer modality = Utils.getIntegerNodeAttribute(node,
-							coordinatesName + "_" + HPD + "HPD_modality");
+					Integer modality = (Integer) node
+							.getAttribute(coordinatesName + "_" + HPD
+									+ "HPD_modality");
 
-					for (int i = 1; i <= modality; i++) {
+					if (modality != null) {
 
-						Object[] longitudeHPD = Utils
-								.getObjectArrayNodeAttribute(node,
-										longitudeName + "_" + HPD + "HPD_" + i);
-						Object[] latitudeHPD = Utils
-								.getObjectArrayNodeAttribute(node, latitudeName
-										+ "_" + HPD + "HPD_" + i);
-						/**
-						 * Color mapping
-						 * */
-						double nodeHeight = tree.getHeight(node);
+						for (int i = 1; i <= modality; i++) {
 
-						int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-								minPolygonRedMapping, maxPolygonRedMapping);
+							Object[] longitudeHPD = Utils
+									.getObjectArrayNodeAttribute(node,
+											longitudeName + "_" + HPD + "HPD_"
+													+ i);
+							Object[] latitudeHPD = Utils
+									.getObjectArrayNodeAttribute(node,
+											latitudeName + "_" + HPD + "HPD_"
+													+ i);
+							/**
+							 * Color mapping
+							 * */
+							double nodeHeight = tree.getHeight(node);
 
-						int green = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, minPolygonGreenMapping,
-								maxPolygonGreenMapping);
+							int red = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, minPolygonRedMapping,
+									maxPolygonRedMapping);
 
-						int blue = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, minPolygonBlueMapping,
-								maxPolygonBlueMapping);
+							int green = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, minPolygonGreenMapping,
+									maxPolygonGreenMapping);
 
-						int alpha = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, maxPolygonOpacityMapping,
-								minPolygonOpacityMapping);
+							int blue = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, minPolygonBlueMapping,
+									maxPolygonBlueMapping);
 
-						stroke(red, green, blue, alpha);
-						fill(red, green, blue, alpha);
+							int alpha = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, maxPolygonOpacityMapping,
+									minPolygonOpacityMapping);
 
-						List<Coordinates> coordinates = Utils.parsePolygons(
-								longitudeHPD, latitudeHPD);
+							stroke(red, green, blue, alpha);
+							fill(red, green, blue, alpha);
 
-						beginShape();
+							List<Coordinates> coordinates = Utils
+									.parsePolygons(longitudeHPD, latitudeHPD);
 
-						for (int row = 0; row < coordinates.size() - 1; row++) {
+							beginShape();
 
-							double X = Utils.map(coordinates.get(row)
-									.getLongitude(), minX, maxX, 0, width);
-							double Y = Utils.map(coordinates.get(row)
-									.getLatitude(), maxY, minY, 0, height);
+							for (int row = 0; row < coordinates.size() - 1; row++) {
 
-							double XEND = Utils.map(coordinates.get(row + 1)
-									.getLongitude(), minX, maxX, 0, width);
-							double YEND = Utils.map((coordinates.get(row + 1)
-									.getLatitude()), maxY, minY, 0, height);
+								double X = Utils.map(coordinates.get(row)
+										.getLongitude(), minX, maxX, 0, width);
+								double Y = Utils.map(coordinates.get(row)
+										.getLatitude(), maxY, minY, 0, height);
 
-							vertex((float) X, (float) Y);
-							vertex((float) XEND, (float) YEND);
+								double XEND = Utils.map(coordinates
+										.get(row + 1).getLongitude(), minX,
+										maxX, 0, width);
+								double YEND = Utils.map((coordinates
+										.get(row + 1).getLatitude()), maxY,
+										minY, 0, height);
 
-						}// END: coordinates loop
+								vertex((float) X, (float) Y);
+								vertex((float) XEND, (float) YEND);
 
-						endShape(CLOSE);
+							}// END: coordinates loop
 
-					}// END: modality loop
+							endShape(CLOSE);
 
-				}
-			}
+						}// END: modality loop
+					}// END: null check
+				}// END: external node check
+			}// END: root check
 		}// END: node loop
 	}// END: drawPolygons
 

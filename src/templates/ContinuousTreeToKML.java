@@ -270,14 +270,13 @@ public class ContinuousTreeToKML {
 
 					if (!tree.isRoot(node)) {
 
-						// System.out.println("HERE");
-
 						Double longitude = (Double) node
 								.getAttribute(longitudeName);
 
 						Double latitude = (Double) node
 								.getAttribute(latitudeName);
 
+						//TODO wrapper for that
 						Double nodeHeight = tree.getHeight(node);
 
 						Node parentNode = tree.getParent(node);
@@ -288,8 +287,9 @@ public class ContinuousTreeToKML {
 						Double parentLatitude = (Double) parentNode
 								.getAttribute(latitudeName);
 
+						// TODO wrapper for that
 						Double parentHeight = tree.getHeight(parentNode);
-						
+
 						// TODO I will fix this spaghetti code some day... maybe
 						if (longitude != null && latitude != null
 								&& parentLongitude != null
@@ -412,8 +412,8 @@ public class ContinuousTreeToKML {
 									0.0) // double duration
 									);
 
-						}// END: root check
-					}// END: null checks
+						}// END: null checks
+					}// END: root check
 				}// END: node loop
 
 				layers.add(branchesLayer);

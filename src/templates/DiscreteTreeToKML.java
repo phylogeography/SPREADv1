@@ -82,10 +82,6 @@ public class DiscreteTreeToKML {
 		TIME, DISTANCE, DEFAULT, USER
 	}
 
-	// private enum timescalerEnum {
-	// DAYS, MONTHS, YEARS
-	// }
-
 	// private timescalerEnum timescalerSwitcher;
 	private branchesMappingEnum branchesColorMapping;
 	private branchesMappingEnum branchesOpacityMapping;
@@ -95,7 +91,6 @@ public class DiscreteTreeToKML {
 	public DiscreteTreeToKML() {
 
 		// parse combobox choices here
-		// timescalerSwitcher = timescalerEnum.YEARS;
 		branchesColorMapping = branchesMappingEnum.TIME;
 		branchesOpacityMapping = branchesMappingEnum.TIME;
 		altitudeMapping = branchesMappingEnum.DISTANCE;
@@ -218,19 +213,6 @@ public class DiscreteTreeToKML {
 		// start timing
 		time = -System.currentTimeMillis();
 
-		// this is to choose the proper time scale
-		// timescaler = Double.NaN;
-		// switch (timescalerSwitcher) {
-		// case DAYS:
-		// timescaler = 1;
-		// break;
-		// case MONTHS:
-		// timescaler = 30;
-		// case YEARS:
-		// timescaler = 365;
-		// break;
-		// }
-
 		tree = (RootedTree) importer.importNextTree();
 
 		// this is for time calculations
@@ -250,7 +232,6 @@ public class DiscreteTreeToKML {
 		final int NTHREDS = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
 
-		// executor.submit(new SanityCheck());
 		executor.submit(new Places());
 		executor.submit(new Branches());
 		executor.submit(new Circles());
@@ -338,7 +319,9 @@ public class DiscreteTreeToKML {
 							float parentLatitude = Utils.matchStateCoordinate(
 									table, parentState, 1);
 
+							// TODO: wrapper
 							double nodeHeight = tree.getHeight(node);
+							// TODO: wrapper
 							double parentHeight = tree.getHeight(parentNode);
 
 							/**
@@ -464,8 +447,8 @@ public class DiscreteTreeToKML {
 									);
 
 							branchStyleId++;
-						}
-					}
+						}// END: state and parent state equality check
+					}// END: root check
 				}// END: nodes loop
 
 				layers.add(branchesLayer);
@@ -564,8 +547,8 @@ public class DiscreteTreeToKML {
 									circlesStyle, // Style style
 									startTime, // double startime
 									duration * DaysInYear * timescaler // double
-																		// duration
-							));
+							// duration
+									));
 
 						}
 					}// END: row loop
@@ -638,9 +621,10 @@ public class DiscreteTreeToKML {
 
 	private String getRandomState(String state, boolean verbose) {
 
+		// pick always the same states in this run
 		generator.setSeed(time);
 
-		if (!state.contains("+")) {
+		if (!state.contains("+")) {// single state so return state
 			return state;
 
 		} else {// this breaks ties
