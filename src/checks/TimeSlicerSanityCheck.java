@@ -70,6 +70,11 @@ public class TimeSlicerSanityCheck {
 					+ "and will continue by skipping them. Consider "
 					+ "annotating all of the branches of your MCC tree.");
 
+		} else {
+
+			notNull = false;
+			throw new RuntimeException("Bad juju");
+
 		}
 
 		return flag;

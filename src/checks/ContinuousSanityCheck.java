@@ -66,22 +66,29 @@ public class ContinuousSanityCheck {
 					+ ", missing from node");
 
 		} else if (unannotatedIternalNodeCount == iternalNodeCount) {
+
 			notNull = false;
 			throw new RuntimeException("Attribute, " + modalityName
 					+ ", missing from node");
+
 		} else if (unannotatedNodeCount == 0
 				&& unannotatedIternalNodeCount == 0) {
+
 			notNull = true;
+
 		} else if (unannotatedNodeCount < nodeCount
 				|| unannotatedIternalNodeCount < iternalNodeCount) {
+
 			notNull = true;
-			// TODO show unannotated branches dialog
 			System.out.println("Spread detected unannotated branches "
 					+ "and will continue by skipping them. Consider "
 					+ "annotating all of the branches of your tree.");
+
 		} else {
+
 			notNull = false;
 			throw new RuntimeException("Bad juju");
+
 		}
 
 		return notNull;
