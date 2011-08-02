@@ -43,7 +43,8 @@ public class TimeSlicerSanityCheck {
 				Double longitude = (Double) node
 						.getAttribute(coordinatesName + 2);
 
-				Double latitude = (Double) node.getAttribute(coordinatesName + 1);
+				Double latitude = (Double) node
+						.getAttribute(coordinatesName + 1);
 
 				if (longitude == null || latitude == null) {
 					unannotatedNodeCount++;
@@ -53,12 +54,22 @@ public class TimeSlicerSanityCheck {
 		}// END: node loop
 
 		if (unannotatedNodeCount == nodeCount) {
+
 			flag = false;
 			throw new RuntimeException("Attribute, " + coordinatesName
 					+ ", missing from node");
 
 		} else if (unannotatedNodeCount == 0) {
+
 			flag = true;
+
+		} else if (unannotatedNodeCount < nodeCount) {
+
+			notNull = true;
+			System.out.println("Spread detected unannotated branches "
+					+ "and will continue by skipping them. Consider "
+					+ "annotating all of the branches of your MCC tree.");
+
 		}
 
 		return flag;

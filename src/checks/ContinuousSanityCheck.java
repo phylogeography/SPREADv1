@@ -3,10 +3,6 @@
 // System.out.println(name);
 // }
 
-//TODO count the number of unannotated branches
-// if = total number of branches throw exception
-// if < total number of branches show cancel-continue dialog
-
 package checks;
 
 import java.io.FileReader;
