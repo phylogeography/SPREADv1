@@ -1,5 +1,6 @@
 package checks;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -17,49 +18,79 @@ public class TimeSlicerSanityCheck {
 	public boolean check(String treeFilename, String coordinatesName,
 			String treesFilename) throws IOException, ImportException {
 
+		if (checkMccTree(treeFilename, coordinatesName)
+				&& checkFirstPosteriorTree(treesFilename, coordinatesName)) {
+
+			notNull = true;
+
+		}
+
+		return notNull;
+	}// END: check
+
+	private boolean checkMccTree(String treeFilename, String coordinatesName)
+			throws FileNotFoundException, IOException, ImportException {
+
 		RootedTree tree = (RootedTree) new NexusImporter(new FileReader(
 				treeFilename)).importNextTree();
+		boolean flag = false;
+		double nodeCount = Utils.getNodeCount(tree);
+		double unannotatedNodeCount = 0;
 
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {
 
-				Float longitude = (float) Utils.getDoubleNodeAttribute(node,
-						coordinatesName + 1);
+				Double longitude = (Double) node
+						.getAttribute(coordinatesName + 2);
 
-				Float latitude = (float) Utils.getDoubleNodeAttribute(node,
-						coordinatesName + 1);
+				Double latitude = (Double) node.getAttribute(coordinatesName + 1);
 
 				if (longitude == null || latitude == null) {
-					notNull = false;
-					break;
-				} else {
-					notNull = true;
-				}
+					unannotatedNodeCount++;
+				}// unannotated nodes check
 
-			}
-
+			}// END: root check
 		}// END: node loop
 
+		if (unannotatedNodeCount == nodeCount) {
+			flag = false;
+			throw new RuntimeException("Attribute, " + coordinatesName
+					+ ", missing from node");
+
+		} else if (unannotatedNodeCount == 0) {
+			flag = true;
+		}
+
+		return flag;
+	}// END: checkMccTree
+
+	private boolean checkFirstPosteriorTree(String treesFilename,
+			String coordinatesName) throws FileNotFoundException, IOException,
+			ImportException {
+
+		boolean flag = false;
+
+		// TODO change that
 		RootedTree currentTree = (RootedTree) new NexusImporter(new FileReader(
 				treesFilename)).importNextTree();
 
 		for (Node node : currentTree.getNodes()) {
-
 			if (!currentTree.isRoot(node)) {
 
 				Object[] location = (Object[]) Utils
 						.getObjectArrayNodeAttribute(node, coordinatesName);
 
 				if (location == null) {
-					notNull = false;
+					flag = false;
 					break;
 				} else {
-					notNull = true;
+					flag = true;
 				}
-			}
+
+			}// END: root check
 		}// END: node loop
 
-		return notNull;
-	}
+		return flag;
+	}// END: checkFirstPosteriorTree
 
-}
+}// END: class

@@ -40,7 +40,7 @@ public class TimeSlicerToKML {
 	public long time;
 
 	// how many millisecond one day holds
-	private final int DayInMillis = 86400000;
+	private static final int DayInMillis = 86400000;
 	// how many days one year holds
 	private static final int DaysInYear = 365;
 
@@ -96,29 +96,7 @@ public class TimeSlicerToKML {
 	private double HPD;
 	private int gridSize;
 
-	// private enum timescalerEnum {
-	// DAYS, MONTHS, YEARS
-	// }
-
-	// private timescalerEnum timescalerSwitcher;
-
 	public TimeSlicerToKML() {
-
-		// // parse combobox choices here
-		// timescalerSwitcher = timescalerEnum.YEARS;
-		//
-		// // this is to choose the proper time scale
-		// timescaler = Double.NaN;
-		// switch (timescalerSwitcher) {
-		// case DAYS:
-		// timescaler = 1;
-		// break;
-		// case MONTHS:
-		// timescaler = 30;
-		// case YEARS:
-		// timescaler = 365;
-		// break;
-		// }
 	}
 
 	public void setTimescaler(double timescaler) {
@@ -258,9 +236,9 @@ public class TimeSlicerToKML {
 		time = -System.currentTimeMillis();
 
 		tree = (RootedTree) treeImporter.importNextTree();
-		treeRootHeight = tree.getHeight(tree.getRootNode());
+		treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());// tree.getHeight(tree.getRootNode());
 		mrsd = new ThreadLocalSpreadDate(mrsdString);
-		timeLine = GenerateTimeLine(tree);
+		timeLine = generateTimeLine(tree);
 
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
@@ -455,71 +433,78 @@ public class TimeSlicerToKML {
 
 				int branchStyleId = 1;
 				for (Node node : tree.getNodes()) {
-
 					if (!tree.isRoot(node)) {
 
-						double longitude = (Double) node
+						Double longitude = (Double) node
 								.getAttribute(longitudeName);
-						double latitude = (Double) node
+						Double latitude = (Double) node
 								.getAttribute(latitudeName);
+
+						Double nodeHeight = Utils.getNodeHeight(tree, node);
 
 						Node parentNode = tree.getParent(node);
-						double parentLongitude = (Double) parentNode
+
+						Double parentLongitude = (Double) parentNode
 								.getAttribute(longitudeName);
-						double parentLatitude = (Double) parentNode
+						Double parentLatitude = (Double) parentNode
 								.getAttribute(latitudeName);
 
-						/**
-						 * Mapping
-						 * */
-						double nodeHeight = tree.getHeight(node);
-						double parentHeight = tree.getHeight(parentNode);
+						Double parentHeight = Utils.getNodeHeight(tree,
+								parentNode);
 
-						double maxAltitude = Utils.map(nodeHeight, 0,
-								treeHeightMax, 0, maxAltMapping);
+						if (longitude != null && latitude != null
+								&& parentLongitude != null
+								&& parentLatitude != null) {
 
-						int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-								minBranchRedMapping, maxBranchRedMapping);
+							/**
+							 * Mapping
+							 * */
+							double maxAltitude = Utils.map(nodeHeight, 0,
+									treeHeightMax, 0, maxAltMapping);
 
-						int green = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, minBranchGreenMapping,
-								maxBranchGreenMapping);
+							int red = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, minBranchRedMapping,
+									maxBranchRedMapping);
 
-						int blue = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, minBranchBlueMapping,
-								maxBranchBlueMapping);
+							int green = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, minBranchGreenMapping,
+									maxBranchGreenMapping);
 
-						int alpha = (int) Utils.map(nodeHeight, 0,
-								treeHeightMax, maxBranchOpacityMapping,
-								minBranchOpacityMapping);
+							int blue = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, minBranchBlueMapping,
+									maxBranchBlueMapping);
 
-						Color col = new Color(red, green, blue, alpha);
+							int alpha = (int) Utils.map(nodeHeight, 0,
+									treeHeightMax, maxBranchOpacityMapping,
+									minBranchOpacityMapping);
 
-						Style linesStyle = new Style(col, branchWidth);
-						linesStyle.setId("branch_style" + branchStyleId);
-						branchStyleId++;
+							Color col = new Color(red, green, blue, alpha);
 
-						double startTime = mrsd.minus((int) (nodeHeight
-								* DaysInYear * timescaler));
-						double endTime = mrsd.minus((int) (parentHeight
-								* DaysInYear * timescaler));
+							Style linesStyle = new Style(col, branchWidth);
+							linesStyle.setId("branch_style" + branchStyleId);
+							branchStyleId++;
 
-						branchesLayer
-								.addItem(new Line((parentLongitude + ","
-										+ parentLatitude + ":" + longitude
-										+ "," + latitude), // name
-										new Coordinates(parentLongitude,
-												parentLatitude), // startCoords
-										startTime, // double startime
-										linesStyle, // style startstyle
-										new Coordinates(longitude, latitude), // endCoords
-										endTime, // double endtime
-										linesStyle, // style endstyle
-										maxAltitude, // double maxAltitude
-										0.0) // double duration
-								);
+							double startTime = mrsd.minus((int) (nodeHeight
+									* DaysInYear * timescaler));
+							double endTime = mrsd.minus((int) (parentHeight
+									* DaysInYear * timescaler));
 
-					}
+							branchesLayer.addItem(new Line((parentLongitude
+									+ "," + parentLatitude + ":" + longitude
+									+ "," + latitude), // name
+									new Coordinates(parentLongitude,
+											parentLatitude), // startCoords
+									startTime, // double startime
+									linesStyle, // style startstyle
+									new Coordinates(longitude, latitude), // endCoords
+									endTime, // double endtime
+									linesStyle, // style endstyle
+									maxAltitude, // double maxAltitude
+									0.0) // double duration
+									);
+
+						}// END: null checks
+					}// END: root check
 				}// END: node loop
 
 				layers.add(branchesLayer);
@@ -531,10 +516,10 @@ public class TimeSlicerToKML {
 		}// END: run
 	}// END: Branches class
 
-	private TimeLine GenerateTimeLine(RootedTree tree) {
+	private TimeLine generateTimeLine(RootedTree tree) {
 
 		// This is a general time span for all of the trees
-		double treeRootHeight = tree.getHeight(tree.getRootNode());
+		double treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());
 		double startTime = mrsd.getTime()
 				- (treeRootHeight * DayInMillis * DaysInYear * timescaler);
 		double endTime = mrsd.getTime();

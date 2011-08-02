@@ -653,6 +653,16 @@ public class Utils {
 		return array;
 	}
 
+	public static Double getNodeHeight(RootedTree tree, Node node) {
+		Double nodeHeight = tree.getHeight(node);
+		if (nodeHeight == null) {
+			throw new RuntimeException(
+					"Height attribute missing from the node. \n");
+		}
+
+		return nodeHeight;
+	}
+
 	public static Object[] getTreeArrayAttribute(RootedTree tree,
 			String attribute) {
 		Object o = tree.getAttribute(attribute);

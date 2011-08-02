@@ -83,36 +83,13 @@ public class TimeSlicerToProcessing extends PApplet {
 	private double HPD;
 	private int gridSize;
 
-//	private enum timescalerEnum {
-//		DAYS, MONTHS, YEARS
-//	}
-
-//	private timescalerEnum timescalerSwitcher;
-
 	private MapBackground mapBackground;
 	private float minX, maxX;
 	private float minY, maxY;
 
 	public TimeSlicerToProcessing() {
-
-		// parse combobox choices here
-//		timescalerSwitcher = timescalerEnum.YEARS;
-//
-//		// this is to choose the proper time scale
-//		timescaler = Double.NaN;
-//		switch (timescalerSwitcher) {
-//		case DAYS:
-//			timescaler = 1;
-//			break;
-//		case MONTHS:
-//			timescaler = 30;
-//		case YEARS:
-//			timescaler = 365;
-//			break;
-//		}
-
 	}// END: TimeSlicerToProcessing()
-	
+
 	public void setTimescaler(double timescaler) {
 		this.timescaler = timescaler;
 	}
@@ -140,8 +117,8 @@ public class TimeSlicerToProcessing extends PApplet {
 	public void setCoordinatesName(String name) {
 		coordinatesName = name;
 		// this is for coordinate attribute names
-		longitudeName = (coordinatesName + 2);
 		latitudeName = (coordinatesName + 1);
+		longitudeName = (coordinatesName + 2);
 	}
 
 	public void setRateAttName(String name) {
@@ -336,18 +313,20 @@ public class TimeSlicerToProcessing extends PApplet {
 
 			for (int row = 0; row < coordinates.size() - 1; row++) {
 
-				float X = map((float) coordinates.get(row).getLongitude(),
-						minX, maxX, 0, width);
-				float Y = map((float) coordinates.get(row).getLatitude(), maxY,
+				double X = Utils.map(coordinates.get(row).getLongitude(), minX,
+						maxX, 0, width);
+				double Y = Utils.map(coordinates.get(row).getLatitude(), maxY,
 						minY, 0, height);
 
-				float XEND = map((float) coordinates.get(row + 1)
-						.getLongitude(), minX, maxX, 0, width);
-				float YEND = map((float) (coordinates.get(row + 1)
-						.getLatitude()), maxY, minY, 0, height);
+				double XEND = Utils.map(
+						coordinates.get(row + 1).getLongitude(), minX, maxX, 0,
+						width);
+				double YEND = Utils.map(
+						(coordinates.get(row + 1).getLatitude()), maxY, minY,
+						0, height);
 
-				vertex(X, Y);
-				vertex(XEND, YEND);
+				vertex((float) X, (float) Y);
+				vertex((float) XEND, (float) YEND);
 
 			}// END: coordinates loop
 			endShape(CLOSE);
@@ -364,29 +343,27 @@ public class TimeSlicerToProcessing extends PApplet {
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {
 
-				float longitude = (float) Utils.getDoubleNodeAttribute(node,
-						longitudeName);
-
-				float latitude = (float) Utils.getDoubleNodeAttribute(node,
-						latitudeName);
+				Double longitude = (Double) node.getAttribute(longitudeName);
+				Double latitude = (Double) node.getAttribute(latitudeName);
 
 				Node parentNode = tree.getParent(node);
-				float parentLongitude = (float) Utils.getDoubleNodeAttribute(
-						parentNode, longitudeName);
-				float parentLatitude = (float) Utils.getDoubleNodeAttribute(
-						parentNode, latitudeName);
+
+				Double parentLongitude = (Double) parentNode
+						.getAttribute(longitudeName);
+				Double parentLatitude = (Double) parentNode
+						.getAttribute(latitudeName);
 
 				// Equirectangular projection:
-				float x0 = map(parentLongitude, minX, maxX, 0, width);
-				float y0 = map(parentLatitude, maxY, minY, 0, height);
+				double x0 = Utils.map(parentLongitude, minX, maxX, 0, width);
+				double y0 = Utils.map(parentLatitude, maxY, minY, 0, height);
 
-				float x1 = map(longitude, minX, maxX, 0, width);
-				float y1 = map(latitude, maxY, minY, 0, height);
+				double x1 = Utils.map(longitude, minX, maxX, 0, width);
+				double y1 = Utils.map(latitude, maxY, minY, 0, height);
 
 				/**
 				 * Color mapping
 				 * */
-				double nodeHeight = tree.getHeight(node);
+				double nodeHeight = Utils.getNodeHeight(tree, node);
 
 				int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
 						minBranchRedMapping, maxBranchRedMapping);
@@ -401,7 +378,7 @@ public class TimeSlicerToProcessing extends PApplet {
 						maxBranchOpacityMapping, minBranchOpacityMapping);
 
 				stroke(red, green, blue, alpha);
-				line(x0, y0, x1, y1);
+				line((float) x0, (float) y0, (float) x1, (float) y1);
 			}
 		}// END: nodes loop
 	}// END: DrawBranches

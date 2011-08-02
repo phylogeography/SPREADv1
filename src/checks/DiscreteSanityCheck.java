@@ -25,26 +25,53 @@ public class DiscreteSanityCheck {
 		NexusImporter importer = new NexusImporter(new FileReader(treeFilename));
 		RootedTree tree = (RootedTree) importer.importNextTree();
 
+		String uniqueState;
+
+		double nodeCount = Utils.getNodeCount(tree);
+		double unannotatedNodeCount = 0;
+
 		Set<String> uniqueTreeStates = new HashSet<String>();
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {
 
-				String uniqueTreeState = Utils.getStringNodeAttribute(node,
-						stateAttName);
-				uniqueTreeStates.add(uniqueTreeState);
+				uniqueState = (String) node.getAttribute(stateAttName);
+				uniqueTreeStates.add(uniqueState);
 
-				if (uniqueTreeState == null) {
-					notNull = false;
-					break;
-				} else {
-					notNull = true;
-				}
+				if (uniqueState == null) {
+					unannotatedNodeCount++;
+				}// unannotated internal nodes check
 
-			}
+			}// END: root check
 		}// END: node loop
 
-		Object[] uniqueTreeStatesArray = uniqueTreeStates.toArray();
+		if (unannotatedNodeCount == nodeCount) {
+			notNull = false;
+			throw new RuntimeException("Attribute, " + stateAttName
+					+ ", missing from node");
 
+		} else if (unannotatedNodeCount == 0) {
+			notNull = true;
+
+		} else if (unannotatedNodeCount < nodeCount) {
+			notNull = true;
+			// TODO show unannotated branches dialog
+			System.out.println("Spread detected unannotated branches "
+					+ "and will continue by skipping them. Consider "
+					+ "annotating all of the branches of your tree.");
+		} else {
+			notNull = false;
+			throw new RuntimeException("Bad juju");
+		}
+
+		fitLocations(table, uniqueTreeStates);
+
+		return notNull;
+	}// END: check()
+
+	private void fitLocations(InteractiveTableModel table,
+			Set<String> uniqueTreeStates) {
+
+		Object[] uniqueTreeStatesArray = uniqueTreeStates.toArray();
 		for (int i = 0; i < table.getRowCount(); i++) {
 
 			String state = null;
@@ -67,9 +94,8 @@ public class DiscreteSanityCheck {
 						+ String.valueOf(table.getValueAt(i, 0))
 						+ " does not fit any of the discrete states");
 			}
+
 		}// END: locations loop
-		return notNull;
+	}// END: fitLocations()
 
-	}
-
-}
+}// END: class

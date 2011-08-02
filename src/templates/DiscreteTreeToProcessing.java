@@ -265,54 +265,60 @@ public class DiscreteTreeToProcessing extends PApplet {
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {
 
-				String state = getRandomState(Utils.getStringNodeAttribute(
-						node, stateAttName), true);
+				String state = getRandomState((String) node
+						.getAttribute(stateAttName), true);
 
 				Node parentNode = tree.getParent(node);
 
-				String parentState = getRandomState(Utils
-						.getStringNodeAttribute(parentNode, stateAttName),
-						false);
+				String parentState = getRandomState((String) parentNode
+						.getAttribute(stateAttName), false);
 
-				if (!state.toLowerCase().equals(parentState.toLowerCase())) {
+				if (state != null && parentState != null) {
 
-					float longitude = Utils.matchStateCoordinate(table, state,
-							2);
-					float latitude = Utils
-							.matchStateCoordinate(table, state, 1);
+					if (!state.toLowerCase().equals(parentState.toLowerCase())) {
 
-					float parentLongitude = Utils.matchStateCoordinate(table,
-							parentState, 2);
-					float parentLatitude = Utils.matchStateCoordinate(table,
-							parentState, 1);
+						float longitude = Utils.matchStateCoordinate(table,
+								state, 2);
+						float latitude = Utils.matchStateCoordinate(table,
+								state, 1);
 
-					float x0 = map(parentLongitude, minX, maxX, 0, width);
-					float y0 = map(parentLatitude, maxY, minY, 0, height);
+						float parentLongitude = Utils.matchStateCoordinate(
+								table, parentState, 2);
+						float parentLatitude = Utils.matchStateCoordinate(
+								table, parentState, 1);
 
-					float x1 = map(longitude, minX, maxX, 0, width);
-					float y1 = map(latitude, maxY, minY, 0, height);
+						float x0 = map(parentLongitude, minX, maxX, 0, width);
+						float y0 = map(parentLatitude, maxY, minY, 0, height);
 
-					/**
-					 * Color mapping
-					 * */
-					double nodeHeight = tree.getHeight(node);
+						float x1 = map(longitude, minX, maxX, 0, width);
+						float y1 = map(latitude, maxY, minY, 0, height);
 
-					int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-							minBranchRedMapping, maxBranchRedMapping);
+						/**
+						 * Color mapping
+						 * */
+						double nodeHeight = tree.getHeight(node);
 
-					int green = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-							minBranchGreenMapping, maxBranchGreenMapping);
+						int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
+								minBranchRedMapping, maxBranchRedMapping);
 
-					int blue = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-							minBranchBlueMapping, maxBranchBlueMapping);
+						int green = (int) Utils.map(nodeHeight, 0,
+								treeHeightMax, minBranchGreenMapping,
+								maxBranchGreenMapping);
 
-					int alpha = (int) Utils.map(nodeHeight, 0, treeHeightMax,
-							maxBranchOpacityMapping, minBranchOpacityMapping);
+						int blue = (int) Utils.map(nodeHeight, 0,
+								treeHeightMax, minBranchBlueMapping,
+								maxBranchBlueMapping);
 
-					stroke(red, green, blue, alpha);
-					line(x0, y0, x1, y1);
-				}
-			}
+						int alpha = (int) Utils.map(nodeHeight, 0,
+								treeHeightMax, maxBranchOpacityMapping,
+								minBranchOpacityMapping);
+
+						stroke(red, green, blue, alpha);
+						line(x0, y0, x1, y1);
+
+					}// END: state and parent state equality check
+				}// END: null check
+			}// END: root check
 		}// END: nodes loop
 	}// END: DrawBranches
 
@@ -419,18 +425,15 @@ public class DiscreteTreeToProcessing extends PApplet {
 				int numberOfLineagesOfState = 0;
 
 				for (Node node : tree.getNodes()) {
-
 					if (!tree.isRoot(node)) {
 
-						String state = getRandomState(Utils
-								.getStringNodeAttribute(node, stateAttName),
-								false);
+						String state = getRandomState((String) node
+								.getAttribute(stateAttName), false);
 
 						Node parentNode = tree.getParent(node);
 
-						String parentState = getRandomState(Utils
-								.getStringNodeAttribute(parentNode,
-										stateAttName), false);
+						String parentState = getRandomState((String) parentNode
+								.getAttribute(stateAttName), false);
 
 						if ((tree.getHeight(node) <= numberOfLineages[i][0])
 								&& (tree.getHeight(parentNode) > numberOfLineages[i][0])) {

@@ -82,7 +82,6 @@ public class DiscreteTreeToKML {
 		TIME, DISTANCE, DEFAULT, USER
 	}
 
-	// private timescalerEnum timescalerSwitcher;
 	private branchesMappingEnum branchesColorMapping;
 	private branchesMappingEnum branchesOpacityMapping;
 	private branchesMappingEnum altitudeMapping;
@@ -296,158 +295,171 @@ public class DiscreteTreeToKML {
 				for (Node node : tree.getNodes()) {
 					if (!tree.isRoot(node)) {
 
-						String state = getRandomState(Utils
-								.getStringNodeAttribute(node, stateAttName),
-								true);
+						String state = getRandomState((String) node
+								.getAttribute(stateAttName), true);
 
 						Node parentNode = tree.getParent(node);
 
-						String parentState = getRandomState(Utils
-								.getStringNodeAttribute(parentNode,
-										stateAttName), false);
+						String parentState = getRandomState((String) parentNode
+								.getAttribute(stateAttName), false);
 
-						if (!state.toLowerCase().equals(
-								parentState.toLowerCase())) {
+						if (state != null && parentState != null) {
 
-							float longitude = Utils.matchStateCoordinate(table,
-									state, 2);
-							float latitude = Utils.matchStateCoordinate(table,
-									state, 1);
+							if (!state.toLowerCase().equals(
+									parentState.toLowerCase())) {
 
-							float parentLongitude = Utils.matchStateCoordinate(
-									table, parentState, 2);
-							float parentLatitude = Utils.matchStateCoordinate(
-									table, parentState, 1);
+								float longitude = Utils.matchStateCoordinate(
+										table, state, 2);
+								float latitude = Utils.matchStateCoordinate(
+										table, state, 1);
 
-							// TODO: wrapper
-							double nodeHeight = tree.getHeight(node);
-							// TODO: wrapper
-							double parentHeight = tree.getHeight(parentNode);
+								float parentLongitude = Utils
+										.matchStateCoordinate(table,
+												parentState, 2);
+								float parentLatitude = Utils
+										.matchStateCoordinate(table,
+												parentState, 1);
 
-							/**
-							 * altitude mapping
-							 * */
-							double maxAltitude = Double.NaN;
-							switch (altitudeMapping) {
-							case TIME:
-								maxAltitude = (int) Utils.map(nodeHeight, 0,
-										treeHeightMax, 0, maxAltMapping);
-								break;
+								double nodeHeight = Utils.getNodeHeight(tree,
+										node);
 
-							case USER:
-								maxAltitude = Utils.map(Utils
-										.getDoubleNodeAttribute(node,
-												userAttribute), 0,
-										treeHeightMax, 0, maxAltMapping);
-								break;
+								double parentHeight = Utils.getNodeHeight(tree,
+										parentNode);
 
-							case DISTANCE:
-								maxAltitude = Utils.map(Utils.rhumbDistance(
-										parentLongitude, parentLatitude,
-										longitude, latitude), 0, EarthRadius,
-										0, maxAltMapping);
-								break;
+								/**
+								 * altitude mapping
+								 * */
+								double maxAltitude = Double.NaN;
+								switch (altitudeMapping) {
+								case TIME:
+									maxAltitude = (int) Utils.map(nodeHeight,
+											0, treeHeightMax, 0, maxAltMapping);
+									break;
 
-							case DEFAULT:
-								maxAltitude = 0;
-								break;
-							}
+								case USER:
+									maxAltitude = Utils.map(Utils
+											.getDoubleNodeAttribute(node,
+													userAttribute), 0,
+											treeHeightMax, 0, maxAltMapping);
+									break;
 
-							/**
-							 * Color mapping
-							 * */
-							int red = (int) Double.NaN;
-							int green = (int) Double.NaN;
-							int blue = (int) Double.NaN;
-							switch (branchesColorMapping) {
-							case TIME:
+								case DISTANCE:
+									maxAltitude = Utils.map(Utils
+											.rhumbDistance(parentLongitude,
+													parentLatitude, longitude,
+													latitude), 0, EarthRadius,
+											0, maxAltMapping);
+									break;
 
-								red = (int) Utils.map(nodeHeight, 0,
-										treeHeightMax, minBranchRedMapping,
-										maxBranchRedMapping);
+								case DEFAULT:
+									maxAltitude = 0;
+									break;
+								}
 
-								green = (int) Utils.map(nodeHeight, 0,
-										treeHeightMax, minBranchGreenMapping,
-										maxBranchGreenMapping);
+								/**
+								 * Color mapping
+								 * */
+								int red = (int) Double.NaN;
+								int green = (int) Double.NaN;
+								int blue = (int) Double.NaN;
+								switch (branchesColorMapping) {
+								case TIME:
 
-								blue = (int) Utils.map(nodeHeight, 0,
-										treeHeightMax, minBranchBlueMapping,
-										maxBranchBlueMapping);
-								break;
+									red = (int) Utils.map(nodeHeight, 0,
+											treeHeightMax, minBranchRedMapping,
+											maxBranchRedMapping);
 
-							case USER:
-								red = (int) Utils.map(Utils
-										.getDoubleNodeAttribute(node,
-												userAttribute), 0,
-										treeHeightMax, minBranchRedMapping,
-										maxBranchRedMapping);
+									green = (int) Utils.map(nodeHeight, 0,
+											treeHeightMax,
+											minBranchGreenMapping,
+											maxBranchGreenMapping);
 
-								green = (int) Utils.map(Utils
-										.getDoubleNodeAttribute(node,
-												userAttribute), 0,
-										treeHeightMax, minBranchGreenMapping,
-										maxBranchGreenMapping);
+									blue = (int) Utils.map(nodeHeight, 0,
+											treeHeightMax,
+											minBranchBlueMapping,
+											maxBranchBlueMapping);
+									break;
 
-								blue = (int) Utils.map(Utils
-										.getDoubleNodeAttribute(node,
-												userAttribute), 0,
-										treeHeightMax, minBranchBlueMapping,
-										maxBranchBlueMapping);
-								break;
+								case USER:
+									red = (int) Utils.map(Utils
+											.getDoubleNodeAttribute(node,
+													userAttribute), 0,
+											treeHeightMax, minBranchRedMapping,
+											maxBranchRedMapping);
 
-							case DEFAULT:
-								red = 255;
-								green = 0;
-								blue = 0;
-								break;
-							}
+									green = (int) Utils.map(Utils
+											.getDoubleNodeAttribute(node,
+													userAttribute), 0,
+											treeHeightMax,
+											minBranchGreenMapping,
+											maxBranchGreenMapping);
 
-							/**
-							 * opacity mapping
-							 * */
-							int alpha = (int) Double.NaN;
-							switch (branchesOpacityMapping) {
-							case TIME:
-								alpha = (int) Utils.map(nodeHeight, 0,
-										treeHeightMax, maxBranchOpacityMapping,
-										minBranchOpacityMapping);
-								break;
-							case USER:
-								alpha = (int) Utils.map(Utils
-										.getDoubleNodeAttribute(node,
-												userAttribute), 0,
-										treeHeightMax, maxBranchOpacityMapping,
-										minBranchOpacityMapping);
-								break;
-							case DEFAULT:
-								alpha = 255;
-								break;
-							}
+									blue = (int) Utils.map(Utils
+											.getDoubleNodeAttribute(node,
+													userAttribute), 0,
+											treeHeightMax,
+											minBranchBlueMapping,
+											maxBranchBlueMapping);
+									break;
 
-							Color col = new Color(red, green, blue, alpha);
+								case DEFAULT:
+									red = 255;
+									green = 0;
+									blue = 0;
+									break;
+								}
 
-							Style linesStyle = new Style(col, branchWidth);
-							linesStyle.setId("branch_style" + branchStyleId);
+								/**
+								 * opacity mapping
+								 * */
+								int alpha = (int) Double.NaN;
+								switch (branchesOpacityMapping) {
+								case TIME:
+									alpha = (int) Utils.map(nodeHeight, 0,
+											treeHeightMax,
+											maxBranchOpacityMapping,
+											minBranchOpacityMapping);
+									break;
+								case USER:
+									alpha = (int) Utils.map(Utils
+											.getDoubleNodeAttribute(node,
+													userAttribute), 0,
+											treeHeightMax,
+											maxBranchOpacityMapping,
+											minBranchOpacityMapping);
+									break;
+								case DEFAULT:
+									alpha = 255;
+									break;
+								}
 
-							double startTime = mrsd.minus((int) (nodeHeight
-									* DaysInYear * timescaler));
-							double endTime = mrsd.minus((int) (parentHeight
-									* DaysInYear * timescaler));
+								Color col = new Color(red, green, blue, alpha);
 
-							branchesLayer.addItem(new Line(
-									(parentState + ":" + state), // string name
-									new Coordinates(parentLongitude,
-											parentLatitude), startTime, // startime
-									linesStyle, // style startstyle
-									new Coordinates(longitude, latitude), // endcoords
-									endTime, // double endtime
-									linesStyle, // style endstyle
-									maxAltitude, // double maxAltitude
-									0.0) // double duration
-									);
+								Style linesStyle = new Style(col, branchWidth);
+								linesStyle
+										.setId("branch_style" + branchStyleId);
 
-							branchStyleId++;
-						}// END: state and parent state equality check
+								double startTime = mrsd.minus((int) (nodeHeight
+										* DaysInYear * timescaler));
+								double endTime = mrsd.minus((int) (parentHeight
+										* DaysInYear * timescaler));
+
+								branchesLayer.addItem(new Line((parentState
+										+ ":" + state), // string name
+										new Coordinates(parentLongitude,
+												parentLatitude), startTime, // startime
+										linesStyle, // style startstyle
+										new Coordinates(longitude, latitude), // endcoords
+										endTime, // double endtime
+										linesStyle, // style endstyle
+										maxAltitude, // double maxAltitude
+										0.0) // double duration
+										);
+
+								branchStyleId++;
+
+							}// END: state and parent state equality check
+						}// END: null check
 					}// END: root check
 				}// END: nodes loop
 
@@ -546,9 +558,8 @@ public class DiscreteTreeToKML {
 											36), // numPoints
 									circlesStyle, // Style style
 									startTime, // double startime
-									duration * DaysInYear * timescaler // double
-							// duration
-									));
+									duration * DaysInYear * timescaler // duration
+							));
 
 						}
 					}// END: row loop
@@ -580,35 +591,35 @@ public class DiscreteTreeToKML {
 				int numberOfLineagesOfState = 0;
 
 				for (Node node : tree.getNodes()) {
-
 					if (!tree.isRoot(node)) {
 
-						String state = getRandomState(Utils
-								.getStringNodeAttribute(node, stateAttName),
-								false);
+						String state = getRandomState((String) node
+								.getAttribute(stateAttName), false);
 
 						Node parentNode = tree.getParent(node);
 
-						String parentState = getRandomState(Utils
-								.getStringNodeAttribute(parentNode,
-										stateAttName), false);
+						String parentState = getRandomState((String) parentNode
+								.getAttribute(stateAttName), false);
 
-						if ((tree.getHeight(node) <= numberOfLineages[i][0])
-								&& (tree.getHeight(parentNode) > numberOfLineages[i][0])) {
+						if (state != null && parentState != null) {
 
-							String name = String
-									.valueOf(table.getValueAt(j, 0));
+							if ((tree.getHeight(node) <= numberOfLineages[i][0])
+									&& (tree.getHeight(parentNode) > numberOfLineages[i][0])) {
 
-							if ((state.toLowerCase().equals(parentState
-									.toLowerCase()))
-									&& (parentState.toLowerCase().equals(name
-											.toLowerCase()))) {
+								String name = String.valueOf(table.getValueAt(
+										j, 0));
 
-								numberOfLineagesOfState++;
+								if ((state.toLowerCase().equals(parentState
+										.toLowerCase()))
+										&& (parentState.toLowerCase()
+												.equals(name.toLowerCase()))) {
 
-							}
-						}
-					}
+									numberOfLineagesOfState++;
+
+								}// END: state
+							}// END: height check
+						}// END: null check
+					}// END: root check
 				}// END: node loop
 
 				numberOfLineages[i][j + 1] = numberOfLineagesOfState;

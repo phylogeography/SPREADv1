@@ -186,6 +186,9 @@ public class KMLGenerator implements Generator {
 						/ (Math.pow(sliceCount, 2) - sliceCount);
 				double b = 2 * maxAltitude / (sliceCount - 1);
 
+				// System.out.println(sliceCount);
+				// System.out.println(coords.length);
+
 				for (int i = 0; i < sliceCount; i++) {
 
 					double startAltitude = a * Math.pow((double) i, 2) + b
@@ -260,6 +263,8 @@ public class KMLGenerator implements Generator {
 							+ duration < YearZeroInMillis ? "-"
 							+ formatter.format(startTime + duration)
 							: formatter.format(startTime + duration)) : "");
+
+			// System.out.println(formatter.format(startTime + duration));
 
 			placemark.setTimePrimitive(timePrimitive);
 		}

@@ -16,7 +16,7 @@ public class AnalyzeTree implements Runnable {
 
 	// how many days one year holds
 	private static final int DaysInYear = 365;
-	
+
 	private RootedTree currentTree;
 	private String precisionString;
 	private String coordinatesName;
@@ -64,8 +64,9 @@ public class AnalyzeTree implements Runnable {
 					// attributes parsed once per node
 					Node parentNode = currentTree.getParent(node);
 
-					double nodeHeight = currentTree.getHeight(node);
-					double parentHeight = currentTree.getHeight(parentNode);
+					double nodeHeight = Utils.getNodeHeight(currentTree, node);
+					double parentHeight = Utils.getNodeHeight(currentTree,
+							parentNode);
 
 					double[] location = Utils.getDoubleArrayNodeAttribute(node,
 							coordinatesName);

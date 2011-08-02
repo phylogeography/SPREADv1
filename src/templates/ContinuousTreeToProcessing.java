@@ -179,8 +179,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 				Double latitude = (Double) node.getAttribute(latitudeName);
 
-				// TODO wrapper for that
-				Double nodeHeight = tree.getHeight(node);
+				Double nodeHeight = Utils.getNodeHeight(tree, node);
 
 				Node parentNode = tree.getParent(node);
 
@@ -190,10 +189,8 @@ public class ContinuousTreeToProcessing extends PApplet {
 				Double parentLatitude = (Double) parentNode
 						.getAttribute(latitudeName);
 
-				// TODO I will fix this spaghetti code some day... maybe
 				if (longitude != null && latitude != null
-						&& parentLongitude != null && parentLatitude != null
-						&& nodeHeight != null) {
+						&& parentLongitude != null && parentLatitude != null) {
 
 					// Equirectangular projection:
 					double x0 = Utils
@@ -207,8 +204,6 @@ public class ContinuousTreeToProcessing extends PApplet {
 					/**
 					 * Color mapping
 					 * */
-					// double nodeHeight = tree.getHeight(node);
-
 					int red = (int) Utils.map(nodeHeight, 0, treeHeightMax,
 							minBranchRedMapping, maxBranchRedMapping);
 
@@ -258,7 +253,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 							/**
 							 * Color mapping
 							 * */
-							double nodeHeight = tree.getHeight(node);
+							double nodeHeight = Utils.getNodeHeight(tree, node);
 
 							int red = (int) Utils.map(nodeHeight, 0,
 									treeHeightMax, minPolygonRedMapping,
