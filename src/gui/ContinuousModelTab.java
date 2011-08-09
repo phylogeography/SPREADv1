@@ -15,7 +15,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -58,12 +57,8 @@ public class ContinuousModelTab extends JPanel {
 	private String treeFilename;
 	private File workingDirectory;
 
-	// Labels
-	private JLabel tmpLabel;
-
 	// Text fields
 	private JTextField coordinatesNameParser;
-	private JTextField HPDParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField maxAltMappingParser;
 	private JTextField kmlPathParser;
@@ -120,7 +115,6 @@ public class ContinuousModelTab extends JPanel {
 
 		// Setup text fields
 		coordinatesNameParser = new JTextField("location", 10);
-		HPDParser = new JTextField("80", 2);
 		numberOfIntervalsParser = new JTextField("100", 10);
 		maxAltMappingParser = new JTextField("5000000", 10);
 		kmlPathParser = new JTextField("output.kml", 10);
@@ -206,16 +200,6 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Coordinate attribute name:"));
 		tmpPanel.add(coordinatesNameParser);
-		tmpPanelsHolder.add(tmpPanel);
-
-		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
-		tmpPanel.setBackground(backgroundColor);
-		tmpLabel = new JLabel("%");
-		tmpPanel.setBorder(new TitledBorder("HPD:"));
-		tmpPanel.add(HPDParser);
-		tmpPanel.add(tmpLabel);
-		tmpLabel.setLabelFor(tmpPanel);
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
@@ -493,15 +477,15 @@ public class ContinuousModelTab extends JPanel {
 
 					try {
 
-						if (new ContinuousSanityCheck().check(treeFilename,
-								coordinatesNameParser.getText(), HPDParser
-										.getText()
-										+ "%")) {
+						ContinuousSanityCheck contSanCheck = new ContinuousSanityCheck();
+
+						if (contSanCheck.check(treeFilename,
+								coordinatesNameParser.getText())) {
 
 							ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
 
-							continuousTreeToKML.setHPD(HPDParser.getText()
-									+ "%");
+							continuousTreeToKML.setHPDString(contSanCheck
+									.getHPDString());
 
 							continuousTreeToKML
 									.setCoordinatesName(coordinatesNameParser
@@ -583,7 +567,6 @@ public class ContinuousModelTab extends JPanel {
 									+ " "
 									+ (eraParser.getSelectedIndex() == 0 ? "AD"
 											: "BC"));
-							// TODO
 							continuousTreeToKML.setTimescaler(Double
 									.valueOf(timescalerParser.getText()));
 
@@ -657,10 +640,10 @@ public class ContinuousModelTab extends JPanel {
 
 					try {
 
-						if (new ContinuousSanityCheck().check(treeFilename,
-								coordinatesNameParser.getText(), HPDParser
-										.getText()
-										+ "%")) {
+						ContinuousSanityCheck contSanCheck = new ContinuousSanityCheck();
+
+						if (contSanCheck.check(treeFilename,
+								coordinatesNameParser.getText())) {
 
 							continuousTreeToProcessing
 									.setTreePath(treeFilename);
@@ -669,9 +652,8 @@ public class ContinuousModelTab extends JPanel {
 									.setCoordinatesName(coordinatesNameParser
 											.getText());
 
-							continuousTreeToProcessing.setHPD(HPDParser
-									.getText()
-									+ "%");
+							continuousTreeToProcessing
+									.setHPDString(contSanCheck.getHPDString());
 
 							continuousTreeToProcessing
 									.setMinPolygonRedMapping(polygonsMinColor

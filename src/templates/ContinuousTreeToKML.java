@@ -40,7 +40,7 @@ public class ContinuousTreeToKML {
 
 	private RootedTree tree;
 	private String coordinatesName;
-	private String HPD;
+	private String HPDString;
 	private String mrsdString;
 	private ThreadLocalSpreadDate mrsd;
 	private int numberOfIntervals;
@@ -105,8 +105,8 @@ public class ContinuousTreeToKML {
 		this.timescaler = timescaler;
 	}
 
-	public void setHPD(String percent) {
-		HPD = percent;
+	public void setHPDString(String HPDString) {
+		this.HPDString = HPDString;
 	}
 
 	public void setCoordinatesName(String name) {
@@ -211,6 +211,7 @@ public class ContinuousTreeToKML {
 		// start timing
 		time = -System.currentTimeMillis();
 
+		// import tree
 		tree = (RootedTree) importer.importNextTree();
 
 		// this is for time calculations
@@ -438,8 +439,8 @@ public class ContinuousTreeToKML {
 						if (!tree.isExternal(node)) {
 
 							Integer modality = (Integer) node
-									.getAttribute(coordinatesName + "_" + HPD
-											+ "HPD_modality");
+									.getAttribute(coordinatesName + "_"
+											+ HPDString + "_modality");
 
 							if (modality != null) {
 
@@ -447,12 +448,15 @@ public class ContinuousTreeToKML {
 
 									Object[] longitudeHPD = Utils
 											.getObjectArrayNodeAttribute(node,
-													longitudeName + "_" + HPD
-															+ "HPD_" + i);
+													longitudeName + "_"
+															+ HPDString + "_"
+															+ i);
+
 									Object[] latitudeHPD = Utils
 											.getObjectArrayNodeAttribute(node,
-													latitudeName + "_" + HPD
-															+ "HPD_" + i);
+													latitudeName + "_"
+															+ HPDString + "_"
+															+ i);
 
 									/**
 									 * Color mapping
@@ -536,8 +540,8 @@ public class ContinuousTreeToKML {
 									double startTime = mrsd.minus(days);
 
 									polygonsLayer.addItem(new Polygon("node"
-											+ polygonsStyleId + "_" + HPD
-											+ "HPD" + "_" + i, // String name
+											+ polygonsStyleId + "_" + HPDString
+											+ "_" + i, // String name
 											Utils.parsePolygons(longitudeHPD,
 													latitudeHPD),// List<Coordinates>
 											polygonsStyle, // Style style

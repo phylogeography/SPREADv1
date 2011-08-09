@@ -22,7 +22,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	private String longitudeName;
 	private String latitudeName;
 	private double treeHeightMax;
-	private String HPD;
+	private String HPDString;
 	private MapBackground mapBackground;
 
 	private double minPolygonRedMapping;
@@ -47,7 +47,6 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 	private double branchWidth;
 
-	// Borders of the map coordinates
 	// min/max longitude
 	private float minX, maxX;
 	// min/max latitude
@@ -56,8 +55,8 @@ public class ContinuousTreeToProcessing extends PApplet {
 	public ContinuousTreeToProcessing() {
 	}// END:ContinuousTreeToProcessing
 
-	public void setHPD(String percent) throws RuntimeException {
-		HPD = percent;
+	public void setHPDString(String HPDString) {
+		this.HPDString = HPDString;
 	}
 
 	public void setCoordinatesName(String name) {
@@ -235,8 +234,8 @@ public class ContinuousTreeToProcessing extends PApplet {
 				if (!tree.isExternal(node)) {
 
 					Integer modality = (Integer) node
-							.getAttribute(coordinatesName + "_" + HPD
-									+ "HPD_modality");
+							.getAttribute(coordinatesName + "_" + HPDString
+									+ "_modality");
 
 					if (modality != null) {
 
@@ -244,12 +243,12 @@ public class ContinuousTreeToProcessing extends PApplet {
 
 							Object[] longitudeHPD = Utils
 									.getObjectArrayNodeAttribute(node,
-											longitudeName + "_" + HPD + "HPD_"
-													+ i);
+											longitudeName + "_" + HPDString
+													+ "_" + i);
 							Object[] latitudeHPD = Utils
 									.getObjectArrayNodeAttribute(node,
-											latitudeName + "_" + HPD + "HPD_"
-													+ i);
+											latitudeName + "_" + HPDString
+													+ "_" + i);
 							/**
 							 * Color mapping
 							 * */

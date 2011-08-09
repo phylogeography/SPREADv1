@@ -11,8 +11,8 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		// ContinuousTreeToKMLTest();
-		TimeSlicerToKMLTest();
+		 ContinuousTreeToKMLTest();
+//		TimeSlicerToKMLTest();
 
 	}// END: main
 
@@ -28,7 +28,7 @@ public class Main {
 			continuousTreeToKML
 					.setTreePath("/home/filip/RacRABV_cont_0.8_MCC_snyder.tre");
 
-			continuousTreeToKML.setHPD("80%");
+			continuousTreeToKML.setHPDString("80%HPD");
 
 			continuousTreeToKML.setCoordinatesName("location");
 
