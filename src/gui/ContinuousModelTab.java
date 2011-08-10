@@ -608,9 +608,6 @@ public class ContinuousModelTab extends JPanel {
 
 									e.printStackTrace();
 
-									// TODO check for Exception type and format
-									// msg accordingly
-									// EOFException
 									String msg = String.format(
 											"Unexpected problem: %s", e
 													.toString());
@@ -775,7 +772,7 @@ public class ContinuousModelTab extends JPanel {
 								}
 							});
 
-						}
+						}// END: try-catch
 
 						return null;
 					}// END: doInBackground()
