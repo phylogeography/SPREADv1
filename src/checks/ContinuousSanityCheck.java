@@ -47,7 +47,8 @@ public class ContinuousSanityCheck {
 						if (name.contains("HPD") && name.contains("modality")) {
 
 							HPDString = name.split("_")[1];
-							System.out.println("Found highest posterior density attribute: " + HPDString);
+							System.out.println("Found highest posterior "
+									+ "density attribute: " + HPDString);
 
 						}
 					}

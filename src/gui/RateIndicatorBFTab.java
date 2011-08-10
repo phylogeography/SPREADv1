@@ -52,11 +52,11 @@ public class RateIndicatorBFTab extends JPanel {
 	private Color branchesMinColor;
 
 	// Locations & coordinates table
-	private InteractiveTableModel table;
+	private InteractiveTableModel table = null;
 
 	// Strings for paths
-	private String logFilename;
-	private File workingDirectory;
+	private String logFilename = null;
+	private File workingDirectory = null;
 
 	// Text fields
 	private JTextField numberOfIntervalsParser;
@@ -448,248 +448,286 @@ public class RateIndicatorBFTab extends JPanel {
 	private class ListenGenerateKml implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
-			generateKml.setEnabled(false);
-			progressBar.setIndeterminate(true);
+			if (logFilename == null) {
 
-			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				new ListenOpenLog().actionPerformed(ev);
 
-				// Executed in background thread
-				public Void doInBackground() {
+			} else if (table == null) {
 
-					try {
+				new ListenOpenLocationCoordinatesEditor().actionPerformed(ev);
 
-						RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
+			} else {
 
-						RateIndicatorBFToKML.setTable(table);
+				generateKml.setEnabled(false);
+				progressBar.setIndeterminate(true);
 
-						rateIndicatorBFToKML.setLogFilePath(logFilename,
-								burnInParser.getValue() / 100.0);
+				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-						rateIndicatorBFToKML.setBfCutoff(Double
-								.valueOf(bfCutoffParser.getText()));
+					// Executed in background thread
+					public Void doInBackground() {
 
-						rateIndicatorBFToKML.setMaxAltitudeMapping(Double
-								.valueOf(maxAltMappingParser.getText()));
+						try {
 
-						rateIndicatorBFToKML.setNumberOfIntervals(Integer
-								.valueOf(numberOfIntervalsParser.getText()));
+							RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 
-						rateIndicatorBFToKML.setKmlWriterPath(workingDirectory
-								.toString().concat("/").concat(
-										kmlPathParser.getText()));
+							RateIndicatorBFToKML.setTable(table);
 
-						rateIndicatorBFToKML
-								.setMinBranchRedMapping(branchesMinColor
-										.getRed());
+							rateIndicatorBFToKML.setLogFilePath(logFilename,
+									burnInParser.getValue() / 100.0);
 
-						rateIndicatorBFToKML
-								.setMinBranchGreenMapping(branchesMinColor
-										.getGreen());
+							rateIndicatorBFToKML.setBfCutoff(Double
+									.valueOf(bfCutoffParser.getText()));
 
-						rateIndicatorBFToKML
-								.setMinBranchBlueMapping(branchesMinColor
-										.getBlue());
+							rateIndicatorBFToKML.setMaxAltitudeMapping(Double
+									.valueOf(maxAltMappingParser.getText()));
 
-						rateIndicatorBFToKML
-								.setMinBranchOpacityMapping(branchesMinColor
-										.getAlpha());
-
-						rateIndicatorBFToKML
-								.setMaxBranchRedMapping(branchesMaxColor
-										.getRed());
-
-						rateIndicatorBFToKML
-								.setMaxBranchGreenMapping(branchesMaxColor
-										.getGreen());
-
-						rateIndicatorBFToKML
-								.setMaxBranchBlueMapping(branchesMaxColor
-										.getBlue());
-
-						rateIndicatorBFToKML
-								.setMaxBranchOpacityMapping(branchesMaxColor
-										.getAlpha());
-
-						rateIndicatorBFToKML.setBranchWidth(branchesWidthParser
-								.getValue());
-
-						if (meanPoissonPriorParser.getSelectedIndex() == 0) {
-							rateIndicatorBFToKML.setDefaultMeanPoissonPrior();
-
-						} else {
-							rateIndicatorBFToKML.setUserMeanPoissonPrior(Double
-									.valueOf(meanPoissonPriorParser
-											.getSelectedItem().toString()));
-						}
-
-						if (poissonPriorOffsetParser.getSelectedIndex() == 0) {
-							rateIndicatorBFToKML.setDefaultPoissonPriorOffset();
-
-						} else {
 							rateIndicatorBFToKML
-									.setUserPoissonPriorOffset(Double
-											.valueOf(poissonPriorOffsetParser
-													.getSelectedItem()
-													.toString()));
+									.setNumberOfIntervals(Integer
+											.valueOf(numberOfIntervalsParser
+													.getText()));
+
+							rateIndicatorBFToKML
+									.setKmlWriterPath(workingDirectory
+											.toString().concat("/").concat(
+													kmlPathParser.getText()));
+
+							rateIndicatorBFToKML
+									.setMinBranchRedMapping(branchesMinColor
+											.getRed());
+
+							rateIndicatorBFToKML
+									.setMinBranchGreenMapping(branchesMinColor
+											.getGreen());
+
+							rateIndicatorBFToKML
+									.setMinBranchBlueMapping(branchesMinColor
+											.getBlue());
+
+							rateIndicatorBFToKML
+									.setMinBranchOpacityMapping(branchesMinColor
+											.getAlpha());
+
+							rateIndicatorBFToKML
+									.setMaxBranchRedMapping(branchesMaxColor
+											.getRed());
+
+							rateIndicatorBFToKML
+									.setMaxBranchGreenMapping(branchesMaxColor
+											.getGreen());
+
+							rateIndicatorBFToKML
+									.setMaxBranchBlueMapping(branchesMaxColor
+											.getBlue());
+
+							rateIndicatorBFToKML
+									.setMaxBranchOpacityMapping(branchesMaxColor
+											.getAlpha());
+
+							rateIndicatorBFToKML
+									.setBranchWidth(branchesWidthParser
+											.getValue());
+
+							if (meanPoissonPriorParser.getSelectedIndex() == 0) {
+								rateIndicatorBFToKML
+										.setDefaultMeanPoissonPrior();
+
+							} else {
+								rateIndicatorBFToKML
+										.setUserMeanPoissonPrior(Double
+												.valueOf(meanPoissonPriorParser
+														.getSelectedItem()
+														.toString()));
+							}
+
+							if (poissonPriorOffsetParser.getSelectedIndex() == 0) {
+								rateIndicatorBFToKML
+										.setDefaultPoissonPriorOffset();
+
+							} else {
+								rateIndicatorBFToKML
+										.setUserPoissonPriorOffset(Double
+												.valueOf(poissonPriorOffsetParser
+														.getSelectedItem()
+														.toString()));
+							}
+
+							rateIndicatorBFToKML.GenerateKML();
+
+							System.out.println("Finished in: "
+									+ RateIndicatorBFToKML.time + " msec \n");
+
+						} catch (Exception e) {
+							e.printStackTrace();
+
+							String msg = String.format(
+									"Unexpected problem: %s", e.toString());
+
+							JOptionPane.showMessageDialog(Utils
+									.getActiveFrame(), msg, "Error",
+									JOptionPane.ERROR_MESSAGE, errorIcon);
 						}
 
-						rateIndicatorBFToKML.GenerateKML();
+						return null;
+					}// END: doInBackground()
 
-						System.out.println("Finished in: "
-								+ RateIndicatorBFToKML.time + " msec \n");
+					// Executed in event dispatch thread
+					public void done() {
+						generateKml.setEnabled(true);
+						progressBar.setIndeterminate(false);
 
-					} catch (Exception e) {
-						e.printStackTrace();
-
-						String msg = String.format("Unexpected problem: %s", e
-								.toString());
-
-						JOptionPane.showMessageDialog(Utils.getActiveFrame(),
-								msg, "Error", JOptionPane.ERROR_MESSAGE,
-								errorIcon);
+						System.out.println("Generated "
+								+ workingDirectory.toString().concat("/")
+										.concat(kmlPathParser.getText()));
 					}
+				};
 
-					return null;
-				}// END: doInBackground()
+				worker.execute();
 
-				// Executed in event dispatch thread
-				public void done() {
-					generateKml.setEnabled(true);
-					progressBar.setIndeterminate(false);
+			}// END: if not loaded
 
-					System.out.println("Generated "
-							+ workingDirectory.toString().concat("/").concat(
-									kmlPathParser.getText()));
-				}
-			};
-
-			worker.execute();
-		}
+		}// END: actionPerformed
 	}// END: ListenGenerateKml
 
 	private class ListenGenerateProcessing implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
-			generateProcessing.setEnabled(false);
-			progressBar.setIndeterminate(true);
+			if (logFilename == null) {
 
-			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				new ListenOpenLog().actionPerformed(ev);
 
-				// Executed in background thread
-				public Void doInBackground() {
+			} else if (table == null) {
 
-					try {
+				new ListenOpenLocationCoordinatesEditor().actionPerformed(ev);
 
-						rateIndicatorBFToProcessing.setTable(table);
+			} else {
 
-						rateIndicatorBFToProcessing.setLogFilePath(logFilename,
-								burnInParser.getValue() / 100.0);
+				generateProcessing.setEnabled(false);
+				progressBar.setIndeterminate(true);
 
-						rateIndicatorBFToProcessing.setBfCutoff(Double
-								.valueOf(bfCutoffParser.getText()));
+				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-						// rateIndicatorBFToProcessing
-						// .setNumberOfIntervals(Integer
-						// .valueOf(numberOfIntervalsParser
-						// .getText()));
+					// Executed in background thread
+					public Void doInBackground() {
 
-						rateIndicatorBFToProcessing
-								.setMinBranchRedMapping(branchesMinColor
-										.getRed());
+						try {
 
-						rateIndicatorBFToProcessing
-								.setMinBranchGreenMapping(branchesMinColor
-										.getGreen());
+							rateIndicatorBFToProcessing.setTable(table);
 
-						rateIndicatorBFToProcessing
-								.setMinBranchBlueMapping(branchesMinColor
-										.getBlue());
+							rateIndicatorBFToProcessing.setLogFilePath(
+									logFilename,
+									burnInParser.getValue() / 100.0);
 
-						rateIndicatorBFToProcessing
-								.setMinBranchOpacityMapping(branchesMinColor
-										.getAlpha());
+							rateIndicatorBFToProcessing.setBfCutoff(Double
+									.valueOf(bfCutoffParser.getText()));
 
-						rateIndicatorBFToProcessing
-								.setMaxBranchRedMapping(branchesMaxColor
-										.getRed());
+							// rateIndicatorBFToProcessing
+							// .setNumberOfIntervals(Integer
+							// .valueOf(numberOfIntervalsParser
+							// .getText()));
 
-						rateIndicatorBFToProcessing
-								.setMaxBranchGreenMapping(branchesMaxColor
-										.getGreen());
-
-						rateIndicatorBFToProcessing
-								.setMaxBranchBlueMapping(branchesMaxColor
-										.getBlue());
-
-						rateIndicatorBFToProcessing
-								.setMaxBranchOpacityMapping(branchesMaxColor
-										.getAlpha());
-
-						rateIndicatorBFToProcessing
-								.setBranchWidth(branchesWidthParser.getValue() / 2);
-
-						if (meanPoissonPriorParser.getSelectedIndex() == 0) {
 							rateIndicatorBFToProcessing
-									.setDefaultMeanPoissonPrior();
+									.setMinBranchRedMapping(branchesMinColor
+											.getRed());
 
-						} else {
 							rateIndicatorBFToProcessing
-									.setUserMeanPoissonPrior(Double
-											.valueOf(meanPoissonPriorParser
-													.getSelectedItem()
-													.toString()));
-						}
+									.setMinBranchGreenMapping(branchesMinColor
+											.getGreen());
 
-						if (poissonPriorOffsetParser.getSelectedIndex() == 0) {
 							rateIndicatorBFToProcessing
-									.setDefaultPoissonPriorOffset();
+									.setMinBranchBlueMapping(branchesMinColor
+											.getBlue());
 
-						} else {
 							rateIndicatorBFToProcessing
-									.setUserPoissonPriorOffset(Double
-											.valueOf(poissonPriorOffsetParser
-													.getSelectedItem()
-													.toString()));
-						}
+									.setMinBranchOpacityMapping(branchesMinColor
+											.getAlpha());
 
-						rateIndicatorBFToProcessing.init();
+							rateIndicatorBFToProcessing
+									.setMaxBranchRedMapping(branchesMaxColor
+											.getRed());
 
-						System.out.println("Finished. \n");
+							rateIndicatorBFToProcessing
+									.setMaxBranchGreenMapping(branchesMaxColor
+											.getGreen());
 
-					} catch (final Exception e) {
+							rateIndicatorBFToProcessing
+									.setMaxBranchBlueMapping(branchesMaxColor
+											.getBlue());
 
-						SwingUtilities.invokeLater(new Runnable() {
+							rateIndicatorBFToProcessing
+									.setMaxBranchOpacityMapping(branchesMaxColor
+											.getAlpha());
 
-							public void run() {
+							rateIndicatorBFToProcessing
+									.setBranchWidth(branchesWidthParser
+											.getValue() / 2);
 
-								e.printStackTrace();
+							if (meanPoissonPriorParser.getSelectedIndex() == 0) {
+								rateIndicatorBFToProcessing
+										.setDefaultMeanPoissonPrior();
 
-								String msg = String.format(
-										"Unexpected problem: %s", e.toString());
-
-								JOptionPane.showMessageDialog(Utils
-										.getActiveFrame(), msg, "Error",
-										JOptionPane.ERROR_MESSAGE, errorIcon);
-
+							} else {
+								rateIndicatorBFToProcessing
+										.setUserMeanPoissonPrior(Double
+												.valueOf(meanPoissonPriorParser
+														.getSelectedItem()
+														.toString()));
 							}
-						});
+
+							if (poissonPriorOffsetParser.getSelectedIndex() == 0) {
+								rateIndicatorBFToProcessing
+										.setDefaultPoissonPriorOffset();
+
+							} else {
+								rateIndicatorBFToProcessing
+										.setUserPoissonPriorOffset(Double
+												.valueOf(poissonPriorOffsetParser
+														.getSelectedItem()
+														.toString()));
+							}
+
+							rateIndicatorBFToProcessing.init();
+
+							System.out.println("Finished. \n");
+
+						} catch (final Exception e) {
+
+							SwingUtilities.invokeLater(new Runnable() {
+
+								public void run() {
+
+									e.printStackTrace();
+
+									String msg = String.format(
+											"Unexpected problem: %s", e
+													.toString());
+
+									JOptionPane.showMessageDialog(Utils
+											.getActiveFrame(), msg, "Error",
+											JOptionPane.ERROR_MESSAGE,
+											errorIcon);
+
+								}
+							});
+
+						}
+
+						return null;
+					}// END: doInBackground()
+
+					// Executed in event dispatch thread
+					public void done() {
+
+						generateProcessing.setEnabled(true);
+						progressBar.setIndeterminate(false);
 
 					}
+				};
 
-					return null;
-				}// END: doInBackground()
+				worker.execute();
 
-				// Executed in event dispatch thread
-				public void done() {
+			}// END: if not loaded
 
-					generateProcessing.setEnabled(true);
-					progressBar.setIndeterminate(false);
-
-				}
-			};
-
-			worker.execute();
-		}
+		}// END: actionPerformed
 	}// END: ListenGenerateProcessing
 
 	private class ListenSaveProcessingPlot implements ActionListener {

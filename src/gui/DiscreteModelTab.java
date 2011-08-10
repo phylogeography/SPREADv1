@@ -55,11 +55,11 @@ public class DiscreteModelTab extends JPanel {
 	private Color branchesMinColor;
 
 	// Locations & coordinates table
-	private InteractiveTableModel table;
+	private InteractiveTableModel table = null;
 
 	// Strings for paths
-	private String treeFilename;
-	private File workingDirectory;
+	private String treeFilename = null;
+	private File workingDirectory = null;
 
 	// Text fields
 	private JTextField stateAttNameParser;
@@ -467,7 +467,7 @@ public class DiscreteModelTab extends JPanel {
 
 				String msg = String.format("Unexpected problem: %s", e
 						.toString()
-						+ "\nHave you imported the tree file?");
+						+ "\nHave you imported the proper tree file?");
 
 				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
 						"Error", JOptionPane.ERROR_MESSAGE, errorIcon);
@@ -539,323 +539,354 @@ public class DiscreteModelTab extends JPanel {
 	}
 
 	private class ListenGenerateKml implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
-			generateKml.setEnabled(false);
-			progressBar.setIndeterminate(true);
+			if (treeFilename == null) {
 
-			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				new ListenOpenTree().actionPerformed(ev);
 
-				// Executed in background thread
-				public Void doInBackground() {
+			} else if (table == null) {
 
-					try {
+				new ListenOpenLocationCoordinatesEditor().actionPerformed(ev);
 
-						if (new DiscreteSanityCheck().check(treeFilename,
-								stateAttNameParser.getText(), table)) {
+			} else {
 
-							DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
+				generateKml.setEnabled(false);
+				progressBar.setIndeterminate(true);
 
-							discreteTreeToKML.setTable(table);
+				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-							discreteTreeToKML
-									.setStateAttName(stateAttNameParser
-											.getText());
+					// Executed in background thread
+					public Void doInBackground() {
 
-							discreteTreeToKML.setMaxAltitudeMapping(Double
-									.valueOf(maxAltMappingParser.getText()));
+						try {
 
-							discreteTreeToKML.setMrsdString(dateSpinner
-									.getValue()
-									+ " "
-									+ (eraParser.getSelectedIndex() == 0 ? "AD"
-											: "BC"));
+							if (new DiscreteSanityCheck().check(treeFilename,
+									stateAttNameParser.getText(), table)) {
 
-							// TODO
-							discreteTreeToKML
-									.setTimescaler(Double
-											.valueOf(timescalerParser
-													.getText()));
+								DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
 
-							discreteTreeToKML
-									.setNumberOfIntervals(Integer
-											.valueOf(numberOfIntervalsParser
-													.getText()));
+								discreteTreeToKML.setTable(table);
 
-							discreteTreeToKML.setKmlWriterPath(workingDirectory
-									.toString().concat("/").concat(
-											kmlPathParser.getText()));
+								discreteTreeToKML
+										.setStateAttName(stateAttNameParser
+												.getText());
 
-							discreteTreeToKML.setTreePath(treeFilename);
+								discreteTreeToKML
+										.setMaxAltitudeMapping(Double
+												.valueOf(maxAltMappingParser
+														.getText()));
 
-							discreteTreeToKML
-									.setMinPolygonRedMapping(polygonsMinColor
-											.getRed());
+								discreteTreeToKML
+										.setMrsdString(dateSpinner.getValue()
+												+ " "
+												+ (eraParser.getSelectedIndex() == 0 ? "AD"
+														: "BC"));
 
-							discreteTreeToKML
-									.setMinPolygonGreenMapping(polygonsMinColor
-											.getGreen());
+								discreteTreeToKML.setTimescaler(Double
+										.valueOf(timescalerParser.getText()));
 
-							discreteTreeToKML
-									.setMinPolygonBlueMapping(polygonsMinColor
-											.getBlue());
+								discreteTreeToKML.setNumberOfIntervals(Integer
+										.valueOf(numberOfIntervalsParser
+												.getText()));
 
-							discreteTreeToKML
-									.setMinPolygonOpacityMapping(polygonsMinColor
-											.getAlpha());
+								discreteTreeToKML
+										.setKmlWriterPath(workingDirectory
+												.toString()
+												.concat("/")
+												.concat(kmlPathParser.getText()));
 
-							discreteTreeToKML
-									.setMaxPolygonRedMapping(polygonsMaxColor
-											.getRed());
+								discreteTreeToKML.setTreePath(treeFilename);
 
-							discreteTreeToKML
-									.setMaxPolygonGreenMapping(polygonsMaxColor
-											.getGreen());
+								discreteTreeToKML
+										.setMinPolygonRedMapping(polygonsMinColor
+												.getRed());
 
-							discreteTreeToKML
-									.setMaxPolygonBlueMapping(polygonsMaxColor
-											.getBlue());
+								discreteTreeToKML
+										.setMinPolygonGreenMapping(polygonsMinColor
+												.getGreen());
 
-							discreteTreeToKML
-									.setMaxPolygonOpacityMapping(polygonsMaxColor
-											.getAlpha());
+								discreteTreeToKML
+										.setMinPolygonBlueMapping(polygonsMinColor
+												.getBlue());
 
-							discreteTreeToKML
-									.setPolygonsRadiusMultiplier(polygonsRadiusMultiplierParser
-											.getValue());
+								discreteTreeToKML
+										.setMinPolygonOpacityMapping(polygonsMinColor
+												.getAlpha());
 
-							discreteTreeToKML
-									.setMinBranchRedMapping(branchesMinColor
-											.getRed());
+								discreteTreeToKML
+										.setMaxPolygonRedMapping(polygonsMaxColor
+												.getRed());
 
-							discreteTreeToKML
-									.setMinBranchGreenMapping(branchesMinColor
-											.getGreen());
+								discreteTreeToKML
+										.setMaxPolygonGreenMapping(polygonsMaxColor
+												.getGreen());
 
-							discreteTreeToKML
-									.setMinBranchBlueMapping(branchesMinColor
-											.getBlue());
+								discreteTreeToKML
+										.setMaxPolygonBlueMapping(polygonsMaxColor
+												.getBlue());
 
-							discreteTreeToKML
-									.setMinBranchOpacityMapping(branchesMinColor
-											.getAlpha());
+								discreteTreeToKML
+										.setMaxPolygonOpacityMapping(polygonsMaxColor
+												.getAlpha());
 
-							discreteTreeToKML
-									.setMaxBranchRedMapping(branchesMaxColor
-											.getRed());
+								discreteTreeToKML
+										.setPolygonsRadiusMultiplier(polygonsRadiusMultiplierParser
+												.getValue());
 
-							discreteTreeToKML
-									.setMaxBranchGreenMapping(branchesMaxColor
-											.getGreen());
+								discreteTreeToKML
+										.setMinBranchRedMapping(branchesMinColor
+												.getRed());
 
-							discreteTreeToKML
-									.setMaxBranchBlueMapping(branchesMaxColor
-											.getBlue());
+								discreteTreeToKML
+										.setMinBranchGreenMapping(branchesMinColor
+												.getGreen());
 
-							discreteTreeToKML
-									.setMaxBranchOpacityMapping(branchesMaxColor
-											.getAlpha());
+								discreteTreeToKML
+										.setMinBranchBlueMapping(branchesMinColor
+												.getBlue());
 
-							discreteTreeToKML
-									.setBranchWidth(branchesWidthParser
-											.getValue());
+								discreteTreeToKML
+										.setMinBranchOpacityMapping(branchesMinColor
+												.getAlpha());
 
-							discreteTreeToKML.GenerateKML();
+								discreteTreeToKML
+										.setMaxBranchRedMapping(branchesMaxColor
+												.getRed());
 
-							System.out.println("Finished in: "
-									+ discreteTreeToKML.time + " msec \n");
+								discreteTreeToKML
+										.setMaxBranchGreenMapping(branchesMaxColor
+												.getGreen());
 
-						}// END: check
+								discreteTreeToKML
+										.setMaxBranchBlueMapping(branchesMaxColor
+												.getBlue());
 
-					} catch (final Exception e) {
+								discreteTreeToKML
+										.setMaxBranchOpacityMapping(branchesMaxColor
+												.getAlpha());
 
-						SwingUtilities.invokeLater(new Runnable() {
+								discreteTreeToKML
+										.setBranchWidth(branchesWidthParser
+												.getValue());
 
-							public void run() {
+								discreteTreeToKML.GenerateKML();
 
-								e.printStackTrace();
+								System.out.println("Finished in: "
+										+ discreteTreeToKML.time + " msec \n");
 
-								String msg = String.format(
-										"Unexpected problem: %s", e.toString());
+							}// END: check
 
-								JOptionPane.showMessageDialog(Utils
-										.getActiveFrame(), msg, "Error",
-										JOptionPane.ERROR_MESSAGE, errorIcon);
+						} catch (final Exception e) {
 
-							}
-						});
+							SwingUtilities.invokeLater(new Runnable() {
 
+								public void run() {
+
+									e.printStackTrace();
+
+									String msg = String.format(
+											"Unexpected problem: %s", e
+													.toString());
+
+									JOptionPane.showMessageDialog(Utils
+											.getActiveFrame(), msg, "Error",
+											JOptionPane.ERROR_MESSAGE,
+											errorIcon);
+
+								}
+							});
+
+						}
+
+						return null;
+					}// END: doInBackground()
+
+					// Executed in event dispatch thread
+					public void done() {
+						generateKml.setEnabled(true);
+						progressBar.setIndeterminate(false);
+
+						System.out.println("Generated "
+								+ workingDirectory.toString().concat("/")
+										.concat(kmlPathParser.getText()));
 					}
+				};
 
-					return null;
-				}// END: doInBackground()
+				worker.execute();
 
-				// Executed in event dispatch thread
-				public void done() {
-					generateKml.setEnabled(true);
-					progressBar.setIndeterminate(false);
+			}// END: if not loaded
 
-					System.out.println("Generated "
-							+ workingDirectory.toString().concat("/").concat(
-									kmlPathParser.getText()));
-				}
-			};
-
-			worker.execute();
-		}
+		}// END: actionPerformed
 	}// END: ListenGenerateKml
 
 	private class ListenGenerateProcessing implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
-			generateProcessing.setEnabled(false);
-			progressBar.setIndeterminate(true);
+			if (treeFilename == null) {
 
-			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				new ListenOpenTree().actionPerformed(ev);
 
-				// Executed in background thread
-				public Void doInBackground() {
+			} else if (table == null) {
 
-					// TODO This work should be activated after each option
-					// changes (automatic responsive plotting); will make for a
-					// much slicker program
+				new ListenOpenLocationCoordinatesEditor().actionPerformed(ev);
 
-					try {
+			} else {
 
-						if (new DiscreteSanityCheck().check(treeFilename,
-								stateAttNameParser.getText(), table)) {
+				generateProcessing.setEnabled(false);
+				progressBar.setIndeterminate(true);
 
-							// TODO Should only be done with state data changes,
-							// not with each draw
-							discreteTreeToProcessing
-									.setStateAttName(stateAttNameParser
-											.getText());
+				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-							// TODO Should only be done when changed,
-							// not with each draw
-							discreteTreeToProcessing.setTable(table);
+					// Executed in background thread
+					public Void doInBackground() {
 
-							// TODO Should only be done when changed,
-							// not with each draw
-							discreteTreeToProcessing.setTreePath(treeFilename);
+						// TODO This work should be activated after each option
+						// changes (automatic responsive plotting); will make
+						// for a much slicker program
 
-							discreteTreeToProcessing
-									.setNumberOfIntervals(Integer
-											.valueOf(numberOfIntervalsParser
-													.getText()));
+						try {
 
-							discreteTreeToProcessing
-									.setMinPolygonRedMapping(polygonsMinColor
-											.getRed());
+							if (new DiscreteSanityCheck().check(treeFilename,
+									stateAttNameParser.getText(), table)) {
 
-							discreteTreeToProcessing
-									.setMinPolygonGreenMapping(polygonsMinColor
-											.getGreen());
+								// TODO Should only be done with state data
+								// changes, not with each draw
+								discreteTreeToProcessing
+										.setStateAttName(stateAttNameParser
+												.getText());
 
-							discreteTreeToProcessing
-									.setMinPolygonBlueMapping(polygonsMinColor
-											.getBlue());
+								// TODO Should only be done when changed,
+								// not with each draw
+								discreteTreeToProcessing.setTable(table);
 
-							discreteTreeToProcessing
-									.setMinPolygonOpacityMapping(polygonsMinColor
-											.getAlpha());
+								// TODO Should only be done when changed,
+								// not with each draw
+								discreteTreeToProcessing
+										.setTreePath(treeFilename);
 
-							discreteTreeToProcessing
-									.setMaxPolygonRedMapping(polygonsMaxColor
-											.getRed());
+								discreteTreeToProcessing
+										.setNumberOfIntervals(Integer
+												.valueOf(numberOfIntervalsParser
+														.getText()));
 
-							discreteTreeToProcessing
-									.setMaxPolygonGreenMapping(polygonsMaxColor
-											.getGreen());
+								discreteTreeToProcessing
+										.setMinPolygonRedMapping(polygonsMinColor
+												.getRed());
 
-							discreteTreeToProcessing
-									.setMaxPolygonBlueMapping(polygonsMaxColor
-											.getBlue());
+								discreteTreeToProcessing
+										.setMinPolygonGreenMapping(polygonsMinColor
+												.getGreen());
 
-							discreteTreeToProcessing
-									.setMaxPolygonOpacityMapping(polygonsMaxColor
-											.getAlpha());
+								discreteTreeToProcessing
+										.setMinPolygonBlueMapping(polygonsMinColor
+												.getBlue());
 
-							discreteTreeToProcessing
-									.setPolygonsRadiusMultiplier(polygonsRadiusMultiplierParser
-											.getValue());
+								discreteTreeToProcessing
+										.setMinPolygonOpacityMapping(polygonsMinColor
+												.getAlpha());
 
-							discreteTreeToProcessing
-									.setMinBranchRedMapping(branchesMinColor
-											.getRed());
+								discreteTreeToProcessing
+										.setMaxPolygonRedMapping(polygonsMaxColor
+												.getRed());
 
-							discreteTreeToProcessing
-									.setMinBranchGreenMapping(branchesMinColor
-											.getGreen());
+								discreteTreeToProcessing
+										.setMaxPolygonGreenMapping(polygonsMaxColor
+												.getGreen());
 
-							discreteTreeToProcessing
-									.setMinBranchBlueMapping(branchesMinColor
-											.getBlue());
+								discreteTreeToProcessing
+										.setMaxPolygonBlueMapping(polygonsMaxColor
+												.getBlue());
 
-							discreteTreeToProcessing
-									.setMinBranchOpacityMapping(branchesMinColor
-											.getAlpha());
+								discreteTreeToProcessing
+										.setMaxPolygonOpacityMapping(polygonsMaxColor
+												.getAlpha());
 
-							discreteTreeToProcessing
-									.setMaxBranchRedMapping(branchesMaxColor
-											.getRed());
+								discreteTreeToProcessing
+										.setPolygonsRadiusMultiplier(polygonsRadiusMultiplierParser
+												.getValue());
 
-							discreteTreeToProcessing
-									.setMaxBranchGreenMapping(branchesMaxColor
-											.getGreen());
+								discreteTreeToProcessing
+										.setMinBranchRedMapping(branchesMinColor
+												.getRed());
 
-							discreteTreeToProcessing
-									.setMaxBranchBlueMapping(branchesMaxColor
-											.getBlue());
+								discreteTreeToProcessing
+										.setMinBranchGreenMapping(branchesMinColor
+												.getGreen());
 
-							discreteTreeToProcessing
-									.setMaxBranchOpacityMapping(branchesMaxColor
-											.getAlpha());
+								discreteTreeToProcessing
+										.setMinBranchBlueMapping(branchesMinColor
+												.getBlue());
 
-							discreteTreeToProcessing
-									.setBranchWidth(branchesWidthParser
-											.getValue() / 2);
+								discreteTreeToProcessing
+										.setMinBranchOpacityMapping(branchesMinColor
+												.getAlpha());
 
-							discreteTreeToProcessing.init();
+								discreteTreeToProcessing
+										.setMaxBranchRedMapping(branchesMaxColor
+												.getRed());
 
-							System.out.println("Finished. \n");
+								discreteTreeToProcessing
+										.setMaxBranchGreenMapping(branchesMaxColor
+												.getGreen());
 
-						}// END: check
+								discreteTreeToProcessing
+										.setMaxBranchBlueMapping(branchesMaxColor
+												.getBlue());
 
-					} catch (final Exception e) {
+								discreteTreeToProcessing
+										.setMaxBranchOpacityMapping(branchesMaxColor
+												.getAlpha());
 
-						SwingUtilities.invokeLater(new Runnable() {
+								discreteTreeToProcessing
+										.setBranchWidth(branchesWidthParser
+												.getValue() / 2);
 
-							public void run() {
+								discreteTreeToProcessing.init();
 
-								e.printStackTrace();
+								System.out.println("Finished. \n");
 
-								String msg = String.format(
-										"Unexpected problem: %s", e.toString());
+							}// END: check
 
-								JOptionPane.showMessageDialog(Utils
-										.getActiveFrame(), msg, "Error",
-										JOptionPane.ERROR_MESSAGE, errorIcon);
+						} catch (final Exception e) {
 
-							}
-						});
+							SwingUtilities.invokeLater(new Runnable() {
+
+								public void run() {
+
+									e.printStackTrace();
+
+									String msg = String.format(
+											"Unexpected problem: %s", e
+													.toString());
+
+									JOptionPane.showMessageDialog(Utils
+											.getActiveFrame(), msg, "Error",
+											JOptionPane.ERROR_MESSAGE,
+											errorIcon);
+
+								}
+							});
+
+						}
+
+						return null;
+					}// END: doInBackground
+
+					// Executed in event dispatch thread
+					public void done() {
+
+						generateProcessing.setEnabled(true);
+						progressBar.setIndeterminate(false);
 
 					}
+				};
 
-					return null;
-				}// END: doInBackground()
+				worker.execute();
 
-				// Executed in event dispatch thread
-				public void done() {
+			}// END: if not loaded
 
-					generateProcessing.setEnabled(true);
-					progressBar.setIndeterminate(false);
-
-				}
-			};
-
-			worker.execute();
-		}
+		}// END: actionPerformed
 	}// END: ListenGenerateProcessing
 
 	private class ListenSaveProcessingPlot implements ActionListener {

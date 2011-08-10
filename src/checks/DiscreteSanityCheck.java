@@ -45,22 +45,26 @@ public class DiscreteSanityCheck {
 		}// END: node loop
 
 		if (unannotatedNodeCount == nodeCount) {
+
 			notNull = false;
 			throw new RuntimeException("Attribute, " + stateAttName
 					+ ", missing from node");
 
 		} else if (unannotatedNodeCount == 0) {
+
 			notNull = true;
 
 		} else if (unannotatedNodeCount < nodeCount) {
+
 			notNull = true;
-			// TODO show unannotated branches dialog
 			System.out.println("Spread detected unannotated branches "
 					+ "and will continue by skipping them. Consider "
 					+ "annotating all of the branches of your tree.");
 		} else {
+
 			notNull = false;
 			throw new RuntimeException("Bad juju");
+
 		}
 
 		fitLocations(table, uniqueTreeStates);

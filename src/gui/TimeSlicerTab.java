@@ -56,9 +56,9 @@ public class TimeSlicerTab extends JPanel {
 	private Color branchesMinColor;
 
 	// Strings for paths
-	private String treeFilename;
-	private String treesFilename;
-	private File workingDirectory;
+	private String treeFilename = null;
+	private String treesFilename = null;
+	private File workingDirectory = null;
 
 	// Text fields
 	private JTextField burnInParser;
@@ -598,406 +598,448 @@ public class TimeSlicerTab extends JPanel {
 	}
 
 	private class ListenGenerateKml implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
-			generateKml.setEnabled(false);
-			progressBar.setIndeterminate(true);
+			if (treeFilename == null) {
 
-			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				new ListenOpenTree().actionPerformed(ev);
 
-				// Executed in background thread
-				public Void doInBackground() {
+			} else if (treesFilename == null) {
 
-					try {
+				new ListenOpenTrees().actionPerformed(ev);
 
-						if (new TimeSlicerSanityCheck().check(treeFilename,
-								coordinatesNameParser.getText(), treesFilename)) {
+			} else {
 
-							TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
+				generateKml.setEnabled(false);
+				progressBar.setIndeterminate(true);
 
-							timeSlicerToKML.setTreePath(treeFilename);
+				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-							timeSlicerToKML.setTreesPath(treesFilename);
+					// Executed in background thread
+					public Void doInBackground() {
 
-							timeSlicerToKML.setHPD(Double.valueOf(HPDParser
-									.getText()));
+						try {
 
-							timeSlicerToKML.setGridSize(gridSizeParser
-									.getValue());
+							if (new TimeSlicerSanityCheck().check(treeFilename,
+									coordinatesNameParser.getText(),
+									treesFilename)) {
 
-							timeSlicerToKML.setBurnIn(Integer
-									.valueOf(burnInParser.getText()));
+								TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
 
-							timeSlicerToKML
-									.setLocationAttName(coordinatesNameParser
-											.getText());
+								timeSlicerToKML.setTreePath(treeFilename);
 
-							timeSlicerToKML.setRateAttName(rateAttNameParser
-									.getText());
+								timeSlicerToKML.setTreesPath(treesFilename);
 
-							timeSlicerToKML
-									.setPrecisionAttName(precisionAttNameParser
-											.getText());
+								timeSlicerToKML.setHPD(Double.valueOf(HPDParser
+										.getText()));
 
-							timeSlicerToKML.setTrueNoise(trueNoiseParser
-									.isSelected());
+								timeSlicerToKML.setGridSize(gridSizeParser
+										.getValue());
 
-							timeSlicerToKML
-									.setImpute(imputeParser.isSelected());
+								timeSlicerToKML.setBurnIn(Integer
+										.valueOf(burnInParser.getText()));
 
-							timeSlicerToKML.setMrsdString(dateSpinner
-									.getValue()
-									+ " "
-									+ (eraParser.getSelectedIndex() == 0 ? "AD"
-											: "BC"));
+								timeSlicerToKML
+										.setLocationAttName(coordinatesNameParser
+												.getText());
 
-							timeSlicerToKML
-									.setNumberOfIntervals(Integer
-											.valueOf(numberOfIntervalsParser
-													.getText()));
+								timeSlicerToKML
+										.setRateAttName(rateAttNameParser
+												.getText());
 
-							// TODO
-							timeSlicerToKML.setTimescaler(Double
-									.valueOf(timescalerParser.getText()));
+								timeSlicerToKML
+										.setPrecisionAttName(precisionAttNameParser
+												.getText());
 
-							timeSlicerToKML.setKmlWriterPath(workingDirectory
-									.toString().concat("/").concat(
-											kmlPathParser.getText()));
+								timeSlicerToKML.setTrueNoise(trueNoiseParser
+										.isSelected());
 
-							timeSlicerToKML.setMaxAltitudeMapping(Double
-									.valueOf(maxAltMappingParser.getText()));
+								timeSlicerToKML.setImpute(imputeParser
+										.isSelected());
 
-							timeSlicerToKML
-									.setMinPolygonRedMapping(polygonsMinColor
-											.getRed());
+								timeSlicerToKML
+										.setMrsdString(dateSpinner.getValue()
+												+ " "
+												+ (eraParser.getSelectedIndex() == 0 ? "AD"
+														: "BC"));
 
-							timeSlicerToKML
-									.setMinPolygonGreenMapping(polygonsMinColor
-											.getGreen());
+								timeSlicerToKML.setNumberOfIntervals(Integer
+										.valueOf(numberOfIntervalsParser
+												.getText()));
 
-							timeSlicerToKML
-									.setMinPolygonBlueMapping(polygonsMinColor
-											.getBlue());
+								timeSlicerToKML.setTimescaler(Double
+										.valueOf(timescalerParser.getText()));
 
-							timeSlicerToKML
-									.setMinPolygonOpacityMapping(polygonsMinColor
-											.getAlpha());
+								timeSlicerToKML
+										.setKmlWriterPath(workingDirectory
+												.toString()
+												.concat("/")
+												.concat(kmlPathParser.getText()));
 
-							timeSlicerToKML
-									.setMaxPolygonRedMapping(polygonsMaxColor
-											.getRed());
+								timeSlicerToKML
+										.setMaxAltitudeMapping(Double
+												.valueOf(maxAltMappingParser
+														.getText()));
 
-							timeSlicerToKML
-									.setMaxPolygonGreenMapping(polygonsMaxColor
-											.getGreen());
+								timeSlicerToKML
+										.setMinPolygonRedMapping(polygonsMinColor
+												.getRed());
 
-							timeSlicerToKML
-									.setMaxPolygonBlueMapping(polygonsMaxColor
-											.getBlue());
+								timeSlicerToKML
+										.setMinPolygonGreenMapping(polygonsMinColor
+												.getGreen());
 
-							timeSlicerToKML
-									.setMaxPolygonOpacityMapping(polygonsMaxColor
-											.getAlpha());
+								timeSlicerToKML
+										.setMinPolygonBlueMapping(polygonsMinColor
+												.getBlue());
 
-							timeSlicerToKML
-									.setMinBranchRedMapping(branchesMinColor
-											.getRed());
+								timeSlicerToKML
+										.setMinPolygonOpacityMapping(polygonsMinColor
+												.getAlpha());
 
-							timeSlicerToKML
-									.setMinBranchGreenMapping(branchesMinColor
-											.getGreen());
+								timeSlicerToKML
+										.setMaxPolygonRedMapping(polygonsMaxColor
+												.getRed());
 
-							timeSlicerToKML
-									.setMinBranchBlueMapping(branchesMinColor
-											.getBlue());
+								timeSlicerToKML
+										.setMaxPolygonGreenMapping(polygonsMaxColor
+												.getGreen());
 
-							timeSlicerToKML
-									.setMinBranchOpacityMapping(branchesMinColor
-											.getAlpha());
+								timeSlicerToKML
+										.setMaxPolygonBlueMapping(polygonsMaxColor
+												.getBlue());
 
-							timeSlicerToKML
-									.setMaxBranchRedMapping(branchesMaxColor
-											.getRed());
+								timeSlicerToKML
+										.setMaxPolygonOpacityMapping(polygonsMaxColor
+												.getAlpha());
 
-							timeSlicerToKML
-									.setMaxBranchGreenMapping(branchesMaxColor
-											.getGreen());
+								timeSlicerToKML
+										.setMinBranchRedMapping(branchesMinColor
+												.getRed());
 
-							timeSlicerToKML
-									.setMaxBranchBlueMapping(branchesMaxColor
-											.getBlue());
+								timeSlicerToKML
+										.setMinBranchGreenMapping(branchesMinColor
+												.getGreen());
 
-							timeSlicerToKML
-									.setMaxBranchOpacityMapping(branchesMaxColor
-											.getAlpha());
+								timeSlicerToKML
+										.setMinBranchBlueMapping(branchesMinColor
+												.getBlue());
 
-							timeSlicerToKML.setBranchWidth(branchesWidthParser
-									.getValue());
+								timeSlicerToKML
+										.setMinBranchOpacityMapping(branchesMinColor
+												.getAlpha());
 
-							timeSlicerToKML.GenerateKML();
+								timeSlicerToKML
+										.setMaxBranchRedMapping(branchesMaxColor
+												.getRed());
 
-							System.out.println("Finished in: "
-									+ timeSlicerToKML.time + " msec \n");
+								timeSlicerToKML
+										.setMaxBranchGreenMapping(branchesMaxColor
+												.getGreen());
 
-						}// END: check
+								timeSlicerToKML
+										.setMaxBranchBlueMapping(branchesMaxColor
+												.getBlue());
 
-					} catch (final OutOfMemoryError e) {
+								timeSlicerToKML
+										.setMaxBranchOpacityMapping(branchesMaxColor
+												.getAlpha());
 
-						SwingUtilities.invokeLater(new Runnable() {
+								timeSlicerToKML
+										.setBranchWidth(branchesWidthParser
+												.getValue());
 
-							public void run() {
+								timeSlicerToKML.GenerateKML();
 
-								e.printStackTrace();
+								System.out.println("Finished in: "
+										+ timeSlicerToKML.time + " msec \n");
 
-								String msg = String.format(
-										"Unexpected problem: %s", e.toString());
+							}// END: check
 
-								JOptionPane.showMessageDialog(Utils
-										.getActiveFrame(), msg
-										+ "\nIncrease Java Heap Space",
-										"Error", JOptionPane.ERROR_MESSAGE,
-										errorIcon);
+						} catch (final OutOfMemoryError e) {
 
-							}
-						});
+							SwingUtilities.invokeLater(new Runnable() {
 
-					} catch (final Exception e) {
+								public void run() {
 
-						SwingUtilities.invokeLater(new Runnable() {
+									e.printStackTrace();
 
-							public void run() {
+									String msg = String.format(
+											"Unexpected problem: %s", e
+													.toString());
 
-								e.printStackTrace();
+									JOptionPane.showMessageDialog(Utils
+											.getActiveFrame(), msg
+											+ "\nIncrease Java Heap Space",
+											"Error", JOptionPane.ERROR_MESSAGE,
+											errorIcon);
 
-								String msg = String.format(
-										"Unexpected problem: %s", e.toString());
+								}
+							});
 
-								JOptionPane.showMessageDialog(Utils
-										.getActiveFrame(), msg, "Error",
-										JOptionPane.ERROR_MESSAGE, errorIcon);
+						} catch (final Exception e) {
 
-							}
-						});
+							SwingUtilities.invokeLater(new Runnable() {
+
+								public void run() {
+
+									e.printStackTrace();
+
+									String msg = String.format(
+											"Unexpected problem: %s", e
+													.toString());
+
+									JOptionPane.showMessageDialog(Utils
+											.getActiveFrame(), msg, "Error",
+											JOptionPane.ERROR_MESSAGE,
+											errorIcon);
+
+								}
+							});
+
+						}
+
+						return null;
+					}// END: doInBackground()
+
+					// Executed in event dispatch thread
+					public void done() {
+
+						generateKml.setEnabled(true);
+						progressBar.setIndeterminate(false);
+
+						System.out.println("Generated "
+								+ workingDirectory.toString().concat("/")
+										.concat(kmlPathParser.getText()));
+
+						// TODO: is it neccessary?
+						System.gc();
 
 					}
+				};
 
-					return null;
-				}// END: doInBackground()
+				worker.execute();
 
-				// Executed in event dispatch thread
-				public void done() {
+			}// END: if not loaded
 
-					generateKml.setEnabled(true);
-					progressBar.setIndeterminate(false);
-
-					System.out.println("Generated "
-							+ workingDirectory.toString().concat("/").concat(
-									kmlPathParser.getText()));
-
-					// TODO: is it neccessary?
-					System.gc();
-
-				}
-			};
-
-			worker.execute();
-		}
+		}// END: actionPerformed
 	}// END: ListenGenerateKml
 
 	private class ListenGenerateProcessing implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
-			generateProcessing.setEnabled(false);
-			progressBar.setIndeterminate(true);
+			if (treeFilename == null) {
 
-			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				new ListenOpenTree().actionPerformed(ev);
 
-				// Executed in background thread
-				public Void doInBackground() {
+			} else if (treesFilename == null) {
 
-					try {
+				new ListenOpenTrees().actionPerformed(ev);
 
-						if (new TimeSlicerSanityCheck().check(treeFilename,
-								coordinatesNameParser.getText(), treesFilename)) {
+			} else {
 
-							timeSlicerToProcessing.setMccTreePath(treeFilename);
+				generateProcessing.setEnabled(false);
+				progressBar.setIndeterminate(true);
 
-							timeSlicerToProcessing.setTreesPath(treesFilename);
+				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-							timeSlicerToProcessing.setHPD(Double
-									.valueOf(HPDParser.getText()));
+					// Executed in background thread
+					public Void doInBackground() {
 
-							timeSlicerToProcessing.setGridSize(gridSizeParser
-									.getValue());
+						try {
 
-							timeSlicerToProcessing.setBurnIn(Integer
-									.valueOf(burnInParser.getText()));
+							if (new TimeSlicerSanityCheck().check(treeFilename,
+									coordinatesNameParser.getText(),
+									treesFilename)) {
 
-							timeSlicerToProcessing
-									.setCoordinatesName(coordinatesNameParser
-											.getText());
+								timeSlicerToProcessing
+										.setMccTreePath(treeFilename);
 
-							timeSlicerToProcessing
-									.setRateAttName(rateAttNameParser.getText());
+								timeSlicerToProcessing
+										.setTreesPath(treesFilename);
 
-							timeSlicerToProcessing
-									.setPrecisionAttName(precisionAttNameParser
-											.getText());
+								timeSlicerToProcessing.setHPD(Double
+										.valueOf(HPDParser.getText()));
 
-							timeSlicerToProcessing.setTrueNoise(trueNoiseParser
-									.isSelected());
+								timeSlicerToProcessing
+										.setGridSize(gridSizeParser.getValue());
 
-							timeSlicerToProcessing.setImpute(imputeParser
-									.isSelected());
+								timeSlicerToProcessing.setBurnIn(Integer
+										.valueOf(burnInParser.getText()));
 
-							timeSlicerToProcessing.setMrsdString(dateSpinner
-									.getValue()
-									+ " "
-									+ (eraParser.getSelectedIndex() == 0 ? "AD"
-											: "BC"));
+								timeSlicerToProcessing
+										.setCoordinatesName(coordinatesNameParser
+												.getText());
 
-							timeSlicerToProcessing
-									.setNumberOfIntervals(Integer
-											.valueOf(numberOfIntervalsParser
-													.getText()));
+								timeSlicerToProcessing
+										.setRateAttName(rateAttNameParser
+												.getText());
 
-							// TODO
-							timeSlicerToProcessing.setTimescaler(Double
-									.valueOf(timescalerParser.getText()));
+								timeSlicerToProcessing
+										.setPrecisionAttName(precisionAttNameParser
+												.getText());
 
-							timeSlicerToProcessing
-									.setMinPolygonRedMapping(polygonsMinColor
-											.getRed());
+								timeSlicerToProcessing
+										.setTrueNoise(trueNoiseParser
+												.isSelected());
 
-							timeSlicerToProcessing
-									.setMinPolygonGreenMapping(polygonsMinColor
-											.getGreen());
+								timeSlicerToProcessing.setImpute(imputeParser
+										.isSelected());
 
-							timeSlicerToProcessing
-									.setMinPolygonBlueMapping(polygonsMinColor
-											.getBlue());
+								timeSlicerToProcessing
+										.setMrsdString(dateSpinner.getValue()
+												+ " "
+												+ (eraParser.getSelectedIndex() == 0 ? "AD"
+														: "BC"));
 
-							timeSlicerToProcessing
-									.setMinPolygonOpacityMapping(polygonsMinColor
-											.getAlpha());
+								timeSlicerToProcessing
+										.setNumberOfIntervals(Integer
+												.valueOf(numberOfIntervalsParser
+														.getText()));
 
-							timeSlicerToProcessing
-									.setMaxPolygonRedMapping(polygonsMaxColor
-											.getRed());
+								// TODO
+								timeSlicerToProcessing.setTimescaler(Double
+										.valueOf(timescalerParser.getText()));
 
-							timeSlicerToProcessing
-									.setMaxPolygonGreenMapping(polygonsMaxColor
-											.getGreen());
+								timeSlicerToProcessing
+										.setMinPolygonRedMapping(polygonsMinColor
+												.getRed());
 
-							timeSlicerToProcessing
-									.setMaxPolygonBlueMapping(polygonsMaxColor
-											.getBlue());
+								timeSlicerToProcessing
+										.setMinPolygonGreenMapping(polygonsMinColor
+												.getGreen());
 
-							timeSlicerToProcessing
-									.setMaxPolygonOpacityMapping(polygonsMaxColor
-											.getAlpha());
+								timeSlicerToProcessing
+										.setMinPolygonBlueMapping(polygonsMinColor
+												.getBlue());
 
-							timeSlicerToProcessing
-									.setMinBranchRedMapping(branchesMinColor
-											.getRed());
+								timeSlicerToProcessing
+										.setMinPolygonOpacityMapping(polygonsMinColor
+												.getAlpha());
 
-							timeSlicerToProcessing
-									.setMinBranchGreenMapping(branchesMinColor
-											.getGreen());
+								timeSlicerToProcessing
+										.setMaxPolygonRedMapping(polygonsMaxColor
+												.getRed());
 
-							timeSlicerToProcessing
-									.setMinBranchBlueMapping(branchesMinColor
-											.getBlue());
+								timeSlicerToProcessing
+										.setMaxPolygonGreenMapping(polygonsMaxColor
+												.getGreen());
 
-							timeSlicerToProcessing
-									.setMinBranchOpacityMapping(branchesMinColor
-											.getAlpha());
+								timeSlicerToProcessing
+										.setMaxPolygonBlueMapping(polygonsMaxColor
+												.getBlue());
 
-							timeSlicerToProcessing
-									.setMaxBranchRedMapping(branchesMaxColor
-											.getRed());
+								timeSlicerToProcessing
+										.setMaxPolygonOpacityMapping(polygonsMaxColor
+												.getAlpha());
 
-							timeSlicerToProcessing
-									.setMaxBranchGreenMapping(branchesMaxColor
-											.getGreen());
+								timeSlicerToProcessing
+										.setMinBranchRedMapping(branchesMinColor
+												.getRed());
 
-							timeSlicerToProcessing
-									.setMaxBranchBlueMapping(branchesMaxColor
-											.getBlue());
+								timeSlicerToProcessing
+										.setMinBranchGreenMapping(branchesMinColor
+												.getGreen());
 
-							timeSlicerToProcessing
-									.setMaxBranchOpacityMapping(branchesMaxColor
-											.getAlpha());
+								timeSlicerToProcessing
+										.setMinBranchBlueMapping(branchesMinColor
+												.getBlue());
 
-							timeSlicerToProcessing
-									.setBranchWidth(branchesWidthParser
-											.getValue() / 2);
+								timeSlicerToProcessing
+										.setMinBranchOpacityMapping(branchesMinColor
+												.getAlpha());
 
-							timeSlicerToProcessing.analyzeTrees();
+								timeSlicerToProcessing
+										.setMaxBranchRedMapping(branchesMaxColor
+												.getRed());
 
-							timeSlicerToProcessing.init();
+								timeSlicerToProcessing
+										.setMaxBranchGreenMapping(branchesMaxColor
+												.getGreen());
 
-							System.out.println("Finished. \n");
+								timeSlicerToProcessing
+										.setMaxBranchBlueMapping(branchesMaxColor
+												.getBlue());
 
-						}// END: check
+								timeSlicerToProcessing
+										.setMaxBranchOpacityMapping(branchesMaxColor
+												.getAlpha());
 
-					} catch (final OutOfMemoryError e) {
+								timeSlicerToProcessing
+										.setBranchWidth(branchesWidthParser
+												.getValue() / 2);
 
-						SwingUtilities.invokeLater(new Runnable() {
+								timeSlicerToProcessing.analyzeTrees();
 
-							public void run() {
+								timeSlicerToProcessing.init();
 
-								e.printStackTrace();
+								System.out.println("Finished. \n");
 
-								String msg = String.format(
-										"Unexpected problem: %s", e.toString());
+							}// END: check
 
-								JOptionPane.showMessageDialog(Utils
-										.getActiveFrame(), msg
-										+ "\nIncrease Java Heap Space",
-										"Error", JOptionPane.ERROR_MESSAGE,
-										errorIcon);
+						} catch (final OutOfMemoryError e) {
 
-							}
-						});
+							SwingUtilities.invokeLater(new Runnable() {
 
-					} catch (final Exception e) {
+								public void run() {
 
-						SwingUtilities.invokeLater(new Runnable() {
+									e.printStackTrace();
 
-							public void run() {
+									String msg = String.format(
+											"Unexpected problem: %s", e
+													.toString());
 
-								e.printStackTrace();
+									JOptionPane.showMessageDialog(Utils
+											.getActiveFrame(), msg
+											+ "\nIncrease Java Heap Space",
+											"Error", JOptionPane.ERROR_MESSAGE,
+											errorIcon);
 
-								String msg = String.format(
-										"Unexpected problem: %s", e.toString());
+								}
+							});
 
-								JOptionPane.showMessageDialog(Utils
-										.getActiveFrame(), msg, "Error",
-										JOptionPane.ERROR_MESSAGE, errorIcon);
+						} catch (final Exception e) {
 
-							}
-						});
+							SwingUtilities.invokeLater(new Runnable() {
 
-					}
+								public void run() {
 
-					return null;
-				}// END: doInBackground()
+									e.printStackTrace();
 
-				// Executed in event dispatch thread
-				public void done() {
+									String msg = String.format(
+											"Unexpected problem: %s", e
+													.toString());
 
-					generateProcessing.setEnabled(true);
-					progressBar.setIndeterminate(false);
+									JOptionPane.showMessageDialog(Utils
+											.getActiveFrame(), msg, "Error",
+											JOptionPane.ERROR_MESSAGE,
+											errorIcon);
 
-					// TODO: is it neccessary?
-					System.gc();
+								}
+							});
 
-				}// END: done
-			};
+						}
 
-			worker.execute();
-		}
+						return null;
+					}// END: doInBackground()
+
+					// Executed in event dispatch thread
+					public void done() {
+
+						generateProcessing.setEnabled(true);
+						progressBar.setIndeterminate(false);
+
+						// TODO: is it neccessary?
+						System.gc();
+
+					}// END: done
+				};
+
+				worker.execute();
+
+			}// END: if not loaded
+
+		}// END: actionPerformed
 	}// END: ListenGenerateProcessing
 
 	private class ListenSaveProcessingPlot implements ActionListener {
