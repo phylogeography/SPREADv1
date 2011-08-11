@@ -1,37 +1,0 @@
-9
-
-dir
-147
-https://figtree.googlecode.com/svn/trunk/release/Linux
-https://figtree.googlecode.com/svn
-
-
-
-2009-12-14T14:56:33.210074Z
-118
-rambaut
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-827c2e84-b43d-0410-b9f3-c512bdbbf1fa
-
-icons
-dir
-
-lib
-dir
-
-scripts
-dir
-
