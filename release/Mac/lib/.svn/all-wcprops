@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/110/trunk/release/Mac/lib
+END
+libquaqua.jnilib
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/110/trunk/release/Mac/lib/libquaqua.jnilib
+END
+libquaqua64.jnilib
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/110/trunk/release/Mac/lib/libquaqua64.jnilib
+END
+quaqua.jar
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/110/trunk/release/Mac/lib/quaqua.jar
+END

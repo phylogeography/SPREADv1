@@ -1,0 +1,71 @@
+9
+
+dir
+147
+https://figtree.googlecode.com/svn/trunk/release/Mac
+https://figtree.googlecode.com/svn
+
+
+
+2009-12-17T11:16:25.163186Z
+126
+rambaut
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+827c2e84-b43d-0410-b9f3-c512bdbbf1fa
+
+QuickLook Plugin
+dir
+
+icons
+dir
+
+jarbundler-2.1.0.jar
+file
+
+
+
+
+2009-10-05T10:23:10.000000Z
+06cf4fd57716d70c697f3c39ca5ca82d
+2009-10-04T11:06:01.438274Z
+110
+rambaut
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+18105
+
+lib
+dir
+

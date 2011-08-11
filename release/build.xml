@@ -1,0 +1,145 @@
+<?xml version="1.0" ?>
+
+<project name="SPREAD" default="dist" basedir=".">
+	<description>
+		Build file for packaging SPREAD
+		$Id:$
+	</description>
+
+	<property environment="env"/>
+
+
+    <property name="version" value="1.0" />
+    <property name="release_dir" value="." />
+    <property name="name" value="SPREAD" />
+
+    <property name="dist" value="../dist" />
+    <property name="common_dir" value="${release_dir}/common" />
+
+    <property name="Mac_dir" value="${release_dir}/Mac" />
+    <property name="Linux_dir" value="${release_dir}/Linux" />
+    <property name="Windows_dir" value="${release_dir}/Windows" />
+
+    <property name="Mac_package_dir" value="${Mac_dir}/${name} v${version}" />
+    <property name="Linux_package_dir" value="${Linux_dir}/${name}_v${version}" />
+    <property name="Windows_package_dir" value="${Windows_dir}/${name} v${version}" />
+
+    <!-- Need to either install Launch4j under {BEAST workspace}/${release}
+                 or install it in the default directory and change the location of launch4j.dir -->
+    <target name="windows" description="release Windows version">
+
+        <delete dir="${Windows_package_dir}" />
+        <!-- Create the release directory -->
+        <mkdir dir="${Windows_package_dir}" />
+
+        <property name="launch4j.dir" location="${Windows_dir}/launch4j" />
+        <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"
+            classpath="${launch4j.dir}/launch4j.jar :${launch4j.dir}/lib/xstream.jar" />
+
+        <copy file="${dist}/spread.jar" todir="${Windows_package_dir}/lib"/>
+        <copy todir="${Windows_package_dir}/lib">
+            <fileset dir="${Windows_dir}/lib"/>
+        </copy>
+        <copy todir="${Windows_package_dir}">
+            <fileset dir="${common_dir}/"/>
+        </copy>
+
+        <launch4j configFile="${Windows_dir}/SPREAD_launch4j.xml"
+                  jar="${dist}/spread.jar"
+                  outfile="${Windows_package_dir}/${name} v${version}.exe"
+                  fileVersion="${version}.0.0"
+                  txtFileVersion="${version}"
+                  productVersion="${version}.0.0"
+                  txtProductVersion="${version}"/>
+
+        <zip destfile="${release_dir}/${name} v${version}.zip">
+            <zipfileset dir="${Windows_package_dir}" prefix="${name} v${version}"/>
+        </zip>
+
+        <echo message="Windows version release is finished." />
+    </target>
+
+    <target name="linux" description="release Linux/Unix version">
+        <delete dir="${Linux_package_dir}" />
+        <!-- Create the release directory -->
+        <mkdir dir="${Linux_package_dir}" />
+
+        <copy todir="${Linux_package_dir}/bin">
+            <fileset dir="${Linux_dir}/scripts"/>
+        </copy>
+
+        <copy file="${Linux_dir}/icons/spread.png" todir="${Linux_package_dir}/images"/>
+        <copy file="${dist}/spread.jar" todir="${Linux_package_dir}/lib"/>
+        <copy todir="${Linux_package_dir}/lib">
+            <fileset dir="${Linux_dir}/lib"/>
+        </copy>
+        <copy todir="${Linux_package_dir}">
+            <fileset dir="${common_dir}/"/>
+        </copy>
+
+        <tar destfile="${release_dir}/${name}_v${version}.tgz" compression="gzip">
+            <tarfileset dir="${Linux_package_dir}" prefix="${name}_v${version}"/>
+        </tar>
+
+        <echo message="Linux/Unix version release is finished." />
+    </target>
+
+    <target name="mac" description="release Mac version">
+        <delete dir="${Mac_package_dir}" />
+        <!-- Create the release directory -->
+        <mkdir dir="${Mac_package_dir}" />
+
+        <copy todir="${Mac_package_dir}">
+            <fileset dir="${common_dir}/"/>
+        </copy>
+
+        <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" classpath="${Mac_package_dir}/jarbundler-2.1.0.jar"/>
+
+        <!-- create a jar bundle for the mac -->
+        <jarbundler dir="${Mac_package_dir}"
+                        name="${name} v${version}"
+                        mainclass="gui.SpreadApp"
+                        icon="${Mac_dir}/icons/SPREAD.icns"
+                        jvmversion="1.5+"
+                        vmoptions="-Xmx512M"
+                        arguments=""
+                        version="${version}"
+                        infostring="${name} v${version}, Copyright 2011, Filip Bielejec, Andrew Rambaut, Marc A. Suchard &amp; Philippe Lemey"
+                        bundleid="spread" >
+            <javaproperty name="apple.laf.useScreenMenuBar" value="true"/>
+            <jarfileset dir="${dist}">
+                <include name="**/spread.jar"/>
+            </jarfileset>
+            <jarfileset dir="${Mac_dir}/lib">
+                <include name="**/quaqua.jar"/>
+            </jarfileset>
+            <jarfileset dir="${Mac_dir}/lib">
+                <include name="libquaqua*.jnilib"/>
+            </jarfileset>
+            <!--
+            <documenttype name="SPREAD file"
+                          extensions="spread"
+                          iconFile="${Mac_dir}/icons/SPREADDocIcon.icns"
+                          role="Editor"/>
+             -->             
+        </jarbundler>
+
+        <echo message="Building disk image." />
+
+        <!-- create disk image -->
+        <exec executable="/usr/bin/hdiutil">
+            <arg value="create"/>
+            <arg value="-ov"/>
+            <arg value="-srcfolder"/>
+            <arg value="${Mac_package_dir}"/>
+            <arg value="-volname"/>
+            <arg value="${name} v${version}"/>
+            <arg value="-imagekey"/>
+            <arg value="zlib-level=6"/>
+            <arg value="${release_dir}/${name} v${version}.dmg"/>
+        </exec>
+
+        <echo message="Mac version release is finished." />
+    </target>
+
+</project>
