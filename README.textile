@@ -28,8 +28,6 @@ h1. SUPPORT & LINKS
 
 SPREAD: www.phylogeography.org/SPREAD
 Processing libraries: http://processing.org/ 
-                            
-Compiled application can be downloaded from "here":http://dl.dropbox.com/u/5169517/spread.jar
 
 Suggestions or report bugs:
 
