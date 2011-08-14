@@ -4,7 +4,7 @@ Spatial Phylogenetic Reconstruction of Evolutionary Dynamics
 Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
 
 ___________________________________________________________________________
-h2. LICENSE
+h1. LICENSE
  
   This is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
@@ -17,7 +17,7 @@ h2. LICENSE
    "GNU Lesser General Public License":http://www.gnu.org/licenses/lgpl.html for more details.
 
 ___________________________________________________________________________ 
-h3. PURPOSE
+h1. PURPOSE
                             
 SPREAD is a Java program supporting processing and visualizations of BEAST's phylogeographic models ("BEAST software":http://beast.bio.ed.ac.uk/Main_Page). 
 
@@ -26,10 +26,9 @@ Contains visualisations (templates), wrapped in a user friendly interface. Suppo
 A tutorial on using SPREAD is availiable "here":http://www.kuleuven.be/aidslab/phylogeography/tutorial/spread_tutorial.html
 
 ___________________________________________________________________________
-h4. SUPPORT & LINKS
+h1. SUPPORT & LINKS
 
 SPREAD: www.phylogeography.org/SPREAD
-BEAST software: http://beast.bio.ed.ac.uk/Main_Page
 Processing libraries: http://processing.org/ 
                             
 Compiled application can be downloaded from "here":http://dl.dropbox.com/u/5169517/spread.jar
