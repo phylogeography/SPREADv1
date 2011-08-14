@@ -92,7 +92,7 @@ public class SpreadApp {
 		frame = new JFrame("SPREAD");
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.addWindowListener(new ListenCloseWdw());
-		frame.setIconImage(CreateImage("/icons/nuclear.png"));
+		frame.setIconImage(CreateImage("/icons/spread.png"));
 
 		// Setup Main Menu buttons
 		help = new JButton("Help", helpIcon);
@@ -152,8 +152,9 @@ public class SpreadApp {
 					+ "                                       SPREAD \n"
 					+ "Spatial Phylogenetic Reconstruction of Evolutionary Dynamics \n"
 					+ "                                Version 1.0, 2011 \n"
-					+ "                     www.phylogeography.org/SPREAD \n"
+					+ "Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey \n"
 					+ "\n"
+					+ "SPREAD: www.phylogeography.org/SPREAD \n"
 					+ "BEAST software: http://beast.bio.ed.ac.uk/Main_Page \n"
 					+ "Processing libraries: http://processing.org/ \n"
 					+ "\n"
