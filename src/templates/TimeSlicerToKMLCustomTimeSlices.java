@@ -18,24 +18,23 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
 import structure.Coordinates;
 import structure.Layer;
-import structure.Line;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
+import utils.ReadTimeSlices;
 import utils.ThreadLocalSpreadDate;
 import utils.Utils;
 import contouring.ContourMaker;
 import contouring.ContourPath;
 import contouring.ContourWithSynder;
 
-public class TimeSlicerToKML {
+public class TimeSlicerToKMLCustomTimeSlices {
 
 	public long time;
 
@@ -48,9 +47,7 @@ public class TimeSlicerToKML {
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 	private RootedTree currentTree;
 
-	private TreeImporter treeImporter;
-	private RootedTree tree;
-	private double maxAltMapping;
+	private double[] timeSlices;
 
 	private double minPolygonRedMapping;
 	private double minPolygonGreenMapping;
@@ -62,29 +59,14 @@ public class TimeSlicerToKML {
 	private double maxPolygonBlueMapping;
 	private double maxPolygonOpacityMapping;
 
-	private double minBranchRedMapping;
-	private double minBranchGreenMapping;
-	private double minBranchBlueMapping;
-	private double minBranchOpacityMapping;
-
-	private double maxBranchRedMapping;
-	private double maxBranchGreenMapping;
-	private double maxBranchBlueMapping;
-	private double maxBranchOpacityMapping;
-
 	private ThreadLocalSpreadDate mrsd;
 	private double timescaler;
-	private int numberOfIntervals;
-	private double treeRootHeight;
-	private double branchWidth;
 	private TreeImporter treesImporter;
 	private String mrsdString;
 	private int burnIn;
 	private boolean impute;
 	private boolean useTrueNoise;
 	private String coordinatesName;
-	private String longitudeName;
-	private String latitudeName;
 	private String rateString;
 	private String precisionString;
 	private List<Layer> layers;
@@ -96,7 +78,7 @@ public class TimeSlicerToKML {
 	private double HPD;
 	private int gridSize;
 
-	public TimeSlicerToKML() {
+	public TimeSlicerToKMLCustomTimeSlices() {
 	}
 
 	public void setTimescaler(double timescaler) {
@@ -111,8 +93,8 @@ public class TimeSlicerToKML {
 		gridSize = size;
 	}
 
-	public void setTreePath(String path) throws FileNotFoundException {
-		treeImporter = new NexusImporter(new FileReader(path));
+	public void setTimeSlices(String path) {
+		timeSlices = new ReadTimeSlices(path).getTimeSlices();
 	}
 
 	public void setTreesPath(String path) throws FileNotFoundException {
@@ -121,10 +103,6 @@ public class TimeSlicerToKML {
 
 	public void setMrsdString(String mrsd) {
 		mrsdString = mrsd;
-	}
-
-	public void setNumberOfIntervals(int number) {
-		numberOfIntervals = number;
 	}
 
 	public void setBurnIn(int burnInDouble) {
@@ -141,8 +119,6 @@ public class TimeSlicerToKML {
 
 	public void setLocationAttName(String name) {
 		coordinatesName = name;
-		longitudeName = (coordinatesName + 2);
-		latitudeName = (coordinatesName + 1);
 	}
 
 	public void setRateAttName(String name) {
@@ -155,10 +131,6 @@ public class TimeSlicerToKML {
 
 	public void setKmlWriterPath(String path) throws FileNotFoundException {
 		kmlPath = path;
-	}
-
-	public void setMaxAltitudeMapping(double max) {
-		maxAltMapping = max;
 	}
 
 	public void setMinPolygonRedMapping(double min) {
@@ -193,52 +165,14 @@ public class TimeSlicerToKML {
 		maxPolygonOpacityMapping = max;
 	}
 
-	public void setMinBranchRedMapping(double min) {
-		minBranchRedMapping = min;
-	}
-
-	public void setMinBranchGreenMapping(double min) {
-		minBranchGreenMapping = min;
-	}
-
-	public void setMinBranchBlueMapping(double min) {
-		minBranchBlueMapping = min;
-	}
-
-	public void setMinBranchOpacityMapping(double min) {
-		minBranchOpacityMapping = min;
-	}
-
-	public void setMaxBranchRedMapping(double max) {
-		maxBranchRedMapping = max;
-	}
-
-	public void setMaxBranchGreenMapping(double max) {
-		maxBranchGreenMapping = max;
-	}
-
-	public void setMaxBranchBlueMapping(double max) {
-		maxBranchBlueMapping = max;
-	}
-
-	public void setMaxBranchOpacityMapping(double max) {
-		maxBranchOpacityMapping = max;
-	}
-
-	public void setBranchWidth(double width) {
-		branchWidth = width;
-	}
-
 	public void GenerateKML() throws IOException, ImportException,
 			ParseException, RuntimeException, OutOfMemoryError {
 
 		// start timing
 		time = -System.currentTimeMillis();
 
-		tree = (RootedTree) treeImporter.importNextTree();
-		treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());// tree.getHeight(tree.getRootNode());
 		mrsd = new ThreadLocalSpreadDate(mrsdString);
-		timeLine = generateTimeLine(tree);
+		timeLine = generateCustomSliceTimesTimeLine(timeSlices);
 
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
@@ -261,15 +195,10 @@ public class TimeSlicerToKML {
 
 				if (readTrees >= burnIn) {
 
-					executor.submit(new AnalyzeTree(currentTree,
-							precisionString, coordinatesName, rateString,
-							numberOfIntervals, treeRootHeight, timescaler,
-							mrsd, slicesMap, useTrueNoise));
-
-					// new AnalyzeTree(currentTree, precisionString,
-					// coordinatesName, rateString, numberOfIntervals,
-					// treeRootHeight, timescaler, mrsd, slicesMap,
-					// useTrueNoise).run();
+					executor.submit(new AnalyzeTreeCustomSliceTimes(
+							currentTree, precisionString, coordinatesName,
+							rateString, timeSlices, timescaler, mrsd,
+							slicesMap, useTrueNoise));
 
 					if (readTrees % 500 == 0) {
 						System.out.print(readTrees + " trees... ");
@@ -318,9 +247,6 @@ public class TimeSlicerToKML {
 
 		}// END: if impute
 
-		System.out.println("Generating branches...");
-		executor.submit(new Branches());
-
 		executor.shutdown();
 		while (!executor.isTerminated()) {
 		}
@@ -357,8 +283,6 @@ public class TimeSlicerToKML {
 			/**
 			 * Color and Opacity mapping
 			 * */
-			System.out.println("sliceTime: " + sliceTime);
-
 			int red = (int) Utils.map(sliceTime, startTime, endTime,
 					minPolygonRedMapping, maxPolygonRedMapping);
 
@@ -368,11 +292,13 @@ public class TimeSlicerToKML {
 			int blue = (int) Utils.map(sliceTime, startTime, endTime,
 					minPolygonBlueMapping, maxPolygonBlueMapping);
 
-			System.out.println("red: " + red + "green: " + green + " blue: "
-					+ blue);
-
 			int alpha = (int) Utils.map(sliceTime, startTime, endTime,
 					maxPolygonOpacityMapping, minPolygonOpacityMapping);
+
+			// TODO
+			System.out.println("sliceTime: " + sliceTime);
+			System.out.println("red: " + red + "green: " + green + "blue: "
+					+ blue);
 
 			Color color = new Color(red, green, blue, alpha);
 			Style polygonsStyle = new Style(color, 0);
@@ -421,120 +347,20 @@ public class TimeSlicerToKML {
 		}// END: run
 	}// END: Polygons
 
-	// ///////////////////////////
-	// ---CONCURRENT BRANCHES---//
-	// ///////////////////////////
-	private class Branches implements Runnable {
-
-		public void run() {
-
-			try {
-
-				double treeHeightMax = Utils.getTreeHeightMax(tree);
-
-				// this is for Branches folder:
-				String branchesDescription = null;
-				Layer branchesLayer = new Layer("Branches", branchesDescription);
-
-				int branchStyleId = 1;
-				for (Node node : tree.getNodes()) {
-					if (!tree.isRoot(node)) {
-
-						Double longitude = (Double) node
-								.getAttribute(longitudeName);
-						Double latitude = (Double) node
-								.getAttribute(latitudeName);
-
-						Double nodeHeight = Utils.getNodeHeight(tree, node);
-
-						Node parentNode = tree.getParent(node);
-
-						Double parentLongitude = (Double) parentNode
-								.getAttribute(longitudeName);
-						Double parentLatitude = (Double) parentNode
-								.getAttribute(latitudeName);
-
-						Double parentHeight = Utils.getNodeHeight(tree,
-								parentNode);
-
-						if (longitude != null && latitude != null
-								&& parentLongitude != null
-								&& parentLatitude != null) {
-
-							/**
-							 * Mapping
-							 * */
-							double maxAltitude = Utils.map(nodeHeight, 0,
-									treeHeightMax, 0, maxAltMapping);
-
-							int red = (int) Utils.map(nodeHeight, 0,
-									treeHeightMax, minBranchRedMapping,
-									maxBranchRedMapping);
-
-							int green = (int) Utils.map(nodeHeight, 0,
-									treeHeightMax, minBranchGreenMapping,
-									maxBranchGreenMapping);
-
-							int blue = (int) Utils.map(nodeHeight, 0,
-									treeHeightMax, minBranchBlueMapping,
-									maxBranchBlueMapping);
-
-							int alpha = (int) Utils.map(nodeHeight, 0,
-									treeHeightMax, maxBranchOpacityMapping,
-									minBranchOpacityMapping);
-
-							Color col = new Color(red, green, blue, alpha);
-
-							Style linesStyle = new Style(col, branchWidth);
-							linesStyle.setId("branch_style" + branchStyleId);
-							branchStyleId++;
-
-							double startTime = mrsd.minus((int) (nodeHeight
-									* DaysInYear * timescaler));
-							double endTime = mrsd.minus((int) (parentHeight
-									* DaysInYear * timescaler));
-
-							branchesLayer.addItem(new Line((parentLongitude
-									+ "," + parentLatitude + ":" + longitude
-									+ "," + latitude), // name
-									new Coordinates(parentLongitude,
-											parentLatitude), // startCoords
-									startTime, // double startime
-									linesStyle, // style startstyle
-									new Coordinates(longitude, latitude), // endCoords
-									endTime, // double endtime
-									linesStyle, // style endstyle
-									maxAltitude, // double maxAltitude
-									0.0) // double duration
-									);
-
-						}// END: null checks
-					}// END: root check
-				}// END: node loop
-
-				layers.add(branchesLayer);
-
-			} catch (RuntimeException e) {
-				e.printStackTrace();
-			}
-
-		}// END: run
-	}// END: Branches class
-
-	private TimeLine generateTimeLine(RootedTree tree) {
+	private TimeLine generateCustomSliceTimesTimeLine(double[] timeSlices) {
 
 		// This is a general time span for all of the trees
-		double treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());
+		int numberOfSlices = timeSlices.length;
 		double startTime = mrsd.getTime()
-				- (treeRootHeight * DayInMillis * DaysInYear * timescaler);
+				- (timeSlices[numberOfSlices - 1] * DayInMillis * DaysInYear * timescaler);
 		double endTime = mrsd.getTime();
-		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
+		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfSlices);
 
+		// TODO
 		System.out.println("start time: " + startTime);
 		System.out.println("end time: " + endTime);
 
 		return timeLine;
-
-	}// END: GenerateTimeLine
+	}// END: generateMCCTreeTimeLine
 
 }// END: class

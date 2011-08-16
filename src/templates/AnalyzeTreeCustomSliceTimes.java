@@ -12,7 +12,7 @@ import structure.Coordinates;
 import utils.ThreadLocalSpreadDate;
 import utils.Utils;
 
-public class AnalyzeTree implements Runnable {
+public class AnalyzeTreeCustomSliceTimes implements Runnable {
 
 	// how many days one year holds
 	private static final int DaysInYear = 365;
@@ -21,17 +21,15 @@ public class AnalyzeTree implements Runnable {
 	private String precisionString;
 	private String coordinatesName;
 	private String rateString;
-	private int numberOfIntervals;
-	private double treeRootHeight;
 	private double timescaler;
+	private double[] timeSlices;
 	private ThreadLocalSpreadDate mrsd;
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 	private boolean useTrueNoise;
 
-	public AnalyzeTree(RootedTree currentTree, String precisionString,
-			String coordinatesName, String rateString, int numberOfIntervals,
-			double treeRootHeight, double timescaler,
-			ThreadLocalSpreadDate mrsd,
+	public AnalyzeTreeCustomSliceTimes(RootedTree currentTree,
+			String precisionString, String coordinatesName, String rateString,
+			double[] timeSlices, double timescaler, ThreadLocalSpreadDate mrsd,
 			ConcurrentMap<Double, List<Coordinates>> slicesMap,
 			boolean useTrueNoise) {
 
@@ -39,8 +37,7 @@ public class AnalyzeTree implements Runnable {
 		this.precisionString = precisionString;
 		this.coordinatesName = coordinatesName;
 		this.rateString = rateString;
-		this.numberOfIntervals = numberOfIntervals;
-		this.treeRootHeight = treeRootHeight;
+		this.timeSlices = timeSlices;
 		this.timescaler = timescaler;
 		this.mrsd = mrsd;
 		this.slicesMap = slicesMap;
@@ -78,16 +75,16 @@ public class AnalyzeTree implements Runnable {
 					double rate = Utils
 							.getDoubleNodeAttribute(node, rateString);
 
-					for (int i = 0; i <= numberOfIntervals; i++) {
+					for (int i = 0; i < timeSlices.length; i++) {
+						// for (int i = timeSlices.length-1; i >0; i--) {
+						double sliceHeight = timeSlices[i];
 
-						double sliceHeight = treeRootHeight
-								- (treeRootHeight / (double) numberOfIntervals)
-								* ((double) i);
+						// System.out.println("sliceHeight: " + sliceHeight);
 
-//						System.out.println("sliceHeight: " + sliceHeight);
-						
 						if (nodeHeight < sliceHeight
 								&& sliceHeight <= parentHeight) {
+
+							// System.out.println("HERE");
 
 							int days = (int) (sliceHeight * DaysInYear * timescaler);
 							double sliceTime = mrsd.minus(days);

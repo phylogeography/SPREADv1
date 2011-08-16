@@ -196,7 +196,7 @@ public class KMLGenerator implements Generator {
 					double endAltitude = a * Math.pow((double) (i + 1), 2) + b
 							* (double) (i + 1);
 
-					double segmentStartTime = endTime - i
+					double segmentStartTime = endTime - (i + 1)
 							* ((endTime - startTime) / sliceCount);
 
 					Placemark lineSegment = generateLineSegment(
