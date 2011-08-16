@@ -295,11 +295,6 @@ public class TimeSlicerToKMLCustomTimeSlices {
 			int alpha = (int) Utils.map(sliceTime, startTime, endTime,
 					maxPolygonOpacityMapping, minPolygonOpacityMapping);
 
-			// TODO
-			System.out.println("sliceTime: " + sliceTime);
-			System.out.println("red: " + red + "green: " + green + "blue: "
-					+ blue);
-
 			Color color = new Color(red, green, blue, alpha);
 			Style polygonsStyle = new Style(color, 0);
 			polygonsStyle.setId("polygon_style" + polygonsStyleId);
@@ -355,10 +350,6 @@ public class TimeSlicerToKMLCustomTimeSlices {
 				- (timeSlices[numberOfSlices - 1] * DayInMillis * DaysInYear * timescaler);
 		double endTime = mrsd.getTime();
 		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfSlices);
-
-		// TODO
-		System.out.println("start time: " + startTime);
-		System.out.println("end time: " + endTime);
 
 		return timeLine;
 	}// END: generateMCCTreeTimeLine

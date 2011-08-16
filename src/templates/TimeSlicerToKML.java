@@ -266,11 +266,6 @@ public class TimeSlicerToKML {
 							numberOfIntervals, treeRootHeight, timescaler,
 							mrsd, slicesMap, useTrueNoise));
 
-					// new AnalyzeTree(currentTree, precisionString,
-					// coordinatesName, rateString, numberOfIntervals,
-					// treeRootHeight, timescaler, mrsd, slicesMap,
-					// useTrueNoise).run();
-
 					if (readTrees % 500 == 0) {
 						System.out.print(readTrees + " trees... ");
 					}

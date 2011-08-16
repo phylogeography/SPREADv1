@@ -76,15 +76,11 @@ public class AnalyzeTreeCustomSliceTimes implements Runnable {
 							.getDoubleNodeAttribute(node, rateString);
 
 					for (int i = 0; i < timeSlices.length; i++) {
-						// for (int i = timeSlices.length-1; i >0; i--) {
-						double sliceHeight = timeSlices[i];
 
-						// System.out.println("sliceHeight: " + sliceHeight);
+						double sliceHeight = timeSlices[i];
 
 						if (nodeHeight < sliceHeight
 								&& sliceHeight <= parentHeight) {
-
-							// System.out.println("HERE");
 
 							int days = (int) (sliceHeight * DaysInYear * timescaler);
 							double sliceTime = mrsd.minus(days);
@@ -116,7 +112,6 @@ public class AnalyzeTreeCustomSliceTimes implements Runnable {
 								coords.add(new Coordinates(imputedLocation[1],
 										imputedLocation[0], 0.0));
 
-								// slicesMap.putIfAbsent(sliceTime, coords);
 								slicesMap.put(sliceTime, coords);
 
 							}// END: key check

@@ -13,9 +13,9 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		 ContinuousTreeToKMLTest();
+		// ContinuousTreeToKMLTest();
 		// TimeSlicerToKMLTest();
-//		TimeSlicerToKMLCustomTimeSlicesTest();
+		TimeSlicerToKMLCustomTimeSlicesTest();
 
 	}// END: main
 
@@ -102,7 +102,7 @@ public class Main {
 			// sliceHeight: 2.7251214454414763
 			// sliceHeight: 1.8167476302943175
 			// sliceHeight: 0.9083738151471596
-			
+
 			TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
 
 			timeSlicerToKML.setMrsdString("2011-07-29 AD");

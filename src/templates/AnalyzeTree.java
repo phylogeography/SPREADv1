@@ -84,8 +84,6 @@ public class AnalyzeTree implements Runnable {
 								- (treeRootHeight / (double) numberOfIntervals)
 								* ((double) i);
 
-//						System.out.println("sliceHeight: " + sliceHeight);
-						
 						if (nodeHeight < sliceHeight
 								&& sliceHeight <= parentHeight) {
 
@@ -119,7 +117,6 @@ public class AnalyzeTree implements Runnable {
 								coords.add(new Coordinates(imputedLocation[1],
 										imputedLocation[0], 0.0));
 
-								// slicesMap.putIfAbsent(sliceTime, coords);
 								slicesMap.put(sliceTime, coords);
 
 							}// END: key check
