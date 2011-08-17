@@ -245,7 +245,7 @@ public class TimeSlicerToKML {
 
 		// Executor for threads
 		int NTHREDS = Runtime.getRuntime().availableProcessors();
-		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS * 10);
+		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS * 2);
 
 		if (impute) {
 
@@ -334,17 +334,19 @@ public class TimeSlicerToKML {
 	// ///////////////////////////
 	// ---CONCURRENT POLYGONS---//
 	// ///////////////////////////
-	private class Polygons implements Runnable {
+	public class Polygons implements Runnable {
 
 		private double sliceTime;
 		private int polygonsStyleId;
 
-		private Polygons(Double sliceTime, int polygonsStyleId) {
+		public Polygons(Double sliceTime, int polygonsStyleId) {
 			this.sliceTime = sliceTime;
 			this.polygonsStyleId = polygonsStyleId;
 		}
 
 		public void run() throws OutOfMemoryError {
+
+			System.out.println(sliceTime + " " + polygonsStyleId);
 
 			Layer polygonsLayer = new Layer("Time_Slice_"
 					+ formatter.format(sliceTime), null);

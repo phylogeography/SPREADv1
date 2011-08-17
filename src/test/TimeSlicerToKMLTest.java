@@ -43,9 +43,9 @@ public class TimeSlicerToKMLTest {
 			timeSlicerToKML.setTimescaler(1);
 
 			timeSlicerToKML
-					.setKmlWriterPath("/home/filip/Dropbox/SPREAD/output2.kml");
+					.setKmlWriterPath("/home/filip/Dropbox/SPREAD/output_test.kml");
 
-			timeSlicerToKML.setMaxAltitudeMapping(50000);
+			timeSlicerToKML.setMaxAltitudeMapping(500000);
 
 			timeSlicerToKML.setMinPolygonRedMapping(24);
 
