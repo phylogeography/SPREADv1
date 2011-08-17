@@ -346,7 +346,7 @@ public class TimeSlicerToKML {
 
 		public void run() throws OutOfMemoryError {
 
-			System.out.println(sliceTime + " " + polygonsStyleId);
+//			System.out.println(sliceTime + " " + polygonsStyleId);
 
 			Layer polygonsLayer = new Layer("Time_Slice_"
 					+ formatter.format(sliceTime), null);
