@@ -27,7 +27,7 @@ public class TimeSlicerToKMLCustomTimeSlicesTest {
 
 			timeSlicerToKML.setGridSize(100);
 
-			timeSlicerToKML.setBurnIn(0);
+			timeSlicerToKML.setBurnIn(500);
 
 			timeSlicerToKML.setLocationAttName("location");
 

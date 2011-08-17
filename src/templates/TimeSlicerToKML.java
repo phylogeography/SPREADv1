@@ -352,8 +352,6 @@ public class TimeSlicerToKML {
 			/**
 			 * Color and Opacity mapping
 			 * */
-			System.out.println("sliceTime: " + sliceTime);
-
 			int red = (int) Utils.map(sliceTime, startTime, endTime,
 					minPolygonRedMapping, maxPolygonRedMapping);
 
@@ -362,9 +360,6 @@ public class TimeSlicerToKML {
 
 			int blue = (int) Utils.map(sliceTime, startTime, endTime,
 					minPolygonBlueMapping, maxPolygonBlueMapping);
-
-			System.out.println("red: " + red + "green: " + green + " blue: "
-					+ blue);
 
 			int alpha = (int) Utils.map(sliceTime, startTime, endTime,
 					maxPolygonOpacityMapping, minPolygonOpacityMapping);
@@ -524,9 +519,6 @@ public class TimeSlicerToKML {
 				- (treeRootHeight * DayInMillis * DaysInYear * timescaler);
 		double endTime = mrsd.getTime();
 		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
-
-		System.out.println("start time: " + startTime);
-		System.out.println("end time: " + endTime);
 
 		return timeLine;
 
