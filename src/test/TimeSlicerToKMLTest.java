@@ -14,13 +14,20 @@ public class TimeSlicerToKMLTest {
 
 		try {
 
+			timeSlicerToKML.setAnalysisType(TimeSlicerToKML.SECOND_ANALYSIS);
+
 			timeSlicerToKML.setMrsdString("2011-07-29 AD");
 
 			timeSlicerToKML
-					.setTreePath("/home/filip/Dropbox/SPREAD/WNV_relaxed_geo_gamma_MCC.tre");
+					.setTreePath("/home/filip/WNV_relaxed_geo_gamma_MCC.tre");
+
+//			timeSlicerToKML.setNumberOfIntervals(10);
 
 			timeSlicerToKML
-					.setTreesPath("/home/filip/Dropbox/SPREAD/WNV_relaxed_geo_gamma.trees");
+					.setCustomSliceHeights("/home/filip/sliceTimes");
+
+			timeSlicerToKML
+					.setTreesPath("/home/filip/WNV_relaxed_geo_gamma.trees");
 
 			timeSlicerToKML.setHPD(0.80);
 
@@ -38,14 +45,10 @@ public class TimeSlicerToKMLTest {
 
 			timeSlicerToKML.setImpute(true);
 
-			timeSlicerToKML.setNumberOfIntervals(10);
-
 			timeSlicerToKML.setTimescaler(1);
 
 			timeSlicerToKML
-					.setKmlWriterPath("/home/filip/Dropbox/SPREAD/output_test.kml");
-
-			timeSlicerToKML.setMaxAltitudeMapping(500000);
+					.setKmlWriterPath("/home/filip/Dropbox/SPREAD/output_test2.kml");
 
 			timeSlicerToKML.setMinPolygonRedMapping(24);
 
@@ -63,24 +66,26 @@ public class TimeSlicerToKMLTest {
 
 			timeSlicerToKML.setMaxPolygonOpacityMapping(255);
 
-			timeSlicerToKML.setMinBranchRedMapping(54);
-
-			timeSlicerToKML.setMinBranchGreenMapping(33);
-
-			timeSlicerToKML.setMinBranchBlueMapping(120);
-
-			timeSlicerToKML.setMinBranchOpacityMapping(255);
-
-			timeSlicerToKML.setMaxBranchRedMapping(35);
-
-			timeSlicerToKML.setMaxBranchGreenMapping(35);
-
-			timeSlicerToKML.setMaxBranchBlueMapping(70);
-
-			timeSlicerToKML.setMaxBranchOpacityMapping(255);
-
-			timeSlicerToKML.setBranchWidth(4);
-
+//			timeSlicerToKML.setMaxAltitudeMapping(500000);
+//
+//			timeSlicerToKML.setMinBranchRedMapping(54);
+//
+//			timeSlicerToKML.setMinBranchGreenMapping(33);
+//
+//			timeSlicerToKML.setMinBranchBlueMapping(120);
+//
+//			timeSlicerToKML.setMinBranchOpacityMapping(255);
+//
+//			timeSlicerToKML.setMaxBranchRedMapping(35);
+//
+//			timeSlicerToKML.setMaxBranchGreenMapping(35);
+//
+//			timeSlicerToKML.setMaxBranchBlueMapping(70);
+//
+//			timeSlicerToKML.setMaxBranchOpacityMapping(255);
+//
+//			timeSlicerToKML.setBranchWidth(4);
+			
 		} catch (OutOfMemoryError e) {
 			e.printStackTrace();
 		} catch (IOException e) {

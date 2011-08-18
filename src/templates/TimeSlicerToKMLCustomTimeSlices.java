@@ -27,7 +27,7 @@ import structure.Layer;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
-import utils.ReadTimeSlices;
+import utils.ReadSliceHeights;
 import utils.ThreadLocalSpreadDate;
 import utils.Utils;
 import contouring.ContourMaker;
@@ -47,7 +47,7 @@ public class TimeSlicerToKMLCustomTimeSlices {
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 	private RootedTree currentTree;
 
-	private double[] timeSlices;
+	private double[] sliceHeights;
 
 	private double minPolygonRedMapping;
 	private double minPolygonGreenMapping;
@@ -93,8 +93,8 @@ public class TimeSlicerToKMLCustomTimeSlices {
 		gridSize = size;
 	}
 
-	public void setTimeSlices(String path) {
-		timeSlices = new ReadTimeSlices(path).getTimeSlices();
+	public void setCustomSliceHeights(String path) {
+		sliceHeights = new ReadSliceHeights(path).getSliceHeights();
 	}
 
 	public void setTreesPath(String path) throws FileNotFoundException {
@@ -172,7 +172,7 @@ public class TimeSlicerToKMLCustomTimeSlices {
 		time = -System.currentTimeMillis();
 
 		mrsd = new ThreadLocalSpreadDate(mrsdString);
-		timeLine = generateCustomSliceTimesTimeLine(timeSlices);
+		timeLine = generateCustomTimeLine(sliceHeights);
 
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
@@ -195,9 +195,9 @@ public class TimeSlicerToKMLCustomTimeSlices {
 
 				if (readTrees >= burnIn) {
 
-					executor.submit(new AnalyzeTreeCustomSliceTimes(
+					executor.submit(new AnalyzeTree(
 							currentTree, precisionString, coordinatesName,
-							rateString, timeSlices, timescaler, mrsd,
+							rateString, sliceHeights, timescaler, mrsd,
 							slicesMap, useTrueNoise));
 
 					if (readTrees % 500 == 0) {
@@ -342,7 +342,7 @@ public class TimeSlicerToKMLCustomTimeSlices {
 		}// END: run
 	}// END: Polygons
 
-	private TimeLine generateCustomSliceTimesTimeLine(double[] timeSlices) {
+	private TimeLine generateCustomTimeLine(double[] timeSlices) {
 
 		// This is a general time span for all of the trees
 		int numberOfSlices = timeSlices.length;

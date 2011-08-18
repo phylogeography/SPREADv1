@@ -18,10 +18,9 @@ public class TimeSlicerToKMLCustomTimeSlicesTest {
 			timeSlicerToKML.setMrsdString("2007-08-15 AD");
 
 			timeSlicerToKML
-					.setTreesPath("/home/filip/Dropbox/SPREAD/WNV_relaxed_geo_gamma.trees");
+					.setTreesPath("/home/filip/WNV_relaxed_geo_gamma.trees");
 
-			timeSlicerToKML
-					.setTimeSlices("/home/filip/Dropbox/SPREAD/sliceTimes");
+			timeSlicerToKML.setCustomSliceHeights("/home/filip/sliceTimes");
 
 			timeSlicerToKML.setHPD(0.80);
 
@@ -42,7 +41,7 @@ public class TimeSlicerToKMLCustomTimeSlicesTest {
 			timeSlicerToKML.setTimescaler(1);
 
 			timeSlicerToKML
-					.setKmlWriterPath("/home/filip/Dropbox/SPREAD/output1.kml");
+					.setKmlWriterPath("/home/filip/Dropbox/SPREAD/output_test.kml");
 
 			timeSlicerToKML.setMinPolygonRedMapping(24);
 
@@ -93,3 +92,4 @@ public class TimeSlicerToKMLCustomTimeSlicesTest {
 	}// END: Generate
 
 }// END: class
+
