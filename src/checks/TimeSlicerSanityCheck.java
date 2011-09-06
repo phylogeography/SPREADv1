@@ -30,7 +30,7 @@ public class TimeSlicerSanityCheck {
 
 		case TimeSlicerToKML.SECOND_ANALYSIS:
 			if (checkFirstPosteriorTree(treesFilename, coordinatesName)) {
-				// TODO: check for slice heights here
+				// TODO: sanity check for slice heights here
 				notNull = true;
 			}
 			break;
@@ -38,7 +38,7 @@ public class TimeSlicerSanityCheck {
 		case TimeSlicerToKML.THIRD_ANALYSIS:
 			if (checkMccTree(treeFilename, coordinatesName)
 					&& checkFirstPosteriorTree(treesFilename, coordinatesName)) {
-				// TODO: check for slice heights here
+				// TODO: sanity check for slice heights here
 				notNull = true;
 			}
 			break;
@@ -127,6 +127,6 @@ public class TimeSlicerSanityCheck {
 		return flag;
 	}// END: checkFirstPosteriorTree
 
-	// TODO checker for sliceHeights
+	// TODO sanity check for sliceHeights (are they sorted? Is the max == tree.height?)
 
 }// END: class

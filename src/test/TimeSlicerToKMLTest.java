@@ -18,8 +18,8 @@ public class TimeSlicerToKMLTest {
 
 			timeSlicerToKML.setMrsdString("2011-07-29 AD");
 
-			timeSlicerToKML
-					.setTreePath("/home/filip/WNV_relaxed_geo_gamma_MCC.tre");
+//			timeSlicerToKML
+//					.setTreePath("/home/filip/WNV_relaxed_geo_gamma_MCC.tre");
 
 //			timeSlicerToKML.setNumberOfIntervals(10);
 
@@ -48,7 +48,7 @@ public class TimeSlicerToKMLTest {
 			timeSlicerToKML.setTimescaler(1);
 
 			timeSlicerToKML
-					.setKmlWriterPath("/home/filip/Dropbox/SPREAD/output_test2.kml");
+					.setKmlWriterPath("/home/filip/output.kml");
 
 			timeSlicerToKML.setMinPolygonRedMapping(24);
 

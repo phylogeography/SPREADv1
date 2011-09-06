@@ -419,6 +419,10 @@ public class TimeSlicerToKML {
 
 			for (int i = 0; i < list.size(); i++) {
 
+				if (list.get(i) == null) {
+					System.out.println("null found");
+				}
+
 				x[i] = list.get(i).getLatitude();
 				y[i] = list.get(i).getLongitude();
 

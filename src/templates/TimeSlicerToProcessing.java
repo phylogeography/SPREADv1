@@ -441,7 +441,7 @@ public class TimeSlicerToProcessing extends PApplet {
 
 			// Executor for threads
 			int NTHREDS = Runtime.getRuntime().availableProcessors();
-			ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
+			ExecutorService executor = Executors.newFixedThreadPool(NTHREDS * 2);
 
 			int readTrees = 0;
 			while (treesImporter.hasTree()) {

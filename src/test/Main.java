@@ -6,8 +6,6 @@ public class Main {
 
 		// new ContinuousTreeToKMLTest().Generate();
 		new TimeSlicerToKMLTest().Generate();
-		// new TimeSlicerToKMLCustomTimeSlicesTest().Generate();
 
 	}// END: main
-
 }// END: Main
