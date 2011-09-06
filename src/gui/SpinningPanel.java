@@ -88,6 +88,7 @@ public class SpinningPanel extends JPanel {
 		private Dimension mySize = new Dimension(SPIN_WIDGET_HEIGHT,
 				SPIN_WIDGET_HEIGHT);
 		private boolean open;
+		private boolean isOver;
 
 		private int[] openXPoints = { 1, HALF_HEIGHT, SPIN_WIDGET_HEIGHT - 1 };
 		private int[] openYPoints = { HALF_HEIGHT, SPIN_WIDGET_HEIGHT - 1,
@@ -109,8 +110,7 @@ public class SpinningPanel extends JPanel {
 				}
 
 				public void mouseEntered(MouseEvent e) {
-					// TODO: change to darker
-//					System.out.println("mouse over!");
+					handleMouseOver();
 				}
 
 			});
@@ -127,6 +127,20 @@ public class SpinningPanel extends JPanel {
 		public void setOpen(boolean o) {
 			open = o;
 			resetBottomVisibility();
+		}
+
+		public void handleMouseOver() {
+//			System.out.println("Mouse over");
+			setIsOver(isMouseOver());
+		}
+
+		public boolean isMouseOver() {
+			return isOver;
+		}
+
+		public void setIsOver(boolean o) {
+			isOver = o;
+			// TODO: repaint the widget
 		}
 
 		public Dimension getMinimumSize() {
