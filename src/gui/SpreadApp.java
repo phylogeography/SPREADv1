@@ -56,6 +56,8 @@ public class SpreadApp {
 	public SpreadApp() throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException, UnsupportedLookAndFeelException {
 
+        boolean lafLoaded = false;
+
 		// Setup Look & Feel
 		if (System.getProperty("os.name").toLowerCase().startsWith("mac os x")) {
 
@@ -72,14 +74,34 @@ public class SpreadApp {
 			System.setProperty("apple.awt.draggableWindowBackground", "true");
 			System.setProperty("apple.awt.showGrowBox", "true");
 
-			UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager
-					.getLookAndFeel());
+            UIManager.put("SystemFont", new Font("Lucida Grande", Font.PLAIN, 13));
+            UIManager.put("SmallSystemFont", new Font("Lucida Grande", Font.PLAIN, 11));
+            try {
+                UIManager.setLookAndFeel(
+                                         "ch.randelshofer.quaqua.QuaquaLookAndFeel"
+                                         );
+                lafLoaded = true;
+            } catch (Exception e) {
+                //
+            }
 
 		} else {
+            try {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+                lafLoaded = true;
+            } catch (Exception e) {
+                //
+            }
 
-			UIManager
-					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 		}
+
+        if (!lafLoaded) {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        }
 
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		Toolkit.getDefaultToolkit().setDynamicLayout(true);
