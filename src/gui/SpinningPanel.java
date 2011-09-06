@@ -112,7 +112,7 @@ public class SpinningPanel extends JPanel {
 				public void mouseEntered(MouseEvent e) {
 					handleMouseOver();
 				}
-				
+
 				public void mouseExited(MouseEvent e) {
 					handleMouseOver();
 				}
@@ -134,7 +134,6 @@ public class SpinningPanel extends JPanel {
 		}
 
 		public void handleMouseOver() {
-			System.out.println("Mouse over " + mouseOver);
 			setIsMouseOver(!isMouseOver());
 		}
 
