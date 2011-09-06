@@ -29,6 +29,7 @@ import structure.Line;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
+import utils.ReadSliceHeights;
 import utils.ThreadLocalSpreadDate;
 import utils.Utils;
 import contouring.ContourMaker;
@@ -36,6 +37,11 @@ import contouring.ContourPath;
 import contouring.ContourWithSynder;
 
 public class TimeSlicerToKML {
+
+	private int analysisType;
+	public final static int FIRST_ANALYSIS = 1;
+	public final static int SECOND_ANALYSIS = 2;
+	public final static int THIRD_ANALYSIS = 3;
 
 	public long time;
 
@@ -49,7 +55,11 @@ public class TimeSlicerToKML {
 	private RootedTree currentTree;
 
 	private TreeImporter treeImporter;
+
 	private RootedTree tree;
+	private int numberOfIntervals;
+	private double[] sliceHeights;
+
 	private double maxAltMapping;
 
 	private double minPolygonRedMapping;
@@ -74,7 +84,6 @@ public class TimeSlicerToKML {
 
 	private ThreadLocalSpreadDate mrsd;
 	private double timescaler;
-	private int numberOfIntervals;
 	private double treeRootHeight;
 	private double branchWidth;
 	private TreeImporter treesImporter;
@@ -97,6 +106,14 @@ public class TimeSlicerToKML {
 	private int gridSize;
 
 	public TimeSlicerToKML() {
+	}
+
+	public void setAnalysisType(int analysisType) {
+		this.analysisType = analysisType;
+	}
+
+	public void setCustomSliceHeights(String path) {
+		sliceHeights = new ReadSliceHeights(path).getSliceHeights();
 	}
 
 	public void setTimescaler(double timescaler) {
@@ -235,17 +252,31 @@ public class TimeSlicerToKML {
 		// start timing
 		time = -System.currentTimeMillis();
 
-		tree = (RootedTree) treeImporter.importNextTree();
-		treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());// tree.getHeight(tree.getRootNode());
 		mrsd = new ThreadLocalSpreadDate(mrsdString);
-		timeLine = generateTimeLine(tree);
+
+		switch (analysisType) {
+		case 1:
+			tree = (RootedTree) treeImporter.importNextTree();
+			treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());
+			sliceHeights = generateTreeSliceHeights(treeRootHeight,
+					numberOfIntervals);
+			timeLine = generateTreeTimeLine(tree);
+			break;
+		case 2:
+			timeLine = generateCustomTimeLine(sliceHeights);
+			break;
+		case 3:
+			tree = (RootedTree) treeImporter.importNextTree();
+			timeLine = generateCustomTimeLine(sliceHeights);
+			break;
+		}
 
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
 
 		// Executor for threads
 		int NTHREDS = Runtime.getRuntime().availableProcessors();
-		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS * 10);
+		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS * 2);
 
 		if (impute) {
 
@@ -263,12 +294,12 @@ public class TimeSlicerToKML {
 
 					executor.submit(new AnalyzeTree(currentTree,
 							precisionString, coordinatesName, rateString,
-							numberOfIntervals, treeRootHeight, timescaler,
-							mrsd, slicesMap, useTrueNoise));
+							sliceHeights, timescaler, mrsd, slicesMap,
+							useTrueNoise));
 
-					// new AnalyzeTree(currentTree, precisionString,
-					// coordinatesName, rateString, numberOfIntervals,
-					// treeRootHeight, timescaler, mrsd, slicesMap,
+					// new AnalyzeTree(currentTree,
+					// precisionString, coordinatesName, rateString,
+					// sliceHeights, timescaler, mrsd, slicesMap,
 					// useTrueNoise).run();
 
 					if (readTrees % 500 == 0) {
@@ -313,13 +344,19 @@ public class TimeSlicerToKML {
 				new Polygons(sliceTime, polygonsStyleId).run();
 
 				polygonsStyleId++;
-				slicesMap.remove(sliceTime);
 			}// END: while has next
 
 		}// END: if impute
 
-		System.out.println("Generating branches...");
-		executor.submit(new Branches());
+		switch (analysisType) {
+		case 1:
+		case 3:
+			System.out.println("Generating branches...");
+			executor.submit(new Branches());
+			break;
+		case 2:
+			break;
+		}
 
 		executor.shutdown();
 		while (!executor.isTerminated()) {
@@ -339,17 +376,19 @@ public class TimeSlicerToKML {
 	// ///////////////////////////
 	// ---CONCURRENT POLYGONS---//
 	// ///////////////////////////
-	private class Polygons implements Runnable {
+	public class Polygons implements Runnable {
 
 		private double sliceTime;
 		private int polygonsStyleId;
 
-		private Polygons(Double sliceTime, int polygonsStyleId) {
+		public Polygons(Double sliceTime, int polygonsStyleId) {
 			this.sliceTime = sliceTime;
 			this.polygonsStyleId = polygonsStyleId;
 		}
 
 		public void run() throws OutOfMemoryError {
+
+			// System.out.println(sliceTime + " " + polygonsStyleId);
 
 			Layer polygonsLayer = new Layer("Time_Slice_"
 					+ formatter.format(sliceTime), null);
@@ -379,6 +418,10 @@ public class TimeSlicerToKML {
 			double[] y = new double[list.size()];
 
 			for (int i = 0; i < list.size(); i++) {
+
+				if (list.get(i) == null) {
+					System.out.println("null found");
+				}
 
 				x[i] = list.get(i).getLatitude();
 				y[i] = list.get(i).getLongitude();
@@ -412,6 +455,7 @@ public class TimeSlicerToKML {
 			}// END: paths loop
 
 			layers.add(polygonsLayer);
+			slicesMap.remove(sliceTime);
 
 		}// END: run
 	}// END: Polygons
@@ -516,7 +560,7 @@ public class TimeSlicerToKML {
 		}// END: run
 	}// END: Branches class
 
-	private TimeLine generateTimeLine(RootedTree tree) {
+	private TimeLine generateTreeTimeLine(RootedTree tree) {
 
 		// This is a general time span for all of the trees
 		double treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());
@@ -526,7 +570,37 @@ public class TimeSlicerToKML {
 		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
 
 		return timeLine;
+	}// END: generateTreeTimeLine
 
-	}// END: GenerateTimeLine
+	private double[] generateTreeSliceHeights(double treeRootHeight,
+			int numberOfIntervals) {
+
+		double[] timeSlices = new double[numberOfIntervals];
+
+		for (int i = 0; i < numberOfIntervals; i++) {
+
+			timeSlices[i] = treeRootHeight
+					- (treeRootHeight / (double) numberOfIntervals)
+					* ((double) i);
+		}
+
+		return timeSlices;
+	}// END: generateTimeSlices
+
+	private TimeLine generateCustomTimeLine(double[] timeSlices) {
+
+		// This is a general time span for all of the trees
+		int numberOfSlices = timeSlices.length;
+		double startTime = mrsd.getTime()
+				- (timeSlices[numberOfSlices - 1] * DayInMillis * DaysInYear * timescaler);
+		double endTime = mrsd.getTime();
+		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfSlices);
+
+		return timeLine;
+	}// END: generateCustomTimeLine
+
+	public int getAnalysisType() {
+		return analysisType;
+	}
 
 }// END: class

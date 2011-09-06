@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -38,7 +39,7 @@ public class SpreadApp {
 	private JTabbedPane tabbedPane;
 
 	// Menubar
-	private JMenuBar mainMenu;
+	private JToolBar mainMenu;
 
 	// Buttons with options
 	private JButton help;
@@ -92,7 +93,7 @@ public class SpreadApp {
 		frame = new JFrame("SPREAD");
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.addWindowListener(new ListenCloseWdw());
-		frame.setIconImage(CreateImage("/icons/nuclear.png"));
+		frame.setIconImage(CreateImage("/icons/spread.png"));
 
 		// Setup Main Menu buttons
 		help = new JButton("Help", helpIcon);
@@ -105,7 +106,8 @@ public class SpreadApp {
 		clear.addActionListener(new ListenMenuClearTerminal());
 
 		// Setup Main Menu
-		mainMenu = new JMenuBar();
+		mainMenu = new JToolBar();
+		mainMenu.setFloatable(false);
 		mainMenu.setLayout(new BorderLayout());
 		JPanel buttonsHolder = new JPanel();
 		buttonsHolder.setOpaque(false);
@@ -137,7 +139,7 @@ public class SpreadApp {
 		terminalTab = new TerminalTab();
 		tabbedPane.add("Terminal", terminalTab);
 
-		frame.setJMenuBar(mainMenu);
+		frame.add(mainMenu, BorderLayout.NORTH);
 		frame.add(tabbedPane, BorderLayout.CENTER);
 		frame.getContentPane().add(Box.createVerticalStrut(15),
 				BorderLayout.SOUTH);
@@ -152,8 +154,9 @@ public class SpreadApp {
 					+ "                                       SPREAD \n"
 					+ "Spatial Phylogenetic Reconstruction of Evolutionary Dynamics \n"
 					+ "                                Version 1.0, 2011 \n"
-					+ "                     www.phylogeography.org/SPREAD \n"
+					+ "Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey \n"
 					+ "\n"
+					+ "SPREAD: www.phylogeography.org/SPREAD \n"
 					+ "BEAST software: http://beast.bio.ed.ac.uk/Main_Page \n"
 					+ "Processing libraries: http://processing.org/ \n"
 					+ "\n"

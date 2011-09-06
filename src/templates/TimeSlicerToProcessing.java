@@ -21,6 +21,7 @@ import jebl.evolution.trees.RootedTree;
 import processing.core.PApplet;
 import structure.Coordinates;
 import structure.TimeLine;
+import utils.ReadSliceHeights;
 import utils.ThreadLocalSpreadDate;
 import utils.Utils;
 import contouring.ContourMaker;
@@ -30,6 +31,11 @@ import contouring.ContourWithSynder;
 @SuppressWarnings("serial")
 public class TimeSlicerToProcessing extends PApplet {
 
+	private int analysisType;
+	public final static int FIRST_ANALYSIS = 1;
+	public final static int SECOND_ANALYSIS = 2;
+	public final static int THIRD_ANALYSIS = 3;
+
 	// how many millisecond one day holds
 	private final int DayInMillis = 86400000;
 	// how many days one year holds
@@ -37,8 +43,11 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	// Concurrency stuff
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
-	// private Double sliceTime;
 	private RootedTree currentTree;
+
+	private RootedTree tree;
+	private int numberOfIntervals;
+	private double[] sliceHeights;
 
 	private double minPolygonRedMapping;
 	private double minPolygonGreenMapping;
@@ -69,7 +78,6 @@ public class TimeSlicerToProcessing extends PApplet {
 	private String longitudeName;
 	private String latitudeName;
 	private String rateString;
-	private int numberOfIntervals;
 	private boolean useTrueNoise;
 	private boolean impute;
 	private String mrsdString;
@@ -79,7 +87,6 @@ public class TimeSlicerToProcessing extends PApplet {
 	private double startTime;
 	private double endTime;
 	private double burnIn;
-	private RootedTree tree;
 	private double HPD;
 	private int gridSize;
 
@@ -89,6 +96,14 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	public TimeSlicerToProcessing() {
 	}// END: TimeSlicerToProcessing()
+
+	public void setAnalysisType(int analysisType) {
+		this.analysisType = analysisType;
+	}
+
+	public void setCustomSliceHeights(String path) {
+		sliceHeights = new ReadSliceHeights(path).getSliceHeights();
+	}
 
 	public void setTimescaler(double timescaler) {
 		this.timescaler = timescaler;
@@ -231,12 +246,19 @@ public class TimeSlicerToProcessing extends PApplet {
 		smooth();
 		mapBackground.drawMapBackground();
 		if (impute) {
-			System.out.println("Generating polygons...");
+			System.out.println("Drawing polygons...");
 			drawPolygons();
 		}
 
-		System.out.println("Drawing branches...");
-		drawBranches();
+		switch (analysisType) {
+		case 1:
+		case 3:
+			System.out.println("Drawing branches...");
+			drawBranches();
+			break;
+		case 2:
+			break;
+		}
 
 	}// END:draw
 
@@ -256,7 +278,7 @@ public class TimeSlicerToProcessing extends PApplet {
 			drawPolygon(sliceTime);
 
 			polygonsStyleId++;
-			slicesMap.remove(sliceTime);
+			// slicesMap.remove(sliceTime);
 		}
 
 	}// END: drawPolygons
@@ -333,6 +355,8 @@ public class TimeSlicerToProcessing extends PApplet {
 
 		}// END: paths loop
 
+		slicesMap.remove(sliceTime);
+
 	}// END: drawPolygon()
 
 	private void drawBranches() {
@@ -386,10 +410,24 @@ public class TimeSlicerToProcessing extends PApplet {
 	public void analyzeTrees() throws IOException, ImportException,
 			ParseException {
 
-		tree = (RootedTree) treeImporter.importNextTree();
-		treeRootHeight = tree.getHeight(tree.getRootNode());
 		mrsd = new ThreadLocalSpreadDate(mrsdString);
-		timeLine = GenerateTimeLine(tree);
+
+		switch (analysisType) {
+		case 1:
+			tree = (RootedTree) treeImporter.importNextTree();
+			treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());
+			sliceHeights = generateTreeSliceHeights(treeRootHeight,
+					numberOfIntervals);
+			timeLine = generateTreeTimeLine(tree);
+			break;
+		case 2:
+			timeLine = generateCustomTimeLine(sliceHeights);
+			break;
+		case 3:
+			tree = (RootedTree) treeImporter.importNextTree();
+			timeLine = generateCustomTimeLine(sliceHeights);
+			break;
+		}
 
 		if (impute) {
 
@@ -403,7 +441,7 @@ public class TimeSlicerToProcessing extends PApplet {
 
 			// Executor for threads
 			int NTHREDS = Runtime.getRuntime().availableProcessors();
-			ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
+			ExecutorService executor = Executors.newFixedThreadPool(NTHREDS * 2);
 
 			int readTrees = 0;
 			while (treesImporter.hasTree()) {
@@ -414,12 +452,12 @@ public class TimeSlicerToProcessing extends PApplet {
 
 					executor.submit(new AnalyzeTree(currentTree,
 							precisionString, coordinatesName, rateString,
-							numberOfIntervals, treeRootHeight, timescaler,
-							mrsd, slicesMap, useTrueNoise));
+							sliceHeights, timescaler, mrsd, slicesMap,
+							useTrueNoise));
 
-					// new AnalyzeTree(currentTree, precisionString,
-					// coordinatesName, rateString, numberOfIntervals,
-					// treeRootHeight, timescaler, mrsd, slicesMap,
+					// new AnalyzeTree(currentTree,
+					// precisionString, coordinatesName, rateString,
+					// sliceHeights, timescaler, mrsd, slicesMap,
 					// useTrueNoise).run();
 
 					if (readTrees % burnIn == 0) {
@@ -446,16 +484,43 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	}// END: AnalyzeTrees
 
-	private TimeLine GenerateTimeLine(RootedTree mccTree) throws ParseException {
+	private TimeLine generateTreeTimeLine(RootedTree tree) {
 
 		// This is a general time span for all of the trees
-		double treeRootHeight = mccTree.getHeight(mccTree.getRootNode());
+		double treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());
 		double startTime = mrsd.getTime()
 				- (treeRootHeight * DayInMillis * DaysInYear * timescaler);
 		double endTime = mrsd.getTime();
 		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
 
 		return timeLine;
-	}
+	}// END: generateTreeTimeLine
+
+	private double[] generateTreeSliceHeights(double treeRootHeight,
+			int numberOfIntervals) {
+
+		double[] timeSlices = new double[numberOfIntervals];
+
+		for (int i = 0; i < numberOfIntervals; i++) {
+
+			timeSlices[i] = treeRootHeight
+					- (treeRootHeight / (double) numberOfIntervals)
+					* ((double) i);
+		}
+
+		return timeSlices;
+	}// END: generateTimeSlices
+
+	private TimeLine generateCustomTimeLine(double[] timeSlices) {
+
+		// This is a general time span for all of the trees
+		int numberOfSlices = timeSlices.length;
+		double startTime = mrsd.getTime()
+				- (timeSlices[numberOfSlices - 1] * DayInMillis * DaysInYear * timescaler);
+		double endTime = mrsd.getTime();
+		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfSlices);
+
+		return timeLine;
+	}// END: generateCustomTimeLine
 
 }// END: TimeScalerToProcessing class

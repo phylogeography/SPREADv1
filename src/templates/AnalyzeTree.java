@@ -21,17 +21,15 @@ public class AnalyzeTree implements Runnable {
 	private String precisionString;
 	private String coordinatesName;
 	private String rateString;
-	private int numberOfIntervals;
-	private double treeRootHeight;
 	private double timescaler;
+	private double[] sliceHeights;
 	private ThreadLocalSpreadDate mrsd;
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
 	private boolean useTrueNoise;
 
 	public AnalyzeTree(RootedTree currentTree, String precisionString,
-			String coordinatesName, String rateString, int numberOfIntervals,
-			double treeRootHeight, double timescaler,
-			ThreadLocalSpreadDate mrsd,
+			String coordinatesName, String rateString, double[] sliceHeights,
+			double timescaler, ThreadLocalSpreadDate mrsd,
 			ConcurrentMap<Double, List<Coordinates>> slicesMap,
 			boolean useTrueNoise) {
 
@@ -39,8 +37,7 @@ public class AnalyzeTree implements Runnable {
 		this.precisionString = precisionString;
 		this.coordinatesName = coordinatesName;
 		this.rateString = rateString;
-		this.numberOfIntervals = numberOfIntervals;
-		this.treeRootHeight = treeRootHeight;
+		this.sliceHeights = sliceHeights;
 		this.timescaler = timescaler;
 		this.mrsd = mrsd;
 		this.slicesMap = slicesMap;
@@ -78,11 +75,9 @@ public class AnalyzeTree implements Runnable {
 					double rate = Utils
 							.getDoubleNodeAttribute(node, rateString);
 
-					for (int i = 0; i <= numberOfIntervals; i++) {
+					for (int i = 0; i < sliceHeights.length; i++) {
 
-						double sliceHeight = treeRootHeight
-								- (treeRootHeight / (double) numberOfIntervals)
-								* ((double) i);
+						double sliceHeight = sliceHeights[i];
 
 						if (nodeHeight < sliceHeight
 								&& sliceHeight <= parentHeight) {
@@ -117,7 +112,6 @@ public class AnalyzeTree implements Runnable {
 								coords.add(new Coordinates(imputedLocation[1],
 										imputedLocation[0], 0.0));
 
-								// slicesMap.putIfAbsent(sliceTime, coords);
 								slicesMap.put(sliceTime, coords);
 
 							}// END: key check

@@ -169,10 +169,9 @@ public class LocationCoordinatesEditor {
 
 							tableModel.setValueAt(String
 									.valueOf(data.coordinates[i][j]), i, j + 1);
+							
 						}// END: col loop
-
 					}// END: row loop
-
 				}// END: null check
 
 			} catch (Exception e) {

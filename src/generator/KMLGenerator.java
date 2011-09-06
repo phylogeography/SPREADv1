@@ -186,9 +186,6 @@ public class KMLGenerator implements Generator {
 						/ (Math.pow(sliceCount, 2) - sliceCount);
 				double b = 2 * maxAltitude / (sliceCount - 1);
 
-				// System.out.println(sliceCount);
-				// System.out.println(coords.length);
-
 				for (int i = 0; i < sliceCount; i++) {
 
 					double startAltitude = a * Math.pow((double) i, 2) + b
@@ -196,7 +193,7 @@ public class KMLGenerator implements Generator {
 					double endAltitude = a * Math.pow((double) (i + 1), 2) + b
 							* (double) (i + 1);
 
-					double segmentStartTime = endTime - i
+					double segmentStartTime = endTime - (i + 1)
 							* ((endTime - startTime) / sliceCount);
 
 					Placemark lineSegment = generateLineSegment(

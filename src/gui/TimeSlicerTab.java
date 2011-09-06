@@ -5,12 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -19,6 +21,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -47,6 +50,7 @@ public class TimeSlicerTab extends JPanel {
 	private ImageIcon processingIcon;
 	private ImageIcon saveIcon;
 	private ImageIcon errorIcon;
+	private ImageIcon timeSlicesIcon;
 
 	// Colors
 	private Color backgroundColor;
@@ -56,9 +60,23 @@ public class TimeSlicerTab extends JPanel {
 	private Color branchesMinColor;
 
 	// Strings for paths
-	private String treeFilename = null;
-	private String treesFilename = null;
-	private File workingDirectory = null;
+	private String treeFilename;
+	private String treesFilename;
+	private String sliceHeightsFilename;
+	private File workingDirectory;
+
+	// Radio buttons
+	private JRadioButton firstAnalysisRadioButton;
+	private JRadioButton secondAnalysisRadioButton;
+	private JRadioButton thirdAnalysisRadioButton;
+
+	// Switchers
+	private int analysisType;
+
+	// Strings for radio buttons
+	private String firstAnalysis;
+	private String secondAnalysis;
+	private String thirdAnalysis;
 
 	// Text fields
 	private JTextField burnInParser;
@@ -84,6 +102,7 @@ public class TimeSlicerTab extends JPanel {
 	private JButton branchesMaxColorChooser;
 	private JButton polygonsMinColorChooser;
 	private JButton branchesMinColorChooser;
+	private JButton loadTimeSlices;
 
 	// Sliders
 	private JSlider branchesWidthParser;
@@ -112,11 +131,6 @@ public class TimeSlicerTab extends JPanel {
 
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-		backgroundColor = new Color(231, 237, 246);
-		polygonsMaxColor = new Color(50, 255, 255, 255);
-		branchesMaxColor = new Color(255, 5, 50, 255);
-		polygonsMinColor = new Color(0, 0, 0, 100);
-		branchesMinColor = new Color(0, 0, 0, 255);
 		GridBagConstraints c = new GridBagConstraints();
 
 		// Setup icons
@@ -126,6 +140,33 @@ public class TimeSlicerTab extends JPanel {
 		processingIcon = CreateImageIcon("/icons/processing.png");
 		saveIcon = CreateImageIcon("/icons/save.png");
 		errorIcon = CreateImageIcon("/icons/error.png");
+		timeSlicesIcon = CreateImageIcon("/icons/timeSlices.png");
+
+		// Setup colors
+		backgroundColor = new Color(231, 237, 246);
+		polygonsMaxColor = new Color(50, 255, 255, 255);
+		branchesMaxColor = new Color(255, 5, 50, 255);
+		polygonsMinColor = new Color(0, 0, 0, 100);
+		branchesMinColor = new Color(0, 0, 0, 255);
+
+		// Setup strings for paths
+		treeFilename = null;
+		treesFilename = null;
+		sliceHeightsFilename = null;
+		workingDirectory = null;
+
+		// Setup strings for radio buttons
+		firstAnalysis = new String("MCC tree slice heights");
+		secondAnalysis = new String("Custom slice heights, polygons only");
+		thirdAnalysis = new String("Custom slice heights, polygons & branches");
+
+		// Setup radio buttons
+		firstAnalysisRadioButton = new JRadioButton(firstAnalysis);
+		secondAnalysisRadioButton = new JRadioButton(secondAnalysis);
+		thirdAnalysisRadioButton = new JRadioButton(thirdAnalysis);
+
+		// Setup switchers
+		analysisType = TimeSlicerToKML.FIRST_ANALYSIS;
 
 		// Setup text fields
 		burnInParser = new JTextField("500", 10);
@@ -135,7 +176,7 @@ public class TimeSlicerTab extends JPanel {
 		numberOfIntervalsParser = new JTextField("10", 5);
 		maxAltMappingParser = new JTextField("500000", 5);
 		kmlPathParser = new JTextField("output.kml", 10);
-		HPDParser = new JTextField("0.95", 5);
+		HPDParser = new JTextField("0.8", 5);
 		timescalerParser = new JTextField("1.0", 10);
 
 		// Setup buttons
@@ -148,6 +189,7 @@ public class TimeSlicerTab extends JPanel {
 		branchesMaxColorChooser = new JButton("Setup max");
 		polygonsMinColorChooser = new JButton("Setup min");
 		branchesMinColorChooser = new JButton("Setup min");
+		loadTimeSlices = new JButton("Load", timeSlicesIcon);
 
 		// Setup sliders
 		branchesWidthParser = new JSlider(JSlider.HORIZONTAL, 2, 10, 4);
@@ -176,7 +218,7 @@ public class TimeSlicerTab extends JPanel {
 		leftPanel.setPreferredSize(new Dimension(leftPanelWidth,
 				leftPanelHeight));
 
-		// Listeners
+		// Action listeners
 		openTree.addActionListener(new ListenOpenTree());
 		openTrees.addActionListener(new ListenOpenTrees());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -191,6 +233,52 @@ public class TimeSlicerTab extends JPanel {
 				.addActionListener(new ListenPolygonsMinColorChooser());
 		branchesMinColorChooser
 				.addActionListener(new ListenBranchesMinColorChooser());
+		loadTimeSlices.addActionListener(new ListenLoadTimeSlices());
+
+		// ////////////////////////////
+		// ---CHOOSE ANALYSIS TYPE---//
+		// ////////////////////////////
+
+		tmpPanelsHolder = new JPanel();
+		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
+				BoxLayout.Y_AXIS));
+
+		tmpPanel = new JPanel();
+		tmpPanel.setLayout(new GridLayout(3, 1));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Choose analysis type:"));
+
+		ButtonGroup buttonGroup = new ButtonGroup();
+
+		firstAnalysisRadioButton.setToolTipText(firstAnalysis);
+		firstAnalysisRadioButton.setActionCommand(firstAnalysis);
+		firstAnalysisRadioButton
+				.addActionListener(new ChooseAnalysisTypeListener());
+		firstAnalysisRadioButton.setSelected(true);
+		buttonGroup.add(firstAnalysisRadioButton);
+		tmpPanel.add(firstAnalysisRadioButton);
+
+		secondAnalysisRadioButton.setToolTipText(secondAnalysis);
+		secondAnalysisRadioButton.setActionCommand(secondAnalysis);
+		secondAnalysisRadioButton
+				.addActionListener(new ChooseAnalysisTypeListener());
+		buttonGroup.add(secondAnalysisRadioButton);
+		tmpPanel.add(secondAnalysisRadioButton);
+
+		thirdAnalysisRadioButton.setToolTipText(thirdAnalysis);
+		thirdAnalysisRadioButton.setActionCommand(thirdAnalysis);
+		thirdAnalysisRadioButton
+				.addActionListener(new ChooseAnalysisTypeListener());
+		buttonGroup.add(thirdAnalysisRadioButton);
+		tmpPanel.add(thirdAnalysisRadioButton);
+
+		tmpPanelsHolder.add(tmpPanel);
+
+		sp = new SpinningPanel(tmpPanelsHolder, "   Analysis", new Dimension(
+				leftPanelWidth + 60, 20));
+		sp.showBottom(false);
+		leftPanel.add(sp);
 
 		// /////////////
 		// ---INPUT---//
@@ -201,10 +289,18 @@ public class TimeSlicerTab extends JPanel {
 				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
+		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Load tree file:"));
-		tmpPanel.add(openTree);
+		tmpPanel.setBorder(new TitledBorder("Load slice heights / tree file:"));
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		loadTimeSlices.setEnabled(false);
+		tmpPanel.add(loadTimeSlices, c);
+		c.gridx = 2;
+		c.gridy = 0;
+		tmpPanel.add(openTree, c);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -363,15 +459,15 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
-		tmpPanel.add(numberOfIntervalsParser);
+		tmpPanel.setBorder(new TitledBorder("Time scale multiplier:"));
+		tmpPanel.add(timescalerParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Time scale multiplier:"));
-		tmpPanel.add(timescalerParser);
+		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
+		tmpPanel.add(numberOfIntervalsParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -394,7 +490,6 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
 				BoxLayout.Y_AXIS));
 
-		// leftPanel.add(tmpPanel);
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
 		tmpPanel.setBackground(backgroundColor);
@@ -487,8 +582,86 @@ public class TimeSlicerTab extends JPanel {
 		}
 	}
 
+	class ChooseAnalysisTypeListener implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			if (ev.getActionCommand() == firstAnalysis) {
+
+				loadTimeSlices.setEnabled(false);
+				openTree.setEnabled(true);
+				branchesMinColorChooser.setEnabled(true);
+				branchesMaxColorChooser.setEnabled(true);
+				branchesWidthParser.setEnabled(true);
+				maxAltMappingParser.setEnabled(true);
+				numberOfIntervalsParser.setEnabled(true);
+
+				analysisType = TimeSlicerToKML.FIRST_ANALYSIS;
+				System.out.println(firstAnalysis + " analysis selected \n");
+
+			} else if (ev.getActionCommand() == secondAnalysis) {
+
+				loadTimeSlices.setEnabled(true);
+				openTree.setEnabled(false);
+				branchesMinColorChooser.setEnabled(false);
+				branchesMaxColorChooser.setEnabled(false);
+				branchesWidthParser.setEnabled(false);
+				maxAltMappingParser.setEnabled(false);
+				numberOfIntervalsParser.setEnabled(false);
+
+				analysisType = TimeSlicerToKML.SECOND_ANALYSIS;
+				System.out.println(secondAnalysis + " analysis selected \n");
+
+			} else if (ev.getActionCommand() == thirdAnalysis) {
+
+				loadTimeSlices.setEnabled(true);
+				openTree.setEnabled(true);
+				branchesMinColorChooser.setEnabled(true);
+				branchesMaxColorChooser.setEnabled(true);
+				branchesWidthParser.setEnabled(true);
+				maxAltMappingParser.setEnabled(true);
+				numberOfIntervalsParser.setEnabled(false);
+
+				analysisType = TimeSlicerToKML.THIRD_ANALYSIS;
+				System.out.println(thirdAnalysis + " analysis selected \n");
+
+			} else {
+				System.err.println("Unimplemented analysis type selected");
+			}
+
+		}// END: actionPerformed
+	}// END: ChooseAnalysisTypeListener
+
+	private class ListenLoadTimeSlices implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+
+			try {
+
+				JFileChooser chooser = new JFileChooser();
+				chooser.setDialogTitle("Loading slice heights file...");
+				chooser.setCurrentDirectory(workingDirectory);
+
+				chooser.showOpenDialog(Utils.getActiveFrame());
+				File file = chooser.getSelectedFile();
+				sliceHeightsFilename = file.getAbsolutePath();
+				System.out.println("Opened " + sliceHeightsFilename + "\n");
+
+				File tmpDir = chooser.getCurrentDirectory();
+
+				if (tmpDir != null) {
+
+					workingDirectory = tmpDir;
+
+				}
+
+			} catch (Exception e) {
+				System.err.println("Could not load! \n");
+			}
+
+		}
+	}// END: ListenLoadTimeSlices
+
 	private class ListenOpenTree implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
 			try {
 
@@ -512,8 +685,8 @@ public class TimeSlicerTab extends JPanel {
 					workingDirectory = tmpDir;
 				}
 
-			} catch (Exception e1) {
-				System.err.println("Could not Open! \n");
+			} catch (Exception e) {
+				System.err.println("Could not open! \n");
 			}
 		}
 	}
@@ -544,7 +717,7 @@ public class TimeSlicerTab extends JPanel {
 				}
 
 			} catch (Exception e) {
-				System.err.println("Could not Open! \n");
+				System.err.println("Could not open! \n");
 			}
 		}
 	}
@@ -600,7 +773,7 @@ public class TimeSlicerTab extends JPanel {
 	private class ListenGenerateKml implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
-			if (treeFilename == null) {
+			if (openTree.isEnabled() && treeFilename == null) {
 
 				new ListenOpenTree().actionPerformed(ev);
 
@@ -622,11 +795,117 @@ public class TimeSlicerTab extends JPanel {
 
 							if (new TimeSlicerSanityCheck().check(treeFilename,
 									coordinatesNameParser.getText(),
-									treesFilename)) {
+									treesFilename, analysisType)) {
 
 								TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
 
-								timeSlicerToKML.setTreePath(treeFilename);
+								timeSlicerToKML.setAnalysisType(analysisType);
+
+								// TODO
+
+								if (analysisType == TimeSlicerToKML.FIRST_ANALYSIS) {
+
+									timeSlicerToKML.setTreePath(treeFilename);
+
+									timeSlicerToKML
+											.setNumberOfIntervals(Integer
+													.valueOf(numberOfIntervalsParser
+															.getText()));
+
+									timeSlicerToKML
+											.setMinBranchRedMapping(branchesMinColor
+													.getRed());
+
+									timeSlicerToKML
+											.setMinBranchGreenMapping(branchesMinColor
+													.getGreen());
+
+									timeSlicerToKML
+											.setMinBranchBlueMapping(branchesMinColor
+													.getBlue());
+
+									timeSlicerToKML
+											.setMinBranchOpacityMapping(branchesMinColor
+													.getAlpha());
+
+									timeSlicerToKML
+											.setMaxBranchRedMapping(branchesMaxColor
+													.getRed());
+
+									timeSlicerToKML
+											.setMaxBranchGreenMapping(branchesMaxColor
+													.getGreen());
+
+									timeSlicerToKML
+											.setMaxBranchBlueMapping(branchesMaxColor
+													.getBlue());
+
+									timeSlicerToKML
+											.setMaxBranchOpacityMapping(branchesMaxColor
+													.getAlpha());
+
+									timeSlicerToKML
+											.setBranchWidth(branchesWidthParser
+													.getValue());
+
+									timeSlicerToKML
+											.setMaxAltitudeMapping(Double
+													.valueOf(maxAltMappingParser
+															.getText()));
+
+								} else if (analysisType == TimeSlicerToKML.SECOND_ANALYSIS) {
+
+									timeSlicerToKML
+											.setCustomSliceHeights(sliceHeightsFilename);
+
+								} else if (analysisType == TimeSlicerToKML.THIRD_ANALYSIS) {
+
+									timeSlicerToKML.setTreePath(treeFilename);
+
+									timeSlicerToKML
+											.setCustomSliceHeights(sliceHeightsFilename);
+
+									timeSlicerToKML
+											.setMinBranchRedMapping(branchesMinColor
+													.getRed());
+
+									timeSlicerToKML
+											.setMinBranchGreenMapping(branchesMinColor
+													.getGreen());
+
+									timeSlicerToKML
+											.setMinBranchBlueMapping(branchesMinColor
+													.getBlue());
+
+									timeSlicerToKML
+											.setMinBranchOpacityMapping(branchesMinColor
+													.getAlpha());
+
+									timeSlicerToKML
+											.setMaxBranchRedMapping(branchesMaxColor
+													.getRed());
+
+									timeSlicerToKML
+											.setMaxBranchGreenMapping(branchesMaxColor
+													.getGreen());
+
+									timeSlicerToKML
+											.setMaxBranchBlueMapping(branchesMaxColor
+													.getBlue());
+
+									timeSlicerToKML
+											.setMaxBranchOpacityMapping(branchesMaxColor
+													.getAlpha());
+
+									timeSlicerToKML
+											.setBranchWidth(branchesWidthParser
+													.getValue());
+
+									timeSlicerToKML
+											.setMaxAltitudeMapping(Double
+													.valueOf(maxAltMappingParser
+															.getText()));
+								}
 
 								timeSlicerToKML.setTreesPath(treesFilename);
 
@@ -663,10 +942,6 @@ public class TimeSlicerTab extends JPanel {
 												+ (eraParser.getSelectedIndex() == 0 ? "AD"
 														: "BC"));
 
-								timeSlicerToKML.setNumberOfIntervals(Integer
-										.valueOf(numberOfIntervalsParser
-												.getText()));
-
 								timeSlicerToKML.setTimescaler(Double
 										.valueOf(timescalerParser.getText()));
 
@@ -675,11 +950,6 @@ public class TimeSlicerTab extends JPanel {
 												.toString()
 												.concat("/")
 												.concat(kmlPathParser.getText()));
-
-								timeSlicerToKML
-										.setMaxAltitudeMapping(Double
-												.valueOf(maxAltMappingParser
-														.getText()));
 
 								timeSlicerToKML
 										.setMinPolygonRedMapping(polygonsMinColor
@@ -712,42 +982,6 @@ public class TimeSlicerTab extends JPanel {
 								timeSlicerToKML
 										.setMaxPolygonOpacityMapping(polygonsMaxColor
 												.getAlpha());
-
-								timeSlicerToKML
-										.setMinBranchRedMapping(branchesMinColor
-												.getRed());
-
-								timeSlicerToKML
-										.setMinBranchGreenMapping(branchesMinColor
-												.getGreen());
-
-								timeSlicerToKML
-										.setMinBranchBlueMapping(branchesMinColor
-												.getBlue());
-
-								timeSlicerToKML
-										.setMinBranchOpacityMapping(branchesMinColor
-												.getAlpha());
-
-								timeSlicerToKML
-										.setMaxBranchRedMapping(branchesMaxColor
-												.getRed());
-
-								timeSlicerToKML
-										.setMaxBranchGreenMapping(branchesMaxColor
-												.getGreen());
-
-								timeSlicerToKML
-										.setMaxBranchBlueMapping(branchesMaxColor
-												.getBlue());
-
-								timeSlicerToKML
-										.setMaxBranchOpacityMapping(branchesMaxColor
-												.getAlpha());
-
-								timeSlicerToKML
-										.setBranchWidth(branchesWidthParser
-												.getValue());
 
 								timeSlicerToKML.GenerateKML();
 
@@ -812,7 +1046,6 @@ public class TimeSlicerTab extends JPanel {
 								+ workingDirectory.toString().concat("/")
 										.concat(kmlPathParser.getText()));
 
-						// TODO: is it neccessary?
 						System.gc();
 
 					}
@@ -828,7 +1061,7 @@ public class TimeSlicerTab extends JPanel {
 	private class ListenGenerateProcessing implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
-			if (treeFilename == null) {
+			if (openTree.isEnabled() && treeFilename == null) {
 
 				new ListenOpenTree().actionPerformed(ev);
 
@@ -850,10 +1083,109 @@ public class TimeSlicerTab extends JPanel {
 
 							if (new TimeSlicerSanityCheck().check(treeFilename,
 									coordinatesNameParser.getText(),
-									treesFilename)) {
+									treesFilename, analysisType)) {
+
+								// TODO
 
 								timeSlicerToProcessing
-										.setMccTreePath(treeFilename);
+										.setAnalysisType(analysisType);
+
+								if (analysisType == TimeSlicerToProcessing.FIRST_ANALYSIS) {
+
+									timeSlicerToProcessing
+											.setMccTreePath(treeFilename);
+
+									timeSlicerToProcessing
+											.setNumberOfIntervals(Integer
+													.valueOf(numberOfIntervalsParser
+															.getText()));
+
+									timeSlicerToProcessing
+											.setMinBranchRedMapping(branchesMinColor
+													.getRed());
+
+									timeSlicerToProcessing
+											.setMinBranchGreenMapping(branchesMinColor
+													.getGreen());
+
+									timeSlicerToProcessing
+											.setMinBranchBlueMapping(branchesMinColor
+													.getBlue());
+
+									timeSlicerToProcessing
+											.setMinBranchOpacityMapping(branchesMinColor
+													.getAlpha());
+
+									timeSlicerToProcessing
+											.setMaxBranchRedMapping(branchesMaxColor
+													.getRed());
+
+									timeSlicerToProcessing
+											.setMaxBranchGreenMapping(branchesMaxColor
+													.getGreen());
+
+									timeSlicerToProcessing
+											.setMaxBranchBlueMapping(branchesMaxColor
+													.getBlue());
+
+									timeSlicerToProcessing
+											.setMaxBranchOpacityMapping(branchesMaxColor
+													.getAlpha());
+
+									timeSlicerToProcessing
+											.setBranchWidth(branchesWidthParser
+													.getValue() / 2);
+
+								} else if (analysisType == TimeSlicerToProcessing.SECOND_ANALYSIS) {
+
+									timeSlicerToProcessing
+											.setCustomSliceHeights(sliceHeightsFilename);
+
+								} else if (analysisType == TimeSlicerToProcessing.THIRD_ANALYSIS) {
+
+									timeSlicerToProcessing
+											.setMccTreePath(treeFilename);
+
+									timeSlicerToProcessing
+											.setCustomSliceHeights(sliceHeightsFilename);
+
+									timeSlicerToProcessing
+											.setMinBranchRedMapping(branchesMinColor
+													.getRed());
+
+									timeSlicerToProcessing
+											.setMinBranchGreenMapping(branchesMinColor
+													.getGreen());
+
+									timeSlicerToProcessing
+											.setMinBranchBlueMapping(branchesMinColor
+													.getBlue());
+
+									timeSlicerToProcessing
+											.setMinBranchOpacityMapping(branchesMinColor
+													.getAlpha());
+
+									timeSlicerToProcessing
+											.setMaxBranchRedMapping(branchesMaxColor
+													.getRed());
+
+									timeSlicerToProcessing
+											.setMaxBranchGreenMapping(branchesMaxColor
+													.getGreen());
+
+									timeSlicerToProcessing
+											.setMaxBranchBlueMapping(branchesMaxColor
+													.getBlue());
+
+									timeSlicerToProcessing
+											.setMaxBranchOpacityMapping(branchesMaxColor
+													.getAlpha());
+
+									timeSlicerToProcessing
+											.setBranchWidth(branchesWidthParser
+													.getValue() / 2);
+
+								}
 
 								timeSlicerToProcessing
 										.setTreesPath(treesFilename);
@@ -892,12 +1224,6 @@ public class TimeSlicerTab extends JPanel {
 												+ (eraParser.getSelectedIndex() == 0 ? "AD"
 														: "BC"));
 
-								timeSlicerToProcessing
-										.setNumberOfIntervals(Integer
-												.valueOf(numberOfIntervalsParser
-														.getText()));
-
-								// TODO
 								timeSlicerToProcessing.setTimescaler(Double
 										.valueOf(timescalerParser.getText()));
 
@@ -932,42 +1258,6 @@ public class TimeSlicerTab extends JPanel {
 								timeSlicerToProcessing
 										.setMaxPolygonOpacityMapping(polygonsMaxColor
 												.getAlpha());
-
-								timeSlicerToProcessing
-										.setMinBranchRedMapping(branchesMinColor
-												.getRed());
-
-								timeSlicerToProcessing
-										.setMinBranchGreenMapping(branchesMinColor
-												.getGreen());
-
-								timeSlicerToProcessing
-										.setMinBranchBlueMapping(branchesMinColor
-												.getBlue());
-
-								timeSlicerToProcessing
-										.setMinBranchOpacityMapping(branchesMinColor
-												.getAlpha());
-
-								timeSlicerToProcessing
-										.setMaxBranchRedMapping(branchesMaxColor
-												.getRed());
-
-								timeSlicerToProcessing
-										.setMaxBranchGreenMapping(branchesMaxColor
-												.getGreen());
-
-								timeSlicerToProcessing
-										.setMaxBranchBlueMapping(branchesMaxColor
-												.getBlue());
-
-								timeSlicerToProcessing
-										.setMaxBranchOpacityMapping(branchesMaxColor
-												.getAlpha());
-
-								timeSlicerToProcessing
-										.setBranchWidth(branchesWidthParser
-												.getValue() / 2);
 
 								timeSlicerToProcessing.analyzeTrees();
 
@@ -1029,7 +1319,6 @@ public class TimeSlicerTab extends JPanel {
 						generateProcessing.setEnabled(true);
 						progressBar.setIndeterminate(false);
 
-						// TODO: is it neccessary?
 						System.gc();
 
 					}// END: done

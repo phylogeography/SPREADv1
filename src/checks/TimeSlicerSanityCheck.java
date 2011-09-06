@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import templates.TimeSlicerToKML;
 import utils.Utils;
 
 import jebl.evolution.graphs.Node;
@@ -16,13 +17,31 @@ public class TimeSlicerSanityCheck {
 	private boolean notNull = false;
 
 	public boolean check(String treeFilename, String coordinatesName,
-			String treesFilename) throws IOException, ImportException {
+			String treesFilename, int analysisType) throws IOException,
+			ImportException {
 
-		if (checkMccTree(treeFilename, coordinatesName)
-				&& checkFirstPosteriorTree(treesFilename, coordinatesName)) {
+		switch (analysisType) {
+		case TimeSlicerToKML.FIRST_ANALYSIS:
+			if (checkMccTree(treeFilename, coordinatesName)
+					&& checkFirstPosteriorTree(treesFilename, coordinatesName)) {
+				notNull = true;
+			}
+			break;
 
-			notNull = true;
+		case TimeSlicerToKML.SECOND_ANALYSIS:
+			if (checkFirstPosteriorTree(treesFilename, coordinatesName)) {
+				// TODO: sanity check for slice heights here
+				notNull = true;
+			}
+			break;
 
+		case TimeSlicerToKML.THIRD_ANALYSIS:
+			if (checkMccTree(treeFilename, coordinatesName)
+					&& checkFirstPosteriorTree(treesFilename, coordinatesName)) {
+				// TODO: sanity check for slice heights here
+				notNull = true;
+			}
+			break;
 		}
 
 		return notNull;
@@ -86,7 +105,6 @@ public class TimeSlicerSanityCheck {
 
 		boolean flag = false;
 
-		// TODO change that
 		RootedTree currentTree = (RootedTree) new NexusImporter(new FileReader(
 				treesFilename)).importNextTree();
 
@@ -108,5 +126,7 @@ public class TimeSlicerSanityCheck {
 
 		return flag;
 	}// END: checkFirstPosteriorTree
+
+	// TODO sanity check for sliceHeights (are they sorted? Is the max == tree.height?)
 
 }// END: class

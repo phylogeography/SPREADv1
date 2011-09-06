@@ -1,5 +1,10 @@
-h1. SPREAD
+h1. SPREAD 
 
+Spatial Phylogenetic Reconstruction of Evolutionary Dynamics 
+                Version 1.0, 2011 
+Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
+
+h1. LICENSE
  
   This is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
@@ -17,10 +22,16 @@ SPREAD is a Java program supporting processing and visualizations of BEAST's phy
 
 Contains visualisations (templates), wrapped in a user friendly interface. Supported visualisations include embedded Processing applets and KML output for viewing in "Google Earth":http://www.google.com/earth or any other virtual globe software capable of reading the format.
 
+A tutorial on using SPREAD is availiable "here":http://www.kuleuven.be/aidslab/phylogeography/tutorial/spread_tutorial.html
 
-h1. DOWNLOAD
-                            
-Compiled application can be downloaded from "here":http://dl.dropbox.com/u/5169517/spread.jar
+h1. SUPPORT & LINKS
+
+SPREAD: www.phylogeography.org/SPREAD
+Processing libraries: http://processing.org/ 
+
+Suggestions or report bugs:
+
+<filip.bielejec@rega.kuleuven.be>
 
 h1. COMPILING
 
@@ -40,7 +51,6 @@ boolean fromJar = true
 
 h1. TODO
 
-* check for branches not annotated in TreeAnnotator
 * TimeSlicerTab
    - Check if Animation Thread is still running and only then release progress bar (currently it gets released when AnalyzeTrees method stops running)
 * Add cannot impute, no precision attribute warning message in Time Slicer
