@@ -107,6 +107,12 @@ public class SpinningPanel extends JPanel {
 				public void mouseClicked(MouseEvent e) {
 					handleClick();
 				}
+
+				public void mouseEntered(MouseEvent e) {
+					// TODO: change to darker
+//					System.out.println("mouse over!");
+				}
+
 			});
 		}
 
@@ -145,4 +151,4 @@ public class SpinningPanel extends JPanel {
 
 	}// END: SpinWidget class
 
-}
+}// END: class
