@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class SpinningPanel extends JPanel {
 
+	private static final boolean PAINT_INTERMEDIATE = false;
+
 	private Dimension dimension;
 	private Component bottomComponent;
 	private String label;
@@ -94,12 +96,19 @@ public class SpinningPanel extends JPanel {
 		private int[] openYPoints = { HALF_HEIGHT, SPIN_WIDGET_HEIGHT - 1,
 				HALF_HEIGHT };
 
+		private int[] intermediateXPoints = { SPIN_WIDGET_HEIGHT - 1,
+				SPIN_WIDGET_HEIGHT - 1, 1 };
+		private int[] intermediateYPoints = { SPIN_WIDGET_HEIGHT - 1, 1,
+				SPIN_WIDGET_HEIGHT - 1 };
+
 		private int[] closedXPoints = { 1, 1, HALF_HEIGHT };
 		private int[] closedYPoints = { 1, SPIN_WIDGET_HEIGHT - 1, HALF_HEIGHT };
 
 		private Polygon openTriangle = new Polygon(openXPoints, openYPoints, 3);
 		private Polygon closedTriangle = new Polygon(closedXPoints,
 				closedYPoints, 3);
+		private Polygon intermediateTriangle = new Polygon(intermediateXPoints,
+				intermediateYPoints, 3);
 
 		public SpinWidget() {
 			setOpen(false);
@@ -165,6 +174,12 @@ public class SpinningPanel extends JPanel {
 			if (isOpen()) {
 				g.fillPolygon(openTriangle);
 			} else {
+
+				// TODO: animate this
+				if (PAINT_INTERMEDIATE) {
+					g.fillPolygon(intermediateTriangle);
+				}
+
 				g.fillPolygon(closedTriangle);
 			}
 

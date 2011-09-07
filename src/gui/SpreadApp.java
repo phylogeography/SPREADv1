@@ -86,17 +86,17 @@ public class SpreadApp {
 				lafLoaded = true;
 
 			} catch (Exception e) {
-
-				System.out
-						.println("Quaqua l&f not found. Loading system default l&f");
-
+				//
 			}
 
 		} else {
+
 			try {
+
 				UIManager
 						.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 				lafLoaded = true;
+
 			} catch (Exception e) {
 				//
 			}
@@ -104,11 +104,18 @@ public class SpreadApp {
 		}
 
 		if (!lafLoaded) {
+
 			try {
+
 				UIManager.setLookAndFeel(UIManager
 						.getSystemLookAndFeelClassName());
+
 			} catch (Exception e1) {
+
 				e1.printStackTrace();
+				System.out
+						.println("Specified l&f not found. Loading system default l&f");
+
 			}
 		}
 
