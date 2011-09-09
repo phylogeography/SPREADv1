@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class SpinningPanel extends JPanel {
 
+	private static final boolean PAINT_INTERMEDIATE = false;
+
 	private Dimension dimension;
 	private Component bottomComponent;
 	private String label;
@@ -88,10 +90,16 @@ public class SpinningPanel extends JPanel {
 		private Dimension mySize = new Dimension(SPIN_WIDGET_HEIGHT,
 				SPIN_WIDGET_HEIGHT);
 		private boolean open;
+		private boolean mouseOver;
 
 		private int[] openXPoints = { 1, HALF_HEIGHT, SPIN_WIDGET_HEIGHT - 1 };
 		private int[] openYPoints = { HALF_HEIGHT, SPIN_WIDGET_HEIGHT - 1,
 				HALF_HEIGHT };
+
+		private int[] intermediateXPoints = { SPIN_WIDGET_HEIGHT - 1,
+				SPIN_WIDGET_HEIGHT - 1, 1 };
+		private int[] intermediateYPoints = { SPIN_WIDGET_HEIGHT - 1, 1,
+				SPIN_WIDGET_HEIGHT - 1 };
 
 		private int[] closedXPoints = { 1, 1, HALF_HEIGHT };
 		private int[] closedYPoints = { 1, SPIN_WIDGET_HEIGHT - 1, HALF_HEIGHT };
@@ -99,6 +107,8 @@ public class SpinningPanel extends JPanel {
 		private Polygon openTriangle = new Polygon(openXPoints, openYPoints, 3);
 		private Polygon closedTriangle = new Polygon(closedXPoints,
 				closedYPoints, 3);
+		private Polygon intermediateTriangle = new Polygon(intermediateXPoints,
+				intermediateYPoints, 3);
 
 		public SpinWidget() {
 			setOpen(false);
@@ -107,6 +117,15 @@ public class SpinningPanel extends JPanel {
 				public void mouseClicked(MouseEvent e) {
 					handleClick();
 				}
+
+				public void mouseEntered(MouseEvent e) {
+					handleMouseOver();
+				}
+
+				public void mouseExited(MouseEvent e) {
+					handleMouseOver();
+				}
+
 			});
 		}
 
@@ -123,6 +142,19 @@ public class SpinningPanel extends JPanel {
 			resetBottomVisibility();
 		}
 
+		public void handleMouseOver() {
+			setIsMouseOver(!isMouseOver());
+		}
+
+		public boolean isMouseOver() {
+			return mouseOver;
+		}
+
+		public void setIsMouseOver(boolean o) {
+			mouseOver = o;
+			repaint();
+		}
+
 		public Dimension getMinimumSize() {
 			return mySize;
 		}
@@ -133,11 +165,21 @@ public class SpinningPanel extends JPanel {
 
 		public void paint(Graphics g) {
 
-			g.setColor(SpinWidgetColor);
+			if (!isMouseOver()) {
+				g.setColor(SpinWidgetColor);
+			} else {
+				g.setColor(SpinWidgetColor.darker());
+			}
 
 			if (isOpen()) {
 				g.fillPolygon(openTriangle);
 			} else {
+
+				// TODO: animate this
+				if (PAINT_INTERMEDIATE) {
+					g.fillPolygon(intermediateTriangle);
+				}
+
 				g.fillPolygon(closedTriangle);
 			}
 
@@ -145,4 +187,4 @@ public class SpinningPanel extends JPanel {
 
 	}// END: SpinWidget class
 
-}
+}// END: class
