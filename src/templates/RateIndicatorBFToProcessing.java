@@ -396,6 +396,15 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		for (int row = 0; row < pk.length; row++) {
 			double bf = (pk[row] / (1 - pk[row])) / denominator;
+
+			if (bf == Double.POSITIVE_INFINITY) {
+
+				bf = ((pk[row] - (double) (1.0 / indicators.nrow)) / (1 - (pk[row] - (double) (1.0 / indicators.nrow))))
+						/ denominator;
+
+				System.out.println("Correcting for infinite bf: " + bf);
+			}
+
 			bayesFactors.add(bf);
 		}
 	}// END: ComputeBFTest
