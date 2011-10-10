@@ -31,7 +31,7 @@ Processing libraries: http://processing.org/
 
 Suggestions or report bugs:
 
-<filip.bielejec@rega.kuleuven.be>
+<filip.bielejec(_sorry_spybots_)rega.kuleuven.be>
 
 h1. COMPILING
 
