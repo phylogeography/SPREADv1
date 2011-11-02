@@ -20,8 +20,10 @@ import structure.Line;
 import structure.Place;
 import structure.Style;
 import structure.TimeLine;
+import utils.Holder;
 import utils.ReadLog;
 import utils.Utils;
+import utils.Utils.PoissonPriorEnum;
 
 public class RateIndicatorBFToKML {
 
@@ -34,8 +36,8 @@ public class RateIndicatorBFToKML {
 	private int numberOfIntervals;
 	private double maxAltMapping;
 	private double bfCutoff;
-	private List<Double> bayesFactors;
-	private List<String> combin;
+	private ArrayList<Double> bayesFactors;
+	private ArrayList<String> combin;
 
 	private double minBranchRedMapping;
 	private double minBranchGreenMapping;
@@ -48,12 +50,15 @@ public class RateIndicatorBFToKML {
 	private double maxBranchOpacityMapping;
 
 	private double branchWidth;
-	private double meanPoissonPrior;
-	private double poissonPriorOffset;
+	// private double meanPoissonPrior;
+	// private double poissonPriorOffset;
 
-	private enum PoissonPriorEnum {
-		DEFAULT, USER
-	}
+	private Holder meanPoissonPrior = new Holder(0.0);
+	private Holder poissonPriorOffset = new Holder(0.0);
+
+	// private enum PoissonPriorEnum {
+	// DEFAULT, USER
+	// }
 
 	private PoissonPriorEnum poissonPriorOffsetSwitcher;
 	private PoissonPriorEnum meanPoissonPriorSwitcher;
@@ -67,7 +72,7 @@ public class RateIndicatorBFToKML {
 
 	public void setUserPoissonPriorOffset(double offset) {
 		poissonPriorOffsetSwitcher = PoissonPriorEnum.USER;
-		poissonPriorOffset = offset;
+		poissonPriorOffset.value = offset;
 	}
 
 	public void setDefaultMeanPoissonPrior() {
@@ -76,7 +81,7 @@ public class RateIndicatorBFToKML {
 
 	public void setUserMeanPoissonPrior(double mean) {
 		meanPoissonPriorSwitcher = PoissonPriorEnum.USER;
-		meanPoissonPrior = mean;
+		meanPoissonPrior.value = mean;
 	}
 
 	public void setNumberOfIntervals(int number) {
@@ -145,7 +150,12 @@ public class RateIndicatorBFToKML {
 		// start timing
 		time = -System.currentTimeMillis();
 
-		ComputeBFTest();
+		combin = new ArrayList<String>();
+		bayesFactors = new ArrayList<Double>();
+
+		new BayesFactorTest(table, meanPoissonPriorSwitcher, meanPoissonPrior,
+				poissonPriorOffsetSwitcher, poissonPriorOffset, indicators,
+				combin, bayesFactors).ComputeBFTest();
 
 		// this is to generate kml output
 		KMLGenerator kmloutput = new KMLGenerator();
@@ -208,156 +218,97 @@ public class RateIndicatorBFToKML {
 
 		public void run() {
 
-			System.out.println("BF cutoff = " + bfCutoff);
-			System.out.println("mean Poisson Prior = " + meanPoissonPrior);
-			System.out.println("Poisson Prior offset = " + poissonPriorOffset);
+			try {
 
-			// this is for Branches folder:
-			String ratesDescription = null;
-			Layer ratesLayer = new Layer("Discrete rates", ratesDescription);
+				System.out.println("BF cutoff = " + bfCutoff);
+				System.out.println("mean Poisson Prior = "
+						+ meanPoissonPrior.value);
+				System.out.println("Poisson Prior offset = "
+						+ poissonPriorOffset.value);
 
-			double bfMax = Math.log(Utils.getListMax(bayesFactors));
+				// this is for Branches folder:
+				String ratesDescription = null;
+				Layer ratesLayer = new Layer("Discrete rates", ratesDescription);
 
-			int branchStyleId = 1;
-			for (int i = 0; i < combin.size(); i++) {
+				double bfMax = Math.log(Utils.getListMax(bayesFactors));
 
-				if (bayesFactors.get(i) > bfCutoff) {
+				int branchStyleId = 1;
 
-					/**
-					 * Color mapping
-					 * */
-					double bf = Math.log(bayesFactors.get(i));
+				for (int i = 0; i < combin.size(); i++) {
 
-					int red = (int) Utils.map(bf, 0, bfMax,
-							minBranchRedMapping, maxBranchRedMapping);
-					int green = (int) Utils.map(bf, 0, bfMax,
-							minBranchGreenMapping, maxBranchGreenMapping);
-					int blue = (int) Utils.map(bf, 0, bfMax,
-							minBranchBlueMapping, maxBranchBlueMapping);
-					int alpha = (int) Utils.map(bf, 0, bfMax,
-							maxBranchOpacityMapping, minBranchOpacityMapping);
+					if (bayesFactors.get(i) > bfCutoff) {
 
-					Style linesStyle = new Style(new Color(red, green, blue,
-							alpha), branchWidth);
-					linesStyle.setId("branch_style" + branchStyleId);
+						/**
+						 * Color mapping
+						 * */
+						double bf = Math.log(bayesFactors.get(i));
 
-					/**
-					 * altitude mapping
-					 * */
-					double maxAltitude = (int) Utils.map(bf, 0, bfMax, 0,
-							maxAltMapping);
+						int red = (int) Utils.map(bf, 0, bfMax,
+								minBranchRedMapping, maxBranchRedMapping);
+						int green = (int) Utils.map(bf, 0, bfMax,
+								minBranchGreenMapping, maxBranchGreenMapping);
+						int blue = (int) Utils.map(bf, 0, bfMax,
+								minBranchBlueMapping, maxBranchBlueMapping);
+						int alpha = (int) Utils.map(bf, 0, bfMax,
+								maxBranchOpacityMapping,
+								minBranchOpacityMapping);
 
-					String state = combin.get(i).split(":")[1];
-					String parentState = combin.get(i).split(":")[0];
+						Style linesStyle = new Style(new Color(red, green,
+								blue, alpha), branchWidth);
+						linesStyle.setId("branch_style" + branchStyleId);
 
-					float longitude = Utils.matchStateCoordinate(table, state,
-							2);
-					float latitude = Utils
-							.matchStateCoordinate(table, state, 1);
+						/**
+						 * altitude mapping
+						 * */
+						double maxAltitude = (int) Utils.map(bf, 0, bfMax, 0,
+								maxAltMapping);
 
-					float parentLongitude = Utils.matchStateCoordinate(table,
-							parentState, 2);
-					float parentLatitude = Utils.matchStateCoordinate(table,
-							parentState, 1);
+						String state = combin.get(i).split(":")[1];
+						String parentState = combin.get(i).split(":")[0];
 
-					ratesLayer.addItem(new Line(
-							combin.get(i) + ", BF=" + bayesFactors.get(i), // name
-							new Coordinates(parentLongitude, parentLatitude),
-							Double.NaN, // startime
-							linesStyle, // style startstyle
-							new Coordinates(longitude, latitude), // endCoords
-							Double.NaN, // double endtime
-							linesStyle, // style endstyle
-							maxAltitude, // double maxAltitude
-							Double.NaN) // double duration
-							);
+						float longitude = Utils.matchStateCoordinate(table,
+								state, 2);
+						float latitude = Utils.matchStateCoordinate(table,
+								state, 1);
 
-					branchStyleId++;
+						float parentLongitude = Utils.matchStateCoordinate(
+								table, parentState, 2);
+						float parentLatitude = Utils.matchStateCoordinate(
+								table, parentState, 1);
 
-					System.out.println("BF=" + bayesFactors.get(i)
-							+ " : between " + parentState + " (long: "
-							+ parentLongitude + "; lat: " + parentLatitude
-							+ ") and " + state + " (long: " + longitude
-							+ "; lat: " + latitude + ")");
+						ratesLayer
+								.addItem(new Line(combin.get(i) + ", BF="
+										+ bayesFactors.get(i), // name
+										new Coordinates(parentLongitude,
+												parentLatitude), Double.NaN, // startime
+										linesStyle, // style startstyle
+										new Coordinates(longitude, latitude), // endCoords
+										Double.NaN, // double endtime
+										linesStyle, // style endstyle
+										maxAltitude, // double maxAltitude
+										Double.NaN) // double duration
+								);
 
+						branchStyleId++;
+
+						System.out.println("BF=" + bayesFactors.get(i)
+								+ " : between " + parentState + " (long: "
+								+ parentLongitude + "; lat: " + parentLatitude
+								+ ") and " + state + " (long: " + longitude
+								+ "; lat: " + latitude + ")");
+
+					}
 				}
+
+				layers.add(ratesLayer);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
 			}
 
-			layers.add(ratesLayer);
-		}
+		}// END: run
 	}// END: Rates
-
-	private void ComputeBFTest() {
-
-		int n = table.getRowCount();
-
-		switch (meanPoissonPriorSwitcher) {
-		case DEFAULT:
-			meanPoissonPrior = Math.log(2);
-			break;
-		case USER:
-			break;
-		}
-
-		switch (poissonPriorOffsetSwitcher) {
-		case DEFAULT:
-			poissonPriorOffset = n - 1;
-			break;
-		case USER:
-			break;
-		}
-
-		boolean symmetrical = false;
-		if (indicators.ncol == n * (n - 1)) {
-			symmetrical = false;
-		} else if (indicators.ncol == (n * (n - 1)) / 2) {
-			symmetrical = true;
-		} else {
-			throw new RuntimeException(
-					"the number of rate indicators does not match the number of locations!");
-		}
-
-		combin = new ArrayList<String>();
-		String[] locations = table.getColumn(0);
-
-		for (int row = 0; row < n - 1; row++) {
-
-			String[] subset = Utils.subset(locations, row, n - row);
-
-			for (int i = 1; i < subset.length; i++) {
-				combin.add(locations[row] + ":" + subset[i]);
-			}
-		}
-
-		if (symmetrical == false) {
-			combin.addAll(combin);
-		}
-
-		double qk = Double.NaN;
-		if (symmetrical) {
-			qk = (meanPoissonPrior + poissonPriorOffset) / ((n * (n - 1)) / 2);
-		} else {
-			qk = (meanPoissonPrior + poissonPriorOffset) / ((n * (n - 1)) / 1);
-		}
-
-		double[] pk = Utils.colMeans(indicators.indicators);
-
-		bayesFactors = new ArrayList<Double>();
-		double denominator = qk / (1 - qk);
-
-		for (int row = 0; row < pk.length; row++) {
-			double bf = (pk[row] / (1 - pk[row])) / denominator;
-
-			if (bf == Double.POSITIVE_INFINITY) {
-
-				bf = ((pk[row] - (double) (1.0 / indicators.nrow)) / (1 - (pk[row] - (double) (1.0 / indicators.nrow))))
-						/ denominator;
-
-				System.out.println("Correcting for infinite bf: " + bf);
-			}
-
-			bayesFactors.add(bf);
-		}
-	}// END: ComputeBFTest
 
 }// END: RateIndicatorBF

@@ -3,13 +3,14 @@ package templates;
 import gui.InteractiveTableModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import processing.core.PApplet;
 import processing.core.PFont;
 import utils.GeoIntermediate;
+import utils.Holder;
 import utils.ReadLog;
 import utils.Utils;
+import utils.Utils.PoissonPriorEnum;
 
 @SuppressWarnings("serial")
 public class RateIndicatorBFToProcessing extends PApplet {
@@ -17,8 +18,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private InteractiveTableModel table;
 	private ReadLog indicators;
 	private double bfCutoff;
-	private List<Double> bayesFactors;
-	private List<String> combin;
+	private ArrayList<Double> bayesFactors;
+	private ArrayList<String> combin;
 	private MapBackground mapBackground;
 	// private int numberOfIntervals;
 
@@ -33,17 +34,13 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private double maxBranchOpacityMapping;
 
 	private double branchWidth;
-	private double meanPoissonPrior;
-	private double poissonPriorOffset;
+	private Holder meanPoissonPrior = new Holder(0.0);
+	private Holder poissonPriorOffset = new Holder(0.0);
 
 	// min/max longitude
 	private float minX, maxX;
 	// min/max latitude
 	private float minY, maxY;
-
-	private enum PoissonPriorEnum {
-		DEFAULT, USER
-	}
 
 	private PoissonPriorEnum poissonPriorOffsetSwitcher;
 	private PoissonPriorEnum meanPoissonPriorSwitcher;
@@ -61,7 +58,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 	public void setUserPoissonPriorOffset(double offset) {
 		poissonPriorOffsetSwitcher = PoissonPriorEnum.USER;
-		poissonPriorOffset = offset;
+		poissonPriorOffset.value = offset;
 	}
 
 	public void setDefaultMeanPoissonPrior() {
@@ -70,7 +67,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 	public void setUserMeanPoissonPrior(double mean) {
 		meanPoissonPriorSwitcher = PoissonPriorEnum.USER;
-		meanPoissonPrior = mean;
+		meanPoissonPrior.value = mean;
 	}
 
 	public void setBfCutoff(double cutoff) {
@@ -206,8 +203,9 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private void DrawRates() {
 
 		System.out.println("BF cutoff = " + bfCutoff);
-		System.out.println("mean Poisson Prior = " + meanPoissonPrior);
-		System.out.println("Poisson Prior offset = " + poissonPriorOffset);
+		System.out.println("mean Poisson Prior = " + meanPoissonPrior.value);
+		System.out
+				.println("Poisson Prior offset = " + poissonPriorOffset.value);
 
 		strokeWeight((float) branchWidth);
 
@@ -267,8 +265,9 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private void DrawRateSlices() {
 
 		System.out.println("BF cutoff = " + bfCutoff);
-		System.out.println("mean Poisson Prior = " + meanPoissonPrior);
-		System.out.println("Poisson Prior offset = " + poissonPriorOffset);
+		System.out.println("mean Poisson Prior = " + meanPoissonPrior.value);
+		System.out
+				.println("Poisson Prior offset = " + poissonPriorOffset.value);
 
 		strokeWeight((float) branchWidth);
 
@@ -338,75 +337,13 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 	private void ComputeBFTest() {
 
-		int n = table.getRowCount();
-
-		switch (meanPoissonPriorSwitcher) {
-		case DEFAULT:
-			meanPoissonPrior = Math.log(2);
-			break;
-		case USER:
-			break;
-		}
-
-		switch (poissonPriorOffsetSwitcher) {
-		case DEFAULT:
-			poissonPriorOffset = n - 1;
-			break;
-		case USER:
-			break;
-		}
-
-		boolean symmetrical = false;
-		if (indicators.ncol == n * (n - 1)) {
-			symmetrical = false;
-		} else if (indicators.ncol == (n * (n - 1)) / 2) {
-			symmetrical = true;
-		} else {
-			throw new RuntimeException(
-					"the number of rate indicators does not match the number of locations!");
-		}
-
 		combin = new ArrayList<String>();
-		String[] locations = table.getColumn(0);
-
-		for (int row = 0; row < n - 1; row++) {
-
-			String[] subset = Utils.subset(locations, row, n - row);
-
-			for (int i = 1; i < subset.length; i++) {
-				combin.add(locations[row] + ":" + subset[i]);
-			}
-		}
-
-		if (symmetrical == false) {
-			combin.addAll(combin);
-		}
-
-		double qk = Double.NaN;
-		if (symmetrical) {
-			qk = (meanPoissonPrior + poissonPriorOffset) / ((n * (n - 1)) / 2);
-		} else {
-			qk = (meanPoissonPrior + poissonPriorOffset) / ((n * (n - 1)) / 1);
-		}
-
-		double[] pk = Utils.colMeans(indicators.indicators);
-
 		bayesFactors = new ArrayList<Double>();
-		double denominator = qk / (1 - qk);
 
-		for (int row = 0; row < pk.length; row++) {
-			double bf = (pk[row] / (1 - pk[row])) / denominator;
+		new BayesFactorTest(table, meanPoissonPriorSwitcher, meanPoissonPrior,
+				poissonPriorOffsetSwitcher, poissonPriorOffset, indicators,
+				combin, bayesFactors).ComputeBFTest();
 
-			if (bf == Double.POSITIVE_INFINITY) {
-
-				bf = ((pk[row] - (double) (1.0 / indicators.nrow)) / (1 - (pk[row] - (double) (1.0 / indicators.nrow))))
-						/ denominator;
-
-				System.out.println("Correcting for infinite bf: " + bf);
-			}
-
-			bayesFactors.add(bf);
-		}
-	}// END: ComputeBFTest
+	}
 
 }// END: RateIndicatorBFToProcessing class

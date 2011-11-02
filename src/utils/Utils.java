@@ -26,6 +26,14 @@ public class Utils {
 	// Earths radius in km
 	static final double EarthRadius = 6371.0;
 
+	// ///////////////////
+	// ---ENUM FIELDS---//
+	// ///////////////////
+
+	public enum PoissonPriorEnum {
+		DEFAULT, USER
+	}
+
 	// ///////////////////////////
 	// ---DISCRETE TREE UTILS---//
 	// ///////////////////////////
