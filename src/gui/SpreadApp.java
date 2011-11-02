@@ -259,6 +259,12 @@ public class SpreadApp {
 					gui = new SpreadApp();
 					gui.launchFrame();
 
+					if (System.getProperty("java.runtime.name").toLowerCase()
+							.startsWith("openjdk")) {
+						System.out
+								.println("SPREAD is not happy about Java runtime used. We recommend running it with Oracle/Sun JRE.");
+					}
+
 				} catch (Exception e) {
 					e.printStackTrace();
 

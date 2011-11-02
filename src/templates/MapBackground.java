@@ -9,7 +9,7 @@ public class MapBackground {
 	private PImage mapImage;
 	private String imgPath;
 
-	boolean fromJar = false;
+	boolean fromJar = true;
 
 	public MapBackground(PApplet p) {
 

@@ -24,10 +24,24 @@ public class TerminalTab extends JPanel {
 		textArea.setEditable(true);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
-		JScrollPane scrollPane = new JScrollPane(textArea,
-				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		add(scrollPane, BorderLayout.CENTER);
+
+//		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
+//				"openjdk")) {
+		
+			JScrollPane scrollPane = new JScrollPane(textArea,
+					ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			add(scrollPane, BorderLayout.CENTER);
+		
+//		} else {
+//	
+//			ScrollPane scrollPane = new ScrollPane(
+//					ScrollPane.SCROLLBARS_AS_NEEDED);
+//			scrollPane.add(textArea);
+//			add(scrollPane, BorderLayout.CENTER);
+//			
+//		}
+
 
 		// Redirect streams
 		System.setOut(new PrintStream(new JTextAreaOutputStream(textArea)));
