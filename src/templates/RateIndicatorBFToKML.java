@@ -29,7 +29,7 @@ public class RateIndicatorBFToKML {
 
 	public static long time;
 
-	private static InteractiveTableModel table;
+	private InteractiveTableModel table;
 	private ReadLog indicators;
 	private List<Layer> layers;
 	private PrintWriter writer;
@@ -96,7 +96,7 @@ public class RateIndicatorBFToKML {
 		bfCutoff = cutoff;
 	}
 
-	public static void setTable(InteractiveTableModel tableModel) {
+	public void setTable(InteractiveTableModel tableModel) {
 		table = tableModel;
 	}
 

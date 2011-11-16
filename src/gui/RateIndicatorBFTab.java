@@ -470,7 +470,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 							RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 
-							RateIndicatorBFToKML.setTable(table);
+							rateIndicatorBFToKML.setTable(table);
 
 							rateIndicatorBFToKML.setLogFilePath(logFilename,
 									burnInParser.getValue() / 100.0);

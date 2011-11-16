@@ -18,7 +18,6 @@ public class TimeSlicerToKMLTest {
 
 			timeSlicerToKML.setMrsdString("2011-07-29 AD");
 
-//			timeSlicerToKML
 //					.setTreePath("/home/filip/WNV_relaxed_geo_gamma_MCC.tre");
 
 //			timeSlicerToKML.setNumberOfIntervals(10);
@@ -66,25 +65,25 @@ public class TimeSlicerToKMLTest {
 
 			timeSlicerToKML.setMaxPolygonOpacityMapping(255);
 
-//			timeSlicerToKML.setMaxAltitudeMapping(500000);
-//
-//			timeSlicerToKML.setMinBranchRedMapping(54);
-//
-//			timeSlicerToKML.setMinBranchGreenMapping(33);
-//
-//			timeSlicerToKML.setMinBranchBlueMapping(120);
-//
-//			timeSlicerToKML.setMinBranchOpacityMapping(255);
-//
-//			timeSlicerToKML.setMaxBranchRedMapping(35);
-//
-//			timeSlicerToKML.setMaxBranchGreenMapping(35);
-//
-//			timeSlicerToKML.setMaxBranchBlueMapping(70);
-//
-//			timeSlicerToKML.setMaxBranchOpacityMapping(255);
-//
-//			timeSlicerToKML.setBranchWidth(4);
+			timeSlicerToKML.setMaxAltitudeMapping(500000);
+
+			timeSlicerToKML.setMinBranchRedMapping(54);
+
+			timeSlicerToKML.setMinBranchGreenMapping(33);
+
+			timeSlicerToKML.setMinBranchBlueMapping(120);
+
+			timeSlicerToKML.setMinBranchOpacityMapping(255);
+
+			timeSlicerToKML.setMaxBranchRedMapping(35);
+
+			timeSlicerToKML.setMaxBranchGreenMapping(35);
+
+			timeSlicerToKML.setMaxBranchBlueMapping(70);
+
+			timeSlicerToKML.setMaxBranchOpacityMapping(255);
+
+			timeSlicerToKML.setBranchWidth(4);
 			
 		} catch (OutOfMemoryError e) {
 			e.printStackTrace();
@@ -96,7 +95,7 @@ public class TimeSlicerToKMLTest {
 
 	}// END TimeSlicerToKMLTest
 
-	public void Generate() {
+	public void generate() {
 
 		try {
 

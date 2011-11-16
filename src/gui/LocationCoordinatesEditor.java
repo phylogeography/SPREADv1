@@ -169,7 +169,7 @@ public class LocationCoordinatesEditor {
 
 							tableModel.setValueAt(String
 									.valueOf(data.coordinates[i][j]), i, j + 1);
-							
+
 						}// END: col loop
 					}// END: row loop
 				}// END: null check
@@ -312,7 +312,7 @@ public class LocationCoordinatesEditor {
 						stateAttName).split("\\+");
 
 				for (int i = 0; i < states.length; i++) {
-			
+
 					uniqueTreeStates.add(states[i]);
 
 				}
@@ -392,5 +392,10 @@ public class LocationCoordinatesEditor {
 			return null;
 		}
 	}// END: CreateImageIcon
+
+	public String[] getColumnNames() {
+
+		return COLUMN_NAMES;
+	}// END: getColumnNames
 
 }// /END: class

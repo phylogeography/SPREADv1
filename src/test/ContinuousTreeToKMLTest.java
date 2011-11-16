@@ -71,7 +71,7 @@ public class ContinuousTreeToKMLTest {
 
 	}// END: ContinuousTreeToKMLTest
 
-	public void Generate() {
+	public void generate() {
 
 		try {
 
