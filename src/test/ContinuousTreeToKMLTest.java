@@ -1,23 +1,19 @@
 package test;
 
-import java.io.IOException;
-import java.text.ParseException;
-
-import jebl.evolution.io.ImportException;
 import templates.ContinuousTreeToKML;
 
 public class ContinuousTreeToKMLTest {
 
-	ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
+	static ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
 
-	public ContinuousTreeToKMLTest() {
+	public static void main(String[] args) {
 
 		try {
 
 			continuousTreeToKML.setMrsdString("2011-07-28 AD");
 
 			continuousTreeToKML
-					.setTreePath("/home/filip/Dropbox/SPREAD/WNV_relaxed_geo_gamma_MCC.tre");
+					.setTreePath("/home/filip/Phyleography/data/WNV/WNV_relaxed_geo_gamma_MCC.tre");
 
 			continuousTreeToKML.setHPDString("80%HPD");
 
@@ -65,28 +61,15 @@ public class ContinuousTreeToKMLTest {
 
 			continuousTreeToKML.setKmlWriterPath("/home/filip/output.kml");
 
+			continuousTreeToKML.GenerateKML();
+			
+			System.out.println("Finished in: " + continuousTreeToKML.time
+					+ " msec \n");
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}// END: ContinuousTreeToKMLTest
-
-	public void generate() {
-
-		try {
-
-			continuousTreeToKML.GenerateKML();
-			System.out.println("Finished in: " + continuousTreeToKML.time
-					+ " msec \n");
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ImportException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-	}// END: Generate
 
 }// END: class

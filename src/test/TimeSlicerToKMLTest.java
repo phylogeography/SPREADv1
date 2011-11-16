@@ -8,9 +8,9 @@ import templates.TimeSlicerToKML;
 
 public class TimeSlicerToKMLTest {
 
-	TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
+	private static TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
 
-	public TimeSlicerToKMLTest() {
+	public static void main(String[] args) {
 
 		try {
 
@@ -18,12 +18,7 @@ public class TimeSlicerToKMLTest {
 
 			timeSlicerToKML.setMrsdString("2011-07-29 AD");
 
-//					.setTreePath("/home/filip/WNV_relaxed_geo_gamma_MCC.tre");
-
-//			timeSlicerToKML.setNumberOfIntervals(10);
-
-			timeSlicerToKML
-					.setCustomSliceHeights("/home/filip/sliceTimes");
+			timeSlicerToKML.setCustomSliceHeights("/home/filip/sliceTimes");
 
 			timeSlicerToKML
 					.setTreesPath("/home/filip/WNV_relaxed_geo_gamma.trees");
@@ -46,8 +41,7 @@ public class TimeSlicerToKMLTest {
 
 			timeSlicerToKML.setTimescaler(1);
 
-			timeSlicerToKML
-					.setKmlWriterPath("/home/filip/output.kml");
+			timeSlicerToKML.setKmlWriterPath("/home/filip/output.kml");
 
 			timeSlicerToKML.setMinPolygonRedMapping(24);
 
@@ -84,22 +78,9 @@ public class TimeSlicerToKMLTest {
 			timeSlicerToKML.setMaxBranchOpacityMapping(255);
 
 			timeSlicerToKML.setBranchWidth(4);
-			
-		} catch (OutOfMemoryError e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-		}
-
-	}// END TimeSlicerToKMLTest
-
-	public void generate() {
-
-		try {
 
 			timeSlicerToKML.GenerateKML();
+
 			System.out.println("Finished in: " + timeSlicerToKML.time
 					+ " msec \n");
 
@@ -107,14 +88,16 @@ public class TimeSlicerToKMLTest {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (RuntimeException e) {
+			e.printStackTrace();
 		} catch (ImportException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (RuntimeException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-	}// END: Generate
+	}// END TimeSlicerToKMLTest
 
 }// END: class

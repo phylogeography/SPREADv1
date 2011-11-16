@@ -8,14 +8,15 @@ import utils.ReadLocations;
 
 public class DiscreteTreeToKMLTest {
 
-	private DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
-	private InteractiveTableModel table;
-	private ReadLocations data;
+	private static DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
+	private static InteractiveTableModel table;
+	private static ReadLocations data;
 
-	public DiscreteTreeToKMLTest() {
+	public static void main(String[] args) {
 
-		System.out.println("Command line mode is experimental. Expect the unexpected.");
-		
+		System.out
+				.println("Command line mode is experimental. Expect the unexpected.");
+
 		try {
 
 			table = new InteractiveTableModel(new LocationCoordinatesEditor()
@@ -83,21 +84,13 @@ public class DiscreteTreeToKMLTest {
 
 			discreteTreeToKML.setBranchWidth(4);
 
-			discreteTreeToKML.setKmlWriterPath("/home/filip/Pulpit/output.kml");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}// END: DiscreteTreeToKMLTest
-
-	public void generate() {
-
-		try {
+			discreteTreeToKML.setKmlWriterPath("/home/filip/output.kml");
 
 			discreteTreeToKML.GenerateKML();
+
 			System.out.println("Finished in: " + discreteTreeToKML.time
 					+ " msec \n");
+
 			// force quit
 			System.exit(0);
 
@@ -105,6 +98,6 @@ public class DiscreteTreeToKMLTest {
 			e.printStackTrace();
 		}
 
-	}// END: Generate
+	}// END: DiscreteTreeToKMLTest
 
 }// END: class

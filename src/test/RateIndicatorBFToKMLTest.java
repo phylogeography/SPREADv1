@@ -8,11 +8,11 @@ import utils.ReadLocations;
 
 public class RateIndicatorBFToKMLTest {
 
-	RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
-	private InteractiveTableModel table;
-	private ReadLocations data;
+	static RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
+	private static InteractiveTableModel table;
+	private static ReadLocations data;
 
-	public RateIndicatorBFToKMLTest() {
+	public static void main(String[] args) {
 
 		System.out
 				.println("Command line mode is experimental. Expect the unexpected.");
@@ -47,7 +47,7 @@ public class RateIndicatorBFToKMLTest {
 			rateIndicatorBFToKML.setNumberOfIntervals(100);
 
 			rateIndicatorBFToKML
-					.setKmlWriterPath("/home/filip/Pulpit/output.kml");
+					.setKmlWriterPath("/home/filip/Desktop/output.kml");
 
 			rateIndicatorBFToKML.setMinBranchRedMapping(255);
 
@@ -67,26 +67,18 @@ public class RateIndicatorBFToKMLTest {
 
 			rateIndicatorBFToKML.setBranchWidth(4);
 
+			rateIndicatorBFToKML.GenerateKML();
+			
+			System.out.println("Finished in: " + RateIndicatorBFToKML.time
+					+ " msec \n");
+			
+			// force quit
+			System.exit(0);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}// END: RateIndicatorBFToKMLTest
-
-	public void generate() {
-
-		try {
-
-			rateIndicatorBFToKML.GenerateKML();
-			System.out.println("Finished in: " + RateIndicatorBFToKML.time
-					+ " msec \n");
-			// force quit
-			System.exit(0);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}// END: Generate
 
 }// END: class
