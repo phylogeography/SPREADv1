@@ -51,12 +51,10 @@ boolean fromJar = true
 
 h1. TODO
 
-* Add main methods to KML templates taking arguments on command line 
+* Add command line interface for kml templates 
 * Find a way to get consistent behaviour across non Oracle/Syn JREs (currently OpenJDK shows some weird behaviour when dealing with Processing canvas embedded inside scroll panes).
 * Processing templates: collect data into layers, only then run the AnimationThread, much like it's currently done in KML templates This way AnimationThread Exceptions will never occur and we don't have to catch them.
 * Add cannot impute, no precision attribute warning message in Time Slicer.
-
-
 
 
 
