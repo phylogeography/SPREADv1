@@ -68,7 +68,6 @@ public class TimeSlicerTab extends JPanel {
 	// Radio buttons
 	private JRadioButton firstAnalysisRadioButton;
 	private JRadioButton secondAnalysisRadioButton;
-//	private JRadioButton thirdAnalysisRadioButton;
 
 	// Switchers
 	private int analysisType;
@@ -76,7 +75,6 @@ public class TimeSlicerTab extends JPanel {
 	// Strings for radio buttons
 	private String firstAnalysis;
 	private String secondAnalysis;
-//	private String thirdAnalysis;
 
 	// Text fields
 	private JTextField burnInParser;
@@ -158,12 +156,10 @@ public class TimeSlicerTab extends JPanel {
 		// Setup strings for radio buttons
 		firstAnalysis = new String("MCC tree slice heights");
 		secondAnalysis = new String("Custom slice heights"); //Custom slice heights, polygons only
-//		thirdAnalysis = new String("Custom slice heights"); //Custom slice heights, polygons & branches
 
 		// Setup radio buttons
 		firstAnalysisRadioButton = new JRadioButton(firstAnalysis); 
 		secondAnalysisRadioButton = new JRadioButton(secondAnalysis);
-//		thirdAnalysisRadioButton = new JRadioButton(thirdAnalysis);
 
 		// Setup switchers
 		analysisType = TimeSlicerToKML.FIRST_ANALYSIS;
@@ -263,13 +259,6 @@ public class TimeSlicerTab extends JPanel {
 				.addActionListener(new ChooseAnalysisTypeListener());
 		buttonGroup.add(secondAnalysisRadioButton);
 		tmpPanel.add(secondAnalysisRadioButton);
-
-//		thirdAnalysisRadioButton.setToolTipText(thirdAnalysis);
-//		thirdAnalysisRadioButton.setActionCommand(thirdAnalysis);
-//		thirdAnalysisRadioButton
-//				.addActionListener(new ChooseAnalysisTypeListener());
-//		buttonGroup.add(thirdAnalysisRadioButton);
-//		tmpPanel.add(thirdAnalysisRadioButton);
 
 		tmpPanelsHolder.add(tmpPanel);
 
@@ -535,7 +524,6 @@ public class TimeSlicerTab extends JPanel {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth,
 				leftPanelHeight));
-		// add(leftScrollPane, BorderLayout.CENTER);
 
 		/**
 		 * Processing pane
@@ -619,19 +607,6 @@ public class TimeSlicerTab extends JPanel {
 				analysisType = TimeSlicerToKML.SECOND_ANALYSIS;
 				System.out.println(secondAnalysis + " analysis selected \n");
 
-//			} else if (ev.getActionCommand() == thirdAnalysis) {
-//
-//				loadTimeSlices.setEnabled(true);
-//				openTree.setEnabled(true);
-//				branchesMinColorChooser.setEnabled(true);
-//				branchesMaxColorChooser.setEnabled(true);
-//				branchesWidthParser.setEnabled(true);
-//				maxAltMappingParser.setEnabled(true);
-//				numberOfIntervalsParser.setEnabled(false);
-//
-//				analysisType = TimeSlicerToKML.THIRD_ANALYSIS;
-//				System.out.println(thirdAnalysis + " analysis selected \n");
-
 			} else {
 				System.err.println("Unimplemented analysis type selected");
 			}
@@ -656,9 +631,7 @@ public class TimeSlicerTab extends JPanel {
 				File tmpDir = chooser.getCurrentDirectory();
 
 				if (tmpDir != null) {
-
 					workingDirectory = tmpDir;
-
 				}
 
 			} catch (Exception e) {

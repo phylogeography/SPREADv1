@@ -8,6 +8,7 @@ import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -25,6 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
+import structure.Layer;
 import templates.ContinuousTreeToKML;
 import templates.ContinuousTreeToProcessing;
 import utils.Utils;
@@ -146,7 +148,6 @@ public class ContinuousModelTab extends JPanel {
 		leftPanel = new JPanel();
 		leftPanel.setBackground(backgroundColor);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-//		leftPanel.setSize(new Dimension(leftPanelWidth, leftPanelHeight));
 
 		// Listeners
 		openTree.addActionListener(new ListenOpenTree());
@@ -214,7 +215,7 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
 				BoxLayout.Y_AXIS));
 
-		// Branches color mapping:
+		// Branches color mapping
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
@@ -229,7 +230,7 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel.add(branchesMaxColorChooser, c);
 		tmpPanelsHolder.add(tmpPanel);
 
-		// Branches width:
+		// Branches width
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
@@ -257,7 +258,7 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanelsHolder.setLayout(new BoxLayout(tmpPanelsHolder,
 				BoxLayout.Y_AXIS));
 
-		// Polygons color mapping:
+		// Polygons color mapping
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
@@ -377,6 +378,7 @@ public class ContinuousModelTab extends JPanel {
 			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);
+//			splitPane.setPreferredSize(new Dimension());
 
 			this.add(splitPane);
 
@@ -605,6 +607,17 @@ public class ContinuousModelTab extends JPanel {
 										.println("Finished in: "
 												+ continuousTreeToKML.time
 												+ " msec \n");
+
+								// ///////////////////////////////////////
+								// ---TODO EXPERIMENTAL: parse layers---//
+								// ///////////////////////////////////////
+
+//								ArrayList<Layer> layers = continuousTreeToKML .getLayers();
+                                //layers.get(0).getItems().get(0)
+								
+								// /////////////////////////
+								// ---END: parse layers---//
+								// /////////////////////////
 
 							}// END: check
 
