@@ -11,8 +11,11 @@ import utils.Utils;
 import utils.Utils.PoissonPriorEnum;
 
 /**
- * Pass by reference: EASY: meanPoissonPrior, poissonPriorOffset HARDER:
- * bayesFactors, combin
+ * Pass by reference:
+ * 
+ * EASY: meanPoissonPrior, poissonPriorOffset
+ * 
+ * HARDER: bayesFactors, combin
  * */
 
 public class BayesFactorTest {

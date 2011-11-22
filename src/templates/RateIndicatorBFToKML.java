@@ -50,15 +50,9 @@ public class RateIndicatorBFToKML {
 	private double maxBranchOpacityMapping;
 
 	private double branchWidth;
-	// private double meanPoissonPrior;
-	// private double poissonPriorOffset;
 
 	private Holder meanPoissonPrior = new Holder(0.0);
 	private Holder poissonPriorOffset = new Holder(0.0);
-
-	// private enum PoissonPriorEnum {
-	// DEFAULT, USER
-	// }
 
 	private PoissonPriorEnum poissonPriorOffsetSwitcher;
 	private PoissonPriorEnum meanPoissonPriorSwitcher;
@@ -168,6 +162,7 @@ public class RateIndicatorBFToKML {
 		executor.submit(new Places());
 		executor.submit(new Rates());
 		executor.shutdown();
+
 		// Wait until all threads are finished
 		while (!executor.isTerminated()) {
 		}
@@ -185,6 +180,7 @@ public class RateIndicatorBFToKML {
 	// //////////////
 	// ---PLACES---//
 	// //////////////
+
 	private class Places implements Runnable {
 
 		public void run() {
@@ -214,6 +210,7 @@ public class RateIndicatorBFToKML {
 	// /////////////
 	// ---RATES---//
 	// /////////////
+
 	private class Rates implements Runnable {
 
 		public void run() {

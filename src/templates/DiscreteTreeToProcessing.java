@@ -256,6 +256,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 	// ////////////////
 	// ---BRANCHES---//
 	// ////////////////
+
 	private void drawBranches() {
 
 		strokeWeight((float) branchWidth);
@@ -325,6 +326,7 @@ public class DiscreteTreeToProcessing extends PApplet {
 	// ///////////////
 	// ---CIRCLES---//
 	// ///////////////
+
 	private void drawCircles() {
 
 		double[][] numberOfLineages = CountLineagesHoldingState(
