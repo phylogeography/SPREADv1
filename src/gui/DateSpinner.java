@@ -32,7 +32,6 @@ public class DateSpinner extends JPanel {
 	}
 
 	public String getValue() {
-
 		return formatter.format(spinner.getValue());
 	}
 

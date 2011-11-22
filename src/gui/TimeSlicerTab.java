@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -24,6 +23,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -40,7 +40,7 @@ import com.bric.swing.ColorPicker;
 public class TimeSlicerTab extends JPanel {
 
 	// Sizing constants
-	private final int leftPanelWidth = 200;
+	private final int leftPanelWidth = 260;
 	private final int leftPanelHeight = 1500;
 
 	// Icons
@@ -161,7 +161,7 @@ public class TimeSlicerTab extends JPanel {
 		thirdAnalysis = new String("Custom slice heights, polygons & branches");
 
 		// Setup radio buttons
-		firstAnalysisRadioButton = new JRadioButton(firstAnalysis);
+		firstAnalysisRadioButton = new JRadioButton(firstAnalysis); 
 		secondAnalysisRadioButton = new JRadioButton(secondAnalysis);
 		thirdAnalysisRadioButton = new JRadioButton(thirdAnalysis);
 
@@ -245,7 +245,7 @@ public class TimeSlicerTab extends JPanel {
 
 		tmpPanel = new JPanel();
 		tmpPanel.setLayout(new GridLayout(3, 1));
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Choose analysis type:"));
 
@@ -276,7 +276,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Analysis", new Dimension(
-				leftPanelWidth + 60, 20));
+				leftPanelWidth, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -290,7 +290,7 @@ public class TimeSlicerTab extends JPanel {
 
 		tmpPanel = new JPanel();
 		tmpPanel.setLayout(new GridBagLayout());
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load slice heights / tree file:"));
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -304,14 +304,14 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load trees file:"));
 		tmpPanel.add(openTrees);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
@@ -328,14 +328,14 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Coordinate attribute name:"));
 		tmpPanel.add(coordinatesNameParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
-				leftPanelWidth + 60, 20));
+				leftPanelWidth, 20));
 		sp.showBottom(true);
 		leftPanel.add(sp);
 
@@ -349,7 +349,7 @@ public class TimeSlicerTab extends JPanel {
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
@@ -364,21 +364,21 @@ public class TimeSlicerTab extends JPanel {
 
 		// Branches width:
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches width:"));
 		tmpPanel.add(branchesWidthParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude mapping:"));
 		tmpPanel.add(maxAltMappingParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Branches mapping",
-				new Dimension(leftPanelWidth + 60, 20));
+				new Dimension(leftPanelWidth, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -392,7 +392,7 @@ public class TimeSlicerTab extends JPanel {
 
 		// Polygons color mapping:
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Polygons color mapping:"));
@@ -406,7 +406,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Polygons mapping",
-				new Dimension(leftPanelWidth + 60, 20));
+				new Dimension(leftPanelWidth, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -419,7 +419,7 @@ public class TimeSlicerTab extends JPanel {
 				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Impute / Use true noise:"));
 		imputeParser.setSelected(true);
@@ -429,56 +429,56 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Rate attribute name:"));
 		tmpPanel.add(rateAttNameParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Precision attribute name:"));
 		tmpPanel.add(precisionAttNameParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Specify burn-in:"));
 		tmpPanel.add(burnInParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("HPD:"));
 		tmpPanel.add(HPDParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Time scale multiplier:"));
 		tmpPanel.add(timescalerParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Grid size:"));
 		tmpPanel.add(gridSizeParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
-				new Dimension(leftPanelWidth + 60, 20));
+				new Dimension(leftPanelWidth, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -491,14 +491,14 @@ public class TimeSlicerTab extends JPanel {
 				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("KML name:"));
 		tmpPanel.add(kmlPathParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot map:"));
@@ -517,14 +517,14 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth + 60, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Save plot:"));
 		tmpPanel.add(saveProcessingPlot);
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Output", new Dimension(
-				leftPanelWidth + 60, 20));
+				leftPanelWidth, 20));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -535,9 +535,9 @@ public class TimeSlicerTab extends JPanel {
 		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth + 60,
+		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth,
 				leftPanelHeight));
-		add(leftScrollPane, BorderLayout.CENTER);
+		// add(leftScrollPane, BorderLayout.CENTER);
 
 		/**
 		 * Processing pane
@@ -552,14 +552,24 @@ public class TimeSlicerTab extends JPanel {
 					timeSlicerToProcessing,
 					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-			add(rightScrollPane, BorderLayout.CENTER);
+
+			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+					leftScrollPane, rightScrollPane);
+			splitPane.setDividerLocation(leftPanelWidth);
+
+			this.add(splitPane);
 
 		} else {
 
 			ScrollPane rightScrollPane = new ScrollPane(
 					ScrollPane.SCROLLBARS_ALWAYS);
 			rightScrollPane.add(timeSlicerToProcessing);
-			add(rightScrollPane, BorderLayout.CENTER);
+
+			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+					leftScrollPane, rightScrollPane);
+			splitPane.setDividerLocation(leftPanelWidth);
+
+			this.add(splitPane);
 
 		}
 

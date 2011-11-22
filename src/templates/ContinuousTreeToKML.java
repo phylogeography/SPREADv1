@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -46,7 +45,8 @@ public class ContinuousTreeToKML {
 	private int numberOfIntervals;
 	private double timescaler;
 	private double rootHeight;
-	private List<Layer> layers;
+	private ArrayList<Layer> layers;
+	private TimeLine timeLine;
 	private double maxAltMapping;
 
 	private double minPolygonRedMapping;
@@ -226,7 +226,7 @@ public class ContinuousTreeToKML {
 
 		// This is a general time span for the tree
 		mrsd = new ThreadLocalSpreadDate(mrsdString);
-		TimeLine timeLine = new TimeLine(mrsd.getTime()
+		timeLine = new TimeLine(mrsd.getTime()
 				- (rootHeight * DayInMillis * DaysInYear * timescaler), mrsd
 				.getTime(), numberOfIntervals);
 
@@ -251,7 +251,52 @@ public class ContinuousTreeToKML {
 		// stop timing
 		time += System.currentTimeMillis();
 
-	}// END: GenerateKML() method
+	}// END: GenerateKML
+
+	public ArrayList<Layer> getLayers() throws IOException, ImportException,
+			ParseException {
+
+		// start timing
+		time = -System.currentTimeMillis();
+
+		// import tree
+		tree = (RootedTree) importer.importNextTree();
+
+		// this is for time calculations
+		rootHeight = tree.getHeight(tree.getRootNode());
+
+		// this is for coordinate attribute names
+		longitudeName = (coordinatesName + 2);
+		latitudeName = (coordinatesName + 1);
+
+		// this is for mappings
+		treeHeightMax = Utils.getTreeHeightMax(tree);
+
+		// This is a general time span for the tree
+		mrsd = new ThreadLocalSpreadDate(mrsdString);
+		timeLine = new TimeLine(mrsd.getTime()
+				- (rootHeight * DayInMillis * DaysInYear * timescaler), mrsd
+				.getTime(), numberOfIntervals);
+
+		layers = new ArrayList<Layer>();
+
+		// Execute threads
+		final int NTHREDS = Runtime.getRuntime().availableProcessors();
+		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
+
+		executor.submit(new Branches());
+		executor.submit(new Polygons());
+		executor.shutdown();
+
+		// Wait until all threads are finished
+		while (!executor.isTerminated()) {
+		}
+
+		// stop timing
+		time += System.currentTimeMillis();
+
+		return layers;
+	}// END: getLayers
 
 	// ////////////////
 	// ---BRANCHES---//
