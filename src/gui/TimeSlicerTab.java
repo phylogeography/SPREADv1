@@ -29,6 +29,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
+import templates.MapBackground;
 import templates.TimeSlicerToKML;
 import templates.TimeSlicerToProcessing;
 import utils.Utils;
@@ -41,7 +42,10 @@ public class TimeSlicerTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 260;
-	private final int leftPanelHeight = 1500;
+	private final int spinningPanelHeight = 20;
+	private final int mapImageWidth = MapBackground.mapImageWidth;
+	private final int mapImageHeight = MapBackground.mapImageHeight;
+	private final Dimension minimumDimension = new Dimension(0, 0);
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -263,7 +267,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Analysis", new Dimension(
-				leftPanelWidth, 20));
+				leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -322,7 +326,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
-				leftPanelWidth, 20));
+				leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(true);
 		leftPanel.add(sp);
 
@@ -365,7 +369,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Branches mapping",
-				new Dimension(leftPanelWidth, 20));
+				new Dimension(leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -393,7 +397,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Polygons mapping",
-				new Dimension(leftPanelWidth, 20));
+				new Dimension(leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -465,7 +469,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
-				new Dimension(leftPanelWidth, 20));
+				new Dimension(leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -511,7 +515,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Output", new Dimension(
-				leftPanelWidth, 20));
+				leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -522,14 +526,13 @@ public class TimeSlicerTab extends JPanel {
 		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth,
-				leftPanelHeight));
+		leftScrollPane.setMinimumSize(minimumDimension);
 
 		/**
 		 * Processing pane
 		 * */
 		timeSlicerToProcessing = new TimeSlicerToProcessing();
-		timeSlicerToProcessing.setPreferredSize(new Dimension(2048, 1025));
+		timeSlicerToProcessing.setPreferredSize(new Dimension(mapImageWidth, mapImageHeight));
 
 		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
 				"openjdk")) {
@@ -538,7 +541,8 @@ public class TimeSlicerTab extends JPanel {
 					timeSlicerToProcessing,
 					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
+			rightScrollPane.setMinimumSize(minimumDimension);
+			
 			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);
@@ -550,7 +554,8 @@ public class TimeSlicerTab extends JPanel {
 			ScrollPane rightScrollPane = new ScrollPane(
 					ScrollPane.SCROLLBARS_ALWAYS);
 			rightScrollPane.add(timeSlicerToProcessing);
-
+			rightScrollPane.setMinimumSize(minimumDimension);
+			
 			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);

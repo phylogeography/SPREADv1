@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
+import templates.MapBackground;
 import templates.RateIndicatorBFToKML;
 import templates.RateIndicatorBFToProcessing;
 import utils.Utils;
@@ -36,8 +37,10 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 260;
-	private final int leftPanelHeight = 1100;
-
+	private final int spinningPanelHeight = 20;
+	private final int mapImageWidth = MapBackground.mapImageWidth;
+	private final int mapImageHeight = MapBackground.mapImageHeight;
+	private final Dimension minimumDimension = new Dimension(0, 0);
 	// Icons
 	private ImageIcon nuclearIcon;
 	private ImageIcon logIcon;
@@ -146,7 +149,7 @@ public class RateIndicatorBFTab extends JPanel {
 		leftPanel = new JPanel();
 		leftPanel.setBackground(backgroundColor);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
-//		leftPanel.setSize(new Dimension(leftPanelWidth, leftPanelHeight));
+		// leftPanel.setSize(new Dimension(leftPanelWidth, leftPanelHeight));
 
 		// Listeners
 		openLog.addActionListener(new ListenOpenLog());
@@ -183,7 +186,7 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
-				leftPanelWidth, 20));
+				leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(true);
 		leftPanel.add(sp);
 
@@ -232,7 +235,7 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
-				new Dimension(leftPanelWidth, 20));
+				new Dimension(leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -282,7 +285,7 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Branches mapping",
-				new Dimension(leftPanelWidth, 20));
+				new Dimension(leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -328,7 +331,7 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Output", new Dimension(
-				leftPanelWidth + 60, 20));
+				leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -339,15 +342,14 @@ public class RateIndicatorBFTab extends JPanel {
 		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth,
-				leftPanelHeight));
-		// add(leftScrollPane, BorderLayout.CENTER);
+		leftScrollPane.setMinimumSize(minimumDimension);
 
 		/**
 		 * Processing pane
 		 * */
 		rateIndicatorBFToProcessing = new RateIndicatorBFToProcessing();
-		rateIndicatorBFToProcessing.setPreferredSize(new Dimension(2048, 1025));
+		rateIndicatorBFToProcessing.setPreferredSize(new Dimension(
+				mapImageWidth, mapImageHeight));
 
 		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
 				"openjdk")) {
@@ -356,6 +358,7 @@ public class RateIndicatorBFTab extends JPanel {
 					rateIndicatorBFToProcessing,
 					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			rightScrollPane.setMinimumSize(minimumDimension);
 
 			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
@@ -368,6 +371,7 @@ public class RateIndicatorBFTab extends JPanel {
 			ScrollPane rightScrollPane = new ScrollPane(
 					ScrollPane.SCROLLBARS_ALWAYS);
 			rightScrollPane.add(rateIndicatorBFToProcessing);
+			rightScrollPane.setMinimumSize(minimumDimension);
 
 			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);

@@ -8,6 +8,8 @@ public class MapBackground {
 	private PApplet parent;
 	private PImage mapImage;
 	private String imgPath;
+	public static int mapImageWidth = 2048;
+	public static int mapImageHeight = 1025;
 
 	boolean fromJar = false;
 
@@ -28,9 +30,7 @@ public class MapBackground {
 	}// END: MapBackground(PApplet p)
 
 	public void drawMapBackground() {
-
 		parent.image(mapImage, 0, 0, parent.width, parent.height);
-
 	}// END: drawMapBackground
 
 }// END: MapBackground class

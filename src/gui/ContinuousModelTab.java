@@ -29,6 +29,7 @@ import javax.swing.border.TitledBorder;
 import structure.Layer;
 import templates.ContinuousTreeToKML;
 import templates.ContinuousTreeToProcessing;
+import templates.MapBackground;
 import utils.Utils;
 import checks.ContinuousSanityCheck;
 
@@ -39,7 +40,10 @@ public class ContinuousModelTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 260;
-	private final int leftPanelHeight = 1100;
+	private final int spinningPanelHeight = 20;
+	private final int mapImageWidth = MapBackground.mapImageWidth;
+	private final int mapImageHeight = MapBackground.mapImageHeight;
+	private final Dimension minimumDimension = new Dimension(0, 0);
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -203,7 +207,7 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
-				leftPanelWidth, 20));
+				leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(true);
 		leftPanel.add(sp);
 
@@ -246,7 +250,7 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Branches mapping",
-				new Dimension(leftPanelWidth, 20));
+				new Dimension(leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -274,7 +278,7 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Polygons mapping",
-				new Dimension(leftPanelWidth, 20));
+				new Dimension(leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -301,7 +305,7 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Computations",
-				new Dimension(leftPanelWidth, 20));
+				new Dimension(leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -347,7 +351,7 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Output", new Dimension(
-				leftPanelWidth, 20));
+				leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(false);
 		leftPanel.add(sp);
 
@@ -357,15 +361,15 @@ public class ContinuousModelTab extends JPanel {
 
 		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth,
-				leftPanelHeight));
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		leftScrollPane.setMinimumSize(minimumDimension);
 
 		/**
 		 * Processing pane
 		 * */
 		continuousTreeToProcessing = new ContinuousTreeToProcessing();
-		continuousTreeToProcessing.setPreferredSize(new Dimension(2048, 1025));
+		continuousTreeToProcessing.setPreferredSize(new Dimension(
+				mapImageWidth, mapImageHeight));
 
 		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
 				"openjdk")) {
@@ -374,19 +378,21 @@ public class ContinuousModelTab extends JPanel {
 					continuousTreeToProcessing,
 					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			rightScrollPane.setMinimumSize(minimumDimension);
 
 			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);
-//			splitPane.setPreferredSize(new Dimension());
 
 			this.add(splitPane);
+			// Toolkit.getDefaultToolkit().getScreenSize()
 
 		} else {
 
 			ScrollPane rightScrollPane = new ScrollPane(
 					ScrollPane.SCROLLBARS_ALWAYS);
 			rightScrollPane.add(continuousTreeToProcessing);
+			rightScrollPane.setMinimumSize(minimumDimension);
 
 			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
@@ -612,9 +618,9 @@ public class ContinuousModelTab extends JPanel {
 								// ---TODO EXPERIMENTAL: parse layers---//
 								// ///////////////////////////////////////
 
-//								ArrayList<Layer> layers = continuousTreeToKML .getLayers();
-                                //layers.get(0).getItems().get(0)
-								
+//								ArrayList<Layer> layers = continuousTreeToKML.getLayers();
+								// layers.get(0).getItems().get(0)
+
 								// /////////////////////////
 								// ---END: parse layers---//
 								// /////////////////////////

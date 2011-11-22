@@ -27,6 +27,7 @@ import javax.swing.border.TitledBorder;
 
 import templates.DiscreteTreeToKML;
 import templates.DiscreteTreeToProcessing;
+import templates.MapBackground;
 import utils.Utils;
 import checks.DiscreteSanityCheck;
 
@@ -37,8 +38,10 @@ public class DiscreteModelTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 260;
-	private final int leftPanelHeight = 1000;
 	private final int spinningPanelHeight = 20;
+	private final int mapImageWidth = MapBackground.mapImageWidth;
+	private final int mapImageHeight = MapBackground.mapImageHeight;
+	private final Dimension minimumDimension = new Dimension(0, 0);
 
 	// Icons
 	private ImageIcon nuclearIcon;
@@ -188,21 +191,21 @@ public class DiscreteModelTab extends JPanel {
 				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Load tree file:"));
 		tmpPanel.add(openTree);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Setup location coordinates:"));
 		tmpPanel.add(openLocationCoordinatesEditor);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Most recent sampling date:"));
@@ -219,7 +222,7 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("State attribute name:"));
 		tmpPanel.add(stateAttNameParser);
@@ -240,7 +243,7 @@ public class DiscreteModelTab extends JPanel {
 
 		// Branches color mapping:
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches color mapping:"));
@@ -255,14 +258,14 @@ public class DiscreteModelTab extends JPanel {
 
 		// Branches width:
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Branches width:"));
 		tmpPanel.add(branchesWidthParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Maximal altitude:"));
 		tmpPanel.add(maxAltMappingParser);
@@ -283,7 +286,7 @@ public class DiscreteModelTab extends JPanel {
 
 		// Circles color mapping:
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Circles color mapping:"));
@@ -298,7 +301,7 @@ public class DiscreteModelTab extends JPanel {
 
 		// Circles radius multiplier:
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Circles radius multiplier:"));
 		tmpPanel.add(polygonsRadiusMultiplierParser);
@@ -318,14 +321,14 @@ public class DiscreteModelTab extends JPanel {
 				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Number of intervals:"));
 		tmpPanel.add(numberOfIntervalsParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Time scale multiplier:"));
 		tmpPanel.add(timescalerParser);
@@ -345,14 +348,14 @@ public class DiscreteModelTab extends JPanel {
 				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("KML name:"));
 		tmpPanel.add(kmlPathParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setLayout(new GridBagLayout());
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Generate KML / Plot map:"));
@@ -371,7 +374,7 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
-		 tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Save plot:"));
 		tmpPanel.add(saveProcessingPlot);
@@ -389,14 +392,14 @@ public class DiscreteModelTab extends JPanel {
 		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		leftScrollPane.setMinimumSize(new Dimension(leftPanelWidth,
-				leftPanelHeight));
+		leftScrollPane.setMinimumSize(minimumDimension);
 
 		/**
 		 * Processing pane
 		 * */
 		discreteTreeToProcessing = new DiscreteTreeToProcessing();
-		discreteTreeToProcessing.setPreferredSize(new Dimension(2048, 1025));
+		discreteTreeToProcessing.setPreferredSize(new Dimension(mapImageWidth,
+				mapImageHeight));
 
 		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
 				"openjdk")) {
@@ -405,6 +408,7 @@ public class DiscreteModelTab extends JPanel {
 					discreteTreeToProcessing,
 					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			rightScrollPane.setMinimumSize(minimumDimension);
 
 			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
@@ -417,11 +421,11 @@ public class DiscreteModelTab extends JPanel {
 			ScrollPane rightScrollPane = new ScrollPane(
 					ScrollPane.SCROLLBARS_ALWAYS);
 			rightScrollPane.add(discreteTreeToProcessing);
+			rightScrollPane.setMinimumSize(minimumDimension);
 
 			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);
-			// splitPane.setPreferredSize(new Dimension(leftPanelWidth+50, leftPanelHeight));
 
 			this.add(splitPane);
 
