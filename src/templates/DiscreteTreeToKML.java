@@ -48,7 +48,7 @@ public class DiscreteTreeToKML {
 	private ThreadLocalSpreadDate mrsd;
 	private int numberOfIntervals;
 	private double timescaler;
-	private String userAttribute;
+//	private String userAttribute;
 	private double rootHeight;
 	private List<Layer> layers;
 	private double maxAltMapping;
@@ -78,21 +78,21 @@ public class DiscreteTreeToKML {
 	private PrintWriter writer;
 	private TreeImporter importer;
 
-	private enum branchesMappingEnum {
-		TIME, DISTANCE, DEFAULT, USER
-	}
+//	private enum branchesMappingEnum {
+//		TIME, DISTANCE, DEFAULT, USER
+//	}
 
-	private branchesMappingEnum branchesColorMapping;
-	private branchesMappingEnum branchesOpacityMapping;
-	private branchesMappingEnum altitudeMapping;
+//	private branchesMappingEnum branchesColorMapping;
+//	private branchesMappingEnum branchesOpacityMapping;
+//	private branchesMappingEnum altitudeMapping;
 	private Random generator;
 
 	public DiscreteTreeToKML() {
 
 		// parse combobox choices here
-		branchesColorMapping = branchesMappingEnum.TIME;
-		branchesOpacityMapping = branchesMappingEnum.TIME;
-		altitudeMapping = branchesMappingEnum.DISTANCE;
+//		branchesColorMapping = branchesMappingEnum.TIME;
+//		branchesOpacityMapping = branchesMappingEnum.TIME;
+//		altitudeMapping = branchesMappingEnum.DISTANCE;
 
 		generator = new Random();
 
@@ -130,9 +130,9 @@ public class DiscreteTreeToKML {
 		table = tableModel;
 	}
 
-	public void setUserAttribute(String attribute) {
-		userAttribute = attribute;
-	}
+//	public void setUserAttribute(String attribute) {
+//		userAttribute = attribute;
+//	}
 
 	public void setPolygonsRadiusMultiplier(double multiplier) {
 		polygonsRadiusMultiplier = multiplier;
@@ -330,31 +330,31 @@ public class DiscreteTreeToKML {
 								 * altitude mapping
 								 * */
 								double maxAltitude = Double.NaN;
-								switch (altitudeMapping) {
-								case TIME:
-									maxAltitude = (int) Utils.map(nodeHeight,
-											0, treeHeightMax, 0, maxAltMapping);
-									break;
-
-								case USER:
-									maxAltitude = Utils.map(Utils
-											.getDoubleNodeAttribute(node,
-													userAttribute), 0,
-											treeHeightMax, 0, maxAltMapping);
-									break;
-
-								case DISTANCE:
+//								switch (altitudeMapping) {
+//								case TIME:
+//									maxAltitude = (int) Utils.map(nodeHeight,
+//											0, treeHeightMax, 0, maxAltMapping);
+//									break;
+//
+//								case USER:
+//									maxAltitude = Utils.map(Utils
+//											.getDoubleNodeAttribute(node,
+//													userAttribute), 0,
+//											treeHeightMax, 0, maxAltMapping);
+//									break;
+//
+//								case DISTANCE:
 									maxAltitude = Utils.map(Utils
 											.rhumbDistance(parentLongitude,
 													parentLatitude, longitude,
 													latitude), 0, EarthRadius,
 											0, maxAltMapping);
-									break;
-
-								case DEFAULT:
-									maxAltitude = 0;
-									break;
-								}
+//									break;
+//
+//								case DEFAULT:
+//									maxAltitude = 0;
+//									break;
+//								}
 
 								/**
 								 * Color mapping
@@ -362,8 +362,8 @@ public class DiscreteTreeToKML {
 								int red = (int) Double.NaN;
 								int green = (int) Double.NaN;
 								int blue = (int) Double.NaN;
-								switch (branchesColorMapping) {
-								case TIME:
+//								switch (branchesColorMapping) {
+//								case TIME:
 
 									red = (int) Utils.map(nodeHeight, 0,
 											treeHeightMax, minBranchRedMapping,
@@ -378,60 +378,60 @@ public class DiscreteTreeToKML {
 											treeHeightMax,
 											minBranchBlueMapping,
 											maxBranchBlueMapping);
-									break;
-
-								case USER:
-									red = (int) Utils.map(Utils
-											.getDoubleNodeAttribute(node,
-													userAttribute), 0,
-											treeHeightMax, minBranchRedMapping,
-											maxBranchRedMapping);
-
-									green = (int) Utils.map(Utils
-											.getDoubleNodeAttribute(node,
-													userAttribute), 0,
-											treeHeightMax,
-											minBranchGreenMapping,
-											maxBranchGreenMapping);
-
-									blue = (int) Utils.map(Utils
-											.getDoubleNodeAttribute(node,
-													userAttribute), 0,
-											treeHeightMax,
-											minBranchBlueMapping,
-											maxBranchBlueMapping);
-									break;
-
-								case DEFAULT:
-									red = 255;
-									green = 0;
-									blue = 0;
-									break;
-								}
+//									break;
+//
+//								case USER:
+//									red = (int) Utils.map(Utils
+//											.getDoubleNodeAttribute(node,
+//													userAttribute), 0,
+//											treeHeightMax, minBranchRedMapping,
+//											maxBranchRedMapping);
+//
+//									green = (int) Utils.map(Utils
+//											.getDoubleNodeAttribute(node,
+//													userAttribute), 0,
+//											treeHeightMax,
+//											minBranchGreenMapping,
+//											maxBranchGreenMapping);
+//
+//									blue = (int) Utils.map(Utils
+//											.getDoubleNodeAttribute(node,
+//													userAttribute), 0,
+//											treeHeightMax,
+//											minBranchBlueMapping,
+//											maxBranchBlueMapping);
+//									break;
+//
+//								case DEFAULT:
+//									red = 255;
+//									green = 0;
+//									blue = 0;
+//									break;
+//								}
 
 								/**
 								 * opacity mapping
 								 * */
 								int alpha = (int) Double.NaN;
-								switch (branchesOpacityMapping) {
-								case TIME:
+//								switch (branchesOpacityMapping) {
+//								case TIME:
 									alpha = (int) Utils.map(nodeHeight, 0,
 											treeHeightMax,
 											maxBranchOpacityMapping,
 											minBranchOpacityMapping);
-									break;
-								case USER:
-									alpha = (int) Utils.map(Utils
-											.getDoubleNodeAttribute(node,
-													userAttribute), 0,
-											treeHeightMax,
-											maxBranchOpacityMapping,
-											minBranchOpacityMapping);
-									break;
-								case DEFAULT:
-									alpha = 255;
-									break;
-								}
+//									break;
+//								case USER:
+//									alpha = (int) Utils.map(Utils
+//											.getDoubleNodeAttribute(node,
+//													userAttribute), 0,
+//											treeHeightMax,
+//											maxBranchOpacityMapping,
+//											minBranchOpacityMapping);
+//									break;
+//								case DEFAULT:
+//									alpha = 255;
+//									break;
+//								}
 
 								Color col = new Color(red, green, blue, alpha);
 
