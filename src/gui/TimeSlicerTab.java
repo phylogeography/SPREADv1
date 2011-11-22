@@ -68,7 +68,7 @@ public class TimeSlicerTab extends JPanel {
 	// Radio buttons
 	private JRadioButton firstAnalysisRadioButton;
 	private JRadioButton secondAnalysisRadioButton;
-	private JRadioButton thirdAnalysisRadioButton;
+//	private JRadioButton thirdAnalysisRadioButton;
 
 	// Switchers
 	private int analysisType;
@@ -76,7 +76,7 @@ public class TimeSlicerTab extends JPanel {
 	// Strings for radio buttons
 	private String firstAnalysis;
 	private String secondAnalysis;
-	private String thirdAnalysis;
+//	private String thirdAnalysis;
 
 	// Text fields
 	private JTextField burnInParser;
@@ -157,13 +157,13 @@ public class TimeSlicerTab extends JPanel {
 
 		// Setup strings for radio buttons
 		firstAnalysis = new String("MCC tree slice heights");
-		secondAnalysis = new String("Custom slice heights, polygons only");
-		thirdAnalysis = new String("Custom slice heights, polygons & branches");
+		secondAnalysis = new String("Custom slice heights"); //Custom slice heights, polygons only
+//		thirdAnalysis = new String("Custom slice heights"); //Custom slice heights, polygons & branches
 
 		// Setup radio buttons
 		firstAnalysisRadioButton = new JRadioButton(firstAnalysis); 
 		secondAnalysisRadioButton = new JRadioButton(secondAnalysis);
-		thirdAnalysisRadioButton = new JRadioButton(thirdAnalysis);
+//		thirdAnalysisRadioButton = new JRadioButton(thirdAnalysis);
 
 		// Setup switchers
 		analysisType = TimeSlicerToKML.FIRST_ANALYSIS;
@@ -215,8 +215,6 @@ public class TimeSlicerTab extends JPanel {
 		leftPanel = new JPanel();
 		leftPanel.setBackground(backgroundColor);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-		leftPanel.setPreferredSize(new Dimension(leftPanelWidth,
-				leftPanelHeight));
 
 		// Action listeners
 		openTree.addActionListener(new ListenOpenTree());
@@ -266,12 +264,12 @@ public class TimeSlicerTab extends JPanel {
 		buttonGroup.add(secondAnalysisRadioButton);
 		tmpPanel.add(secondAnalysisRadioButton);
 
-		thirdAnalysisRadioButton.setToolTipText(thirdAnalysis);
-		thirdAnalysisRadioButton.setActionCommand(thirdAnalysis);
-		thirdAnalysisRadioButton
-				.addActionListener(new ChooseAnalysisTypeListener());
-		buttonGroup.add(thirdAnalysisRadioButton);
-		tmpPanel.add(thirdAnalysisRadioButton);
+//		thirdAnalysisRadioButton.setToolTipText(thirdAnalysis);
+//		thirdAnalysisRadioButton.setActionCommand(thirdAnalysis);
+//		thirdAnalysisRadioButton
+//				.addActionListener(new ChooseAnalysisTypeListener());
+//		buttonGroup.add(thirdAnalysisRadioButton);
+//		tmpPanel.add(thirdAnalysisRadioButton);
 
 		tmpPanelsHolder.add(tmpPanel);
 
@@ -621,18 +619,18 @@ public class TimeSlicerTab extends JPanel {
 				analysisType = TimeSlicerToKML.SECOND_ANALYSIS;
 				System.out.println(secondAnalysis + " analysis selected \n");
 
-			} else if (ev.getActionCommand() == thirdAnalysis) {
-
-				loadTimeSlices.setEnabled(true);
-				openTree.setEnabled(true);
-				branchesMinColorChooser.setEnabled(true);
-				branchesMaxColorChooser.setEnabled(true);
-				branchesWidthParser.setEnabled(true);
-				maxAltMappingParser.setEnabled(true);
-				numberOfIntervalsParser.setEnabled(false);
-
-				analysisType = TimeSlicerToKML.THIRD_ANALYSIS;
-				System.out.println(thirdAnalysis + " analysis selected \n");
+//			} else if (ev.getActionCommand() == thirdAnalysis) {
+//
+//				loadTimeSlices.setEnabled(true);
+//				openTree.setEnabled(true);
+//				branchesMinColorChooser.setEnabled(true);
+//				branchesMaxColorChooser.setEnabled(true);
+//				branchesWidthParser.setEnabled(true);
+//				maxAltMappingParser.setEnabled(true);
+//				numberOfIntervalsParser.setEnabled(false);
+//
+//				analysisType = TimeSlicerToKML.THIRD_ANALYSIS;
+//				System.out.println(thirdAnalysis + " analysis selected \n");
 
 			} else {
 				System.err.println("Unimplemented analysis type selected");
@@ -811,8 +809,6 @@ public class TimeSlicerTab extends JPanel {
 
 								timeSlicerToKML.setAnalysisType(analysisType);
 
-								// TODO
-
 								if (analysisType == TimeSlicerToKML.FIRST_ANALYSIS) {
 
 									timeSlicerToKML.setTreePath(treeFilename);
@@ -868,53 +864,53 @@ public class TimeSlicerTab extends JPanel {
 									timeSlicerToKML
 											.setCustomSliceHeights(sliceHeightsFilename);
 
-								} else if (analysisType == TimeSlicerToKML.THIRD_ANALYSIS) {
-
-									timeSlicerToKML.setTreePath(treeFilename);
-
-									timeSlicerToKML
-											.setCustomSliceHeights(sliceHeightsFilename);
-
-									timeSlicerToKML
-											.setMinBranchRedMapping(branchesMinColor
-													.getRed());
-
-									timeSlicerToKML
-											.setMinBranchGreenMapping(branchesMinColor
-													.getGreen());
-
-									timeSlicerToKML
-											.setMinBranchBlueMapping(branchesMinColor
-													.getBlue());
-
-									timeSlicerToKML
-											.setMinBranchOpacityMapping(branchesMinColor
-													.getAlpha());
-
-									timeSlicerToKML
-											.setMaxBranchRedMapping(branchesMaxColor
-													.getRed());
-
-									timeSlicerToKML
-											.setMaxBranchGreenMapping(branchesMaxColor
-													.getGreen());
-
-									timeSlicerToKML
-											.setMaxBranchBlueMapping(branchesMaxColor
-													.getBlue());
-
-									timeSlicerToKML
-											.setMaxBranchOpacityMapping(branchesMaxColor
-													.getAlpha());
-
-									timeSlicerToKML
-											.setBranchWidth(branchesWidthParser
-													.getValue());
-
-									timeSlicerToKML
-											.setMaxAltitudeMapping(Double
-													.valueOf(maxAltMappingParser
-															.getText()));
+//								} else if (analysisType == TimeSlicerToKML.THIRD_ANALYSIS) {
+//
+//									timeSlicerToKML.setTreePath(treeFilename);
+//
+//									timeSlicerToKML
+//											.setCustomSliceHeights(sliceHeightsFilename);
+//
+//									timeSlicerToKML
+//											.setMinBranchRedMapping(branchesMinColor
+//													.getRed());
+//
+//									timeSlicerToKML
+//											.setMinBranchGreenMapping(branchesMinColor
+//													.getGreen());
+//
+//									timeSlicerToKML
+//											.setMinBranchBlueMapping(branchesMinColor
+//													.getBlue());
+//
+//									timeSlicerToKML
+//											.setMinBranchOpacityMapping(branchesMinColor
+//													.getAlpha());
+//
+//									timeSlicerToKML
+//											.setMaxBranchRedMapping(branchesMaxColor
+//													.getRed());
+//
+//									timeSlicerToKML
+//											.setMaxBranchGreenMapping(branchesMaxColor
+//													.getGreen());
+//
+//									timeSlicerToKML
+//											.setMaxBranchBlueMapping(branchesMaxColor
+//													.getBlue());
+//
+//									timeSlicerToKML
+//											.setMaxBranchOpacityMapping(branchesMaxColor
+//													.getAlpha());
+//
+//									timeSlicerToKML
+//											.setBranchWidth(branchesWidthParser
+//													.getValue());
+//
+//									timeSlicerToKML
+//											.setMaxAltitudeMapping(Double
+//													.valueOf(maxAltMappingParser
+//															.getText()));
 								}
 
 								timeSlicerToKML.setTreesPath(treesFilename);
@@ -1095,8 +1091,6 @@ public class TimeSlicerTab extends JPanel {
 									coordinatesNameParser.getText(),
 									treesFilename, analysisType)) {
 
-								// TODO
-
 								timeSlicerToProcessing
 										.setAnalysisType(analysisType);
 
@@ -1151,49 +1145,49 @@ public class TimeSlicerTab extends JPanel {
 									timeSlicerToProcessing
 											.setCustomSliceHeights(sliceHeightsFilename);
 
-								} else if (analysisType == TimeSlicerToProcessing.THIRD_ANALYSIS) {
-
-									timeSlicerToProcessing
-											.setMccTreePath(treeFilename);
-
-									timeSlicerToProcessing
-											.setCustomSliceHeights(sliceHeightsFilename);
-
-									timeSlicerToProcessing
-											.setMinBranchRedMapping(branchesMinColor
-													.getRed());
-
-									timeSlicerToProcessing
-											.setMinBranchGreenMapping(branchesMinColor
-													.getGreen());
-
-									timeSlicerToProcessing
-											.setMinBranchBlueMapping(branchesMinColor
-													.getBlue());
-
-									timeSlicerToProcessing
-											.setMinBranchOpacityMapping(branchesMinColor
-													.getAlpha());
-
-									timeSlicerToProcessing
-											.setMaxBranchRedMapping(branchesMaxColor
-													.getRed());
-
-									timeSlicerToProcessing
-											.setMaxBranchGreenMapping(branchesMaxColor
-													.getGreen());
-
-									timeSlicerToProcessing
-											.setMaxBranchBlueMapping(branchesMaxColor
-													.getBlue());
-
-									timeSlicerToProcessing
-											.setMaxBranchOpacityMapping(branchesMaxColor
-													.getAlpha());
-
-									timeSlicerToProcessing
-											.setBranchWidth(branchesWidthParser
-													.getValue() / 2);
+//								} else if (analysisType == TimeSlicerToProcessing.THIRD_ANALYSIS) {
+//
+//									timeSlicerToProcessing
+//											.setMccTreePath(treeFilename);
+//
+//									timeSlicerToProcessing
+//											.setCustomSliceHeights(sliceHeightsFilename);
+//
+//									timeSlicerToProcessing
+//											.setMinBranchRedMapping(branchesMinColor
+//													.getRed());
+//
+//									timeSlicerToProcessing
+//											.setMinBranchGreenMapping(branchesMinColor
+//													.getGreen());
+//
+//									timeSlicerToProcessing
+//											.setMinBranchBlueMapping(branchesMinColor
+//													.getBlue());
+//
+//									timeSlicerToProcessing
+//											.setMinBranchOpacityMapping(branchesMinColor
+//													.getAlpha());
+//
+//									timeSlicerToProcessing
+//											.setMaxBranchRedMapping(branchesMaxColor
+//													.getRed());
+//
+//									timeSlicerToProcessing
+//											.setMaxBranchGreenMapping(branchesMaxColor
+//													.getGreen());
+//
+//									timeSlicerToProcessing
+//											.setMaxBranchBlueMapping(branchesMaxColor
+//													.getBlue());
+//
+//									timeSlicerToProcessing
+//											.setMaxBranchOpacityMapping(branchesMaxColor
+//													.getAlpha());
+//
+//									timeSlicerToProcessing
+//											.setBranchWidth(branchesWidthParser
+//													.getValue() / 2);
 
 								}
 

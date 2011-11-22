@@ -146,7 +146,7 @@ public class RateIndicatorBFTab extends JPanel {
 		leftPanel = new JPanel();
 		leftPanel.setBackground(backgroundColor);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
-		leftPanel.setSize(new Dimension(leftPanelWidth, leftPanelHeight));
+//		leftPanel.setSize(new Dimension(leftPanelWidth, leftPanelHeight));
 
 		// Listeners
 		openLog.addActionListener(new ListenOpenLog());

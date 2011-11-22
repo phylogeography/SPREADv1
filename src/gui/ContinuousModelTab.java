@@ -146,7 +146,7 @@ public class ContinuousModelTab extends JPanel {
 		leftPanel = new JPanel();
 		leftPanel.setBackground(backgroundColor);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-		leftPanel.setSize(new Dimension(leftPanelWidth, leftPanelHeight));
+//		leftPanel.setSize(new Dimension(leftPanelWidth, leftPanelHeight));
 
 		// Listeners
 		openTree.addActionListener(new ListenOpenTree());

@@ -41,7 +41,7 @@ public class TimeSlicerToKML {
 	private int analysisType;
 	public final static int FIRST_ANALYSIS = 1;
 	public final static int SECOND_ANALYSIS = 2;
-	public final static int THIRD_ANALYSIS = 3;
+//	public final static int THIRD_ANALYSIS = 3;//delete
 
 	public long time;
 
@@ -265,10 +265,10 @@ public class TimeSlicerToKML {
 		case 2:
 			timeLine = generateCustomTimeLine(sliceHeights);
 			break;
-		case 3:
-			tree = (RootedTree) treeImporter.importNextTree();
-			timeLine = generateCustomTimeLine(sliceHeights);
-			break;
+//		case 3:
+//			tree = (RootedTree) treeImporter.importNextTree();
+//			timeLine = generateCustomTimeLine(sliceHeights);
+//			break;
 		}
 
 		// this is to generate kml output
@@ -350,7 +350,7 @@ public class TimeSlicerToKML {
 
 		switch (analysisType) {
 		case 1:
-		case 3:
+//		case 3:
 			System.out.println("Generating branches...");
 			executor.submit(new Branches());
 			break;
