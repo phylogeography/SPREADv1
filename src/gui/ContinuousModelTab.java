@@ -40,6 +40,7 @@ public class ContinuousModelTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 260;
+	private final int leftPanelHeight = 1000;
 	private final int spinningPanelHeight = 20;
 	private final int mapImageWidth = MapBackground.mapImageWidth;
 	private final int mapImageHeight = MapBackground.mapImageHeight;
@@ -363,6 +364,7 @@ public class ContinuousModelTab extends JPanel {
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		leftScrollPane.setMinimumSize(minimumDimension);
+		leftScrollPane.setMaximumSize(new Dimension(leftPanelWidth, leftPanelHeight));
 
 		/**
 		 * Processing pane
@@ -380,7 +382,7 @@ public class ContinuousModelTab extends JPanel {
 					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 			rightScrollPane.setMinimumSize(minimumDimension);
 
-			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+			SplitPane splitPane = new SplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);
 
@@ -394,7 +396,7 @@ public class ContinuousModelTab extends JPanel {
 			rightScrollPane.add(continuousTreeToProcessing);
 			rightScrollPane.setMinimumSize(minimumDimension);
 
-			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+			SplitPane splitPane = new SplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);
 
@@ -618,8 +620,8 @@ public class ContinuousModelTab extends JPanel {
 								// ---TODO EXPERIMENTAL: parse layers---//
 								// ///////////////////////////////////////
 
-//								ArrayList<Layer> layers = continuousTreeToKML.getLayers();
-								// layers.get(0).getItems().get(0)
+								ArrayList<Layer> layers = continuousTreeToKML.getLayers();
+//								 layers.get(0).getItems()
 
 								// /////////////////////////
 								// ---END: parse layers---//

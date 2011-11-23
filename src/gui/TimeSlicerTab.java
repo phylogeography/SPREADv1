@@ -42,6 +42,7 @@ public class TimeSlicerTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 260;
+	private final int leftPanelHeight = 1000;
 	private final int spinningPanelHeight = 20;
 	private final int mapImageWidth = MapBackground.mapImageWidth;
 	private final int mapImageHeight = MapBackground.mapImageHeight;
@@ -525,9 +526,10 @@ public class TimeSlicerTab extends JPanel {
 
 		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		leftScrollPane.setMinimumSize(minimumDimension);
-
+		leftScrollPane.setMaximumSize(new Dimension(leftPanelWidth, leftPanelHeight));
+		
 		/**
 		 * Processing pane
 		 * */
@@ -543,7 +545,7 @@ public class TimeSlicerTab extends JPanel {
 					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 			rightScrollPane.setMinimumSize(minimumDimension);
 			
-			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+			SplitPane splitPane = new SplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);
 
@@ -556,7 +558,7 @@ public class TimeSlicerTab extends JPanel {
 			rightScrollPane.add(timeSlicerToProcessing);
 			rightScrollPane.setMinimumSize(minimumDimension);
 			
-			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+			SplitPane splitPane = new SplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);
 
@@ -842,53 +844,6 @@ public class TimeSlicerTab extends JPanel {
 									timeSlicerToKML
 											.setCustomSliceHeights(sliceHeightsFilename);
 
-//								} else if (analysisType == TimeSlicerToKML.THIRD_ANALYSIS) {
-//
-//									timeSlicerToKML.setTreePath(treeFilename);
-//
-//									timeSlicerToKML
-//											.setCustomSliceHeights(sliceHeightsFilename);
-//
-//									timeSlicerToKML
-//											.setMinBranchRedMapping(branchesMinColor
-//													.getRed());
-//
-//									timeSlicerToKML
-//											.setMinBranchGreenMapping(branchesMinColor
-//													.getGreen());
-//
-//									timeSlicerToKML
-//											.setMinBranchBlueMapping(branchesMinColor
-//													.getBlue());
-//
-//									timeSlicerToKML
-//											.setMinBranchOpacityMapping(branchesMinColor
-//													.getAlpha());
-//
-//									timeSlicerToKML
-//											.setMaxBranchRedMapping(branchesMaxColor
-//													.getRed());
-//
-//									timeSlicerToKML
-//											.setMaxBranchGreenMapping(branchesMaxColor
-//													.getGreen());
-//
-//									timeSlicerToKML
-//											.setMaxBranchBlueMapping(branchesMaxColor
-//													.getBlue());
-//
-//									timeSlicerToKML
-//											.setMaxBranchOpacityMapping(branchesMaxColor
-//													.getAlpha());
-//
-//									timeSlicerToKML
-//											.setBranchWidth(branchesWidthParser
-//													.getValue());
-//
-//									timeSlicerToKML
-//											.setMaxAltitudeMapping(Double
-//													.valueOf(maxAltMappingParser
-//															.getText()));
 								}
 
 								timeSlicerToKML.setTreesPath(treesFilename);
@@ -1122,50 +1077,6 @@ public class TimeSlicerTab extends JPanel {
 
 									timeSlicerToProcessing
 											.setCustomSliceHeights(sliceHeightsFilename);
-
-//								} else if (analysisType == TimeSlicerToProcessing.THIRD_ANALYSIS) {
-//
-//									timeSlicerToProcessing
-//											.setMccTreePath(treeFilename);
-//
-//									timeSlicerToProcessing
-//											.setCustomSliceHeights(sliceHeightsFilename);
-//
-//									timeSlicerToProcessing
-//											.setMinBranchRedMapping(branchesMinColor
-//													.getRed());
-//
-//									timeSlicerToProcessing
-//											.setMinBranchGreenMapping(branchesMinColor
-//													.getGreen());
-//
-//									timeSlicerToProcessing
-//											.setMinBranchBlueMapping(branchesMinColor
-//													.getBlue());
-//
-//									timeSlicerToProcessing
-//											.setMinBranchOpacityMapping(branchesMinColor
-//													.getAlpha());
-//
-//									timeSlicerToProcessing
-//											.setMaxBranchRedMapping(branchesMaxColor
-//													.getRed());
-//
-//									timeSlicerToProcessing
-//											.setMaxBranchGreenMapping(branchesMaxColor
-//													.getGreen());
-//
-//									timeSlicerToProcessing
-//											.setMaxBranchBlueMapping(branchesMaxColor
-//													.getBlue());
-//
-//									timeSlicerToProcessing
-//											.setMaxBranchOpacityMapping(branchesMaxColor
-//													.getAlpha());
-//
-//									timeSlicerToProcessing
-//											.setBranchWidth(branchesWidthParser
-//													.getValue() / 2);
 
 								}
 

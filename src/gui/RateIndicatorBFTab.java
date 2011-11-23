@@ -37,6 +37,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 	// Sizing constants
 	private final int leftPanelWidth = 260;
+	private final int leftPanelHeight = 1000;
 	private final int spinningPanelHeight = 20;
 	private final int mapImageWidth = MapBackground.mapImageWidth;
 	private final int mapImageHeight = MapBackground.mapImageHeight;
@@ -341,9 +342,10 @@ public class RateIndicatorBFTab extends JPanel {
 
 		JScrollPane leftScrollPane = new JScrollPane(leftPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		leftScrollPane.setMinimumSize(minimumDimension);
-
+		leftScrollPane.setMaximumSize(new Dimension(leftPanelWidth, leftPanelHeight));
+		
 		/**
 		 * Processing pane
 		 * */
@@ -360,7 +362,7 @@ public class RateIndicatorBFTab extends JPanel {
 					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 			rightScrollPane.setMinimumSize(minimumDimension);
 
-			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+			SplitPane splitPane = new SplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);
 
@@ -373,7 +375,7 @@ public class RateIndicatorBFTab extends JPanel {
 			rightScrollPane.add(rateIndicatorBFToProcessing);
 			rightScrollPane.setMinimumSize(minimumDimension);
 
-			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+			SplitPane splitPane = new SplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);
 
