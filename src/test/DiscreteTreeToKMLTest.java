@@ -22,7 +22,7 @@ public class DiscreteTreeToKMLTest {
 			table = new InteractiveTableModel(new LocationCoordinatesEditor()
 					.getColumnNames());
 			data = new ReadLocations(
-					"/home/filip/Phyleography/data/H5N1/locationCoordinates_H5N1");
+					"/home/filip/HP_locations");
 
 			for (int i = 0; i < data.nrow; i++) {
 
@@ -33,52 +33,52 @@ public class DiscreteTreeToKMLTest {
 
 			}// END: row loop
 
-			// table.printTable();
-
 			discreteTreeToKML
-					.setTreePath("/home/filip/Phyleography/data/H5N1/H5N1_HA_discrete_MCC.tre");
+					.setTreePath("/home/filip/HP_mtDNA.tree");
 
+			discreteTreeToKML.setTimescaler(1);
+			
 			discreteTreeToKML.setMrsdString("2011-07-28 AD");
 
 			discreteTreeToKML.setTable(table);
 
 			discreteTreeToKML.setStateAttName("states");
 
-			discreteTreeToKML.setMaxAltitudeMapping(50000);
-
-			discreteTreeToKML.setTimescaler(1);
+			discreteTreeToKML.setMaxAltitudeMapping(5000000);
 
 			discreteTreeToKML.setNumberOfIntervals(100);
 
-			discreteTreeToKML.setMinPolygonRedMapping(100);
+			discreteTreeToKML.setPolygonsRadiusMultiplier(1);
+			
+			discreteTreeToKML.setMinPolygonRedMapping(0);
 
-			discreteTreeToKML.setMinPolygonGreenMapping(255);
+			discreteTreeToKML.setMinPolygonGreenMapping(0);
 
-			discreteTreeToKML.setMinPolygonBlueMapping(255);
+			discreteTreeToKML.setMinPolygonBlueMapping(0);
 
-			discreteTreeToKML.setMinPolygonOpacityMapping(255);
+			discreteTreeToKML.setMinPolygonOpacityMapping(100);
 
-			discreteTreeToKML.setMaxPolygonRedMapping(255);
+			discreteTreeToKML.setMaxPolygonRedMapping(50);
 
 			discreteTreeToKML.setMaxPolygonGreenMapping(255);
 
-			discreteTreeToKML.setMaxPolygonBlueMapping(25);
+			discreteTreeToKML.setMaxPolygonBlueMapping(255);
 
 			discreteTreeToKML.setMaxPolygonOpacityMapping(255);
 
-			discreteTreeToKML.setMinBranchRedMapping(255);
+			discreteTreeToKML.setMinBranchRedMapping(0);
 
-			discreteTreeToKML.setMinBranchGreenMapping(100);
+			discreteTreeToKML.setMinBranchGreenMapping(0);
 
-			discreteTreeToKML.setMinBranchBlueMapping(255);
+			discreteTreeToKML.setMinBranchBlueMapping(0);
 
 			discreteTreeToKML.setMinBranchOpacityMapping(255);
 
-			discreteTreeToKML.setMaxBranchRedMapping(25);
+			discreteTreeToKML.setMaxBranchRedMapping(255);
 
-			discreteTreeToKML.setMaxBranchGreenMapping(25);
+			discreteTreeToKML.setMaxBranchGreenMapping(5);
 
-			discreteTreeToKML.setMaxBranchBlueMapping(25);
+			discreteTreeToKML.setMaxBranchBlueMapping(50);
 
 			discreteTreeToKML.setMaxBranchOpacityMapping(255);
 
