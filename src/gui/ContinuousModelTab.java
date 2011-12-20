@@ -8,7 +8,6 @@ import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -26,7 +25,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
-import structure.Layer;
 import templates.ContinuousTreeToKML;
 import templates.ContinuousTreeToProcessing;
 import templates.MapBackground;
@@ -387,7 +385,6 @@ public class ContinuousModelTab extends JPanel {
 			splitPane.setDividerLocation(leftPanelWidth);
 
 			this.add(splitPane);
-			// Toolkit.getDefaultToolkit().getScreenSize()
 
 		} else {
 
@@ -620,7 +617,7 @@ public class ContinuousModelTab extends JPanel {
 								// ---TODO EXPERIMENTAL: parse layers---//
 								// ///////////////////////////////////////
 
-								ArrayList<Layer> layers = continuousTreeToKML.getLayers();
+//								ArrayList<Layer> layers = continuousTreeToKML.getLayers();
 //								 layers.get(0).getItems()
 
 								// /////////////////////////

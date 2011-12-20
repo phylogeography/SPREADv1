@@ -81,6 +81,9 @@ public class SpreadApp {
 
 			try {
 
+				// UIManager.setLookAndFeel(UIManager
+				// .getSystemLookAndFeelClassName());
+
 				UIManager
 						.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");
 				lafLoaded = true;
@@ -191,7 +194,7 @@ public class SpreadApp {
 			String helpText = "\n"
 					+ "                                       SPREAD \n"
 					+ "Spatial Phylogenetic Reconstruction of Evolutionary Dynamics \n"
-					+ "                                Version 1.0.1, 2011 \n"
+					+ "                                Version 1.0.2, 2011 \n"
 					+ "Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey \n"
 					+ "\n"
 					+ "SPREAD: www.phylogeography.org/SPREAD \n"
@@ -259,15 +262,29 @@ public class SpreadApp {
 					gui = new SpreadApp();
 					gui.launchFrame();
 
-					if (System.getProperty("java.runtime.name").toLowerCase()
-							.startsWith("openjdk")) {
-						System.out
-								.println("SPREAD is not happy about Java Runtime Environment used. We recommend running it with Oracle/Sun JRE.");
-					}
+//					if (System.getProperty("java.runtime.name").toLowerCase()
+//							.startsWith("openjdk")) {
+//						System.err
+//								.println("SPREAD is not happy about Java Runtime Environment used. We recommend running it with Oracle/Sun JRE.");
+//					}
 
-				} catch (Exception e) {
+				} catch (UnsupportedClassVersionError e) {
+					
+					System.err.println("Your Java Runtime Environment is too old. Please update");
 					e.printStackTrace();
 
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (UnsupportedLookAndFeelException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		});

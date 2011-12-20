@@ -47,7 +47,7 @@ public class DiscreteTreeToKML {
 	private String mrsdString;
 	private ThreadLocalSpreadDate mrsd;
 	private int numberOfIntervals;
-	private double timescaler;
+	private int timescaler;
 	private double rootHeight;
 	private List<Layer> layers;
 	private double maxAltMapping;
@@ -85,7 +85,7 @@ public class DiscreteTreeToKML {
 
 	}// END: DiscreteTreeToKML()
 
-	public void setTimescaler(double timescaler) {
+	public void setTimescaler(int timescaler) {
 		this.timescaler = timescaler;
 	}
 
@@ -218,7 +218,7 @@ public class DiscreteTreeToKML {
 		executor.submit(new Branches());
 		executor.submit(new Circles());
 		executor.shutdown();
-		
+
 		// Wait until all threads are finished
 		while (!executor.isTerminated()) {
 		}
@@ -315,6 +315,7 @@ public class DiscreteTreeToKML {
 								/**
 								 * altitude mapping
 								 * */
+								
 								double maxAltitude = Utils.map(Utils
 										.rhumbDistance(parentLongitude,
 												parentLatitude, longitude,
@@ -340,6 +341,7 @@ public class DiscreteTreeToKML {
 								/**
 								 * opacity mapping
 								 * */
+								
 								int alpha = (int) Utils.map(nodeHeight, 0,
 										treeHeightMax, maxBranchOpacityMapping,
 										minBranchOpacityMapping);
@@ -355,10 +357,16 @@ public class DiscreteTreeToKML {
 								double endTime = mrsd.minus((int) (parentHeight
 										* DaysInYear * timescaler));
 
+								// TODO
+//								System.out.println("*******************************");
+//								System.out.println(parentState + ":" + state);
+//								System.out.println("*******************************");
+								
 								branchesLayer.addItem(new Line((parentState
 										+ ":" + state), // string name
 										new Coordinates(parentLongitude,
-												parentLatitude), startTime, // startime
+												parentLatitude), // startcoords
+										startTime, // startime
 										linesStyle, // style startstyle
 										new Coordinates(longitude, latitude), // endcoords
 										endTime, // double endtime

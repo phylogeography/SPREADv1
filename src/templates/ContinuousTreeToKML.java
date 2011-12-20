@@ -283,8 +283,7 @@ public class ContinuousTreeToKML {
 			try {
 
 				// this is for Branches folder:
-				String branchesDescription = null;
-				Layer branchesLayer = new Layer("Branches", branchesDescription);
+				Layer branchesLayer = new Layer("Branches", null);
 
 				int branchStyleId = 1;
 				for (Node node : tree.getNodes()) {
@@ -353,6 +352,7 @@ public class ContinuousTreeToKML {
 
 							double startTime = mrsd.minus((int) (nodeHeight
 									* DaysInYear * timescaler));
+							
 							double endTime = mrsd.minus((int) (parentHeight
 									* DaysInYear * timescaler));
 
@@ -372,7 +372,7 @@ public class ContinuousTreeToKML {
 
 						}// END: null checks
 					}// END: root check
-				}// END: node loop
+				}// END: nodes loop
 
 				layers.add(branchesLayer);
 

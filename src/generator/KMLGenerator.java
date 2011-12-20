@@ -182,6 +182,8 @@ public class KMLGenerator implements Generator {
 						endLon, endLat, sliceCount);
 				double coords[][] = rhumbIntermediate.getCoords();
 
+//				Utils.print2DArray(coords);
+				
 				double a = -2 * maxAltitude
 						/ (Math.pow(sliceCount, 2) - sliceCount);
 				double b = 2 * maxAltitude / (sliceCount - 1);
@@ -196,6 +198,11 @@ public class KMLGenerator implements Generator {
 					double segmentStartTime = endTime - (i + 1)
 							* ((endTime - startTime) / sliceCount);
 
+					//TODO
+//					System.out.println(startTime < YearZeroInMillis ? "-"
+//							+ formatter.format(startTime) : formatter
+//							.format(startTime)); 
+							
 					Placemark lineSegment = generateLineSegment(
 							new Coordinates(coords[i][0], coords[i][1],
 									startAltitude),// startCoordinates

@@ -1,7 +1,7 @@
 h1. SPREAD 
 
 Spatial Phylogenetic Reconstruction of Evolutionary Dynamics 
-                Version 1.0.1, 2011 
+                Version 1.0.2, 2011 
 Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
 
 h1. LICENSE
@@ -52,9 +52,8 @@ boolean fromJar = true
 h1. TODO
 
 * Add command line interface for kml templates 
-* Make the tool panels resizable 
 * Templates: collect data into ArrayList<Layer>, then pass it to KML Generator or Processing canvas. This way all the exceptions are caught beforehand.
-
+* Fix large scaling factor issues
 
 
 

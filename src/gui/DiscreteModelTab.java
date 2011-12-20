@@ -111,10 +111,10 @@ public class DiscreteModelTab extends JPanel {
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		backgroundColor = new Color(231, 237, 246);
-		polygonsMaxColor = new Color(50, 255, 255, 255);
-		branchesMaxColor = new Color(255, 5, 50, 255);
 		polygonsMinColor = new Color(0, 0, 0, 100);
+		polygonsMaxColor = new Color(50, 255, 255, 255);
 		branchesMinColor = new Color(0, 0, 0, 255);
+		branchesMaxColor = new Color(255, 5, 50, 255);
 		GridBagConstraints c = new GridBagConstraints();
 
 		// Setup icons
@@ -130,7 +130,7 @@ public class DiscreteModelTab extends JPanel {
 		numberOfIntervalsParser = new JTextField("100", 10);
 		maxAltMappingParser = new JTextField("5000000", 10);
 		kmlPathParser = new JTextField("output.kml", 10);
-		timescalerParser = new JTextField("1.0", 10);
+		timescalerParser = new JTextField("1", 10);
 
 		// Setup buttons for tab
 		generateKml = new JButton("Generate", nuclearIcon);
@@ -600,7 +600,7 @@ public class DiscreteModelTab extends JPanel {
 												+ (eraParser.getSelectedIndex() == 0 ? "AD"
 														: "BC"));
 
-								discreteTreeToKML.setTimescaler(Double
+								discreteTreeToKML.setTimescaler(Integer
 										.valueOf(timescalerParser.getText()));
 
 								discreteTreeToKML.setNumberOfIntervals(Integer
