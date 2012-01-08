@@ -653,13 +653,13 @@ public class TimeSlicerTab extends JPanel {
 
 			try {
 
-				String[] treeFiles = new String[] { "tre", "tree" };
+				String[] treeFiles = new String[] { "tre", "tree", "trees" };
 
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Opening tree file...");
 				chooser.setMultiSelectionEnabled(false);
 				chooser.addChoosableFileFilter(new SimpleFileFilter(treeFiles,
-						"Tree files (*.tree, *.tre)"));
+						"Tree files (*.tree(s), *.tre)"));
 				chooser.setCurrentDirectory(workingDirectory);
 
 				chooser.showOpenDialog(Utils.getActiveFrame());
