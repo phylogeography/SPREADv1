@@ -29,7 +29,7 @@ h1. SUPPORT & LINKS
 SPREAD: www.phylogeography.org/SPREAD
 Processing libraries: http://processing.org/ 
 
-Suggestions or report bugs:
+Suggestions or bug reports:
 
 <filip.bielejec(_sorry_spybots_)rega.kuleuven.be>
 
