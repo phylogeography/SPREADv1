@@ -51,6 +51,7 @@ boolean fromJar = true
 
 h1. TODO
 
+* Sort BF rates in ascending order in the Terminal output
 * Add command line interface for kml templates 
 * Templates: collect data into ArrayList<Layer>, then pass it to KML Generator or Processing canvas. This way all the exceptions are caught beforehand.
 * Fix large scaling factor issues
