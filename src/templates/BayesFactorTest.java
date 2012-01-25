@@ -3,6 +3,7 @@ package templates;
 import gui.InteractiveTableModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import utils.Holder;
@@ -126,7 +127,10 @@ public class BayesFactorTest {
 			}
 
 			bayesFactors.add(bf);
-		}
+		}// END: row loop
+
+		// sort in ascending order
+		Collections.sort(bayesFactors);
 
 	}// END: ComputeBFTest
 
