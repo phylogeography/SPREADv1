@@ -344,8 +344,9 @@ public class RateIndicatorBFTab extends JPanel {
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		leftScrollPane.setMinimumSize(minimumDimension);
-		leftScrollPane.setMaximumSize(new Dimension(leftPanelWidth, leftPanelHeight));
-		
+		leftScrollPane.setMaximumSize(new Dimension(leftPanelWidth,
+				leftPanelHeight));
+
 		/**
 		 * Processing pane
 		 * */
@@ -570,6 +571,27 @@ public class RateIndicatorBFTab extends JPanel {
 
 							System.out.println("Finished in: "
 									+ RateIndicatorBFToKML.time + " msec \n");
+
+						} catch (final OutOfMemoryError e) {
+
+							SwingUtilities.invokeLater(new Runnable() {
+
+								public void run() {
+
+									e.printStackTrace();
+
+									String msg = String.format(
+											"Unexpected problem: %s", e
+													.toString());
+
+									JOptionPane.showMessageDialog(Utils
+											.getActiveFrame(), msg
+											+ "\nIncrease Java Heap Space",
+											"Error", JOptionPane.ERROR_MESSAGE,
+											errorIcon);
+
+								}
+							});
 
 						} catch (Exception e) {
 							e.printStackTrace();
