@@ -124,7 +124,7 @@ public class BayesFactorTest {
 						/ denominator;
 
 				System.out.println("Correcting for infinite bf: " + bf);
-			}
+			}// END: infinite BF check
 
 			bayesFactors.add(bf);
 		}// END: row loop
