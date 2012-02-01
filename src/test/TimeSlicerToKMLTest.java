@@ -20,7 +20,7 @@ public class TimeSlicerToKMLTest {
 			
 //			timeSlicerToKML.setAnalysisType(TimeSlicerToKML.SECOND_ANALYSIS);
 	
-//			timeSlicerToKML.setCustomSliceHeights("/home/filip/Phyleography/data/ContinuousH5N1/custom_slices");			
+//			setCustomSliceHeightsPath("/home/filip/Phyleography/data/ContinuousH5N1/custom_slices");			
 			
 			timeSlicerToKML.setMrsdString("2011-07-29 AD");
 
@@ -33,51 +33,51 @@ public class TimeSlicerToKMLTest {
 
 			timeSlicerToKML.setBurnIn(500);
 
-			timeSlicerToKML.setLocationAttName("location");
+			timeSlicerToKML.setLocationAttributeName("location");
 
-			timeSlicerToKML.setRateAttName("rate");
+			timeSlicerToKML.setRateAttributeName("rate");
 
 			timeSlicerToKML.setPrecisionAttName("precision");
 
-			timeSlicerToKML.setTrueNoise(true);
+			timeSlicerToKML.setUseTrueNoise(true);
 
 			timeSlicerToKML.setTimescaler(1);
 
 			timeSlicerToKML.setKmlWriterPath("/home/filip/Phyleography/data/ContinuousH5N1/output_custom.kml");
+			
+			timeSlicerToKML.setMinPolygonRedMapping(0);
 
-			timeSlicerToKML.setMinPolygonRedMapping(24);
+			timeSlicerToKML.setMinPolygonGreenMapping(0);
 
-			timeSlicerToKML.setMinPolygonGreenMapping(155);
+			timeSlicerToKML.setMinPolygonBlueMapping(0);
 
-			timeSlicerToKML.setMinPolygonBlueMapping(200);
+			timeSlicerToKML.setMinPolygonOpacityMapping(100);
+			
+			timeSlicerToKML.setMaxPolygonRedMapping(50);
 
-			timeSlicerToKML.setMinPolygonOpacityMapping(255);
+			timeSlicerToKML.setMaxPolygonGreenMapping(255);
 
-			timeSlicerToKML.setMaxPolygonRedMapping(25);
-
-			timeSlicerToKML.setMaxPolygonGreenMapping(12);
-
-			timeSlicerToKML.setMaxPolygonBlueMapping(56);
+			timeSlicerToKML.setMaxPolygonBlueMapping(255);
 
 			timeSlicerToKML.setMaxPolygonOpacityMapping(255);
+			
+			timeSlicerToKML.setMinBranchRedMapping(0);
 
-			timeSlicerToKML.setMaxAltitudeMapping(500000);
+			timeSlicerToKML.setMinBranchGreenMapping(0);
 
-			timeSlicerToKML.setMinBranchRedMapping(54);
-
-			timeSlicerToKML.setMinBranchGreenMapping(33);
-
-			timeSlicerToKML.setMinBranchBlueMapping(120);
+			timeSlicerToKML.setMinBranchBlueMapping(0);
 
 			timeSlicerToKML.setMinBranchOpacityMapping(255);
 
-			timeSlicerToKML.setMaxBranchRedMapping(35);
+			timeSlicerToKML.setMaxBranchRedMapping(255);
 
-			timeSlicerToKML.setMaxBranchGreenMapping(35);
+			timeSlicerToKML.setMaxBranchGreenMapping(5);
 
-			timeSlicerToKML.setMaxBranchBlueMapping(70);
+			timeSlicerToKML.setMaxBranchBlueMapping(50);
 
 			timeSlicerToKML.setMaxBranchOpacityMapping(255);
+			
+			timeSlicerToKML.setMaxAltitudeMapping(500000);
 
 			timeSlicerToKML.setBranchWidth(4);
 
@@ -95,6 +95,8 @@ public class TimeSlicerToKMLTest {
 		} catch (ImportException e) {
 			e.printStackTrace();
 		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

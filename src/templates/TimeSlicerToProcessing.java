@@ -85,7 +85,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private double startTime;
 	private double endTime;
 	private double burnIn;
-	private double HPD;
+	private double hpd;
 	private int gridSize;
 
 	private MapBackground mapBackground;
@@ -99,7 +99,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		this.analysisType = analysisType;
 	}
 
-	public void setCustomSliceHeights(String path) {
+	public void setCustomSliceHeightsPath(String path) {
 		sliceHeights = new ReadSliceHeights(path).getSliceHeights();
 	}
 
@@ -107,15 +107,15 @@ public class TimeSlicerToProcessing extends PApplet {
 		this.timescaler = timescaler;
 	}
 
-	public void setHPD(double percent) {
-		HPD = percent;
+	public void setHPD(double hpd) {
+		this.hpd = hpd;
 	}
 
-	public void setGridSize(int size) {
-		gridSize = size;
+	public void setGridSize(int gridSize) {
+		this.gridSize = gridSize;
 	}
 
-	public void setMccTreePath(String path) throws FileNotFoundException {
+	public void setTreePath(String path) throws FileNotFoundException {
 		treeImporter = new NexusImporter(new FileReader(path));
 	}
 
@@ -134,11 +134,11 @@ public class TimeSlicerToProcessing extends PApplet {
 		longitudeName = (coordinatesName + 2);
 	}
 
-	public void setRateAttName(String name) {
+	public void setRateAttributeName(String name) {
 		rateString = name;
 	}
 
-	public void setPrecisionAttName(String name) {
+	public void setPrecisionAttributeName(String name) {
 		precisionString = name;
 	}
 
@@ -146,12 +146,12 @@ public class TimeSlicerToProcessing extends PApplet {
 		numberOfIntervals = number;
 	}
 
-	public void setBurnIn(double burnInDouble) {
-		burnIn = burnInDouble;
+	public void setBurnIn(double burnIn) {
+		this.burnIn = burnIn;
 	}
 
-	public void setTrueNoise(boolean trueNoiseBoolean) {
-		useTrueNoise = trueNoiseBoolean;
+	public void setUseTrueNoise(boolean useTrueNoise) {
+		this.useTrueNoise = useTrueNoise;
 	}
 
 	public void setMinPolygonRedMapping(double min) {
@@ -307,7 +307,7 @@ public class TimeSlicerToProcessing extends PApplet {
 		}
 
 		ContourMaker contourMaker = new ContourWithSynder(x, y, gridSize);
-		ContourPath[] paths = contourMaker.getContourPaths(HPD);
+		ContourPath[] paths = contourMaker.getContourPaths(hpd);
 
 		for (ContourPath path : paths) {
 

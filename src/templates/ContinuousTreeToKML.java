@@ -103,8 +103,8 @@ public class ContinuousTreeToKML {
 		maxAltMapping = max;
 	}
 
-	public void setKmlWriterPath(String kmlpath) throws FileNotFoundException {
-		writer = new PrintWriter(kmlpath);
+	public void setKmlWriterPath(String kmlPath) throws FileNotFoundException {
+		writer = new PrintWriter(kmlPath);
 	}
 
 	public void setTreePath(String path) throws FileNotFoundException {

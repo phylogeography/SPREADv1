@@ -100,7 +100,7 @@ public class TimeSlicerToKML {
 	private TimeLine timeLine;
 	private double startTime;
 	private double endTime;
-	private double HPD;
+	private double hpd;
 	private int gridSize;
 
 	public TimeSlicerToKML() {
@@ -110,7 +110,7 @@ public class TimeSlicerToKML {
 		this.analysisType = analysisType;
 	}
 	
-	public void setCustomSliceHeights(String path) {
+	public void setCustomSliceHeightsPath(String path) {
 		sliceHeights = new ReadSliceHeights(path).getSliceHeights();
 	}
 
@@ -118,12 +118,12 @@ public class TimeSlicerToKML {
 		this.timescaler = timescaler;
 	}
 
-	public void setHPD(double percent) {
-		HPD = percent;
+	public void setHPD(double hpd) {
+		this.hpd = hpd;
 	}
 
-	public void setGridSize(int size) {
-		gridSize = size;
+	public void setGridSize(int gridSize) {
+		this.gridSize = gridSize;
 	}
 
 	public void setTreePath(String path) throws FileNotFoundException {
@@ -138,25 +138,25 @@ public class TimeSlicerToKML {
 		mrsdString = mrsd;
 	}
 
-	public void setNumberOfIntervals(int number) {
-		numberOfIntervals = number;
+	public void setNumberOfIntervals(int numberOfIntervals) {
+		this.numberOfIntervals = numberOfIntervals;
 	}
 
-	public void setBurnIn(int burnInDouble) {
-		burnIn = burnInDouble;
+	public void setBurnIn(int burnIn) {
+		this.burnIn = burnIn;
 	}
 
-	public void setTrueNoise(boolean trueNoiseBoolean) {
-		useTrueNoise = trueNoiseBoolean;
+	public void setUseTrueNoise(boolean useTrueNoise) {
+		this.useTrueNoise = useTrueNoise;
 	}
 
-	public void setLocationAttName(String name) {
+	public void setLocationAttributeName(String name) {
 		coordinatesName = name;
 		longitudeName = (coordinatesName + 2);
 		latitudeName = (coordinatesName + 1);
 	}
 
-	public void setRateAttName(String name) {
+	public void setRateAttributeName(String name) {
 		rateString = name;
 	}
 
@@ -417,7 +417,7 @@ public class TimeSlicerToKML {
 			}
 
 			ContourMaker contourMaker = new ContourWithSynder(x, y, gridSize);
-			ContourPath[] paths = contourMaker.getContourPaths(HPD);
+			ContourPath[] paths = contourMaker.getContourPaths(hpd);
 
 			int pathCounter = 1;
 			for (ContourPath path : paths) {

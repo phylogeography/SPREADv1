@@ -822,7 +822,7 @@ public class TimeSlicerTab extends JPanel {
 								} else if (analysisType == TimeSlicerToKML.SECOND_ANALYSIS) {
 
 									timeSlicerToKML
-											.setCustomSliceHeights(sliceHeightsFilename);
+											.setCustomSliceHeightsPath(sliceHeightsFilename);
 
 								} else {
 
@@ -843,18 +843,18 @@ public class TimeSlicerTab extends JPanel {
 										.valueOf(burnInParser.getText()));
 
 								timeSlicerToKML
-										.setLocationAttName(coordinatesNameParser
+										.setLocationAttributeName(coordinatesNameParser
 												.getText());
 
 								timeSlicerToKML
-										.setRateAttName(rateAttNameParser
+										.setRateAttributeName(rateAttNameParser
 												.getText());
 
 								timeSlicerToKML
 										.setPrecisionAttName(precisionAttNameParser
 												.getText());
 
-								timeSlicerToKML.setTrueNoise(trueNoiseParser
+								timeSlicerToKML.setUseTrueNoise(trueNoiseParser
 										.isSelected());
 
 								timeSlicerToKML
@@ -1012,7 +1012,7 @@ public class TimeSlicerTab extends JPanel {
 								if (analysisType == TimeSlicerToProcessing.FIRST_ANALYSIS) {
 
 									timeSlicerToProcessing
-											.setMccTreePath(treeFilename);
+											.setTreePath(treeFilename);
 
 									timeSlicerToProcessing
 											.setNumberOfIntervals(Integer
@@ -1058,7 +1058,7 @@ public class TimeSlicerTab extends JPanel {
 								} else if (analysisType == TimeSlicerToProcessing.SECOND_ANALYSIS) {
 
 									timeSlicerToProcessing
-											.setCustomSliceHeights(sliceHeightsFilename);
+											.setCustomSliceHeightsPath(sliceHeightsFilename);
 
 								} else {
 
@@ -1084,15 +1084,15 @@ public class TimeSlicerTab extends JPanel {
 												.getText());
 
 								timeSlicerToProcessing
-										.setRateAttName(rateAttNameParser
+										.setRateAttributeName(rateAttNameParser
 												.getText());
 
 								timeSlicerToProcessing
-										.setPrecisionAttName(precisionAttNameParser
+										.setPrecisionAttributeName(precisionAttNameParser
 												.getText());
 
 								timeSlicerToProcessing
-										.setTrueNoise(trueNoiseParser
+										.setUseTrueNoise(trueNoiseParser
 												.isSelected());
 
 								timeSlicerToProcessing

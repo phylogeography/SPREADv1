@@ -194,7 +194,7 @@ public class SpreadApp {
 			String helpText = "\n"
 					+ "                                       SPREAD \n"
 					+ "Spatial Phylogenetic Reconstruction of Evolutionary Dynamics \n"
-					+ "                                Version 1.0.2, 2011 \n"
+					+ "                                Version 1.0.3, 2012 \n"
 					+ "Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey \n"
 					+ "\n"
 					+ "SPREAD: www.phylogeography.org/SPREAD \n"
@@ -203,13 +203,13 @@ public class SpreadApp {
 					+ "\n"
 					+ "Citing SPREAD: "
 					+ "Bielejec F., Rambaut A., Suchard M.A & Lemey P. SPREAD: Spatial Phylogenetic Reconstruction of Evolutionary Dynamics. Bioinformatics, 2011. doi:10.1093 \n"
-					+ "\n"
-					+ "* Supported date format is YYYY-MM-DD \n"
-					+ "* Remember to set proper node attribute names \n"
-					+ "* Color pickers setup the minimal and maximal RGBA values of the colors, those later get mapped from node attribute values \n"
-					+ "* Resulting KML file is generated in the imported tree/log file directory \n"
-					+ "* You can always check the Terminal tab for what might have gone wrong with the analysis \n"
 					+ "\n";
+//					+ "* Supported date format is YYYY-MM-DD \n"
+//					+ "* Remember to set proper node attribute names \n"
+//					+ "* Color pickers setup the minimal and maximal RGBA values of the colors, those later get mapped from node attribute values \n"
+//					+ "* Resulting KML file is generated in the imported tree/log file directory \n"
+//					+ "* You can always check the Terminal tab for what might have gone wrong with the analysis \n"
+//					+ "\n";
 
 			terminalTab.setText(helpText);
 			tabbedPane.setSelectedIndex(4);
@@ -261,12 +261,6 @@ public class SpreadApp {
 
 					gui = new SpreadApp();
 					gui.launchFrame();
-
-//					if (System.getProperty("java.runtime.name").toLowerCase()
-//							.startsWith("openjdk")) {
-//						System.err
-//								.println("SPREAD is not happy about Java Runtime Environment used. We recommend running it with Oracle/Sun JRE.");
-//					}
 
 				} catch (UnsupportedClassVersionError e) {
 					
