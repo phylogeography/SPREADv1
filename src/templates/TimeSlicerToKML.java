@@ -266,6 +266,10 @@ public class TimeSlicerToKML {
 			break;
 		}
 
+		System.out.println("Using as slice times: ");
+		Utils.printArray(sliceHeights);
+		System.out.println();
+		
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
 

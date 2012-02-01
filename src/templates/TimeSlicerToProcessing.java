@@ -429,6 +429,10 @@ public class TimeSlicerToProcessing extends PApplet {
 //			break;
 		}
 
+		System.out.println("Using as slice times: ");
+		Utils.printArray(sliceHeights);
+		System.out.println();
+		
 		if (impute) {
 
 			startTime = timeLine.getStartTime();
