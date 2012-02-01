@@ -18,7 +18,7 @@ public class ReadSliceHeights extends PApplet {
 			sliceHeights[i] = Double.parseDouble(lines[i]);
 		}
 
-	}// END ReadTimeSlices
+	}// END: constructor
 
 	public double[] getSliceHeights() {
 		return sliceHeights;
