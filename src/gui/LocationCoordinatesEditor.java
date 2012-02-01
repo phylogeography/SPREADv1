@@ -139,7 +139,8 @@ public class LocationCoordinatesEditor {
 				chooser.showOpenDialog(Utils.getActiveFrame());
 				file = chooser.getSelectedFile();
 				locationsFilename = file.getAbsolutePath();
-
+				System.out.println("Opened " + locationsFilename + "\n");
+				
 				File tmpDir = chooser.getCurrentDirectory();
 
 				if (tmpDir != null) {
