@@ -88,7 +88,6 @@ public class TimeSlicerToKML {
 	private TreeImporter treesImporter;
 	private String mrsdString;
 	private int burnIn;
-	private boolean impute;
 	private boolean useTrueNoise;
 	private String coordinatesName;
 	private String longitudeName;
@@ -110,7 +109,7 @@ public class TimeSlicerToKML {
 	public void setAnalysisType(int analysisType) {
 		this.analysisType = analysisType;
 	}
-
+	
 	public void setCustomSliceHeights(String path) {
 		sliceHeights = new ReadSliceHeights(path).getSliceHeights();
 	}
@@ -145,10 +144,6 @@ public class TimeSlicerToKML {
 
 	public void setBurnIn(int burnInDouble) {
 		burnIn = burnInDouble;
-	}
-
-	public void setImpute(boolean imputeBoolean) {
-		impute = imputeBoolean;
 	}
 
 	public void setTrueNoise(boolean trueNoiseBoolean) {
@@ -277,8 +272,6 @@ public class TimeSlicerToKML {
 		int NTHREDS = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS * 2);
 
-		if (impute) {
-
 			System.out.println("Analyzing trees...");
 
 			// This is for collecting coordinates into polygons
@@ -344,8 +337,6 @@ public class TimeSlicerToKML {
 
 				polygonsStyleId++;
 			}// END: while has next
-
-		}// END: if impute
 
 		switch (analysisType) {
 		case 1:
@@ -596,9 +587,5 @@ public class TimeSlicerToKML {
 
 		return timeLine;
 	}// END: generateCustomTimeLine
-
-	public int getAnalysisType() {
-		return analysisType;
-	}
 
 }// END: class

@@ -116,7 +116,6 @@ public class TimeSlicerTab extends JPanel {
 
 	// checkboxes
 	private JCheckBox trueNoiseParser;
-	private JCheckBox imputeParser;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -160,10 +159,10 @@ public class TimeSlicerTab extends JPanel {
 
 		// Setup strings for radio buttons
 		firstAnalysis = new String("MCC tree slice heights");
-		secondAnalysis = new String("Custom slice heights"); //Custom slice heights, polygons only
+		secondAnalysis = new String("Custom slice heights");
 
 		// Setup radio buttons
-		firstAnalysisRadioButton = new JRadioButton(firstAnalysis); 
+		firstAnalysisRadioButton = new JRadioButton(firstAnalysis);
 		secondAnalysisRadioButton = new JRadioButton(secondAnalysis);
 
 		// Setup switchers
@@ -208,7 +207,6 @@ public class TimeSlicerTab extends JPanel {
 		// Setup progress bar & checkboxes
 		progressBar = new JProgressBar();
 		trueNoiseParser = new JCheckBox();
-		imputeParser = new JCheckBox();
 
 		/**
 		 * left tools pane
@@ -223,7 +221,6 @@ public class TimeSlicerTab extends JPanel {
 		generateKml.addActionListener(new ListenGenerateKml());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
 		saveProcessingPlot.addActionListener(new ListenSaveProcessingPlot());
-		imputeParser.addActionListener(new listenImputeParser());
 		polygonsMaxColorChooser
 				.addActionListener(new ListenPolygonsMaxColorChooser());
 		branchesMaxColorChooser
@@ -413,9 +410,7 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Impute / Use true noise:"));
-		imputeParser.setSelected(true);
-		tmpPanel.add(imputeParser);
+		tmpPanel.setBorder(new TitledBorder("Use true noise:"));
 		trueNoiseParser.setSelected(true);
 		tmpPanel.add(trueNoiseParser);
 		tmpPanelsHolder.add(tmpPanel);
@@ -528,13 +523,15 @@ public class TimeSlicerTab extends JPanel {
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		leftScrollPane.setMinimumSize(minimumDimension);
-		leftScrollPane.setMaximumSize(new Dimension(leftPanelWidth, leftPanelHeight));
-		
+		leftScrollPane.setMaximumSize(new Dimension(leftPanelWidth,
+				leftPanelHeight));
+
 		/**
 		 * Processing pane
 		 * */
 		timeSlicerToProcessing = new TimeSlicerToProcessing();
-		timeSlicerToProcessing.setPreferredSize(new Dimension(mapImageWidth, mapImageHeight));
+		timeSlicerToProcessing.setPreferredSize(new Dimension(mapImageWidth,
+				mapImageHeight));
 
 		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
 				"openjdk")) {
@@ -544,7 +541,7 @@ public class TimeSlicerTab extends JPanel {
 					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 			rightScrollPane.setMinimumSize(minimumDimension);
-			
+
 			SplitPane splitPane = new SplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);
@@ -557,7 +554,7 @@ public class TimeSlicerTab extends JPanel {
 					ScrollPane.SCROLLBARS_ALWAYS);
 			rightScrollPane.add(timeSlicerToProcessing);
 			rightScrollPane.setMinimumSize(minimumDimension);
-			
+
 			SplitPane splitPane = new SplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					leftScrollPane, rightScrollPane);
 			splitPane.setDividerLocation(leftPanelWidth);
@@ -567,23 +564,6 @@ public class TimeSlicerTab extends JPanel {
 		}
 
 	}// END: TimeSlicerTab
-
-	private class listenImputeParser implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-
-			if (imputeParser.isSelected()) {
-				trueNoiseParser.setEnabled(true);
-				rateAttNameParser.setEnabled(true);
-				precisionAttNameParser.setEnabled(true);
-
-			} else {
-				trueNoiseParser.setEnabled(false);
-				rateAttNameParser.setEnabled(false);
-				precisionAttNameParser.setEnabled(false);
-
-			}
-		}
-	}
 
 	class ChooseAnalysisTypeListener implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
@@ -844,6 +824,11 @@ public class TimeSlicerTab extends JPanel {
 									timeSlicerToKML
 											.setCustomSliceHeights(sliceHeightsFilename);
 
+								} else {
+
+									throw new RuntimeException(
+											"Unknown analysis type selected");
+
 								}
 
 								timeSlicerToKML.setTreesPath(treesFilename);
@@ -870,9 +855,6 @@ public class TimeSlicerTab extends JPanel {
 												.getText());
 
 								timeSlicerToKML.setTrueNoise(trueNoiseParser
-										.isSelected());
-
-								timeSlicerToKML.setImpute(imputeParser
 										.isSelected());
 
 								timeSlicerToKML
@@ -1078,6 +1060,11 @@ public class TimeSlicerTab extends JPanel {
 									timeSlicerToProcessing
 											.setCustomSliceHeights(sliceHeightsFilename);
 
+								} else {
+
+									throw new RuntimeException(
+											"Unknown analysis type selected");
+
 								}
 
 								timeSlicerToProcessing
@@ -1107,9 +1094,6 @@ public class TimeSlicerTab extends JPanel {
 								timeSlicerToProcessing
 										.setTrueNoise(trueNoiseParser
 												.isSelected());
-
-								timeSlicerToProcessing.setImpute(imputeParser
-										.isSelected());
 
 								timeSlicerToProcessing
 										.setMrsdString(dateSpinner.getValue()

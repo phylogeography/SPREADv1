@@ -14,14 +14,18 @@ public class TimeSlicerToKMLTest {
 
 		try {
 
-			timeSlicerToKML.setAnalysisType(TimeSlicerToKML.SECOND_ANALYSIS);
-
+			timeSlicerToKML.setAnalysisType(TimeSlicerToKML.FIRST_ANALYSIS);
+			
+			timeSlicerToKML.setTreePath("/home/filip/Phyleography/data/ContinuousH5N1/HA_alignedEd_diff_gammaRRW_MCC.tre");
+			
+//			timeSlicerToKML.setAnalysisType(TimeSlicerToKML.SECOND_ANALYSIS);
+	
+//			timeSlicerToKML.setCustomSliceHeights("/home/filip/Phyleography/data/ContinuousH5N1/custom_slices");			
+			
 			timeSlicerToKML.setMrsdString("2011-07-29 AD");
 
-			timeSlicerToKML.setCustomSliceHeights("/home/filip/sliceTimes");
-
 			timeSlicerToKML
-					.setTreesPath("/home/filip/WNV_relaxed_geo_gamma.trees");
+					.setTreesPath("/home/filip/Phyleography/data/ContinuousH5N1/HA_alignedEd_diff_gammaRRW.trees");
 
 			timeSlicerToKML.setHPD(0.80);
 
@@ -37,11 +41,9 @@ public class TimeSlicerToKMLTest {
 
 			timeSlicerToKML.setTrueNoise(true);
 
-			timeSlicerToKML.setImpute(true);
-
 			timeSlicerToKML.setTimescaler(1);
 
-			timeSlicerToKML.setKmlWriterPath("/home/filip/output.kml");
+			timeSlicerToKML.setKmlWriterPath("/home/filip/Phyleography/data/ContinuousH5N1/output_custom.kml");
 
 			timeSlicerToKML.setMinPolygonRedMapping(24);
 
@@ -91,10 +93,8 @@ public class TimeSlicerToKMLTest {
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		} catch (ImportException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

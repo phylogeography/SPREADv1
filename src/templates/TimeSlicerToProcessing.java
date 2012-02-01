@@ -34,7 +34,6 @@ public class TimeSlicerToProcessing extends PApplet {
 	private int analysisType;
 	public final static int FIRST_ANALYSIS = 1;
 	public final static int SECOND_ANALYSIS = 2;
-//	public final static int THIRD_ANALYSIS = 3;
 
 	// how many millisecond one day holds
 	private final int DayInMillis = 86400000;
@@ -79,7 +78,6 @@ public class TimeSlicerToProcessing extends PApplet {
 	private String latitudeName;
 	private String rateString;
 	private boolean useTrueNoise;
-	private boolean impute;
 	private String mrsdString;
 	private ThreadLocalSpreadDate mrsd;
 	private double timescaler;
@@ -95,7 +93,7 @@ public class TimeSlicerToProcessing extends PApplet {
 	private float minY, maxY;
 
 	public TimeSlicerToProcessing() {
-	}// END: TimeSlicerToProcessing()
+	}// END: constructor
 
 	public void setAnalysisType(int analysisType) {
 		this.analysisType = analysisType;
@@ -154,10 +152,6 @@ public class TimeSlicerToProcessing extends PApplet {
 
 	public void setTrueNoise(boolean trueNoiseBoolean) {
 		useTrueNoise = trueNoiseBoolean;
-	}
-
-	public void setImpute(boolean imputeBoolean) {
-		impute = imputeBoolean;
 	}
 
 	public void setMinPolygonRedMapping(double min) {
@@ -245,14 +239,11 @@ public class TimeSlicerToProcessing extends PApplet {
 		noLoop();
 		smooth();
 		mapBackground.drawMapBackground();
-		if (impute) {
 			System.out.println("Drawing polygons...");
 			drawPolygons();
-		}
 
 		switch (analysisType) {
 		case 1:
-//		case 3:
 			System.out.println("Drawing branches...");
 			drawBranches();
 			break;
@@ -423,18 +414,12 @@ public class TimeSlicerToProcessing extends PApplet {
 		case 2:
 			timeLine = generateCustomTimeLine(sliceHeights);
 			break;
-//		case 3:
-//			tree = (RootedTree) treeImporter.importNextTree();
-//			timeLine = generateCustomTimeLine(sliceHeights);
-//			break;
 		}
 
 		System.out.println("Using as slice times: ");
 		Utils.printArray(sliceHeights);
 		System.out.println();
 		
-		if (impute) {
-
 			startTime = timeLine.getStartTime();
 			endTime = timeLine.getEndTime();
 
@@ -483,8 +468,6 @@ public class TimeSlicerToProcessing extends PApplet {
 				System.out.println("Analyzed " + (int) (readTrees - burnIn)
 						+ " trees");
 			}
-
-		}// END: if impute
 
 	}// END: AnalyzeTrees
 
