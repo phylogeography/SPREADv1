@@ -1,4 +1,4 @@
-package test;
+package main;
 
 import gui.InteractiveTableModel;
 import gui.LocationCoordinatesEditor;

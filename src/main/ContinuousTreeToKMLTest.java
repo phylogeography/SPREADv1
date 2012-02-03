@@ -1,4 +1,4 @@
-package test;
+package main;
 
 import templates.ContinuousTreeToKML;
 
