@@ -51,7 +51,9 @@ boolean fromJar = true
 
 h1. TODO
 
-* get rid of impute argument from time slicer templates and GUI
+* less dependencies:
+ - add colorpicker to sources
+ - add kmlframework to sources (if licenses are compatible) 
 * improve custom slice heights
 * Add command line interface for kml templates 
 * Templates: collect data into ArrayList<Layer>, then pass it to KML Generator or Processing canvas. This way all the exceptions are caught beforehand.

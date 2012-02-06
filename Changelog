@@ -1,0 +1,8 @@
+February 4, 2012: Spread version 1.0.3 released
+
+* The results of Bayes Factor test are now presented in ascending order, both in the Terminal window and in the KML output.
+* The weights used in Time Slicer template are now printed to the Terminal window.
+* The tool panes size can be adjusted for viewing the inner Spread maps on smaller screens. 
+* Made several other minor changes.
+
+
