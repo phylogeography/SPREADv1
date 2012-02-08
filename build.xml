@@ -59,6 +59,11 @@
             <include name="**/*.png" />
         </fileset>
     </copy>
+    
+<!--copy map background to templates dir-->
+            <copy file="src/templates/world_map.png" todir="classes/templates">
+        </copy>
+    
 </target>
 
 <target name="clean">
