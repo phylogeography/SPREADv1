@@ -7,10 +7,10 @@
 
 <target name="help">
     <echo message="Common build targets:" />
-    <echo message="jar - Builds spread.jar" />
+    <echo message="jar - Builds spread-phy.jar" />
     <echo message="build - Same as clean+jar" />
-    <echo message="compile - Compiles TestlabOutbreak classes" />
-    <echo message="clean - Remove all *.class and spread.jar" />
+    <echo message="compile - Compiles spread-phy classes" />
+    <echo message="clean - Remove all *.class and spread-phy.jar" />
 </target>
 
 <property file="build.properties"/>
@@ -28,7 +28,7 @@
 
 <target name="jar" depends="compile">
 <mkdir dir="dist"/>
-    <jar jarfile="dist/spread.jar">
+    <jar jarfile="dist/spread-phy.jar">
      <manifest>
 <attribute name="Built-By" value="${user.name}" />
 <attribute name="Main-Class" value="${main_class_SpreadApp}" />

@@ -9,7 +9,7 @@
 	<property environment="env"/>
 
 
-    <property name="version" value="1.0" />
+    <property name="version" value="1.0.3" />
     <property name="release_dir" value="." />
     <property name="name" value="SPREAD" />
 
@@ -25,6 +25,14 @@
     <property name="Linux_package_dir" value="${Linux_dir}/${name}_v${version}" />
     <property name="Windows_package_dir" value="${Windows_dir}/${name} v${version}" />
 
+<!--Copy to common directory-->
+        <copy file="../README.textile" todir="${release_dir}/common">
+        </copy>
+        <copy file="../LICENSE" todir="${release_dir}/common">
+        </copy>
+                <copy file="../Changelog" todir="${release_dir}/common">
+        </copy>
+
     <!-- Need to either install Launch4j under {BEAST workspace}/${release}
                  or install it in the default directory and change the location of launch4j.dir -->
     <target name="windows" description="release Windows version">
@@ -37,7 +45,7 @@
         <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"
             classpath="${launch4j.dir}/launch4j.jar :${launch4j.dir}/lib/xstream.jar" />
 
-        <copy file="${dist}/spread.jar" todir="${Windows_package_dir}/lib"/>
+        <copy file="${dist}/spread-phy.jar" todir="${Windows_package_dir}/lib"/>
         <copy todir="${Windows_package_dir}/lib">
             <fileset dir="${Windows_dir}/lib"/>
         </copy>
@@ -46,7 +54,7 @@
         </copy>
 
         <launch4j configFile="${Windows_dir}/SPREAD_launch4j.xml"
-                  jar="${dist}/spread.jar"
+                  jar="${dist}/spread-phy.jar"
                   outfile="${Windows_package_dir}/${name} v${version}.exe"
                   fileVersion="${version}.0.0"
                   txtFileVersion="${version}"
@@ -70,7 +78,7 @@
         </copy>
 
         <copy file="${Linux_dir}/icons/spread.png" todir="${Linux_package_dir}/images"/>
-        <copy file="${dist}/spread.jar" todir="${Linux_package_dir}/lib"/>
+        <copy file="${dist}/spread-phy.jar" todir="${Linux_package_dir}/lib"/>
         <copy todir="${Linux_package_dir}/lib">
             <fileset dir="${Linux_dir}/lib"/>
         </copy>
@@ -106,23 +114,17 @@
                         arguments=""
                         version="${version}"
                         infostring="${name} v${version}, Copyright 2011, Filip Bielejec, Andrew Rambaut, Marc A. Suchard &amp; Philippe Lemey"
-                        bundleid="spread" >
+                        bundleid="spread-phy" >
             <javaproperty name="apple.laf.useScreenMenuBar" value="true"/>
             <jarfileset dir="${dist}">
-                <include name="**/spread.jar"/>
+                <include name="**/spread-phy.jar"/>
             </jarfileset>
             <jarfileset dir="${Mac_dir}/lib">
                 <include name="**/quaqua.jar"/>
             </jarfileset>
             <jarfileset dir="${Mac_dir}/lib">
                 <include name="libquaqua*.jnilib"/>
-            </jarfileset>
-            <!--
-            <documenttype name="SPREAD file"
-                          extensions="spread"
-                          iconFile="${Mac_dir}/icons/SPREADDocIcon.icns"
-                          role="Editor"/>
-             -->             
+            </jarfileset>          
         </jarbundler>
 
         <echo message="Building disk image." />
