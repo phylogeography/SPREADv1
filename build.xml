@@ -39,7 +39,7 @@
         <zipgroupfileset dir="lib" includes="jebl.jar"/>
         <zipgroupfileset dir="lib" includes="colt.jar"/>
         <zipgroupfileset dir="lib" includes="org.boehn.kmlframework_20090320.jar"/>
-        <zipgroupfileset dir="lib" includes="ColorPicker.jar"/>
+<!--        <zipgroupfileset dir="lib" includes="ColorPicker.jar"/>-->
         <!--
         <zipgroupfileset dir="lib" includes="quaqua.jar"/>
         -->
