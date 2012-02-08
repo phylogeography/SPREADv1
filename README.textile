@@ -51,7 +51,7 @@ boolean fromJar = true
 
 h1. TODO
 
-* rename to spread-phy (buildfiles, repositories, release)
+* rename to spread-phy (repositories, links, release)
 * less dependencies:
  - add colorpicker to sources
  - add kmlframework to sources (if licenses are compatible) 
