@@ -1,4 +1,10 @@
-package gui;
+package app;
+
+import gui.ContinuousModelTab;
+import gui.DiscreteModelTab;
+import gui.RateIndicatorBFTab;
+import gui.TerminalTab;
+import gui.TimeSlicerTab;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

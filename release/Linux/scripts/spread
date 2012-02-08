@@ -1,4 +1,28 @@
 #!/bin/sh
 
-java -Xms64m -Xmx512m -jar lib/spread.jar $*
+if [ -z "$SPREAD" ]; then
+	## resolve links - $0 may be a link to application
+	PRG="$0"
+
+	# need this for relative symlinks
+	while [ -h "$PRG" ] ; do
+	    ls=`ls -ld "$PRG"`
+	    link=`expr "$ls" : '.*-> \(.*\)$'`
+	    if expr "$link" : '/.*' > /dev/null; then
+		PRG="$link"
+	    else
+		PRG="`dirname "$PRG"`/$link"
+	    fi
+	done
+
+	# make it fully qualified
+	saveddir=`pwd`
+	SPREAD0=`dirname "$PRG"`/..
+	SPREAD=`cd "$SPREAD0" && pwd`
+	cd "$saveddir"
+fi
+
+
+SPREAD_LIB=$SPREAD/lib
+java -Xms64m -Xmx1024m -jar $SPREAD_LIB/spread-phy.jar $*
 

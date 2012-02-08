@@ -1,6 +1,6 @@
 SPREAD-phy version 1.0.4rc-1
 
-* We prepend 'phy' for phylogeny to the software name to conform to Debian naming convention.
+* We prepend 'phy' for phylogeny to the software name to conform with Debian naming convention.
 
 
 February 4, 2012: SPREAD version 1.0.3 released
