@@ -66,6 +66,10 @@
         </zip>
 
         <echo message="Windows version release is finished." />
+        
+         <echo message="Cleaning up." />
+         <delete dir="${Windows_package_dir}" />
+        
     </target>
 
     <target name="linux" description="release Linux/Unix version">
@@ -91,6 +95,10 @@
         </tar>
 
         <echo message="Linux/Unix version release is finished." />
+        
+        <echo message="Cleaning up." />
+         <delete dir="${Linux_package_dir}" />
+        
     </target>
 
     <target name="mac" description="release Mac version">
@@ -143,6 +151,10 @@
         </exec>
 
         <echo message="Mac version release is finished." />
+        
+         <echo message="Cleaning up." />
+         <delete dir="${Mac_package_dir}" />
+        
     </target>
 
 </project>
