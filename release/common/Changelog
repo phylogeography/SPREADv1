@@ -1,9 +1,11 @@
 SPREAD-phy version 1.0.4rc-1
+----------------------------
 
-* We prepend 'phy' for phylogeny to the software name to conform with Debian naming convention.
-
+* Name change: prepended 'phy' for phylogeny to the software name to conform with Debian naming convention.
+* SPREAD-phy now has it's own build system
 
 February 4, 2012: SPREAD version 1.0.3 released
+-----------------------------------------------
 
 * The results of Bayes Factor test are now presented in ascending order, both in the Terminal window and in the KML output.
 * The weights used in Time Slicer template are now printed to the Terminal window.

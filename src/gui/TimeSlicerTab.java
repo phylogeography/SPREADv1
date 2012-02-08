@@ -34,8 +34,7 @@ import templates.TimeSlicerToKML;
 import templates.TimeSlicerToProcessing;
 import utils.Utils;
 import checks.TimeSlicerSanityCheck;
-
-import com.bric.swing.ColorPicker;
+import colorpicker.swing.ColorPicker;
 
 @SuppressWarnings("serial")
 public class TimeSlicerTab extends JPanel {

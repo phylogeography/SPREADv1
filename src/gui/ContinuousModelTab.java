@@ -30,8 +30,7 @@ import templates.ContinuousTreeToProcessing;
 import templates.MapBackground;
 import utils.Utils;
 import checks.ContinuousSanityCheck;
-
-import com.bric.swing.ColorPicker;
+import colorpicker.swing.ColorPicker;
 
 @SuppressWarnings("serial")
 public class ContinuousModelTab extends JPanel {

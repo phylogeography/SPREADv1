@@ -30,8 +30,7 @@ import templates.DiscreteTreeToProcessing;
 import templates.MapBackground;
 import utils.Utils;
 import checks.DiscreteSanityCheck;
-
-import com.bric.swing.ColorPicker;
+import colorpicker.swing.ColorPicker;
 
 @SuppressWarnings("serial")
 public class DiscreteModelTab extends JPanel {

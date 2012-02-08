@@ -29,8 +29,7 @@ import templates.MapBackground;
 import templates.RateIndicatorBFToKML;
 import templates.RateIndicatorBFToProcessing;
 import utils.Utils;
-
-import com.bric.swing.ColorPicker;
+import colorpicker.swing.ColorPicker;
 
 @SuppressWarnings("serial")
 public class RateIndicatorBFTab extends JPanel {
