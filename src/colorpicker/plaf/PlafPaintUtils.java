@@ -148,7 +148,7 @@ public class PlafPaintUtils {
 	}
 	
 	/** The table used to store vertical gradients. */
-	private static Hashtable verticalGradients;
+	private static Hashtable<String, Paint> verticalGradients;
 	
 	/** Create a vertical gradient.  This gradient is stored in a
 	 * table and reused throughout the rest of this session.
@@ -165,7 +165,7 @@ public class PlafPaintUtils {
 			float[] positions,
 			Color[] colors) {
 		if(verticalGradients==null) {
-			verticalGradients = new Hashtable();
+			verticalGradients = new Hashtable<String, Paint>();
 		}
 		
 		String key = name+" "+height+" "+y;
@@ -215,10 +215,10 @@ public class PlafPaintUtils {
 		);
 	}
 
-	private static Hashtable checkers;
+	private static Hashtable<Integer, TexturePaint> checkers;
 	public static TexturePaint getCheckerBoard(int checkerSize) {
 		if(checkers==null)
-			checkers = new Hashtable();
+			checkers = new Hashtable<Integer, TexturePaint>();
 		Integer key = new Integer(checkerSize);
 		TexturePaint paint = (TexturePaint)checkers.get(key);
 		if(paint==null) {

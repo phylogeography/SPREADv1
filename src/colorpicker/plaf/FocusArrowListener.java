@@ -75,7 +75,7 @@ public class FocusArrowListener extends KeyAdapter {
 		if(dx==0 && dy==0) //this would result in an infinite loop
 			throw new IllegalArgumentException("dx ("+dx+") and ("+dy+") cannot both be zero");
 		
-		Set focusableComponents = getFocusableComponents(src);
+		Set<Component> focusableComponents = getFocusableComponents(src);
 		
 		int x = src.getWidth()/2;
 		int y = src.getHeight()/2;
@@ -124,8 +124,8 @@ public class FocusArrowListener extends KeyAdapter {
 	 * @param currentFocusOwner the current focus owner.
 	 * @return all the JComponents that can receive the focus.
 	 */
-	public static Set getFocusableComponents(Component currentFocusOwner) {
-		HashSet set = new HashSet();
+	public static Set<Component> getFocusableComponents(Component currentFocusOwner) {
+		HashSet<Component> set = new HashSet<Component>();
 		set.add(currentFocusOwner);
 
         Container rootAncestor = currentFocusOwner.getFocusCycleRootAncestor();
@@ -142,7 +142,7 @@ public class FocusArrowListener extends KeyAdapter {
             FocusTraversalPolicy policy =
                 rootAncestor.getFocusTraversalPolicy();
             Component toFocus = policy.getComponentAfter(rootAncestor, comp);
-            final Component startingPoint = currentFocusOwner;
+//            final Component startingPoint = currentFocusOwner;
             
             while(toFocus!=null && set.contains(toFocus)==false) {
             	set.add(toFocus);

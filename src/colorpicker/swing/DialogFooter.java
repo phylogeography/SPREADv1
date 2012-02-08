@@ -774,7 +774,7 @@ public class DialogFooter extends JPanel {
 				((JButton)dismissControls[a]).addActionListener(innerActionListener);
 			} else {
 				try {
-					Class cl = dismissControls[a].getClass();
+					Class<? extends JComponent> cl = dismissControls[a].getClass();
 					Method m = cl.getMethod("addActionListener", new Class[] {ActionListener.class});
 					m.invoke(dismissControls[a], new Object[] {innerActionListener});
 				} catch(Throwable t) {
@@ -831,14 +831,14 @@ public class DialogFooter extends JPanel {
 		return b.booleanValue();
 	}
 	
-	private Vector listeners;
+	private Vector<ActionListener> listeners;
 	
 	/** Adds an <code>ActionListener</code>.
 	 * 
 	 * @param l this listener will be notified when a <code>dismissControl</code> is activated.
 	 */
 	public void addActionListener(ActionListener l) {
-		if(listeners==null) listeners = new Vector();
+		if(listeners==null) listeners = new Vector<ActionListener>();
 		if(listeners.contains(l))
 			return;
 		listeners.add(l);
