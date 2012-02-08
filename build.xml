@@ -3,7 +3,7 @@
 
 <property name="build.sysclasspath" value="last"/>
 
-<property name="main_class_SpreadApp" value="gui.SpreadApp" />
+<property name="main_class_SpreadApp" value="app.SpreadApp" />
 
 <target name="help">
     <echo message="Common build targets:" />
