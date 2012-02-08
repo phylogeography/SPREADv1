@@ -40,7 +40,6 @@ import javax.swing.plaf.basic.BasicSliderUI;
 import colorpicker.swing.ColorPicker;
 import colorpicker.swing.ColorPickerPanel;
 
-
 /** This is a SliderUI designed specifically for the
  * <code>ColorPicker</code>.
  * 

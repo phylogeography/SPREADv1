@@ -75,7 +75,7 @@ public class ColorPicker extends JPanel {
 	private static final long serialVersionUID = 3L;
 	
 	/** The localized strings used in this (and related) panel(s). */
-	protected static ResourceBundle strings = ResourceBundle.getBundle("swing.resources.ColorPicker");
+	protected static ResourceBundle strings = ResourceBundle.getBundle("colorpicker.swing.resources.ColorPicker");
 	
 	/** This creates a modal dialog prompting the user to select a color.
 	 * <P>This uses a generic dialog title: "Choose a Color", and does not include opacity.

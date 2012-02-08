@@ -149,7 +149,7 @@ public class DialogFooter extends JPanel {
 	private static KeyStroke commandPeriodKey = KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 
 	/** The localized strings used in dialogs. */
-	public static ResourceBundle strings = ResourceBundle.getBundle("swing.resources.DialogFooter");
+	public static ResourceBundle strings = ResourceBundle.getBundle("colorpicker.swing.resources.DialogFooter");
 	
 	/** This is the client property of buttons created in static methods by this class. */
 	public static String PROPERTY_OPTION = "DialogFooter.propertyOption";

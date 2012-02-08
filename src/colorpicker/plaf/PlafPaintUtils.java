@@ -36,7 +36,6 @@ import javax.swing.UIManager;
 
 import colorpicker.util.JVM;
 
-
 /** Some static methods for some common painting functions.
  *
  * @author Jeremy Wood

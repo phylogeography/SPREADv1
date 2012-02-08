@@ -49,17 +49,27 @@
 <target name="compile">
     <mkdir dir="classes"/>
     <mkdir dir="classes/icons"/>
+    <mkdir dir="classes/colorpicker/swing/resources"/>
     <javac
         source="1.6" target="1.6"   
         srcdir="src"
         destdir="classes"
         classpathref="classpath"/>
+
+<!--copy icons to icons dir-->
     <copy todir="classes/icons">
         <fileset dir="src/icons">
             <include name="**/*.png" />
         </fileset>
     </copy>
     
+<!--copy colorpicker resources-->
+    <copy todir="classes/colorpicker/swing/resources">
+        <fileset dir="src/colorpicker/swing/resources">
+            <include name="**/*.properties" />
+        </fileset>
+    </copy>
+
 <!--copy map background to templates dir-->
             <copy file="src/templates/world_map.png" todir="classes/templates">
         </copy>

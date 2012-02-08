@@ -11,7 +11,7 @@ public class MapBackground {
 	public static int mapImageWidth = 2048;
 	public static int mapImageHeight = 1025;
 
-	boolean fromJar = true;
+	boolean fromJar = false;
 
 	public MapBackground(PApplet p) {
 
