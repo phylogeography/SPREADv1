@@ -3,7 +3,8 @@ SPREAD-phy version 1.0.4rc-1
 
 * Name change: prepended 'phy' for phylogeny to the software name to conform with Debian naming convention.
 * SPREAD-phy now has it's own build system
-* removed ColorPicker dependency by combining the original code. This code (in  the colorpicker package) is released under Modified BSD license.
+* removed ColorPicker dependency by combining the original code. This code (in the colorpicker package) is released under 
+  Modified BSD license.
   
 
 February 4, 2012: SPREAD version 1.0.3 released

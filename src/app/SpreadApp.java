@@ -33,6 +33,13 @@ import utils.ExceptionHandler;
 
 public class SpreadApp {
 
+    /**
+     * Version string: assumed to be in format x.x.x
+     */
+    private static final String VERSION = "1.3.0";
+
+    private static final String DATE_STRING = "2012";
+
 	// Dimension
 	private Dimension dimension;
 
@@ -199,9 +206,9 @@ public class SpreadApp {
 		public void actionPerformed(ActionEvent ev) {
 
 			String helpText = "\n"
-					+ "                                       SPREAD \n"
+					+ "\t SPREAD-Phy \n"
 					+ "Spatial Phylogenetic Reconstruction of Evolutionary Dynamics \n"
-					+ "                                Version 1.0.3, 2012 \n"
+					+ " \t Version " + VERSION + ", " + DATE_STRING + "\n"
 					+ "Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey \n"
 					+ "\n"
 					+ "SPREAD: www.phylogeography.org/SPREAD \n"
@@ -211,12 +218,6 @@ public class SpreadApp {
 					+ "Citing SPREAD: "
 					+ "Bielejec F., Rambaut A., Suchard M.A & Lemey P. SPREAD: Spatial Phylogenetic Reconstruction of Evolutionary Dynamics. Bioinformatics, 2011. doi:10.1093 \n"
 					+ "\n";
-//					+ "* Supported date format is YYYY-MM-DD \n"
-//					+ "* Remember to set proper node attribute names \n"
-//					+ "* Color pickers setup the minimal and maximal RGBA values of the colors, those later get mapped from node attribute values \n"
-//					+ "* Resulting KML file is generated in the imported tree/log file directory \n"
-//					+ "* You can always check the Terminal tab for what might have gone wrong with the analysis \n"
-//					+ "\n";
 
 			terminalTab.setText(helpText);
 			tabbedPane.setSelectedIndex(4);
