@@ -116,7 +116,11 @@ public class LocationCoordinatesEditor {
 		JScrollPane scrollPane = new JScrollPane(table,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
+		RowNumberTable rowNumberTable = new RowNumberTable(table);
+		scrollPane.setRowHeaderView(rowNumberTable);
+		scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, rowNumberTable
+				.getTableHeader());
+		
 		// Setup window
 		owner = Utils.getActiveFrame();
 		window = new JDialog(owner, "Setup location coordinates...");
@@ -347,7 +351,7 @@ public class LocationCoordinatesEditor {
 
 			// Display Frame
 			window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-			window.setSize(new Dimension(300, 300));
+			window.setSize(new Dimension(350, 300));
 			window.setMinimumSize(new Dimension(100, 100));
 			window.setResizable(true);
 			window.setVisible(true);
