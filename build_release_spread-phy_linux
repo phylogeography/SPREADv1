@@ -1,0 +1,11 @@
+#!/bin/sh
+
+##########################
+# src/app/SpreadApp.java
+# release/build.xml
+# Changelog
+# src/templates/MapBackground.java
+
+ant jar &&
+cd release/ &&
+ant linux

@@ -51,11 +51,11 @@ boolean fromJar = true
 
 h1. TODO
 
-* rename to spread-phy (repositories, links, release)
-* less dependencies:
- - add colorpicker to sources
- - add kmlframework to sources (if licenses are compatible) 
-* improve custom slice heights
+* Rename to spread-phy (repositories, links, release)
+* Progress bar for tree slicer (reading trees, assume 10 000 trees)
+* Less dependencies:
+ - add kmlframework to sources (if licenses compatible) 
+* Improve custom slice heights
 * Add command line interface for kml templates 
 * Templates: collect data into ArrayList<Layer>, then pass it to KML Generator or Processing canvas. This way all the exceptions are caught beforehand.
 * Fix large scaling factor issues

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+ant jar &&
+cd release/ &&
+ant mac

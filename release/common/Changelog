@@ -1,10 +1,11 @@
-SPREAD-phy version 1.0.4rc-1
-----------------------------
+April 2, 2012: SPREAD-phy version 1.0.4 released
+------------------------------------------------
 
 * Name change: prepended 'phy' for phylogeny to the software name to conform with Debian naming convention.
 * SPREAD-phy now has it's own build system
-* removed ColorPicker dependency by combining the original code. This code (in  the colorpicker package) is released under Modified BSD license.
-  
+* Removed ColorPicker dependency by combining the original code. This code (in the colorpicker package) is released under 
+  Modified BSD license.
+* Row numbers in location coordinates editor  
 
 February 4, 2012: SPREAD version 1.0.3 released
 -----------------------------------------------
@@ -13,4 +14,7 @@ February 4, 2012: SPREAD version 1.0.3 released
 * The weights used in Time Slicer template are now printed to the Terminal window.
 * The tool panes size can be adjusted for viewing the inner Spread maps on smaller screens. 
 * Made several other minor changes.
+
+
+
 

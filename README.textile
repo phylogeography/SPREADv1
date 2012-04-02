@@ -51,7 +51,6 @@ boolean fromJar = true
 
 h1. TODO
 
-* Rename to spread-phy (repositories, links, release)
 * Progress bar for tree slicer (reading trees, assume 10 000 trees)
 * Less dependencies:
  - add kmlframework to sources (if licenses compatible) 
