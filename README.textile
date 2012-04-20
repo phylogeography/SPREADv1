@@ -51,11 +51,8 @@ boolean fromJar = true
 
 h1. TODO
 
-* GNU Linux/UNIX version: SPREAD-phy_v1.0.4.tgz 
-* Mac OS X version: SPREAD-phy_v1.0.4.dmg 
-* Windows version: SPREAD-phy_v1.0.4.zip 
-* Runnable jar: spread-phy-1.0.4.jar
 * Progress bar for tree slicer (reading trees, assume 10 000 trees)
+* Include a column for indicator value as well in the terminal output
 * Less dependencies:
  - add kmlframework to sources (if licenses compatible) 
 * Improve custom slice heights

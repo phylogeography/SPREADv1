@@ -18,9 +18,10 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private InteractiveTableModel table;
 	private ReadLog indicators;
 	private double bfCutoff;
+	private MapBackground mapBackground;
 	private ArrayList<Double> bayesFactors;
 	private ArrayList<String> combin;
-	private MapBackground mapBackground;
+	private BayesFactorTest bfTest;
 	// private int numberOfIntervals;
 
 	private double minBranchRedMapping;
@@ -139,7 +140,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		noLoop();
 		smooth();
-		ComputeBFTest();
+		computeBFTest();
 		mapBackground.drawMapBackground();
 		DrawPlaces();
 		DrawRates();
@@ -273,17 +274,18 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		strokeWeight((float) branchWidth);
 
+		Integer[] sortOrder = bfTest.getSortOrder();
 		float bfMax = (float) Math.log(Utils.getListMax(bayesFactors));
 		int index = 0;
 		
 		for (int i = 0; i < combin.size(); i++) {
 
-			if (bayesFactors.get(i) > bfCutoff) {
+			if (bayesFactors.get(sortOrder[i]) > bfCutoff) {
 
 				/**
 				 * Color mapping
 				 * */
-				float bf = (float) Math.log(bayesFactors.get(i));
+				float bf = (float) Math.log(bayesFactors.get(sortOrder[i]));
 
 				int red = (int) Utils.map(bf, 0, bfMax, minBranchRedMapping,
 						maxBranchRedMapping);
@@ -299,8 +301,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 				stroke(red, green, blue, alpha);
 
-				String state = combin.get(i).split(":")[1];
-				String parentState = combin.get(i).split(":")[0];
+				String state = combin.get(sortOrder[i]).split(":")[1];
+				String parentState = combin.get(sortOrder[i]).split(":")[0];
 
 				float longitude = Utils.matchStateCoordinate(table, state, 2);
 				float latitude = Utils.matchStateCoordinate(table, state, 1);
@@ -330,7 +332,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 				}// END: numberOfIntervals loop
 
-				System.out.println(index + "\t" + " BF=" + bayesFactors.get(i) + " : between "
+				System.out.println(index + "\t" + " BF=" + bayesFactors.get(sortOrder[i]) + " : between "
 						+ parentState + " (long: " + parentLongitude
 						+ "; lat: " + parentLatitude + ") and " + state
 						+ " (long: " + longitude + "; lat: " + latitude + ")");
@@ -340,15 +342,17 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		}// END: ArrayList loop
 	}// END: DrawRatesSlices
 
-	private void ComputeBFTest() {
+	private void computeBFTest() {
 
 		combin = new ArrayList<String>();
 		bayesFactors = new ArrayList<Double>();
 
-		new BayesFactorTest(table, meanPoissonPriorSwitcher, meanPoissonPrior,
+		bfTest = new BayesFactorTest(table, meanPoissonPriorSwitcher, meanPoissonPrior,
 				poissonPriorOffsetSwitcher, poissonPriorOffset, indicators,
-				combin, bayesFactors).ComputeBFTest();
+				combin, bayesFactors);
+		
+		bfTest.ComputeBFTest();
 
-	}
+	}// END: computeBFTest
 
 }// END: RateIndicatorBFToProcessing class

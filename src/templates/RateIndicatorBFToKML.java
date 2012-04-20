@@ -38,7 +38,7 @@ public class RateIndicatorBFToKML {
 	private double bfCutoff;
 	private ArrayList<Double> bayesFactors;
 	private ArrayList<String> combin;
-private BayesFactorTest bfTest;
+	private BayesFactorTest bfTest;
 	
 	private double minBranchRedMapping;
 	private double minBranchGreenMapping;

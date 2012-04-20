@@ -167,6 +167,7 @@ public class ContinuousTreeToProcessing extends PApplet {
 	// ////////////////
 	// ---BRANCHES---//
 	// ////////////////
+	
 	private void drawBranches() {
 
 		strokeWeight((float) branchWidth);
