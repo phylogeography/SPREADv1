@@ -230,7 +230,8 @@ public class RateIndicatorBFToKML {
 				double bfMax = Math.log(Utils.getListMax(bayesFactors));
 
 				int branchStyleId = 1;
-
+				int index = 0;
+				
 				for (int i = 0; i < combin.size(); i++) {
 
 					if (bayesFactors.get(i) > bfCutoff) {
@@ -273,8 +274,7 @@ public class RateIndicatorBFToKML {
 						float parentLatitude = Utils.matchStateCoordinate(
 								table, parentState, 1);
 
-						ratesLayer
-								.addItem(new Line(combin.get(i) + ", BF="
+						ratesLayer.addItem(new Line(combin.get(i) + ", BF="
 										+ bayesFactors.get(i), // name
 										new Coordinates(parentLongitude,
 												parentLatitude), Double.NaN, // startime
@@ -288,21 +288,20 @@ public class RateIndicatorBFToKML {
 
 						branchStyleId++;
 
-						System.out.println("BF=" + bayesFactors.get(i)
+						System.out.println(index + "\t" + " BF=" + bayesFactors.get(i)
 								+ " : between " + parentState + " (long: "
 								+ parentLongitude + "; lat: " + parentLatitude
 								+ ") and " + state + " (long: " + longitude
 								+ "; lat: " + latitude + ")");
-
-					}
-				}
+						index++;
+						
+					}// END: cutoff check
+				}// END: i loop
 
 				layers.add(ratesLayer);
 
 			} catch (Exception e) {
-
 				e.printStackTrace();
-
 			}
 
 		}// END: run

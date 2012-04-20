@@ -102,6 +102,11 @@ public class BayesFactorTest {
 			combin.addAll(combinReverse);
 		}
 
+//		System.out.println("=================================================");
+//		System.out.println("meanPoissonPrior.value: " + meanPoissonPrior.value);
+//		System.out.println("poissonPriorOffset.value: " + poissonPriorOffset.value);
+//		System.out.println("=================================================");
+		
 		double qk = Double.NaN;
 		if (symmetrical) {
 			qk = (meanPoissonPrior.value + poissonPriorOffset.value)
@@ -130,7 +135,7 @@ public class BayesFactorTest {
 		}// END: row loop
 
 		// sort in ascending order
-		Collections.sort(bayesFactors);
+//		Collections.sort(bayesFactors);
 
 	}// END: ComputeBFTest
 

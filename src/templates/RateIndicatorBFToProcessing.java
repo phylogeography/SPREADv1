@@ -210,7 +210,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		strokeWeight((float) branchWidth);
 
 		float bfMax = (float) Math.log(Utils.getListMax(bayesFactors));
-
+		int index = 0;
+		
 		for (int i = 0; i < combin.size(); i++) {
 
 			if (bayesFactors.get(i) > bfCutoff) {
@@ -253,11 +254,13 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 				line(x0, y0, x1, y1);
 
-				System.out.println("BF=" + bayesFactors.get(i) + " : between "
+				System.out.println(index + "\t" + "BF=" + bayesFactors.get(i) + " : between "
 						+ parentState + " (long: " + parentLongitude
 						+ "; lat: " + parentLatitude + ") and " + state
 						+ " (long: " + longitude + "; lat: " + latitude + ")");
-			}
+				index++;
+				
+			}// END: cutoff check
 		}// END: ArrayList loop
 	}// END: DrawRates
 
@@ -266,8 +269,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		System.out.println("BF cutoff = " + bfCutoff);
 		System.out.println("mean Poisson Prior = " + meanPoissonPrior.value);
-		System.out
-				.println("Poisson Prior offset = " + poissonPriorOffset.value);
+		System.out.println("Poisson Prior offset = " + poissonPriorOffset.value);
 
 		strokeWeight((float) branchWidth);
 
