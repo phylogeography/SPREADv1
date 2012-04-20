@@ -3,7 +3,9 @@ package templates;
 import gui.InteractiveTableModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import utils.Holder;
@@ -134,9 +136,26 @@ public class BayesFactorTest {
 			bayesFactors.add(bf);
 		}// END: row loop
 
-		// sort in ascending order
-//		Collections.sort(bayesFactors);
-
 	}// END: ComputeBFTest
 
+	/**
+	 * @return array with sort order indices to be used to print bayesFactors
+	 *         and combin in descending order
+	 * */
+	public Integer[] getSortOrder() {
+		
+		Integer[] sortOrder = new Integer[bayesFactors.size()];
+		for (int i = 0; i < sortOrder.length; i++) {
+			sortOrder[i] = i;
+		}
+
+		Arrays.sort(sortOrder, new Comparator<Integer>() {
+			public int compare(Integer a, Integer b) {
+				return (bayesFactors.get(b) > bayesFactors.get(a)) ? 1 : -1;
+			}
+		});
+		
+		return sortOrder;
+	}// END: getSortOrder
+	
 }// END: BayesFactorTest

@@ -38,7 +38,8 @@ public class RateIndicatorBFToKML {
 	private double bfCutoff;
 	private ArrayList<Double> bayesFactors;
 	private ArrayList<String> combin;
-
+private BayesFactorTest bfTest;
+	
 	private double minBranchRedMapping;
 	private double minBranchGreenMapping;
 	private double minBranchBlueMapping;
@@ -147,9 +148,11 @@ public class RateIndicatorBFToKML {
 		combin = new ArrayList<String>();
 		bayesFactors = new ArrayList<Double>();
 
-		new BayesFactorTest(table, meanPoissonPriorSwitcher, meanPoissonPrior,
+		bfTest = new BayesFactorTest(table, meanPoissonPriorSwitcher, meanPoissonPrior,
 				poissonPriorOffsetSwitcher, poissonPriorOffset, indicators,
-				combin, bayesFactors).ComputeBFTest();
+				combin, bayesFactors);
+		
+		bfTest.ComputeBFTest();
 
 		// this is to generate kml output
 		KMLGenerator kmloutput = new KMLGenerator();
@@ -228,18 +231,19 @@ public class RateIndicatorBFToKML {
 				Layer ratesLayer = new Layer("Discrete rates", ratesDescription);
 
 				double bfMax = Math.log(Utils.getListMax(bayesFactors));
-
+                Integer[] sortOrder = bfTest.getSortOrder();
+				
 				int branchStyleId = 1;
 				int index = 0;
 				
 				for (int i = 0; i < combin.size(); i++) {
 
-					if (bayesFactors.get(i) > bfCutoff) {
+					if (bayesFactors.get(sortOrder[i]) > bfCutoff) {
 
 						/**
 						 * Color mapping
 						 * */
-						double bf = Math.log(bayesFactors.get(i));
+						double bf = Math.log(bayesFactors.get(sortOrder[i]));
 
 						int red = (int) Utils.map(bf, 0, bfMax,
 								minBranchRedMapping, maxBranchRedMapping);
@@ -261,8 +265,8 @@ public class RateIndicatorBFToKML {
 						double maxAltitude = (int) Utils.map(bf, 0, bfMax, 0,
 								maxAltMapping);
 
-						String state = combin.get(i).split(":")[1];
-						String parentState = combin.get(i).split(":")[0];
+						String state = combin.get(sortOrder[i]).split(":")[1];
+						String parentState = combin.get(sortOrder[i]).split(":")[0];
 
 						float longitude = Utils.matchStateCoordinate(table,
 								state, 2);
@@ -274,8 +278,8 @@ public class RateIndicatorBFToKML {
 						float parentLatitude = Utils.matchStateCoordinate(
 								table, parentState, 1);
 
-						ratesLayer.addItem(new Line(combin.get(i) + ", BF="
-										+ bayesFactors.get(i), // name
+						ratesLayer.addItem(new Line(combin.get(sortOrder[i]) + ", BF="
+										+ bayesFactors.get(sortOrder[i]), // name
 										new Coordinates(parentLongitude,
 												parentLatitude), Double.NaN, // startime
 										linesStyle, // style startstyle
@@ -288,7 +292,7 @@ public class RateIndicatorBFToKML {
 
 						branchStyleId++;
 
-						System.out.println(index + "\t" + " BF=" + bayesFactors.get(i)
+						System.out.println(index + "\t" + " BF=" + bayesFactors.get(sortOrder[i])
 								+ " : between " + parentState + " (long: "
 								+ parentLongitude + "; lat: " + parentLatitude
 								+ ") and " + state + " (long: " + longitude

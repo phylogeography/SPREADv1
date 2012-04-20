@@ -274,7 +274,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 		strokeWeight((float) branchWidth);
 
 		float bfMax = (float) Math.log(Utils.getListMax(bayesFactors));
-
+		int index = 0;
+		
 		for (int i = 0; i < combin.size(); i++) {
 
 			if (bayesFactors.get(i) > bfCutoff) {
@@ -327,13 +328,15 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 					line(x0, y0, x1, y1);
 
-				}// numberOfIntervals loop
+				}// END: numberOfIntervals loop
 
-				System.out.println("BF=" + bayesFactors.get(i) + " : between "
+				System.out.println(index + "\t" + " BF=" + bayesFactors.get(i) + " : between "
 						+ parentState + " (long: " + parentLongitude
 						+ "; lat: " + parentLatitude + ") and " + state
 						+ " (long: " + longitude + "; lat: " + latitude + ")");
-			}
+				index++;
+				
+			}// END: cutoff check
 		}// END: ArrayList loop
 	}// END: DrawRatesSlices
 

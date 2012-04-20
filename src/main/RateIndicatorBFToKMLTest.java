@@ -46,6 +46,10 @@ public class RateIndicatorBFToKMLTest {
 
 			rateIndicatorBFToKML.setNumberOfIntervals(100);
 
+			rateIndicatorBFToKML.setDefaultMeanPoissonPrior();
+			
+			rateIndicatorBFToKML.setDefaultPoissonPriorOffset();
+			
 			rateIndicatorBFToKML
 					.setKmlWriterPath("/home/filip/Desktop/output.kml");
 

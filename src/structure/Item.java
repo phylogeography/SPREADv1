@@ -5,6 +5,7 @@ package structure;
  * @version $Id$
  */
 public interface Item {
+	
 	boolean isContainer();
 
 	boolean isVisible();
