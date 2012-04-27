@@ -1,4 +1,4 @@
-April 2, 2012: SPREAD-phy version 1.0.4 released
+April 21, 2012: SPREAD-phy version 1.0.4 released
 ------------------------------------------------
 
 * Name change: prepended 'phy' for phylogeny to the software name to conform with Debian naming convention.
@@ -6,7 +6,7 @@ April 2, 2012: SPREAD-phy version 1.0.4 released
 * Removed ColorPicker dependency by combining the original code. This code (in the colorpicker package) is released under 
   Modified BSD license.
 * Row numbers in location coordinates editor  
-* Fixed bug in Bayes factor values sort function
+* Fixed bug in Bayes factor values sort function (introduced in v1.0.3)
 
 February 4, 2012: SPREAD version 1.0.3 released
 -----------------------------------------------

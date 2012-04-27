@@ -1,7 +1,7 @@
 h1. SPREAD-phy
 
 Spatial Phylogenetic Reconstruction of Evolutionary Dynamics 
-                Version 1.0.3, 2012 
+                Version 1.0.4rc, 2012 
 Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
 
 h1. LICENSE
@@ -41,7 +41,6 @@ Depends on the following libraries:
 * org.boehn.kmlframework_20090320.jar
 * core.jar
 * colt.jar
-* ColorPicker.jar
 * quaqua.jar (libquaqua64.jnilib, libquaqua.jnilib)
 
 Before exporting to a runnable jar change line 14 in templates.MapBackground.java:

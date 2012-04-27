@@ -121,7 +121,7 @@
                         vmoptions="-Xmx512M"
                         arguments=""
                         version="${version}"
-                        infostring="${name} v${version}, Copyright 2011, Filip Bielejec, Andrew Rambaut, Marc A. Suchard &amp; Philippe Lemey"
+                        infostring="${name}_v${version}, Copyright 2011, Filip Bielejec, Andrew Rambaut, Marc A. Suchard &amp; Philippe Lemey"
                         bundleid="spread-phy" >
             <javaproperty name="apple.laf.useScreenMenuBar" value="true"/>
             <jarfileset dir="${dist}">
