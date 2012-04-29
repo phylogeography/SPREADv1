@@ -1,6 +1,6 @@
 h1. SPREAD-phy
 
-* Spatial Phylogenetic Reconstruction of Evolutionary Dynamics *
+*Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
                 Version 1.0.5rc, 2012 
 Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
 
