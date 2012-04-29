@@ -1,11 +1,10 @@
 h1. SPREAD-phy
----------------------
 
 Spatial Phylogenetic Reconstruction of Evolutionary Dynamics 
                 Version 1.0.4rc, 2012 
 Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
 
-h1. LICENSE
+LICENSE
 ---------------------
 
   This is free software; you can redistribute it and/or modify
@@ -18,7 +17,7 @@ h1. LICENSE
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    "GNU Lesser General Public License":http://www.gnu.org/licenses/lgpl.html for more details.
  
-h1. PURPOSE
+PURPOSE
 ---------------------
                             
 SPREAD-phy is a Java program supporting processing and visualizations of BEAST's phylogeographic models ("BEAST software":http://beast.bio.ed.ac.uk/Main_Page). 
@@ -27,7 +26,7 @@ Contains visualisations (templates), wrapped in a user friendly interface. Suppo
 
 A tutorial on using SPREAD-phy is availiable "here":http://www.kuleuven.be/aidslab/phylogeography/tutorial/spread_tutorial.html
 
-h1. SUPPORT & LINKS
+SUPPORT & LINKS
 ---------------------
 
 SPREAD-phy: www.phylogeography.org/SPREAD
@@ -37,7 +36,7 @@ Suggestions or bug reports:
 
 <filip.bielejec(_sorry_spybots_)rega.kuleuven.be>
 
-h1. COMPILING
+COMPILING
 ---------------------
 
 Depends on the following libraries:
@@ -53,7 +52,7 @@ boolean fromJar = false
         to 
 boolean fromJar = true 
 
-h1. CONTRIBUTING
+CONTRIBUTING
 ---------------------
 
 You're interested in contributing to SPREAD? *THAT'S AWESOME!*. Here are the basic steps:
@@ -65,7 +64,7 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!*. Here are the bas
 6. Send a pull request to the phylogeography/SPREAD project.
 
 
-h1. TODO
+TODO
 ---------------------
 
 * Progress bar for tree slicer (reading trees, assume 10 000 trees)
