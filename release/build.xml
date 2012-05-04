@@ -115,7 +115,7 @@
         <!-- create a jar bundle for the mac -->
         <jarbundler dir="${Mac_package_dir}"
                         name="${name} v${version}"
-                        mainclass="gui.SpreadApp"
+                        mainclass="app.SpreadApp"
                         icon="${Mac_dir}/icons/SPREAD.icns"
                         jvmversion="1.5+"
                         vmoptions="-Xmx512M"
