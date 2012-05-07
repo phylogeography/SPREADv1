@@ -18,15 +18,14 @@ public class TimeSlicerToKMLTest {
 			
 			timeSlicerToKML.setTreePath("/home/filip/Phyleography/data/ContinuousH5N1/HA_alignedEd_diff_gammaRRW_MCC.tre");
 			
-//			timeSlicerToKML.setAnalysisType(TimeSlicerToKML.SECOND_ANALYSIS);
-	
-//			setCustomSliceHeightsPath("/home/filip/Phyleography/data/ContinuousH5N1/custom_slices");			
+//			timeSlicerToKML.setTreePath("/home/filip/Phyleography/data/RacRABV/RacRABV_cont_0.8_MCC_snyder.tre");
 			
 			timeSlicerToKML.setMrsdString("2011-07-29 AD");
 
-			timeSlicerToKML
-					.setTreesPath("/home/filip/Phyleography/data/ContinuousH5N1/HA_alignedEd_diff_gammaRRW.trees");
+			timeSlicerToKML.setTreesPath("/home/filip/Phyleography/data/ContinuousH5N1/HA_alignedEd_diff_gammaRRW.trees");
 
+//			timeSlicerToKML.setTreesPath("/home/filip/Phyleography/data/RacRABV/RacRABV_cont.trees");
+			
 			timeSlicerToKML.setHPD(0.80);
 
 			timeSlicerToKML.setGridSize(100);

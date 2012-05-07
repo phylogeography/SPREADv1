@@ -426,47 +426,72 @@ public class TimeSlicerToProcessing extends PApplet {
 			// This is for slice times
 			slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
 
-			System.out.println("Analyzing trees...");
-
 			// Executor for threads
 			int NTHREDS = Runtime.getRuntime().availableProcessors();
 			ExecutorService executor = Executors.newFixedThreadPool(NTHREDS * 2);
 
-			int readTrees = 0;
+			int treesAssumed = 10000;
+			int treesRead = 0;
+			
+			System.out.println("Analyzing trees (bar assumes 10,000 trees)");
+			System.out.println("0              25             50             75            100");
+			System.out.println("|--------------|--------------|--------------|--------------|");
+
+			int stepSize = treesAssumed / 60;
+			if (stepSize < 1) {
+				stepSize = 1;
+			}
+
+			// This is for collecting coordinates into polygons
+			slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
+
+			int totalTrees = 0;
 			while (treesImporter.hasTree()) {
 
 				currentTree = (RootedTree) treesImporter.importNextTree();
 
-				if (readTrees >= burnIn) {
+				if (totalTrees >= burnIn) {
 
-					executor.submit(new AnalyzeTree(currentTree,
-							precisionString, coordinatesName, rateString,
-							sliceHeights, timescaler, mrsd, slicesMap,
-							useTrueNoise));
+					executor.submit(new AnalyzeTree(currentTree, //
+							precisionString,//
+							coordinatesName, //
+							rateString, //
+							sliceHeights, //
+							timescaler,//
+							mrsd, //
+							slicesMap, //
+							useTrueNoise//
+							));
 
 					// new AnalyzeTree(currentTree,
 					// precisionString, coordinatesName, rateString,
 					// sliceHeights, timescaler, mrsd, slicesMap,
 					// useTrueNoise).run();
 
-					if (readTrees % burnIn == 0) {
-						System.out.print(readTrees + " trees... ");
-					}
+					treesRead += 1;
+
+				}// END: if burn-in
+
+				if (totalTrees > 0 && totalTrees % stepSize == 0) {
+					System.out.print("*");
+					System.out.flush();
 				}
 
-				readTrees++;
+				totalTrees++;
+
+			}// END: while has trees
+
+			if ((totalTrees - burnIn) <= 0.0) {
+				throw new RuntimeException("Burnt too many trees!");
+			} else {
+				System.out.println("\nAnalyzed " + treesRead
+						+ " trees with burn-in of " + burnIn + " for the total of "
+						+ totalTrees + " trees");
 			}
 
 			// Wait until all threads are finished
 			executor.shutdown();
 			while (!executor.isTerminated()) {
-			}
-
-			if ((readTrees - burnIn) <= 0.0) {
-				throw new RuntimeException("Burnt too many trees!");
-			} else {
-				System.out.println("Analyzed " + (int) (readTrees - burnIn)
-						+ " trees");
 			}
 
 	}// END: AnalyzeTrees

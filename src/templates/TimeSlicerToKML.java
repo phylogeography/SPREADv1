@@ -272,43 +272,64 @@ public class TimeSlicerToKML {
 		int NTHREDS = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS * 2);
 
-			System.out.println("Analyzing trees...");
+		int treesAssumed = 10000;
+		int treesRead = 0;
+		
+		System.out.println("Analyzing trees (bar assumes 10,000 trees)");
+		System.out.println("0              25             50             75            100");
+		System.out.println("|--------------|--------------|--------------|--------------|");
 
-			// This is for collecting coordinates into polygons
-			slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
+		int stepSize = treesAssumed / 60;
+		if (stepSize < 1) {
+			stepSize = 1;
+		}
 
-			int readTrees = 1;
-			while (treesImporter.hasTree()) {
+		// This is for collecting coordinates into polygons
+		slicesMap = new ConcurrentHashMap<Double, List<Coordinates>>();
 
-				currentTree = (RootedTree) treesImporter.importNextTree();
+		int totalTrees = 0;
+		while (treesImporter.hasTree()) {
 
-				if (readTrees >= burnIn) {
+			currentTree = (RootedTree) treesImporter.importNextTree();
 
-					executor.submit(new AnalyzeTree(currentTree,
-							precisionString, coordinatesName, rateString,
-							sliceHeights, timescaler, mrsd, slicesMap,
-							useTrueNoise));
+			if (totalTrees >= burnIn) {
 
-					// new AnalyzeTree(currentTree,
-					// precisionString, coordinatesName, rateString,
-					// sliceHeights, timescaler, mrsd, slicesMap,
-					// useTrueNoise).run();
+				executor.submit(new AnalyzeTree(currentTree, //
+						precisionString,//
+						coordinatesName, //
+						rateString, //
+						sliceHeights, //
+						timescaler,//
+						mrsd, //
+						slicesMap, //
+						useTrueNoise//
+						));
 
-					if (readTrees % 500 == 0) {
-						System.out.print(readTrees + " trees... ");
-					}
-				}// END: if burn-in
+				// new AnalyzeTree(currentTree,
+				// precisionString, coordinatesName, rateString,
+				// sliceHeights, timescaler, mrsd, slicesMap,
+				// useTrueNoise).run();
 
-				readTrees++;
+				treesRead += 1;
 
-			}// END: while has trees
+			}// END: if burn-in
 
-			if ((readTrees - burnIn) <= 0.0) {
-				throw new RuntimeException("Burnt too many trees!");
-			} else {
-				System.out.println("Analyzed " + (int) (readTrees - burnIn - 1)
-						+ " trees with burn-in of " + burnIn);
+			if (totalTrees > 0 && totalTrees % stepSize == 0) {
+				System.out.print("*");
+				System.out.flush();
 			}
+
+			totalTrees++;
+
+		}// END: while has trees
+
+		if ((totalTrees - burnIn) <= 0.0) {
+			throw new RuntimeException("Burnt too many trees!");
+		} else {
+			System.out.println("\nAnalyzed " + treesRead
+					+ " trees with burn-in of " + burnIn + " for the total of "
+					+ totalTrees + " trees");
+		}
 
 			// Wait until all threads are finished
 			executor.shutdown();
