@@ -276,9 +276,11 @@ public class TimeSlicerToKML {
 		int treesRead = 0;
 		
 		System.out.println("Analyzing trees (bar assumes 10,000 trees)");
-		System.out.println("0              25             50             75            100");
-		System.out.println("|--------------|--------------|--------------|--------------|");
-
+		System.out.println("0                   25                  50                  75                 100");
+		System.out.println("|---------------------|---------------------|---------------------|---------------------|");
+//		System.out.println("0              25             50             75            100");
+//		System.out.println("|--------------|--------------|--------------|--------------|");
+		
 		int stepSize = treesAssumed / 60;
 		if (stepSize < 1) {
 			stepSize = 1;

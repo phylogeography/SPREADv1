@@ -61,8 +61,7 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!*. Here are the bas
 
 h1. TODO
 
-* Progress bar for tree slicer (reading trees, assume 10 000 trees)
-* Include a column for indicator value as well in the terminal output
+* Include a column for indicator value in the terminal output
 * Less dependencies:
  - add kmlframework to sources (if licenses compatible) 
 * Improve custom slice heights
