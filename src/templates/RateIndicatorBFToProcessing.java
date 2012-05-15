@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import processing.core.PApplet;
 import processing.core.PFont;
-import utils.GeoIntermediate;
 import utils.Holder;
 import utils.ReadLog;
 import utils.Utils;
@@ -20,6 +19,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	private double bfCutoff;
 	private MapBackground mapBackground;
 	private ArrayList<Double> bayesFactors;
+	private ArrayList<Double> posteriorProbabilities;
 	private ArrayList<String> combin;
 	private BayesFactorTest bfTest;
 	// private int numberOfIntervals;
@@ -209,72 +209,8 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				.println("Poisson Prior offset = " + poissonPriorOffset.value);
 
 		strokeWeight((float) branchWidth);
-
-		float bfMax = (float) Math.log(Utils.getListMax(bayesFactors));
-		int index = 0;
-		
-		for (int i = 0; i < combin.size(); i++) {
-
-			if (bayesFactors.get(i) > bfCutoff) {
-
-				/**
-				 * Color mapping
-				 * */
-				float bf = (float) Math.log(bayesFactors.get(i));
-
-				int red = (int) Utils.map(bf, 0, bfMax, minBranchRedMapping,
-						maxBranchRedMapping);
-
-				int green = (int) Utils.map(bf, 0, bfMax,
-						minBranchGreenMapping, maxBranchGreenMapping);
-
-				int blue = (int) Utils.map(bf, 0, bfMax, minBranchBlueMapping,
-						maxBranchBlueMapping);
-
-				int alpha = (int) Utils.map(bf, 0, bfMax,
-						maxBranchOpacityMapping, minBranchOpacityMapping);
-
-				stroke(red, green, blue, alpha);
-
-				String state = combin.get(i).split(":")[1];
-				String parentState = combin.get(i).split(":")[0];
-
-				float longitude = Utils.matchStateCoordinate(table, state, 2);
-				float latitude = Utils.matchStateCoordinate(table, state, 1);
-
-				float parentLongitude = Utils.matchStateCoordinate(table,
-						parentState, 2);
-				float parentLatitude = Utils.matchStateCoordinate(table,
-						parentState, 1);
-
-				float x0 = map(parentLongitude, minX, maxX, 0, width);
-				float y0 = map(parentLatitude, maxY, minY, 0, height);
-
-				float x1 = map(longitude, minX, maxX, 0, width);
-				float y1 = map(latitude, maxY, minY, 0, height);
-
-				line(x0, y0, x1, y1);
-
-				System.out.println(index + "\t" + "BF=" + bayesFactors.get(i) + " : between "
-						+ parentState + " (long: " + parentLongitude
-						+ "; lat: " + parentLatitude + ") and " + state
-						+ " (long: " + longitude + "; lat: " + latitude + ")");
-				index++;
-				
-			}// END: cutoff check
-		}// END: ArrayList loop
-	}// END: DrawRates
-
-	@SuppressWarnings("unused")
-	private void DrawRateSlices() {
-
-		System.out.println("BF cutoff = " + bfCutoff);
-		System.out.println("mean Poisson Prior = " + meanPoissonPrior.value);
-		System.out.println("Poisson Prior offset = " + poissonPriorOffset.value);
-
-		strokeWeight((float) branchWidth);
-
 		Integer[] sortOrder = bfTest.getSortOrder();
+		
 		float bfMax = (float) Math.log(Utils.getListMax(bayesFactors));
 		int index = 0;
 		
@@ -312,27 +248,16 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				float parentLatitude = Utils.matchStateCoordinate(table,
 						parentState, 1);
 
-				GeoIntermediate rhumbIntermediate = new GeoIntermediate(
-						parentLongitude, parentLatitude, longitude, latitude,
-						100);
-				double[][] coords = rhumbIntermediate.getCoords();
+				float x0 = map(parentLongitude, minX, maxX, 0, width);
+				float y0 = map(parentLatitude, maxY, minY, 0, height);
 
-				for (int row = 0; row < coords.length - 1; row++) {
+				float x1 = map(longitude, minX, maxX, 0, width);
+				float y1 = map(latitude, maxY, minY, 0, height);
 
-					float x0 = map((float) coords[row][0], minX, maxX, 0, width);
-					float y0 = map((float) coords[row][1], maxY, minY, 0,
-							height);
+				line(x0, y0, x1, y1);
 
-					float x1 = map((float) coords[row + 1][0], minX, maxX, 0,
-							width);
-					float y1 = map((float) coords[row + 1][1], maxY, minY, 0,
-							height);
-
-					line(x0, y0, x1, y1);
-
-				}// END: numberOfIntervals loop
-
-				System.out.println(index + "\t" + " BF=" + bayesFactors.get(sortOrder[i]) + " : between "
+				System.out.println(index + "\t" +  "I=" + posteriorProbabilities.get(sortOrder[i]) + 
+						" BF=" + bayesFactors.get(sortOrder[i]) + " : between "
 						+ parentState + " (long: " + parentLongitude
 						+ "; lat: " + parentLatitude + ") and " + state
 						+ " (long: " + longitude + "; lat: " + latitude + ")");
@@ -340,16 +265,96 @@ public class RateIndicatorBFToProcessing extends PApplet {
 				
 			}// END: cutoff check
 		}// END: ArrayList loop
-	}// END: DrawRatesSlices
+	}// END: DrawRates
+
+//	@SuppressWarnings("unused")
+//	private void DrawRateSlices() {
+//
+//		System.out.println("BF cutoff = " + bfCutoff);
+//		System.out.println("mean Poisson Prior = " + meanPoissonPrior.value);
+//		System.out.println("Poisson Prior offset = " + poissonPriorOffset.value);
+//
+//		strokeWeight((float) branchWidth);
+//
+//		Integer[] sortOrder = bfTest.getSortOrder();
+//		float bfMax = (float) Math.log(Utils.getListMax(bayesFactors));
+//		int index = 0;
+//		
+//		for (int i = 0; i < combin.size(); i++) {
+//
+//			if (bayesFactors.get(sortOrder[i]) > bfCutoff) {
+//
+//				/**
+//				 * Color mapping
+//				 * */
+//				float bf = (float) Math.log(bayesFactors.get(sortOrder[i]));
+//
+//				int red = (int) Utils.map(bf, 0, bfMax, minBranchRedMapping,
+//						maxBranchRedMapping);
+//
+//				int green = (int) Utils.map(bf, 0, bfMax,
+//						minBranchGreenMapping, maxBranchGreenMapping);
+//
+//				int blue = (int) Utils.map(bf, 0, bfMax, minBranchBlueMapping,
+//						maxBranchBlueMapping);
+//
+//				int alpha = (int) Utils.map(bf, 0, bfMax,
+//						maxBranchOpacityMapping, minBranchOpacityMapping);
+//
+//				stroke(red, green, blue, alpha);
+//
+//				String state = combin.get(sortOrder[i]).split(":")[1];
+//				String parentState = combin.get(sortOrder[i]).split(":")[0];
+//
+//				float longitude = Utils.matchStateCoordinate(table, state, 2);
+//				float latitude = Utils.matchStateCoordinate(table, state, 1);
+//
+//				float parentLongitude = Utils.matchStateCoordinate(table,
+//						parentState, 2);
+//				float parentLatitude = Utils.matchStateCoordinate(table,
+//						parentState, 1);
+//
+//				GeoIntermediate rhumbIntermediate = new GeoIntermediate(
+//						parentLongitude, parentLatitude, longitude, latitude,
+//						100);
+//				double[][] coords = rhumbIntermediate.getCoords();
+//
+//				for (int row = 0; row < coords.length - 1; row++) {
+//
+//					float x0 = map((float) coords[row][0], minX, maxX, 0, width);
+//					float y0 = map((float) coords[row][1], maxY, minY, 0,
+//							height);
+//
+//					float x1 = map((float) coords[row + 1][0], minX, maxX, 0,
+//							width);
+//					float y1 = map((float) coords[row + 1][1], maxY, minY, 0,
+//							height);
+//
+//					line(x0, y0, x1, y1);
+//
+//				}// END: numberOfIntervals loop
+//
+//				System.out.println(index + "\t" +  "I=" + posteriorProbabilities.get(sortOrder[i]) + 
+//	                    " BF=" + bayesFactors.get(sortOrder[i]) + " : between "
+//						+ parentState + " (long: " + parentLongitude
+//						+ "; lat: " + parentLatitude + ") and " + state
+//						+ " (long: " + longitude + "; lat: " + latitude + ")");
+//				
+//				index++;
+//				
+//			}// END: cutoff check
+//		}// END: ArrayList loop
+//	}// END: DrawRatesSlices
 
 	private void computeBFTest() {
 
 		combin = new ArrayList<String>();
 		bayesFactors = new ArrayList<Double>();
-
+		posteriorProbabilities = new ArrayList<Double>();
+		
 		bfTest = new BayesFactorTest(table, meanPoissonPriorSwitcher, meanPoissonPrior,
 				poissonPriorOffsetSwitcher, poissonPriorOffset, indicators,
-				combin, bayesFactors);
+				combin, bayesFactors, posteriorProbabilities);
 		
 		bfTest.ComputeBFTest();
 

@@ -51,7 +51,7 @@ public class RateIndicatorBFToKMLTest {
 			rateIndicatorBFToKML.setDefaultPoissonPriorOffset();
 			
 			rateIndicatorBFToKML
-					.setKmlWriterPath("/home/filip/Desktop/output.kml");
+					.setKmlWriterPath("/home/filip/Pulpit/output.kml");
 
 			rateIndicatorBFToKML.setMinBranchRedMapping(255);
 

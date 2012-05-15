@@ -37,6 +37,7 @@ public class RateIndicatorBFToKML {
 	private double maxAltMapping;
 	private double bfCutoff;
 	private ArrayList<Double> bayesFactors;
+	private ArrayList<Double> posteriorProbabilities;
 	private ArrayList<String> combin;
 	private BayesFactorTest bfTest;
 	
@@ -147,10 +148,11 @@ public class RateIndicatorBFToKML {
 
 		combin = new ArrayList<String>();
 		bayesFactors = new ArrayList<Double>();
-
+		posteriorProbabilities = new ArrayList<Double>();
+		
 		bfTest = new BayesFactorTest(table, meanPoissonPriorSwitcher, meanPoissonPrior,
 				poissonPriorOffsetSwitcher, poissonPriorOffset, indicators,
-				combin, bayesFactors);
+				combin, bayesFactors, posteriorProbabilities);
 		
 		bfTest.ComputeBFTest();
 
@@ -292,11 +294,12 @@ public class RateIndicatorBFToKML {
 
 						branchStyleId++;
 
-						System.out.println(index + "\t" + " BF=" + bayesFactors.get(sortOrder[i])
-								+ " : between " + parentState + " (long: "
-								+ parentLongitude + "; lat: " + parentLatitude
-								+ ") and " + state + " (long: " + longitude
-								+ "; lat: " + latitude + ")");
+						System.out.println(index + "\t" +  "I=" + posteriorProbabilities.get(sortOrder[i]) + 
+								" BF=" + bayesFactors.get(sortOrder[i]) + " : between "
+								+ parentState + " (long: " + parentLongitude
+								+ "; lat: " + parentLatitude + ") and " + state
+								+ " (long: " + longitude + "; lat: " + latitude + ")");
+						
 						index++;
 						
 					}// END: cutoff check

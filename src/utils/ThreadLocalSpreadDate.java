@@ -57,4 +57,4 @@ public class ThreadLocalSpreadDate {
 		return cal.getTimeInMillis();
 	}// END: getDate
 
-}
+}// END: class

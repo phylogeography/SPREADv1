@@ -55,7 +55,6 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basi
 
 h1. TODO
 
-* Include a column for indicator value in the terminal output
 * Less dependencies:
  - add kmlframework to sources (if licenses compatible) 
 * Improve custom slice heights

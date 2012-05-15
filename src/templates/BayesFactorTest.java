@@ -13,11 +13,8 @@ import utils.Utils;
 import utils.Utils.PoissonPriorEnum;
 
 /**
- * Pass by reference:
+ * Pass by reference
  * 
- * EASY: meanPoissonPrior, poissonPriorOffset
- * 
- * HARDER: bayesFactors, combin
  * */
 
 public class BayesFactorTest {
@@ -31,13 +28,17 @@ public class BayesFactorTest {
 	private ReadLog indicators;
 	private ArrayList<String> combin;
 	private ArrayList<Double> bayesFactors;
-
-	public BayesFactorTest(InteractiveTableModel table,
-			PoissonPriorEnum meanPoissonPriorSwitcher,
-			Holder meanPoissonPriorHolder,
-			PoissonPriorEnum poissonPriorOffsetSwitcher,
-			Holder poissonPriorOffsetHolder, ReadLog indicators,
-			ArrayList<String> combin, ArrayList<Double> bayesFactors) {
+	private ArrayList<Double> posteriorProbabilities;
+	
+	public BayesFactorTest(InteractiveTableModel table, //
+ 			PoissonPriorEnum meanPoissonPriorSwitcher, //
+			Holder meanPoissonPriorHolder, //
+			PoissonPriorEnum poissonPriorOffsetSwitcher, //
+			Holder poissonPriorOffsetHolder, //
+			ReadLog indicators, //
+			ArrayList<String> combin, // 
+			ArrayList<Double> bayesFactors, //
+			ArrayList<Double> posteriorProbabilities) {
 
 		this.table = table;
 		this.meanPoissonPriorSwitcher = meanPoissonPriorSwitcher;
@@ -47,7 +48,8 @@ public class BayesFactorTest {
 		this.indicators = indicators;
 		this.combin = combin;
 		this.bayesFactors = bayesFactors;
-
+        this.posteriorProbabilities = posteriorProbabilities;
+		
 	}
 
 	public void ComputeBFTest() {
@@ -118,7 +120,7 @@ public class BayesFactorTest {
 		}
 
 		double[] pk = Utils.colMeans(indicators.indicators);
-
+		
 		double denominator = qk / (1 - qk);
 
 		for (int row = 0; row < pk.length; row++) {
@@ -133,6 +135,7 @@ public class BayesFactorTest {
 			}// END: infinite BF check
 
 			bayesFactors.add(bf);
+			posteriorProbabilities.add(pk[row]);
 		}// END: row loop
 
 	}// END: ComputeBFTest
