@@ -1,11 +1,11 @@
 h1. SPREAD-phy
 
-Spatial Phylogenetic Reconstruction of Evolutionary Dynamics 
-                Version 1.0.3, 2012 
+*Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
+                Version 1.0.5rc, 2012 
 Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
 
 h1. LICENSE
- 
+
   This is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2
@@ -41,7 +41,6 @@ Depends on the following libraries:
 * org.boehn.kmlframework_20090320.jar
 * core.jar
 * colt.jar
-* ColorPicker.jar
 * quaqua.jar (libquaqua64.jnilib, libquaqua.jnilib)
 
 Before exporting to a runnable jar change line 14 in templates.MapBackground.java:
@@ -49,13 +48,19 @@ boolean fromJar = false
         to 
 boolean fromJar = true 
 
+h1. CONTRIBUTING
+
+You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basic steps:
+
+1. fork SPREAD from here: http://github.com/phylogeography/SPREAD
+2. Hack, hack, hack!
+3. Document your changes in the Changelog
+5. Push the changes
+6. Send a pull request to the phylogeography/SPREAD project.
+
 h1. TODO
 
-* GNU Linux/UNIX version: SPREAD-phy_v1.0.4.tgz 
-* Mac OS X version: SPREAD-phy_v1.0.4.dmg 
-* Windows version: SPREAD-phy_v1.0.4.zip 
-* Runnable jar: spread-phy-1.0.4.jar
-* Progress bar for tree slicer (reading trees, assume 10 000 trees)
+* Include a column for indicator value in the terminal output
 * Less dependencies:
  - add kmlframework to sources (if licenses compatible) 
 * Improve custom slice heights

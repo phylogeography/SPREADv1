@@ -43,11 +43,6 @@ Depends on the following libraries:
 * colt.jar
 * quaqua.jar (libquaqua64.jnilib, libquaqua.jnilib)
 
-Before exporting to a runnable jar change line 14 in templates.MapBackground.java:
-boolean fromJar = false 
-        to 
-boolean fromJar = true 
-
 h1. CONTRIBUTING
 
 You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basic steps:
