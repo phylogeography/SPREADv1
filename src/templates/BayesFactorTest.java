@@ -38,7 +38,8 @@ public class BayesFactorTest {
 			ReadLog indicators, //
 			ArrayList<String> combin, // 
 			ArrayList<Double> bayesFactors, //
-			ArrayList<Double> posteriorProbabilities) {
+			ArrayList<Double> posteriorProbabilities //
+			) {
 
 		this.table = table;
 		this.meanPoissonPriorSwitcher = meanPoissonPriorSwitcher;
@@ -105,11 +106,6 @@ public class BayesFactorTest {
 			combin.addAll(combinReverse);
 		}
 
-//		System.out.println("=================================================");
-//		System.out.println("meanPoissonPrior.value: " + meanPoissonPrior.value);
-//		System.out.println("poissonPriorOffset.value: " + poissonPriorOffset.value);
-//		System.out.println("=================================================");
-		
 		double qk = Double.NaN;
 		if (symmetrical) {
 			qk = (meanPoissonPrior.value + poissonPriorOffset.value)
@@ -142,7 +138,7 @@ public class BayesFactorTest {
 
 	/**
 	 * @return array with sort order indices to be used to print bayesFactors
-	 *         and combin in descending order
+	 *         and combin lists in descending order
 	 * */
 	public Integer[] getSortOrder() {
 		

@@ -294,7 +294,7 @@ public class RateIndicatorBFToKML {
 
 						branchStyleId++;
 
-						System.out.println(index + "\t" +  "I=" + posteriorProbabilities.get(sortOrder[i]) 
+						System.out.println(index + "\t" +  "pk=" + posteriorProbabilities.get(sortOrder[i]) 
 								+ "\t" + "BF=" + bayesFactors.get(sortOrder[i]) + "\t" 
 								+ "between " + parentState + " (long: " + parentLongitude
 								+ "; lat: " + parentLatitude + ") and " + state

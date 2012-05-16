@@ -205,8 +205,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 		System.out.println("BF cutoff = " + bfCutoff);
 		System.out.println("mean Poisson Prior = " + meanPoissonPrior.value);
-		System.out
-				.println("Poisson Prior offset = " + poissonPriorOffset.value);
+		System.out.println("Poisson Prior offset = " + poissonPriorOffset.value);
 
 		strokeWeight((float) branchWidth);
 		Integer[] sortOrder = bfTest.getSortOrder();
@@ -256,7 +255,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 
 				line(x0, y0, x1, y1);
 
-				System.out.println(index + "\t" +  "I=" + posteriorProbabilities.get(sortOrder[i]) 
+				System.out.println(index + "\t" +  "pk=" + posteriorProbabilities.get(sortOrder[i]) 
 						+ "\t" + "BF=" + bayesFactors.get(sortOrder[i]) + "\t" 
 						+ "between " + parentState + " (long: " + parentLongitude
 						+ "; lat: " + parentLatitude + ") and " + state
