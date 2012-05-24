@@ -48,8 +48,8 @@ public class HeapSort {
 	 * Sorts an array of indices to vector of comparable objects into increasing
 	 * order.
 	 */
-	@SuppressWarnings("unchecked")
-	public static void sort(AbstractList array, int[] indices) {
+	@SuppressWarnings({ "rawtypes" })
+	public static void sort(AbstractList<Comparable> array, int[] indices) {
 
 		// ensures we are starting with valid indices
 		for (int i = 0; i < indices.length; i++) {
@@ -100,10 +100,10 @@ public class HeapSort {
 	/**
 	 * Sorts an array of comparable objects into increasing order.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static void sort(Comparable[] array) {
 
-		Comparable temp;
+		Comparable<?> temp;
 		int j, n = array.length;
 
 		// turn input array into a heap
@@ -221,7 +221,7 @@ public class HeapSort {
 	/**
 	 * test harness for heapsort algorithm
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
 
 		int testSize = 100;
@@ -283,7 +283,7 @@ public class HeapSort {
 	 * Assumes that array[lower+1] through to array[upper] is already in heap
 	 * form and then puts array[lower] to array[upper] in heap form.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static void adjust(AbstractList<Comparable> array, int[] indices,
 			int lower, int upper) {
 
@@ -315,7 +315,7 @@ public class HeapSort {
 	 * array[lower] to array[upper] in heap form.
 	 */
 	@SuppressWarnings("unchecked")
-	private static void adjust(AbstractList array, int lower, int upper) {
+	private static void adjust(AbstractList<Object> array, int lower, int upper) {
 
 		int j, k;
 		Object temp;
@@ -325,10 +325,10 @@ public class HeapSort {
 
 		while (k <= upper) {
 			if ((k < upper)
-					&& (((Comparable) array.get(k - 1)).compareTo(array.get(k)) < 0)) {
+					&& (((Comparable<Object>) array.get(k - 1)).compareTo(array.get(k)) < 0)) {
 				k += 1;
 			}
-			if (((Comparable) array.get(j - 1)).compareTo(array.get(k - 1)) < 0) {
+			if (((Comparable<Object>) array.get(j - 1)).compareTo(array.get(k - 1)) < 0) {
 				temp = array.get(j - 1);
 				array.set(j - 1, array.get(k - 1));
 				array.set(k - 1, temp);
@@ -342,11 +342,11 @@ public class HeapSort {
 	 * Assumes that array[lower+1] through to array[upper] is already in heap
 	 * form and then puts array[lower] to array[upper] in heap form.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static void adjust(Comparable[] array, int lower, int upper) {
 
 		int j, k;
-		Comparable temp;
+		Comparable<?> temp;
 
 		j = lower;
 		k = lower * 2;
@@ -369,8 +369,7 @@ public class HeapSort {
 	 * Assumes that array[lower+1] through to array[upper] is already in heap
 	 * form and then puts array[lower] to array[upper] in heap form.
 	 */
-	@SuppressWarnings("unchecked")
-	private static void adjust(Object[] array, Comparator c, int lower,
+	private static void adjust(Object[] array, Comparator<Object> c, int lower,
 			int upper) {
 
 		int j, k;

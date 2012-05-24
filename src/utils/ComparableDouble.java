@@ -32,8 +32,7 @@ package utils;
  * 
  * @author Alexei Drummond
  */
-@SuppressWarnings("unchecked")
-public class ComparableDouble implements Comparable {
+public class ComparableDouble implements Comparable<Object> {
 
 	private final double value;
 

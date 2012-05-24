@@ -6,8 +6,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Polygon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -15,7 +13,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 @SuppressWarnings("serial")
 public class SpinningPanel extends JPanel {
@@ -97,21 +94,12 @@ public class SpinningPanel extends JPanel {
 		private int[] openYPoints = { HALF_HEIGHT, SPIN_WIDGET_HEIGHT - 1,
 				HALF_HEIGHT };
 
-		private int[] intermediateXPoints = { SPIN_WIDGET_HEIGHT - 1,
-				SPIN_WIDGET_HEIGHT - 1, 1 };
-		private int[] intermediateYPoints = { SPIN_WIDGET_HEIGHT - 1, 1,
-				SPIN_WIDGET_HEIGHT - 1 };
-
 		private int[] closedXPoints = { 1, 1, HALF_HEIGHT };
 		private int[] closedYPoints = { 1, SPIN_WIDGET_HEIGHT - 1, HALF_HEIGHT };
 
 		private Polygon openTriangle = new Polygon(openXPoints, openYPoints, 3);
 		private Polygon closedTriangle = new Polygon(closedXPoints,
 				closedYPoints, 3);
-
-		@SuppressWarnings("unused")
-		private Polygon intermediateTriangle = new Polygon(intermediateXPoints,
-				intermediateYPoints, 3);
 
 		public SpinWidget() {
 			setOpen(false);
@@ -175,10 +163,12 @@ public class SpinningPanel extends JPanel {
 			}
 
 			if (isOpen()) {
+				
 				// TODO: animate opening here
 				g.fillPolygon(openTriangle);
 
 			} else {
+				
 				// TODO: animate closing here
 				g.fillPolygon(closedTriangle);
 
@@ -186,23 +176,5 @@ public class SpinningPanel extends JPanel {
 
 		}// END: paint
 	}// END: SpinWidget class
-
-	@SuppressWarnings("unused")
-	private class AnimateSpinWidget implements ActionListener {
-		Timer t = new Timer(500, this);
-
-		public void actionPerformed(ActionEvent ev) {
-
-			t.setCoalesce(false);
-			t.start();
-
-			// if () {
-			//
-			// } else {
-			//
-			// }
-
-		}// END: actionPerformed
-	}// END: AnimateSpinWidget
 
 }// END: class

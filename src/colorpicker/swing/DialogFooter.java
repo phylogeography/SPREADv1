@@ -654,8 +654,6 @@ public class DialogFooter extends JPanel {
 			if(window==null) return;
 			
 			window.setFocusTraversalPolicy(new DelegateFocusTraversalPolicy(window.getFocusTraversalPolicy()) {
-				private static final long serialVersionUID = 1L;
-				
 				public Component getDefaultComponent(Container focusCycleRoot) {
 					/** If the default component would naturally be in the footer *anyway*:
 					 * Make sure the default component is the default button.
@@ -697,8 +695,8 @@ public class DialogFooter extends JPanel {
 		this.leftControls = copy(leftControls);
 		this.dismissControls = copy(dismissControls);
 		this.defaultButton = defaultButton;
-		if(leftControls==null) leftControls = new JComponent[] {};
-		if(dismissControls==null) dismissControls = new JComponent[] {};
+//		if(leftControls==null) leftControls = new JComponent[] {};
+//		if(dismissControls==null) dismissControls = new JComponent[] {};
 		
 		GridBagConstraints c = new GridBagConstraints();
 		int buttonPadding;

@@ -542,6 +542,33 @@ public class Utils {
 	// ---COMMON UTILS---//
 	// ////////////////////
 
+	public double[][] matrixMultiply(double[][] a, double[][] b) {
+		int nrowA = a.length; 
+		int ncolA = a[0].length; 
+		int nrowB = b.length; 
+		int ncolB = b[0].length; 
+
+		double c[][] = null;
+
+		if (ncolA == nrowB) {
+			
+			c = new double[nrowA][ncolB];
+			for (int i = 0; i < nrowA; i++) {
+				for (int j = 0; j < ncolB; j++) {
+					c[i][j] = 0;
+					for (int k = 0; k < ncolA; k++) {
+						c[i][j] = c[i][j] + a[i][k] * b[k][j];
+					}
+				}
+			}
+			
+		} else {
+			throw new RuntimeException("non-conformable arguments");
+		}
+
+		return c;
+	}
+	
 	public static String getKMLDate(double fractionalDate) {
 
 		int year = (int) fractionalDate;
