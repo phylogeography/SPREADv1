@@ -55,6 +55,8 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basi
 
 h1. TODO
 
+* Tests for kml templates
+* Compile Windows targeted version
 * Animate spinning widgets
 * Less dependencies:
  - add kmlframework to sources (if licenses compatible) 
