@@ -217,7 +217,17 @@ public class SpreadApp {
 					+ "\n"
 					+ "Citing SPREAD: "
 					+ "Bielejec F., Rambaut A., Suchard M.A & Lemey P. SPREAD: Spatial Phylogenetic Reconstruction of Evolutionary Dynamics. Bioinformatics, 2011. doi:10.1093 \n"
-					+ "\n";
+					+ "\n"
+					+ "BibTeX entry: \n"
+					+ "@article{Bielejec11092011, \n"
+					+ "\t author = {Bielejec, Filip and Rambaut, Andrew and Suchard, Marc A. and Lemey, Philippe}, \n"
+					+ "\t title = {SPREAD: Spatial phylogenetic reconstruction of evolutionary dynamics}, \n"
+					+ "\t year = {2011}, \n"
+					+ "\t doi = {10.1093/bioinformatics/btr481}, \n"
+					+ "\t URL = {http://bioinformatics.oxfordjournals.org/content/early/2011/09/11/bioinformatics.btr481.abstract}, \n"
+					+ "\t eprint = {http://bioinformatics.oxfordjournals.org/content/early/2011/09/11/bioinformatics.btr481.full.pdf+html}, \n"
+					+ "\t journal = {Bioinformatics} \n" 
+					+ "} \n";
 
 			terminalTab.setText(helpText);
 			tabbedPane.setSelectedIndex(4);
