@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -21,7 +20,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
@@ -29,6 +27,7 @@ import templates.DiscreteTreeToKML;
 import templates.DiscreteTreeToProcessing;
 import templates.MapBackground;
 import utils.Utils;
+import app.SpreadApp;
 import checks.DiscreteSanityCheck;
 import colorpicker.swing.ColorPicker;
 
@@ -42,14 +41,6 @@ public class DiscreteModelTab extends JPanel {
 	private final int mapImageWidth = MapBackground.mapImageWidth;
 	private final int mapImageHeight = MapBackground.mapImageHeight;
 	private final Dimension minimumDimension = new Dimension(0, 0);
-
-	// Icons
-	private ImageIcon nuclearIcon;
-	private ImageIcon treeIcon;
-	private ImageIcon locationsIcon;
-	private ImageIcon processingIcon;
-	private ImageIcon saveIcon;
-	private ImageIcon errorIcon;
 
 	// Colors
 	private Color backgroundColor;
@@ -116,13 +107,13 @@ public class DiscreteModelTab extends JPanel {
 		branchesMaxColor = new Color(255, 5, 50, 255);
 		GridBagConstraints c = new GridBagConstraints();
 
-		// Setup icons
-		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
-		treeIcon = CreateImageIcon("/icons/tree.png");
-		locationsIcon = CreateImageIcon("/icons/locations.png");
-		processingIcon = CreateImageIcon("/icons/processing.png");
-		saveIcon = CreateImageIcon("/icons/save.png");
-		errorIcon = CreateImageIcon("/icons/error.png");
+//		// Setup icons
+//		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
+//		treeIcon = CreateImageIcon("/icons/tree.png");
+//		locationsIcon = CreateImageIcon("/icons/locations.png");
+//		processingIcon = CreateImageIcon("/icons/processing.png");
+//		saveIcon = CreateImageIcon("/icons/save.png");
+//		errorIcon = CreateImageIcon("/icons/error.png");
 
 		// Setup text fields
 		stateAttNameParser = new JTextField("states", 10);
@@ -132,11 +123,11 @@ public class DiscreteModelTab extends JPanel {
 		timescalerParser = new JTextField("1", 10);
 
 		// Setup buttons for tab
-		generateKml = new JButton("Generate", nuclearIcon);
-		openTree = new JButton("Open", treeIcon);
-		openLocationCoordinatesEditor = new JButton("Setup", locationsIcon);
-		generateProcessing = new JButton("Plot", processingIcon);
-		saveProcessingPlot = new JButton("Save", saveIcon);
+		generateKml = new JButton("Generate", SpreadApp.nuclearIcon);
+		openTree = new JButton("Open", SpreadApp.treeIcon);
+		openLocationCoordinatesEditor = new JButton("Setup", SpreadApp.locationsIcon);
+		generateProcessing = new JButton("Plot", SpreadApp.processingIcon);
+		saveProcessingPlot = new JButton("Save", SpreadApp.saveIcon);
 		polygonsMaxColorChooser = new JButton("Setup max");
 		branchesMaxColorChooser = new JButton("Setup max");
 		polygonsMinColorChooser = new JButton("Setup min");
@@ -466,6 +457,7 @@ public class DiscreteModelTab extends JPanel {
 		}
 	}// END: ListenOpenTree
 
+	//TODO: use utils exception handlers
 	private class ListenOpenLocationCoordinatesEditor implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
@@ -486,7 +478,7 @@ public class DiscreteModelTab extends JPanel {
 						+ "\nHave you imported the proper tree file?");
 
 				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
-						"Error", JOptionPane.ERROR_MESSAGE, errorIcon);
+						"Error", JOptionPane.ERROR_MESSAGE, SpreadApp.errorIcon);
 
 			} catch (RuntimeException e) {
 
@@ -500,7 +492,7 @@ public class DiscreteModelTab extends JPanel {
 										+ "\nHave you set the posterior probability limit in treeAnnotator to zero?");
 
 				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
-						"Error", JOptionPane.ERROR_MESSAGE, errorIcon);
+						"Error", JOptionPane.ERROR_MESSAGE, SpreadApp.errorIcon);
 
 			}
 		}
@@ -695,23 +687,7 @@ public class DiscreteModelTab extends JPanel {
 
 						} catch (final Exception e) {
 
-							SwingUtilities.invokeLater(new Runnable() {
-
-								public void run() {
-
-									e.printStackTrace();
-
-									String msg = String.format(
-											"Unexpected problem: %s", e
-													.toString());
-
-									JOptionPane.showMessageDialog(Utils
-											.getActiveFrame(), msg, "Error",
-											JOptionPane.ERROR_MESSAGE,
-											errorIcon);
-
-								}
-							});
+						Utils.handleException(e);
 
 						}
 
@@ -866,23 +842,7 @@ public class DiscreteModelTab extends JPanel {
 
 						} catch (final Exception e) {
 
-							SwingUtilities.invokeLater(new Runnable() {
-
-								public void run() {
-
-									e.printStackTrace();
-
-									String msg = String.format(
-											"Unexpected problem: %s", e
-													.toString());
-
-									JOptionPane.showMessageDialog(Utils
-											.getActiveFrame(), msg, "Error",
-											JOptionPane.ERROR_MESSAGE,
-											errorIcon);
-
-								}
-							});
+							Utils.handleException(e);
 
 						}
 
@@ -929,14 +889,4 @@ public class DiscreteModelTab extends JPanel {
 		}// END: actionPerformed
 	}// END: class
 
-	private ImageIcon CreateImageIcon(String path) {
-		java.net.URL imgURL = this.getClass().getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: " + path + "\n");
-			return null;
-		}
-	}
-
-}
+}// END: class

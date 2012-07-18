@@ -14,10 +14,15 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import jebl.evolution.graphs.Node;
 import jebl.evolution.trees.RootedTree;
 
 import org.boehn.kmlframework.kml.Point;
+
+import app.SpreadApp;
 
 import structure.Coordinates;
 
@@ -34,6 +39,45 @@ public class Utils {
 		DEFAULT, USER
 	}
 
+	// ////////////////////////////////
+	// ---EXCEPTION HANDLING UTILS---//
+	// ////////////////////////////////
+
+	public static void handleException(final Throwable e) {
+
+		final Thread t = Thread.currentThread();
+		
+		if (SwingUtilities.isEventDispatchThread()) {
+			showExceptionDialog(t, e);
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					showExceptionDialog(t, e);
+				}
+			});
+		}// END: edt check
+	}// END: uncaughtException
+
+	private static void showExceptionDialog(Thread t, Throwable e) {
+		
+		String msg = String.format("Unexpected problem on thread %s: %s",
+				t.getName(), e.getMessage());
+
+		logException(t, e);
+
+		JOptionPane.showMessageDialog(Utils.getActiveFrame(), //
+				msg, //
+				"Error", //
+				JOptionPane.ERROR_MESSAGE, //
+				SpreadApp.errorIcon);
+	}// END: showExceptionDialog
+
+	private static void logException(Thread t, Throwable e) {
+		// TODO: start a thread that logs it, also spying on the user and planting evidence
+		// CIA style MOFO!!!
+		e.printStackTrace();
+	}// END: logException
+	
 	// ///////////////////////////
 	// ---DISCRETE TREE UTILS---//
 	// ///////////////////////////

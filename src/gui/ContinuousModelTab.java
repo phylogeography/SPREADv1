@@ -10,18 +10,15 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
@@ -29,6 +26,7 @@ import templates.ContinuousTreeToKML;
 import templates.ContinuousTreeToProcessing;
 import templates.MapBackground;
 import utils.Utils;
+import app.SpreadApp;
 import checks.ContinuousSanityCheck;
 import colorpicker.swing.ColorPicker;
 
@@ -42,13 +40,6 @@ public class ContinuousModelTab extends JPanel {
 	private final int mapImageWidth = MapBackground.mapImageWidth;
 	private final int mapImageHeight = MapBackground.mapImageHeight;
 	private final Dimension minimumDimension = new Dimension(0, 0);
-
-	// Icons
-	private ImageIcon nuclearIcon;
-	private ImageIcon treeIcon;
-	private ImageIcon processingIcon;
-	private ImageIcon saveIcon;
-	private ImageIcon errorIcon;
 
 	// Colors
 	private Color backgroundColor;
@@ -110,13 +101,6 @@ public class ContinuousModelTab extends JPanel {
 		branchesMinColor = new Color(0, 0, 0, 255);
 		GridBagConstraints c = new GridBagConstraints();
 
-		// Setup icons
-		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
-		treeIcon = CreateImageIcon("/icons/tree.png");
-		processingIcon = CreateImageIcon("/icons/processing.png");
-		saveIcon = CreateImageIcon("/icons/save.png");
-		errorIcon = CreateImageIcon("/icons/error.png");
-
 		// Setup text fields
 		coordinatesNameParser = new JTextField("location", 10);
 		numberOfIntervalsParser = new JTextField("100", 10);
@@ -125,10 +109,10 @@ public class ContinuousModelTab extends JPanel {
 		timescalerParser = new JTextField("1.0", 10);
 
 		// Setup buttons
-		generateKml = new JButton("Generate", nuclearIcon);
-		openTree = new JButton("Open", treeIcon);
-		generateProcessing = new JButton("Plot", processingIcon);
-		saveProcessingPlot = new JButton("Save", saveIcon);
+		generateKml = new JButton("Generate", SpreadApp.nuclearIcon);
+		openTree = new JButton("Open", SpreadApp.treeIcon);
+		generateProcessing = new JButton("Plot", SpreadApp.processingIcon);
+		saveProcessingPlot = new JButton("Save", SpreadApp.saveIcon);
 		polygonsMaxColorChooser = new JButton("Setup max");
 		branchesMaxColorChooser = new JButton("Setup max");
 		polygonsMinColorChooser = new JButton("Setup min");
@@ -627,23 +611,7 @@ public class ContinuousModelTab extends JPanel {
 
 						} catch (final Exception e) {
 
-							SwingUtilities.invokeLater(new Runnable() {
-
-								public void run() {
-
-									e.printStackTrace();
-
-									String msg = String.format(
-											"Unexpected problem: %s", e
-													.toString());
-
-									JOptionPane.showMessageDialog(Utils
-											.getActiveFrame(), msg, "Error",
-											JOptionPane.ERROR_MESSAGE,
-											errorIcon);
-
-								}
-							});
+							Utils.handleException(e);
 
 						}// END: try-catch
 
@@ -779,23 +747,7 @@ public class ContinuousModelTab extends JPanel {
 
 						} catch (final Exception e) {
 
-							SwingUtilities.invokeLater(new Runnable() {
-
-								public void run() {
-
-									e.printStackTrace();
-
-									String msg = String.format(
-											"Unexpected problem: %s", e
-													.toString());
-
-									JOptionPane.showMessageDialog(Utils
-											.getActiveFrame(), msg, "Error",
-											JOptionPane.ERROR_MESSAGE,
-											errorIcon);
-
-								}
-							});
+							Utils.handleException(e);
 
 						}// END: try-catch
 
@@ -839,15 +791,5 @@ public class ContinuousModelTab extends JPanel {
 
 		}// END: actionPerformed
 	}// END: class
-
-	private ImageIcon CreateImageIcon(String path) {
-		java.net.URL imgURL = this.getClass().getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: \n" + path + "\n");
-			return null;
-		}
-	}
 
 }// END class

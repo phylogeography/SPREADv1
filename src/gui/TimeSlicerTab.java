@@ -12,7 +12,6 @@ import java.io.File;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -33,6 +32,7 @@ import templates.MapBackground;
 import templates.TimeSlicerToKML;
 import templates.TimeSlicerToProcessing;
 import utils.Utils;
+import app.SpreadApp;
 import checks.TimeSlicerSanityCheck;
 import colorpicker.swing.ColorPicker;
 
@@ -46,15 +46,6 @@ public class TimeSlicerTab extends JPanel {
 	private final int mapImageWidth = MapBackground.mapImageWidth;
 	private final int mapImageHeight = MapBackground.mapImageHeight;
 	private final Dimension minimumDimension = new Dimension(0, 0);
-
-	// Icons
-	private ImageIcon nuclearIcon;
-	private ImageIcon treeIcon;
-	private ImageIcon treesIcon;
-	private ImageIcon processingIcon;
-	private ImageIcon saveIcon;
-	private ImageIcon errorIcon;
-	private ImageIcon timeSlicesIcon;
 
 	// Colors
 	private Color backgroundColor;
@@ -134,15 +125,6 @@ public class TimeSlicerTab extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		GridBagConstraints c = new GridBagConstraints();
 
-		// Setup icons
-		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
-		treeIcon = CreateImageIcon("/icons/tree.png");
-		treesIcon = CreateImageIcon("/icons/trees.png");
-		processingIcon = CreateImageIcon("/icons/processing.png");
-		saveIcon = CreateImageIcon("/icons/save.png");
-		errorIcon = CreateImageIcon("/icons/error.png");
-		timeSlicesIcon = CreateImageIcon("/icons/timeSlices.png");
-
 		// Setup colors
 		backgroundColor = new Color(231, 237, 246);
 		polygonsMaxColor = new Color(50, 255, 255, 255);
@@ -179,16 +161,16 @@ public class TimeSlicerTab extends JPanel {
 		timescalerParser = new JTextField("1.0", 10);
 
 		// Setup buttons
-		generateKml = new JButton("Generate", nuclearIcon);
-		openTree = new JButton("Open", treeIcon);
-		openTrees = new JButton("Open", treesIcon);
-		generateProcessing = new JButton("Plot", processingIcon);
-		saveProcessingPlot = new JButton("Save", saveIcon);
+		generateKml = new JButton("Generate", SpreadApp.nuclearIcon);
+		openTree = new JButton("Open", SpreadApp.treeIcon);
+		openTrees = new JButton("Open", SpreadApp.treesIcon);
+		generateProcessing = new JButton("Plot", SpreadApp.processingIcon);
+		saveProcessingPlot = new JButton("Save", SpreadApp.saveIcon);
 		polygonsMaxColorChooser = new JButton("Setup max");
 		branchesMaxColorChooser = new JButton("Setup max");
 		polygonsMinColorChooser = new JButton("Setup min");
 		branchesMinColorChooser = new JButton("Setup min");
-		loadTimeSlices = new JButton("Load", timeSlicesIcon);
+		loadTimeSlices = new JButton("Load", SpreadApp.timeSlicesIcon);
 
 		// Setup sliders
 		branchesWidthParser = new JSlider(JSlider.HORIZONTAL, 2, 10, 4);
@@ -910,6 +892,7 @@ public class TimeSlicerTab extends JPanel {
 
 							}// END: check
 
+							//TODO: use utils exception handlers
 						} catch (final OutOfMemoryError e) {
 
 							SwingUtilities.invokeLater(new Runnable() {
@@ -926,30 +909,14 @@ public class TimeSlicerTab extends JPanel {
 											.getActiveFrame(), msg
 											+ "\nIncrease Java Heap Space",
 											"Error", JOptionPane.ERROR_MESSAGE,
-											errorIcon);
+											SpreadApp.errorIcon);
 
 								}
 							});
 
 						} catch (final Exception e) {
 
-							SwingUtilities.invokeLater(new Runnable() {
-
-								public void run() {
-
-									e.printStackTrace();
-
-									String msg = String.format(
-											"Unexpected problem: %s", e
-													.toString());
-
-									JOptionPane.showMessageDialog(Utils
-											.getActiveFrame(), msg, "Error",
-											JOptionPane.ERROR_MESSAGE,
-											errorIcon);
-
-								}
-							});
+	Utils.handleException(e);
 
 						}
 
@@ -1159,30 +1126,14 @@ public class TimeSlicerTab extends JPanel {
 											.getActiveFrame(), msg
 											+ "\nIncrease Java Heap Space",
 											"Error", JOptionPane.ERROR_MESSAGE,
-											errorIcon);
+											SpreadApp.errorIcon);
 
 								}
 							});
 
 						} catch (final Exception e) {
 
-							SwingUtilities.invokeLater(new Runnable() {
-
-								public void run() {
-
-									e.printStackTrace();
-
-									String msg = String.format(
-											"Unexpected problem: %s", e
-													.toString());
-
-									JOptionPane.showMessageDialog(Utils
-											.getActiveFrame(), msg, "Error",
-											JOptionPane.ERROR_MESSAGE,
-											errorIcon);
-
-								}
-							});
+							Utils.handleException(e);
 
 						}
 
@@ -1228,16 +1179,6 @@ public class TimeSlicerTab extends JPanel {
 
 		}// END: actionPerformed
 	}// END: class
-
-	private ImageIcon CreateImageIcon(String path) {
-		java.net.URL imgURL = this.getClass().getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: " + path + "\n");
-			return null;
-		}
-	}
 
 }// END class
 

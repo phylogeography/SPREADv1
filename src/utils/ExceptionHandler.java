@@ -2,51 +2,43 @@ package utils;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-public class ExceptionHandler implements UncaughtExceptionHandler {
+import app.SpreadApp;
 
-	ImageIcon errorIcon = CreateImageIcon("/icons/error.png");
+public class ExceptionHandler implements UncaughtExceptionHandler {
 
 	public void uncaughtException(final Thread t, final Throwable e) {
 
 		if (SwingUtilities.isEventDispatchThread()) {
-			showException(t, e);
+			showExceptionDialog(t, e);
 		} else {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					showException(t, e);
+					showExceptionDialog(t, e);
 				}
 			});
-		}
-	}
+		}// END: edt check
+	}// END: uncaughtException
 
-	private void showException(Thread t, Throwable e) {
-		String msg = String.format("Unexpected problem on thread %s: %s", t
-				.getName(), e.getMessage());
+	private void showExceptionDialog(Thread t, Throwable e) {
+		String msg = String.format("Unexpected problem on thread %s: %s",
+				t.getName(), e.getMessage());
 
 		logException(t, e);
 
-		JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg, "Error",
-				JOptionPane.ERROR_MESSAGE, errorIcon);
-	}
+		JOptionPane.showMessageDialog(Utils.getActiveFrame(), //
+				msg, //
+				"Error", //
+				JOptionPane.ERROR_MESSAGE, //
+				SpreadApp.errorIcon);
+	}// END: showExceptionDialog
 
 	private void logException(Thread t, Throwable e) {
-		// TODO: start a thread that logs it
+		// TODO: start a thread that logs it, also spying on the user and planting evidence
+		// CIA style MOFO!!!
 		e.printStackTrace();
+	}//END: logException
 
-	}
-
-	private ImageIcon CreateImageIcon(String path) {
-		java.net.URL imgURL = this.getClass().getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: \n" + path + "\n");
-			return null;
-		}
-	}
-
-}
+}// END: class

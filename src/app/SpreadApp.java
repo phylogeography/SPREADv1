@@ -37,17 +37,27 @@ public class SpreadApp {
      * Version string: assumed to be in format x.x.x
      */
     private static final String VERSION = "1.0.5rc";
-
     private static final String DATE_STRING = "2012";
 
 	// Dimension
 	private Dimension dimension;
 
 	// Icons
-	private ImageIcon quitIcon;
-	private ImageIcon helpIcon;
-	private ImageIcon clearIcon;
-
+	public static ImageIcon quitIcon;
+	public static ImageIcon helpIcon;
+	public static ImageIcon clearIcon;
+	public static ImageIcon nuclearIcon;
+	public static ImageIcon treeIcon;
+	public static ImageIcon processingIcon;
+	public static ImageIcon saveIcon;
+	public static ImageIcon errorIcon;
+	public static ImageIcon locationsIcon;
+	public static ImageIcon loadIcon;
+	public static ImageIcon doneIcon;
+	public static ImageIcon logIcon;
+	public static ImageIcon timeSlicesIcon;
+	public static ImageIcon treesIcon;
+	
 	// Frame
 	private JFrame frame;
 	private JTabbedPane tabbedPane;
@@ -66,7 +76,7 @@ public class SpreadApp {
 	private RateIndicatorBFTab rateIndicatorBFTab;
 	private TimeSlicerTab timeSlicerTab;
 	private TerminalTab terminalTab;
-
+	
 	public SpreadApp() throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException, UnsupportedLookAndFeelException {
 
@@ -143,7 +153,18 @@ public class SpreadApp {
 		quitIcon = CreateImageIcon("/icons/close.png");
 		helpIcon = CreateImageIcon("/icons/help.png");
 		clearIcon = CreateImageIcon("/icons/clear.png");
-
+		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
+		treeIcon = CreateImageIcon("/icons/tree.png");
+		processingIcon = CreateImageIcon("/icons/processing.png");
+		saveIcon = CreateImageIcon("/icons/save.png");
+		errorIcon = CreateImageIcon("/icons/error.png");
+		locationsIcon = CreateImageIcon("/icons/locations.png");
+		loadIcon = CreateImageIcon("/icons/locations.png");
+		doneIcon = CreateImageIcon("/icons/check.png");
+		logIcon = CreateImageIcon("/icons/log.png");
+		timeSlicesIcon = CreateImageIcon("/icons/timeSlices.png");
+		treesIcon = CreateImageIcon("/icons/trees.png");
+		 
 		// Setup Main Frame
 		frame = new JFrame("SPREAD");
 		frame.getContentPane().setLayout(new BorderLayout());

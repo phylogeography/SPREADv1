@@ -11,11 +11,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -36,6 +34,7 @@ import jebl.evolution.io.NexusImporter;
 import jebl.evolution.trees.RootedTree;
 import utils.ReadLocations;
 import utils.Utils;
+import app.SpreadApp;
 
 public class LocationCoordinatesEditor {
 
@@ -44,11 +43,6 @@ public class LocationCoordinatesEditor {
 	// Window
 	private JDialog window;
 	private Frame owner;
-
-	// Icons
-	private ImageIcon loadIcon;
-	private ImageIcon saveIcon;
-	private ImageIcon doneIcon;
 
 	// Menubar
 	private JMenuBar menu;
@@ -73,15 +67,10 @@ public class LocationCoordinatesEditor {
 
 	public LocationCoordinatesEditor() {
 
-		// Setup icons
-		loadIcon = CreateImageIcon("/icons/locations.png");
-		saveIcon = CreateImageIcon("/icons/save.png");
-		doneIcon = CreateImageIcon("/icons/check.png");
-
 		// Setup Main Menu buttons
-		load = new JButton("Load", loadIcon);
-		save = new JButton("Save", saveIcon);
-		done = new JButton("Done", doneIcon);
+		load = new JButton("Load", SpreadApp.loadIcon);
+		save = new JButton("Save", SpreadApp.saveIcon);
+		done = new JButton("Done", SpreadApp.doneIcon);
 
 		// Add Main Menu buttons listeners
 		load.addActionListener(new ListenOpenLocations());
@@ -388,18 +377,7 @@ public class LocationCoordinatesEditor {
 		window.setVisible(true);
 	}// END: launch
 
-	private ImageIcon CreateImageIcon(String path) {
-		URL imgURL = this.getClass().getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: " + path + "\n");
-			return null;
-		}
-	}// END: CreateImageIcon
-
 	public String[] getColumnNames() {
-
 		return COLUMN_NAMES;
 	}// END: getColumnNames
 

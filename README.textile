@@ -27,7 +27,7 @@ A tutorial on using SPREAD-phy is availiable "here":http://www.kuleuven.be/aidsl
 h1. SUPPORT & LINKS
 
 SPREAD-phy: www.phylogeography.org/SPREAD
-Processing libraries: http://processing.org/ 
+PROCESSING libraries: http://processing.org/ 
 
 Suggestions or bug reports:
 

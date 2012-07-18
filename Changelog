@@ -3,7 +3,8 @@ SPREAD-phy version 1.0.5 release candidate
 
 * Progress bar for tree slicer.
 * Automated jar detection.
-* Column for posterior probabilities value included in the terminal output for BF calculation
+* Column for posterior probabilities value included in the terminal output for BF calculation.
+* Some changes to error handling.
 
 April 21, 2012: SPREAD-phy version 1.0.4 released
 ------------------------------------------------

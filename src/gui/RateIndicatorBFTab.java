@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -29,6 +28,7 @@ import templates.MapBackground;
 import templates.RateIndicatorBFToKML;
 import templates.RateIndicatorBFToProcessing;
 import utils.Utils;
+import app.SpreadApp;
 import colorpicker.swing.ColorPicker;
 
 @SuppressWarnings("serial")
@@ -41,13 +41,6 @@ public class RateIndicatorBFTab extends JPanel {
 	private final int mapImageWidth = MapBackground.mapImageWidth;
 	private final int mapImageHeight = MapBackground.mapImageHeight;
 	private final Dimension minimumDimension = new Dimension(0, 0);
-	// Icons
-	private ImageIcon nuclearIcon;
-	private ImageIcon logIcon;
-	private ImageIcon locationsIcon;
-	private ImageIcon processingIcon;
-	private ImageIcon saveIcon;
-	private ImageIcon errorIcon;
 
 	// Colors
 	private Color backgroundColor;
@@ -106,12 +99,12 @@ public class RateIndicatorBFTab extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 
 		// Setup icons
-		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
-		logIcon = CreateImageIcon("/icons/log.png");
-		locationsIcon = CreateImageIcon("/icons/locations.png");
-		processingIcon = CreateImageIcon("/icons/processing.png");
-		saveIcon = CreateImageIcon("/icons/save.png");
-		errorIcon = CreateImageIcon("/icons/error.png");
+//		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
+//		logIcon = CreateImageIcon("/icons/log.png");
+//		locationsIcon = CreateImageIcon("/icons/locations.png");
+//		processingIcon = CreateImageIcon("/icons/processing.png");
+//		saveIcon = CreateImageIcon("/icons/save.png");
+//		errorIcon = CreateImageIcon("/icons/error.png");
 
 		// Setup text fields
 		numberOfIntervalsParser = new JTextField("100", 10);
@@ -120,11 +113,11 @@ public class RateIndicatorBFTab extends JPanel {
 		kmlPathParser = new JTextField("output.kml", 10);
 
 		// Setup buttons
-		openLog = new JButton("Open", logIcon);
-		openLocations = new JButton("Open", locationsIcon);
-		generateKml = new JButton("Generate", nuclearIcon);
-		generateProcessing = new JButton("Plot", processingIcon);
-		saveProcessingPlot = new JButton("Save", saveIcon);
+		openLog = new JButton("Open", SpreadApp.logIcon);
+		openLocations = new JButton("Open", SpreadApp.locationsIcon);
+		generateKml = new JButton("Generate", SpreadApp.nuclearIcon);
+		generateProcessing = new JButton("Plot", SpreadApp.processingIcon);
+		saveProcessingPlot = new JButton("Save", SpreadApp.saveIcon);
 		branchesMaxColorChooser = new JButton("Setup max");
 		branchesMinColorChooser = new JButton("Setup min");
 
@@ -427,13 +420,9 @@ public class RateIndicatorBFTab extends JPanel {
 				table = locationCoordinatesEditor.getTable();
 
 			} catch (Exception e) {
-				e.printStackTrace();
 
-				String msg = String.format("Unexpected problem: %s", e
-						.toString());
+				Utils.handleException(e);
 
-				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
-						"Error", JOptionPane.ERROR_MESSAGE, errorIcon);
 			}
 		}
 	}// END: ListenOpenLocations
@@ -587,20 +576,15 @@ public class RateIndicatorBFTab extends JPanel {
 											.getActiveFrame(), msg
 											+ "\nIncrease Java Heap Space",
 											"Error", JOptionPane.ERROR_MESSAGE,
-											errorIcon);
+											SpreadApp.errorIcon);
 
 								}
 							});
 
 						} catch (Exception e) {
-							e.printStackTrace();
 
-							String msg = String.format(
-									"Unexpected problem: %s", e.toString());
+							Utils.handleException(e);
 
-							JOptionPane.showMessageDialog(Utils
-									.getActiveFrame(), msg, "Error",
-									JOptionPane.ERROR_MESSAGE, errorIcon);
 						}
 
 						return null;
@@ -727,23 +711,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 						} catch (final Exception e) {
 
-							SwingUtilities.invokeLater(new Runnable() {
-
-								public void run() {
-
-									e.printStackTrace();
-
-									String msg = String.format(
-											"Unexpected problem: %s", e
-													.toString());
-
-									JOptionPane.showMessageDialog(Utils
-											.getActiveFrame(), msg, "Error",
-											JOptionPane.ERROR_MESSAGE,
-											errorIcon);
-
-								}
-							});
+							Utils.handleException(e);
 
 						}
 
@@ -788,14 +756,4 @@ public class RateIndicatorBFTab extends JPanel {
 		}// END: actionPerformed
 	}// END: class
 
-	private ImageIcon CreateImageIcon(String path) {
-		java.net.URL imgURL = this.getClass().getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: " + path + "\n");
-			return null;
-		}
-	}
-
-}
+}// END: class
