@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="SPREAD-phy" default="help" basedir=".">
+<project name="SPREAD" default="help" basedir=".">
 
 <property name="build.sysclasspath" value="last"/>
 
@@ -7,10 +7,10 @@
 
 <target name="help">
     <echo message="Common build targets:" />
-    <echo message="jar - Builds spread-phy.jar" />
+    <echo message="jar - Builds spread.jar" />
     <echo message="build - Same as clean+jar" />
-    <echo message="compile - Compiles spread-phy classes" />
-    <echo message="clean - Remove all *.class and spread-phy.jar" />
+    <echo message="compile - Compiles spread classes" />
+    <echo message="clean - Remove all *.class and spread.jar" />
 </target>
 
 <property file="build.properties"/>
@@ -28,7 +28,7 @@
 
 <target name="jar" depends="compile">
 <mkdir dir="dist"/>
-    <jar jarfile="dist/spread-phy.jar">
+    <jar jarfile="dist/spread.jar">
      <manifest>
 <attribute name="Built-By" value="${user.name}" />
 <attribute name="Main-Class" value="${main_class_SpreadApp}" />

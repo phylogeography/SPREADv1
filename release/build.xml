@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 
-<project name="SPREAD-phy" default="dist" basedir=".">
+<project name="SPREAD" default="dist" basedir=".">
 	<description>
-		Build file for packaging SPREAD-phy
+		Build file for packaging SPREAD
 		$Id:$
 	</description>
 
@@ -11,7 +11,7 @@
 
     <property name="version" value="1.0.4" />
     <property name="release_dir" value="." />
-    <property name="name" value="SPREAD-phy" />
+    <property name="name" value="SPREAD" />
 
     <property name="dist" value="../dist" />
     <property name="tools_dir" value="${release_dir}/tools" />
@@ -45,7 +45,7 @@
         <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"
             classpath="${launch4j.dir}/launch4j.jar :${launch4j.dir}/lib/xstream.jar" />
 
-        <copy file="${dist}/spread-phy.jar" todir="${Windows_package_dir}/lib"/>
+        <copy file="${dist}/spread.jar" todir="${Windows_package_dir}/lib"/>
         <copy todir="${Windows_package_dir}/lib">
             <fileset dir="${Windows_dir}/lib"/>
         </copy>
@@ -54,7 +54,7 @@
         </copy>
 
         <launch4j configFile="${Windows_dir}/SPREAD_launch4j.xml"
-                  jar="${dist}/spread-phy.jar"
+                  jar="${dist}/spread.jar"
                   outfile="${Windows_package_dir}/${name} v${version}.exe"
                   fileVersion="${version}.0"
                   txtFileVersion="${version}"
@@ -82,7 +82,7 @@
         </copy>
 
         <copy file="${Linux_dir}/icons/spread.png" todir="${Linux_package_dir}/images"/>
-        <copy file="${dist}/spread-phy.jar" todir="${Linux_package_dir}/lib"/>
+        <copy file="${dist}/spread.jar" todir="${Linux_package_dir}/lib"/>
         <copy todir="${Linux_package_dir}/lib">
             <fileset dir="${Linux_dir}/lib"/>
         </copy>
@@ -122,10 +122,10 @@
                         arguments=""
                         version="${version}"
                         infostring="${name}_v${version}, Copyright 2011, Filip Bielejec, Andrew Rambaut, Marc A. Suchard &amp; Philippe Lemey"
-                        bundleid="spread-phy" >
+                        bundleid="spread" >
             <javaproperty name="apple.laf.useScreenMenuBar" value="true"/>
             <jarfileset dir="${dist}">
-                <include name="**/spread-phy.jar"/>
+                <include name="**/spread.jar"/>
             </jarfileset>
             <jarfileset dir="${Mac_dir}/lib">
                 <include name="**/quaqua.jar"/>
