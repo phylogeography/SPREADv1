@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<project name="SPREAD" default="dist" basedir=".">
+<project name="SPREAD" basedir=".">
 	<description>
 		Build file for packaging SPREAD
 		$Id:$
@@ -9,7 +9,7 @@
 	<property environment="env"/>
 
 
-    <property name="version" value="1.0.4" />
+    <property name="version" value="1.0.5rc" />
     <property name="release_dir" value="." />
     <property name="name" value="SPREAD" />
 
