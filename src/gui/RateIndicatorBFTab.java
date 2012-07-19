@@ -96,14 +96,6 @@ public class RateIndicatorBFTab extends JPanel {
 		branchesMinColor = new Color(0, 0, 0, 255);
 		GridBagConstraints c = new GridBagConstraints();
 
-		// Setup icons
-//		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
-//		logIcon = CreateImageIcon("/icons/log.png");
-//		locationsIcon = CreateImageIcon("/icons/locations.png");
-//		processingIcon = CreateImageIcon("/icons/processing.png");
-//		saveIcon = CreateImageIcon("/icons/save.png");
-//		errorIcon = CreateImageIcon("/icons/error.png");
-
 		// Setup text fields
 		numberOfIntervalsParser = new JTextField("100", 10);
 		maxAltMappingParser = new JTextField("500000", 10);

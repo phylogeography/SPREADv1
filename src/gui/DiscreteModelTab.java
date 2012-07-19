@@ -106,14 +106,6 @@ public class DiscreteModelTab extends JPanel {
 		branchesMaxColor = new Color(255, 5, 50, 255);
 		GridBagConstraints c = new GridBagConstraints();
 
-//		// Setup icons
-//		nuclearIcon = CreateImageIcon("/icons/nuclear.png");
-//		treeIcon = CreateImageIcon("/icons/tree.png");
-//		locationsIcon = CreateImageIcon("/icons/locations.png");
-//		processingIcon = CreateImageIcon("/icons/processing.png");
-//		saveIcon = CreateImageIcon("/icons/save.png");
-//		errorIcon = CreateImageIcon("/icons/error.png");
-
 		// Setup text fields
 		stateAttNameParser = new JTextField("states", 10);
 		numberOfIntervalsParser = new JTextField("100", 10);
