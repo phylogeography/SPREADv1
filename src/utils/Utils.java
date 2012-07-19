@@ -43,30 +43,30 @@ public class Utils {
 	// ---EXCEPTION HANDLING UTILS---//
 	// ////////////////////////////////
 
-	public static void handleException(final Throwable e) {
+	public static void handleException(final Throwable e, final String msg) {
 
 		final Thread t = Thread.currentThread();
 		
 		if (SwingUtilities.isEventDispatchThread()) {
-			showExceptionDialog(t, e);
+			showExceptionDialog(t, e, msg);
 		} else {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					showExceptionDialog(t, e);
+					showExceptionDialog(t, e, msg);
 				}
 			});
-		}// END: edt check
+		}// END: EDT check
 	}// END: uncaughtException
 
-	private static void showExceptionDialog(Thread t, Throwable e) {
+	private static void showExceptionDialog(Thread t, Throwable e, String msg) {
 		
-		String msg = String.format("Unexpected problem on thread %s: %s",
+		String message = String.format("Unexpected problem on thread %s: %s" + "\n" + msg,
 				t.getName(), e.getMessage());
 
 		logException(t, e);
 
 		JOptionPane.showMessageDialog(Utils.getActiveFrame(), //
-				msg, //
+				message, //
 				"Error", //
 				JOptionPane.ERROR_MESSAGE, //
 				SpreadApp.errorIcon);
@@ -1098,4 +1098,4 @@ public class Utils {
 		}// END while has next
 	}// END: saveHashMap
 
-}// END: Utils class
+}// END: class

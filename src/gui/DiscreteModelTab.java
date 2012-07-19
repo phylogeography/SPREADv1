@@ -13,7 +13,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -457,7 +456,6 @@ public class DiscreteModelTab extends JPanel {
 		}
 	}// END: ListenOpenTree
 
-	//TODO: use utils exception handlers
 	private class ListenOpenLocationCoordinatesEditor implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
@@ -471,31 +469,19 @@ public class DiscreteModelTab extends JPanel {
 
 			} catch (NullPointerException e) {
 
-				e.printStackTrace();
-
-				String msg = String.format("Unexpected problem: %s", e
-						.toString()
-						+ "\nHave you imported the proper tree file?");
-
-				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
-						"Error", JOptionPane.ERROR_MESSAGE, SpreadApp.errorIcon);
+				Utils.handleException(e,
+						"Have you imported the proper tree file?");
 
 			} catch (RuntimeException e) {
 
-				e.printStackTrace();
+				Utils.handleException(
+						e,
+						"Have you specified proper state attribute name?"
+								+ "\nHave you set the posterior probability limit in treeAnnotator to zero?");
 
-				String msg = String
-						.format(
-								"Unexpected problem: %s",
-								e.toString()
-										+ "\nHave you specified proper state attribute name?"
-										+ "\nHave you set the posterior probability limit in treeAnnotator to zero?");
+			}// END: try-catch block
 
-				JOptionPane.showMessageDialog(Utils.getActiveFrame(), msg,
-						"Error", JOptionPane.ERROR_MESSAGE, SpreadApp.errorIcon);
-
-			}
-		}
+		}// END: actionPerformed
 	}// END: ListenOpenLocations
 
 	private class ListenPolygonsMinColorChooser implements ActionListener {
@@ -687,7 +673,7 @@ public class DiscreteModelTab extends JPanel {
 
 						} catch (final Exception e) {
 
-						Utils.handleException(e);
+						Utils.handleException(e, null);
 
 						}
 
@@ -842,7 +828,7 @@ public class DiscreteModelTab extends JPanel {
 
 						} catch (final Exception e) {
 
-							Utils.handleException(e);
+							Utils.handleException(e, null);
 
 						}
 

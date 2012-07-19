@@ -596,22 +596,11 @@ public class ContinuousModelTab extends JPanel {
 												+ continuousTreeToKML.time
 												+ " msec \n");
 
-								// ///////////////////////////////////////
-								// ---TODO EXPERIMENTAL: parse layers---//
-								// ///////////////////////////////////////
-
-//								ArrayList<Layer> layers = continuousTreeToKML.getLayers();
-//								 layers.get(0).getItems()
-
-								// /////////////////////////
-								// ---END: parse layers---//
-								// /////////////////////////
-
 							}// END: check
 
 						} catch (final Exception e) {
 
-							Utils.handleException(e);
+							Utils.handleException(e, null);
 
 						}// END: try-catch
 
@@ -747,7 +736,7 @@ public class ContinuousModelTab extends JPanel {
 
 						} catch (final Exception e) {
 
-							Utils.handleException(e);
+							Utils.handleException(e, null);
 
 						}// END: try-catch
 

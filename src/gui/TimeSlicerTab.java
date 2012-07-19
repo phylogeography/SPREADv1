@@ -16,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
@@ -24,7 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
@@ -892,31 +890,13 @@ public class TimeSlicerTab extends JPanel {
 
 							}// END: check
 
-							//TODO: use utils exception handlers
 						} catch (final OutOfMemoryError e) {
 
-							SwingUtilities.invokeLater(new Runnable() {
-
-								public void run() {
-
-									e.printStackTrace();
-
-									String msg = String.format(
-											"Unexpected problem: %s", e
-													.toString());
-
-									JOptionPane.showMessageDialog(Utils
-											.getActiveFrame(), msg
-											+ "\nIncrease Java Heap Space",
-											"Error", JOptionPane.ERROR_MESSAGE,
-											SpreadApp.errorIcon);
-
-								}
-							});
-
+							Utils.handleException(e, "Increase Java Heap Space");
+							
 						} catch (final Exception e) {
 
-	Utils.handleException(e);
+							Utils.handleException(e, null);
 
 						}
 
@@ -1112,28 +1092,11 @@ public class TimeSlicerTab extends JPanel {
 
 						} catch (final OutOfMemoryError e) {
 
-							SwingUtilities.invokeLater(new Runnable() {
-
-								public void run() {
-
-									e.printStackTrace();
-
-									String msg = String.format(
-											"Unexpected problem: %s", e
-													.toString());
-
-									JOptionPane.showMessageDialog(Utils
-											.getActiveFrame(), msg
-											+ "\nIncrease Java Heap Space",
-											"Error", JOptionPane.ERROR_MESSAGE,
-											SpreadApp.errorIcon);
-
-								}
-							});
-
+							Utils.handleException(e, "Increase Java Heap Space");
+							
 						} catch (final Exception e) {
 
-							Utils.handleException(e);
+							Utils.handleException(e, null);
 
 						}
 

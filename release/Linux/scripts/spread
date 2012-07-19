@@ -24,5 +24,5 @@ fi
 
 
 SPREAD_LIB=$SPREAD/lib
-java -Xms64m -Xmx1024m -jar $SPREAD_LIB/spread-phy.jar $*
+java -Xms64m -Xmx1024m -jar $SPREAD_LIB/spread.jar $*
 
