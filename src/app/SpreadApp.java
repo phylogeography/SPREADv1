@@ -134,14 +134,12 @@ public class SpreadApp {
 
 			try {
 
-				UIManager.setLookAndFeel(UIManager
-						.getSystemLookAndFeelClassName());
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				System.out.println("Specified l&f not found. Loading system default l&f");
+				
+			} catch (Exception e) {
 
-			} catch (Exception e1) {
-
-				e1.printStackTrace();
-				System.out
-						.println("Specified l&f not found. Loading system default l&f");
+				e.printStackTrace();
 
 			}
 		}

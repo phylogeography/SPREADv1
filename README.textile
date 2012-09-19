@@ -4,6 +4,15 @@ h1. SPREAD
                 Version 1.0.5rc, 2012 
 Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
 
+===================
+SPREAD v0.9999
+===================
+:*Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
+:Version 1.0.5rc, 2012
+:Authors: Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
+:Homepage: ww.phylogeography.org
+:License: LGPL
+
 h1. LICENSE
 
   This is free software; you can redistribute it and/or modify
@@ -55,6 +64,7 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basi
 
 h1. TODO
 
+* Dropdown menu to select the state you want to analyse
 * Tests for kml templates
 * Compile Windows targeted version
 * Animate spinning widgets
