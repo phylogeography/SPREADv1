@@ -1,11 +1,10 @@
-
 ===================
 SPREAD v0.9999
 ===================
-:*Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
-:Version 1.0.5rc, 2012
+:SPREAD: *Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
+:Version: 1.0.5rc, 2012
 :Authors: Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
-:Homepage: ww.phylogeography.org
+:Homepage: www.phylogeography.org
 :License: LGPL
 
 LICENSE
@@ -69,8 +68,7 @@ TODO
 * Tests for kml templates
 * Compile Windows targeted version
 * Animate spinning widgets
-* Less dependencies:
- - add kmlframework to sources (if licenses compatible) 
+* Less dependencies: add kmlframework to sources (if licenses compatible) 
 * Improve custom slice heights
 * Add command line interface for kml templates 
 * Templates: collect data into ArrayList<Layer>, then pass it to KML Generator or Processing canvas. This way all the exceptions are caught beforehand.
