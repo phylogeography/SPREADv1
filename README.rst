@@ -1,8 +1,3 @@
-h1. SPREAD
-
-*Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
-                Version 1.0.5rc, 2012 
-Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
 
 ===================
 SPREAD v0.9999
@@ -13,7 +8,8 @@ SPREAD v0.9999
 :Homepage: ww.phylogeography.org
 :License: LGPL
 
-h1. LICENSE
+LICENSE
+============
 
   This is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
@@ -25,15 +21,17 @@ h1. LICENSE
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    "GNU Lesser General Public License":http://www.gnu.org/licenses/lgpl.html for more details.
  
-h1. PURPOSE
-                            
+PURPOSE
+============    
+                        
 SPREAD is a Java program supporting processing and visualizations of BEAST's phylogeographic models ("BEAST software":http://beast.bio.ed.ac.uk/Main_Page). 
 
 Contains visualisations (templates), wrapped in a user friendly interface. Supported visualisations include embedded Processing applets and KML output for viewing in "Google Earth":http://www.google.com/earth or any other virtual globe software capable of reading the format.
 
 A tutorial on using SPREAD is availiable "here":http://www.kuleuven.be/aidslab/phylogeography/tutorial/spread_tutorial.html
 
-h1. SUPPORT & LINKS
+SUPPORT & LINKS
+============
 
 SPREAD: www.phylogeography.org/SPREAD
 PROCESSING libraries: http://processing.org/ 
@@ -42,7 +40,8 @@ Suggestions or bug reports:
 
 <filip.bielejec(_sorry_spybots_)rega.kuleuven.be>
 
-h1. COMPILING
+COMPILING
+============
 
 Depends on the following libraries:
 
@@ -52,7 +51,8 @@ Depends on the following libraries:
 * colt.jar
 * quaqua.jar (libquaqua64.jnilib, libquaqua.jnilib)
 
-h1. CONTRIBUTING
+CONTRIBUTING
+============
 
 You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basic steps:
 
@@ -62,7 +62,8 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basi
 5. Push the changes
 6. Send a pull request to the phylogeography/SPREAD project.
 
-h1. TODO
+TODO
+============
 
 * Dropdown menu to select the state you want to analyse
 * Tests for kml templates
