@@ -53,13 +53,13 @@ Depends on the following libraries:
 CONTRIBUTING
 ============
 
-You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basic steps:
+You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basic steps::
 
-1. fork SPREAD from here: http://github.com/phylogeography/SPREAD
-2. Hack, hack, hack!
-3. Document your changes in the Changelog
-5. Push the changes
-6. Send a pull request to the phylogeography/SPREAD project.
+1. fork SPREAD from here: http://github.com/phylogeography/SPREAD:
+2. Hack, hack, hack!:
+3. Document your changes in the Changelog:
+5. Push the changes:
+6. Send a pull request to the phylogeography/SPREAD project:
 
 TODO
 ============
