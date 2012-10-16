@@ -58,16 +58,12 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basi
 
 h1. TODO
 
-* Tests for kml templates
-* Compile Windows targeted version
-* Animate spinning widgets
+* Eliminate text fields, fill combo boxes with parsed trait names instead
 * Less dependencies:
  - add kmlframework to sources (if licenses compatible) 
-* Improve custom slice heights
 * Add command line interface for kml templates 
-* Templates: collect data into ArrayList<Layer>, then pass it to KML Generator or Processing canvas. This way all the exceptions are caught beforehand.
 * Fix large scaling factor issues
-
+* Improve custom slice heights
 
 
 
