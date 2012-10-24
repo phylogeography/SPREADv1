@@ -529,12 +529,12 @@ public class TimeSlicerToProcessing extends PApplet {
 
 		// This is a general time span for all of the trees
 		int numberOfSlices = timeSlices.length;
-		double startTime = mrsd.getTime()
-				- (timeSlices[numberOfSlices - 1] * DayInMillis * DaysInYear * timescaler);
+		double firstSlice = timeSlices[0];
+		
+		double startTime = mrsd.getTime() - (firstSlice * DayInMillis * DaysInYear * timescaler);
 		double endTime = mrsd.getTime();
-		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfSlices);
 
-		return timeLine;
+		return new TimeLine(startTime, endTime, numberOfSlices);
 	}// END: generateCustomTimeLine
 
 }// END: TimeScalerToProcessing class

@@ -149,6 +149,7 @@ public class TimeSlicerTab extends JPanel {
 
 		// Setup text fields
 		burnInParser = new JTextField("500", 10);
+		//TODO: change to combobox
 		coordinatesNameParser = new JTextField("location", 10);
 		rateAttNameParser = new JTextField("rate", 10);
 		precisionAttNameParser = new JTextField("precision", 10);

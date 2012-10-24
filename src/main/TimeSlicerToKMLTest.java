@@ -10,29 +10,39 @@ public class TimeSlicerToKMLTest {
 
 	private static TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
 
+	private static boolean FIRST_ANALYSIS = false;
+	
 	public static void main(String[] args) {
 
 		try {
 
-			timeSlicerToKML.setAnalysisType(TimeSlicerToKML.FIRST_ANALYSIS);
+			if(FIRST_ANALYSIS) {
+				
+				timeSlicerToKML.setAnalysisType(TimeSlicerToKML.FIRST_ANALYSIS);
+				
+				timeSlicerToKML.setTreePath("/home/filip/Dropbox/SPREAD_dev/Cent_ITS_broad.tree");
+				
+				timeSlicerToKML.setNumberOfIntervals(10);
+				
+			} else {
+				
+				timeSlicerToKML.setAnalysisType(TimeSlicerToKML.SECOND_ANALYSIS);
+				
+				timeSlicerToKML.setCustomSliceHeightsPath("/home/filip/Dropbox/SPREAD_dev/treeslice.txt");
+				
+			}
 			
-			timeSlicerToKML.setTreePath("/home/filip/Phyleography/data/ContinuousH5N1/HA_alignedEd_diff_gammaRRW_MCC.tre");
-			
-//			timeSlicerToKML.setTreePath("/home/filip/Phyleography/data/RacRABV/RacRABV_cont_0.8_MCC_snyder.tre");
-			
-			timeSlicerToKML.setMrsdString("2011-07-29 AD");
+			timeSlicerToKML.setTreesPath("/home/filip/Dropbox/SPREAD_dev/Cent_ITS_broad.trees");
 
-			timeSlicerToKML.setTreesPath("/home/filip/Phyleography/data/ContinuousH5N1/HA_alignedEd_diff_gammaRRW.trees");
-
-//			timeSlicerToKML.setTreesPath("/home/filip/Phyleography/data/RacRABV/RacRABV_cont.trees");
+			timeSlicerToKML.setBurnIn(500);
+			
+			timeSlicerToKML.setLocationAttributeName("coords");
+			
+			timeSlicerToKML.setMrsdString("2012-10-24 AD");
 			
 			timeSlicerToKML.setHPD(0.80);
 
 			timeSlicerToKML.setGridSize(100);
-
-			timeSlicerToKML.setBurnIn(500);
-
-			timeSlicerToKML.setLocationAttributeName("location");
 
 			timeSlicerToKML.setRateAttributeName("rate");
 
@@ -42,7 +52,7 @@ public class TimeSlicerToKMLTest {
 
 			timeSlicerToKML.setTimescaler(1);
 
-			timeSlicerToKML.setKmlWriterPath("/home/filip/Phyleography/data/ContinuousH5N1/output_custom.kml");
+			timeSlicerToKML.setKmlWriterPath("/home/filip/Dropbox/SPREAD_dev/output_custom.kml");
 			
 			timeSlicerToKML.setMinPolygonRedMapping(0);
 

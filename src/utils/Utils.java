@@ -922,20 +922,16 @@ public class Utils {
 		return col;
 	}// END: getRandomColor
 
-	public static double map(double x, double x1, double x2, double y1,
-			double y2) {
+	public static double map(double value, double low1, double high1,
+			double low2, double high2) {
 		/**
 		 * maps a single value from its range into another interval
 		 * 
-		 * @param x1
-		 *            , x2 - range of x; y1, y2 - interval
-		 * 
+		 * @param low1, high1 - range of value; low2, high2 - interval
 		 * @return the mapped value
 		 */
-		double y = ((y1 - y2) / (x1 - x2)) * x
-				- ((x2 * y1 - x1 * y2) / (x1 - x2));
-
-		return y;
+		// return ((low2 - high2) / (low1 - high1)) * value - ((high1 * low2 - low1 * high2) / (low1 - high1));
+		return (value - low1) / (high1 - low1) * (high2 - low2) + low2;
 	}// END: map
 
 	public static int newton(int n, int k) {

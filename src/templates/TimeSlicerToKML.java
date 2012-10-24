@@ -249,14 +249,14 @@ public class TimeSlicerToKML {
 		mrsd = new ThreadLocalSpreadDate(mrsdString);
 
 		switch (analysisType) {
-		case 1:
+		case FIRST_ANALYSIS:
 			tree = (RootedTree) treeImporter.importNextTree();
 			treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());
 			sliceHeights = generateTreeSliceHeights(treeRootHeight,
 					numberOfIntervals);
 			timeLine = generateTreeTimeLine(tree);
 			break;
-		case 2:
+		case SECOND_ANALYSIS:
 			timeLine = generateCustomTimeLine(sliceHeights);
 			break;
 		}
@@ -362,11 +362,11 @@ public class TimeSlicerToKML {
 			}// END: while has next
 
 		switch (analysisType) {
-		case 1:
+		case FIRST_ANALYSIS:
 			System.out.println("Generating branches...");
 			executor.submit(new Branches());
 			break;
-		case 2:
+		case SECOND_ANALYSIS:
 			break;
 		}
 
@@ -419,6 +419,15 @@ public class TimeSlicerToKML {
 			int alpha = (int) Utils.map(sliceTime, startTime, endTime,
 					maxPolygonOpacityMapping, minPolygonOpacityMapping);
 
+			//////////////
+			//---TODO---//
+			//////////////
+			
+//			System.out.println("sliceTime: " + sliceTime + " startTime: " + startTime + " endTime: " + endTime);
+//			System.out.println("red: " + red + " green: " + green + " blue: " + blue);
+			
+			/////////////////////////////////
+			
 			Color color = new Color(red, green, blue, alpha);
 			Style polygonsStyle = new Style(color, 0);
 			polygonsStyle.setId("polygon_style" + polygonsStyleId);
@@ -603,12 +612,12 @@ public class TimeSlicerToKML {
 
 		// This is a general time span for all of the trees
 		int numberOfSlices = timeSlices.length;
-		double startTime = mrsd.getTime()
-				- (timeSlices[numberOfSlices - 1] * DayInMillis * DaysInYear * timescaler);
+		double firstSlice = timeSlices[0];
+		
+		double startTime = mrsd.getTime() - (firstSlice * DayInMillis * DaysInYear * timescaler);
 		double endTime = mrsd.getTime();
-		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfSlices);
 
-		return timeLine;
+		return new TimeLine(startTime, endTime, numberOfSlices);
 	}// END: generateCustomTimeLine
 
 }// END: class
