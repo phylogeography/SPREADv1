@@ -1,6 +1,7 @@
 SPREAD version 1.0.5 release candidate
 ------------------------------------------------
 
+* Improved custom time slicer
 * Progress bar for tree slicer.
 * Automated jar detection.
 * Column for posterior probabilities value included in the terminal output for BF calculation.
