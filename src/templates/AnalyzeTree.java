@@ -43,7 +43,7 @@ public class AnalyzeTree implements Runnable {
 		this.slicesMap = slicesMap;
 		this.useTrueNoise = useTrueNoise;
 
-	}
+	}// END: Constructor
 
 	public void run() throws ConcurrentModificationException {
 
@@ -79,20 +79,23 @@ public class AnalyzeTree implements Runnable {
 
 						double sliceHeight = sliceHeights[i];
 
+						// System.out.println("nodeHeight: " + nodeHeight +
+						// " parentHeight: " + parentHeight + " sliceHeight: " +
+						// sliceHeight);
+
 						if (nodeHeight < sliceHeight
 								&& sliceHeight <= parentHeight) {
 
 							int days = (int) (sliceHeight * DaysInYear * timescaler);
 							double sliceTime = mrsd.minus(days);
 
+							double[] imputedLocation = imputeValue(location,
+									parentLocation, sliceHeight, nodeHeight,
+									parentHeight, rate, useTrueNoise,
+									currentTreeNormalization, precisionArray);
+
 							// grow map entry if key exists
 							if (slicesMap.containsKey(sliceTime)) {
-
-								double[] imputedLocation = imputeValue(
-										location, parentLocation, sliceHeight,
-										nodeHeight, parentHeight, rate,
-										useTrueNoise, currentTreeNormalization,
-										precisionArray);
 
 								slicesMap.get(sliceTime).add(
 										new Coordinates(imputedLocation[1],
@@ -102,23 +105,22 @@ public class AnalyzeTree implements Runnable {
 							} else {
 
 								List<Coordinates> coords = new ArrayList<Coordinates>();
-
-								double[] imputedLocation = imputeValue(
-										location, parentLocation, sliceHeight,
-										nodeHeight, parentHeight, rate,
-										useTrueNoise, currentTreeNormalization,
-										precisionArray);
-
-								coords.add(new Coordinates(imputedLocation[1],
-										imputedLocation[0], 0.0));
+								coords.add(new Coordinates(imputedLocation[1], // longitude
+										imputedLocation[0], // latitude
+										0.0 // altitude
+								));
 
 								slicesMap.put(sliceTime, coords);
 
 							}// END: key check
+
 						}// END: sliceTime check
+
 					}// END: numberOfIntervals loop
-				}
+				}// END: root node check
 			}// END: node loop
+
+			// System.exit(-1);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -185,8 +187,9 @@ public class AnalyzeTree implements Runnable {
 		}
 
 		double[] result = new double[dim];
-		for (int i = 0; i < dim; i++)
+		for (int i = 0; i < dim; i++) {
 			result[i] = mean[i];
+		}
 
 		return result;
 	}// END: ImputeValue
