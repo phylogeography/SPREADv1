@@ -228,15 +228,17 @@ public class CalculateSpatialStats implements Runnable {
 						}
 					}
 
-					final double[] weights = new double[timesList.size()];
-					for (int i = 0; i < timesList.size(); i++) {
-						weights[i] = timesList.get(i);
-					}
-
-					final double[] distances = new double[distancesList.size()];
+					double[] weights = new double[timesList.size()];
+					double[] distances = new double[distancesList.size()];
 					for (int i = 0; i < distancesList.size(); i++) {
+						weights[i] = timesList.get(i);
 						distances[i] = distancesList.get(i);
 					}
+
+//					final double[] distances = new double[distancesList.size()];
+//					for (int i = 0; i < distancesList.size(); i++) {
+//						distances[i] = distancesList.get(i);
+//					}
 
 					if (DEBUG) {
 						// System.out.println("branchLength: " + branchLength);
@@ -250,7 +252,7 @@ public class CalculateSpatialStats implements Runnable {
 			}// END: node loop
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}// END: try-catch block
 
 	}// END: run
