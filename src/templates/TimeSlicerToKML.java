@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -44,10 +45,8 @@ public class TimeSlicerToKML {
 
 	public long time;
 
-	// how many millisecond one day holds
-	private static final int DayInMillis = 86400000;
-	// how many days one year holds
-	private static final int DaysInYear = 365;
+//	// how many days one year holds
+//	private static final int DaysInYear = 365;
 
 	// Concurrency stuff
 	private ConcurrentMap<Double, List<Coordinates>> slicesMap;
@@ -252,15 +251,18 @@ public class TimeSlicerToKML {
 		case FIRST_ANALYSIS:
 			tree = (RootedTree) treeImporter.importNextTree();
 			treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());
-			sliceHeights = generateTreeSliceHeights(treeRootHeight,
+			sliceHeights = Utils.generateTreeSliceHeights(treeRootHeight,
 					numberOfIntervals);
-			timeLine = generateTreeTimeLine(tree);
+			timeLine = Utils.generateTreeTimeLine(tree, timescaler, numberOfIntervals, mrsd);
 			break;
 		case SECOND_ANALYSIS:
-			timeLine = generateCustomTimeLine(sliceHeights);
+			timeLine = Utils.generateCustomTimeLine(sliceHeights, timescaler, mrsd);
 			break;
 		}
 
+		//sort them in ascending numerical order
+		Arrays.sort(sliceHeights);
+		
 		System.out.println("Using as slice times: ");
 		Utils.printArray(sliceHeights);
 		System.out.println();
@@ -339,20 +341,6 @@ public class TimeSlicerToKML {
 		executor.shutdown();
 		while (!executor.isTerminated()) {
 		}
-
-		// TODO
-		boolean printStats = true;
-		if (printStats) {
-//			new CalculateSpatialStats(slicesMap).calculate();
-		
-		
-		
-		
-		
-		
-		
-		
-		}// END: printStats check
 
 		System.out.println("Generating polygons...");
 
@@ -435,16 +423,10 @@ public class TimeSlicerToKML {
 			int alpha = (int) Utils.map(sliceTime, startTime, endTime,
 					maxPolygonOpacityMapping, minPolygonOpacityMapping);
 
-			// ////////////
-			// ---TODO---//
-			// ////////////
-
 			// System.out.println("sliceTime: " + sliceTime + " startTime: " +
 			// startTime + " endTime: " + endTime);
 			// System.out.println("red: " + red + " green: " + green + " blue: "
 			// + blue);
-
-			// ///////////////////////////////
 
 			Color color = new Color(red, green, blue, alpha);
 			Style polygonsStyle = new Style(color, 0);
@@ -568,9 +550,9 @@ public class TimeSlicerToKML {
 							branchStyleId++;
 
 							double startTime = mrsd.minus((int) (nodeHeight
-									* DaysInYear * timescaler));
+									* Utils.DAYS_IN_YEAR * timescaler));
 							double endTime = mrsd.minus((int) (parentHeight
-									* DaysInYear * timescaler));
+									* Utils.DAYS_IN_YEAR * timescaler));
 
 							branchesLayer.addItem(new Line((parentLongitude
 									+ "," + parentLatitude + ":" + longitude
@@ -599,44 +581,5 @@ public class TimeSlicerToKML {
 		}// END: run
 	}// END: Branches class
 
-	private TimeLine generateTreeTimeLine(RootedTree tree) {
-
-		// This is a general time span for all of the trees
-		double treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());
-		double startTime = mrsd.getTime()
-				- (treeRootHeight * DayInMillis * DaysInYear * timescaler);
-		double endTime = mrsd.getTime();
-		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
-
-		return timeLine;
-	}// END: generateTreeTimeLine
-
-	private double[] generateTreeSliceHeights(double treeRootHeight,
-			int numberOfIntervals) {
-
-		double[] timeSlices = new double[numberOfIntervals];
-
-		for (int i = 0; i < numberOfIntervals; i++) {
-
-			timeSlices[i] = treeRootHeight
-					- (treeRootHeight / (double) numberOfIntervals)
-					* ((double) i);
-		}
-
-		return timeSlices;
-	}// END: generateTimeSlices
-
-	private TimeLine generateCustomTimeLine(double[] timeSlices) {
-
-		// This is a general time span for all of the trees
-		int numberOfSlices = timeSlices.length;
-		double firstSlice = timeSlices[0];
-
-		double startTime = mrsd.getTime()
-				- (firstSlice * DayInMillis * DaysInYear * timescaler);
-		double endTime = mrsd.getTime();
-
-		return new TimeLine(startTime, endTime, numberOfSlices);
-	}// END: generateCustomTimeLine
 
 }// END: class

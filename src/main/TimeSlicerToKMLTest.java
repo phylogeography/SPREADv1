@@ -109,6 +109,6 @@ public class TimeSlicerToKMLTest {
 			e.printStackTrace();
 		}
 
-	}// END TimeSlicerToKMLTest
+	}// END: main
 
 }// END: class

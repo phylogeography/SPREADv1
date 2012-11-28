@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -416,6 +417,9 @@ public class TimeSlicerToProcessing extends PApplet {
 			break;
 		}
 
+		//sort them in ascending numerical order
+		Arrays.sort(sliceHeights);
+		
 		System.out.println("Using as slice times: ");
 		Utils.printArray(sliceHeights);
 		System.out.println();

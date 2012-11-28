@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import jebl.evolution.graphs.Node;
 import jebl.evolution.trees.RootedTree;
-import math.MultivariateNormalDistribution;
 import structure.Coordinates;
 import utils.ThreadLocalSpreadDate;
 import utils.Utils;
@@ -48,9 +47,6 @@ public class AnalyzeTree implements Runnable {
 
 		try {
 
-			List<Double> timeList = new ArrayList<Double>();
-			List<Double> distanceList = new ArrayList<Double>();
-			
 			// attributes parsed once per tree
 			double currentTreeNormalization = Utils.getTreeLength(currentTree,
 					currentTree.getRootNode());
@@ -77,53 +73,17 @@ public class AnalyzeTree implements Runnable {
 					double rate = Utils
 							.getDoubleNodeAttribute(node, rateString);
 
-					double[] startLocation = location;
-					
-					System.out.println("branch length: " + currentTree.getEdgeLength(node, parentNode));
-					
 					for (int i = 0; i < sliceHeights.length; i++) {
 
 						double sliceHeight = sliceHeights[i];
 						
-//						System.out.println(sliceHeight);
-						
 						if (nodeHeight < sliceHeight && sliceHeight <= parentHeight) {
 
-							double[] imputedLocation = imputeValue(location,
+							double[] imputedLocation = Utils.imputeValue(location,
 									parentLocation, sliceHeight, nodeHeight,
 									parentHeight, rate, useTrueNoise,
 									currentTreeNormalization, precisionArray);
 
-							double distance = Utils.rhumbDistance(
-									startLocation[1], // startLon
-									startLocation[0], // startLat
-									imputedLocation[1], // endLon
-									imputedLocation[0] // endLat
-									);
-							
-							
-							
-							
-							
-//							System.out.println(
-//									"distance: " + distance +
-//									" startLon: " + startLocation[1] +
-//									" startLat: " + startLocation[0] +
-//									" endLon: " + imputedLocation[1] + 
-//									" endLat: " + imputedLocation[0] 
-//									);
-							
-							startLocation = imputedLocation;
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
 							// calculate key
 							int days = (int) (sliceHeight * DaysInYear * timescaler);
 							double sliceTime = mrsd.minus(days);
@@ -152,10 +112,6 @@ public class AnalyzeTree implements Runnable {
 							
 						}// END: sliceTime check
 
-						
-						
-						
-						
 					}// END: numberOfIntervals loop
 				}// END: root node check
 			}// END: node loop
@@ -167,71 +123,5 @@ public class AnalyzeTree implements Runnable {
 		}
 
 	}// END: run
-
-	private double[] imputeValue(double[] location, double[] parentLocation,
-			double sliceHeight, double nodeHeight, double parentHeight,
-			double rate, boolean trueNoise, double treeNormalization,
-			double[] precisionArray) {
-
-		int dim = (int) Math.sqrt(1 + 8 * precisionArray.length) / 2;
-		double[][] precision = new double[dim][dim];
-		int c = 0;
-		for (int i = 0; i < dim; i++) {
-			for (int j = i; j < dim; j++) {
-				precision[j][i] = precision[i][j] = precisionArray[c++]
-						* treeNormalization;
-			}
-		}
-
-		dim = location.length;
-		double[] nodeValue = new double[2];
-		double[] parentValue = new double[2];
-
-		for (int i = 0; i < dim; i++) {
-
-			nodeValue[i] = location[i];
-			parentValue[i] = parentLocation[i];
-
-		}
-
-		final double scaledTimeChild = (sliceHeight - nodeHeight) * rate;
-		final double scaledTimeParent = (parentHeight - sliceHeight) * rate;
-		final double scaledWeightTotal = (1.0 / scaledTimeChild)
-				+ (1.0 / scaledTimeParent);
-
-		if (scaledTimeChild == 0)
-			return location;
-
-		if (scaledTimeParent == 0)
-			return parentLocation;
-
-		// Find mean value, weighted average
-		double[] mean = new double[dim];
-		double[][] scaledPrecision = new double[dim][dim];
-
-		for (int i = 0; i < dim; i++) {
-			mean[i] = (nodeValue[i] / scaledTimeChild + parentValue[i]
-					/ scaledTimeParent)
-					/ scaledWeightTotal;
-
-			if (trueNoise) {
-				for (int j = i; j < dim; j++)
-					scaledPrecision[j][i] = scaledPrecision[i][j] = precision[i][j]
-							* scaledWeightTotal;
-			}
-		}
-
-		if (trueNoise) {
-			mean = MultivariateNormalDistribution
-					.nextMultivariateNormalPrecision(mean, scaledPrecision);
-		}
-
-		double[] result = new double[dim];
-		for (int i = 0; i < dim; i++) {
-			result[i] = mean[i];
-		}
-
-		return result;
-	}// END: ImputeValue
 
 }// END: AnalyzeTree

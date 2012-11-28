@@ -20,17 +20,24 @@ import javax.swing.SwingUtilities;
 import jebl.evolution.graphs.Node;
 import jebl.evolution.trees.RootedTree;
 
+import math.MultivariateNormalDistribution;
+
 import org.boehn.kmlframework.kml.Point;
 
 import app.SpreadApp;
 
 import structure.Coordinates;
+import structure.TimeLine;
 
 public class Utils {
 
 	// Earths radius in km
-	static final double EarthRadius = 6371.0;
-
+	public static final double EARTH_RADIUS = 6371.0;
+	// how many millisecond one day holds
+	public static final int DAY_IN_MILLIS = 86400000;
+	// how many days one year holds
+	public static final int DAYS_IN_YEAR = 365;
+	
 	// ///////////////////
 	// ---ENUM FIELDS---//
 	// ///////////////////
@@ -94,7 +101,7 @@ public class Utils {
 
 		List<Coordinates> coords = new ArrayList<Coordinates>();
 
-		double Clat = Math.toDegrees((radius / EarthRadius));
+		double Clat = Math.toDegrees((radius / EARTH_RADIUS));
 		double Clong = Clat / Math.cos(Math.toRadians(centerX));
 
 		for (int i = 0; i < numPoints; i++) {
@@ -212,6 +219,46 @@ public class Utils {
 	// ---TIME SLICER UTILS---//
 	// /////////////////////////
 
+	public static TimeLine generateTreeTimeLine(RootedTree tree, double timescaler, int numberOfIntervals, ThreadLocalSpreadDate mrsd) {
+
+		// This is a general time span for all of the trees
+		double treeRootHeight = Utils.getNodeHeight(tree, tree.getRootNode());
+		double startTime = mrsd.getTime()
+				- (treeRootHeight * DAY_IN_MILLIS * DAYS_IN_YEAR * timescaler);
+		double endTime = mrsd.getTime();
+		TimeLine timeLine = new TimeLine(startTime, endTime, numberOfIntervals);
+
+		return timeLine;
+	}// END: generateTreeTimeLine
+
+	public static double[] generateTreeSliceHeights(double treeRootHeight,
+			int numberOfIntervals) {
+
+		double[] timeSlices = new double[numberOfIntervals];
+
+		for (int i = 0; i < numberOfIntervals; i++) {
+
+			timeSlices[i] = treeRootHeight
+					- (treeRootHeight / (double) numberOfIntervals)
+					* ((double) i);
+		}
+
+		return timeSlices;
+	}// END: generateTimeSlices
+
+	public static TimeLine generateCustomTimeLine(double[] timeSlices, double timescaler, ThreadLocalSpreadDate mrsd) {
+
+		// This is a general time span for all of the trees
+		int numberOfSlices = timeSlices.length;
+		double firstSlice = timeSlices[0];
+
+		double startTime = mrsd.getTime()
+				- (firstSlice * DAY_IN_MILLIS * DAYS_IN_YEAR * timescaler);
+		double endTime = mrsd.getTime();
+
+		return new TimeLine(startTime, endTime, numberOfSlices);
+	}// END: generateCustomTimeLine
+	
 	public static double getTreeLength(RootedTree tree, Node node) {
 
 		int childCount = tree.getChildren(node).size();
@@ -228,6 +275,72 @@ public class Utils {
 
 	}
 
+	public static double[] imputeValue(double[] location, double[] parentLocation,
+			double sliceHeight, double nodeHeight, double parentHeight,
+			double rate, boolean trueNoise, double treeNormalization,
+			double[] precisionArray) {
+
+		int dim = (int) Math.sqrt(1 + 8 * precisionArray.length) / 2;
+		double[][] precision = new double[dim][dim];
+		int c = 0;
+		for (int i = 0; i < dim; i++) {
+			for (int j = i; j < dim; j++) {
+				precision[j][i] = precision[i][j] = precisionArray[c++]
+						* treeNormalization;
+			}
+		}
+
+		dim = location.length;
+		double[] nodeValue = new double[2];
+		double[] parentValue = new double[2];
+
+		for (int i = 0; i < dim; i++) {
+
+			nodeValue[i] = location[i];
+			parentValue[i] = parentLocation[i];
+
+		}
+
+		final double scaledTimeChild = (sliceHeight - nodeHeight) * rate;
+		final double scaledTimeParent = (parentHeight - sliceHeight) * rate;
+		final double scaledWeightTotal = (1.0 / scaledTimeChild)
+				+ (1.0 / scaledTimeParent);
+
+		if (scaledTimeChild == 0)
+			return location;
+
+		if (scaledTimeParent == 0)
+			return parentLocation;
+
+		// Find mean value, weighted average
+		double[] mean = new double[dim];
+		double[][] scaledPrecision = new double[dim][dim];
+
+		for (int i = 0; i < dim; i++) {
+			mean[i] = (nodeValue[i] / scaledTimeChild + parentValue[i]
+					/ scaledTimeParent)
+					/ scaledWeightTotal;
+
+			if (trueNoise) {
+				for (int j = i; j < dim; j++)
+					scaledPrecision[j][i] = scaledPrecision[i][j] = precision[i][j]
+							* scaledWeightTotal;
+			}
+		}
+
+		if (trueNoise) {
+			mean = MultivariateNormalDistribution
+					.nextMultivariateNormalPrecision(mean, scaledPrecision);
+		}
+
+		double[] result = new double[dim];
+		for (int i = 0; i < dim; i++) {
+			result[i] = mean[i];
+		}
+
+		return result;
+	}// END: ImputeValue
+	
 	// ///////////////////////////
 	// ---KML GENERATOR UTILS---//
 	// ///////////////////////////
@@ -300,7 +413,7 @@ public class Utils {
 
 		double distance = Math.acos(Math.sin(rlat1) * Math.sin(rlat2)
 				+ Math.cos(rlat1) * Math.cos(rlat2) * Math.cos(rlon2 - rlon1))
-				* EarthRadius;
+				* EARTH_RADIUS;
 
 		return distance;
 	}// END: GreatCircDistSpherLawCos
@@ -325,7 +438,7 @@ public class Utils {
 				* Math.sin(dLon / 2);
 
 		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		double distance = EarthRadius * c;
+		double distance = EARTH_RADIUS * c;
 		return distance;
 	}// END: GreatCircDistHavForm
 
@@ -462,7 +575,7 @@ public class Utils {
 		if (dLon > Math.PI)
 			dLon = 2 * Math.PI - dLon;
 		double distance = Math.sqrt(dLat * dLat + q * q * dLon * dLon)
-				* EarthRadius;
+				* EARTH_RADIUS;
 
 		return distance;
 	}
