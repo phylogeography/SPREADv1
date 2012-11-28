@@ -1,13 +1,12 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.ScrollPane;
 import java.io.PrintStream;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
 
 @SuppressWarnings("serial")
 public class TerminalTab extends JPanel {
@@ -25,10 +24,21 @@ public class TerminalTab extends JPanel {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		
-		JScrollPane scrollPane = new JScrollPane(textArea,
-				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		add(scrollPane, BorderLayout.CENTER);
+//		if (System.getProperty("java.runtime.name").toLowerCase()
+//				.startsWith("openjdk")) {
+//
+//			JScrollPane scrollPane = new JScrollPane(textArea,
+//					ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+//					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//			add(scrollPane, BorderLayout.CENTER);
+//
+//		} else {
+
+			ScrollPane scrollPane = new ScrollPane(ScrollPane.SCROLLBARS_ALWAYS);
+			scrollPane.add(textArea);
+			add(scrollPane, BorderLayout.CENTER);
+
+//		}
 
 		// Redirect streams
 		System.setOut(new PrintStream(new JTextAreaOutputStream(textArea)));

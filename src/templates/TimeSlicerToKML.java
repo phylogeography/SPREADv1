@@ -109,7 +109,7 @@ public class TimeSlicerToKML {
 	public void setAnalysisType(int analysisType) {
 		this.analysisType = analysisType;
 	}
-	
+
 	public void setCustomSliceHeightsPath(String path) {
 		sliceHeights = new ReadSliceHeights(path).getSliceHeights();
 	}
@@ -264,7 +264,7 @@ public class TimeSlicerToKML {
 		System.out.println("Using as slice times: ");
 		Utils.printArray(sliceHeights);
 		System.out.println();
-		
+
 		// this is to generate kml output
 		layers = new ArrayList<Layer>();
 
@@ -274,13 +274,15 @@ public class TimeSlicerToKML {
 
 		int treesAssumed = 10000;
 		int treesRead = 0;
-		
+
 		System.out.println("Analyzing trees (bar assumes 10,000 trees)");
-		System.out.println("0                   25                  50                  75                 100");
-		System.out.println("|---------------------|---------------------|---------------------|---------------------|");
-//		System.out.println("0              25             50             75            100");
-//		System.out.println("|--------------|--------------|--------------|--------------|");
-		
+		System.out
+				.println("0                   25                  50                  75                 100");
+		System.out
+				.println("|---------------------|---------------------|---------------------|---------------------|");
+		// System.out.println("0              25             50             75            100");
+		// System.out.println("|--------------|--------------|--------------|--------------|");
+
 		int stepSize = treesAssumed / 60;
 		if (stepSize < 1) {
 			stepSize = 1;
@@ -305,7 +307,7 @@ public class TimeSlicerToKML {
 						mrsd, //
 						slicesMap, //
 						useTrueNoise//
-						));
+				));
 
 				// new AnalyzeTree(currentTree,
 				// precisionString, coordinatesName, rateString,
@@ -333,33 +335,47 @@ public class TimeSlicerToKML {
 					+ totalTrees + " trees");
 		}
 
-			// Wait until all threads are finished
-			executor.shutdown();
-			while (!executor.isTerminated()) {
-			}
+		// Wait until all threads are finished
+		executor.shutdown();
+		while (!executor.isTerminated()) {
+		}
 
-			System.out.println("Generating polygons...");
+		// TODO
+		boolean printStats = true;
+		if (printStats) {
+//			new CalculateSpatialStats(slicesMap).calculate();
+		
+		
+		
+		
+		
+		
+		
+		
+		}// END: printStats check
 
-			Iterator<Double> iterator = slicesMap.keySet().iterator();
-			executor = Executors.newFixedThreadPool(NTHREDS);
-			formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
-			startTime = timeLine.getStartTime();
-			endTime = timeLine.getEndTime();
+		System.out.println("Generating polygons...");
 
-			System.out.println("Iterating through Map...");
+		Iterator<Double> iterator = slicesMap.keySet().iterator();
+		executor = Executors.newFixedThreadPool(NTHREDS);
+		formatter = new SimpleDateFormat("yyyy-MM-dd G", Locale.US);
+		startTime = timeLine.getStartTime();
+		endTime = timeLine.getEndTime();
 
-			int polygonsStyleId = 1;
-			while (iterator.hasNext()) {
+		System.out.println("Iterating through Map...");
 
-				System.out.println("Key " + polygonsStyleId + "...");
+		int polygonsStyleId = 1;
+		while (iterator.hasNext()) {
 
-				Double sliceTime = iterator.next();
+			System.out.println("Key " + polygonsStyleId + "...");
 
-				// executor.submit(new Polygons(sliceTime, polygonsStyleId));
-				new Polygons(sliceTime, polygonsStyleId).run();
+			Double sliceTime = iterator.next();
 
-				polygonsStyleId++;
-			}// END: while has next
+			// executor.submit(new Polygons(sliceTime, polygonsStyleId));
+			new Polygons(sliceTime, polygonsStyleId).run();
+
+			polygonsStyleId++;
+		}// END: while has next
 
 		switch (analysisType) {
 		case FIRST_ANALYSIS:
@@ -388,7 +404,7 @@ public class TimeSlicerToKML {
 	// ///////////////////////////
 	// ---CONCURRENT POLYGONS---//
 	// ///////////////////////////
-	
+
 	public class Polygons implements Runnable {
 
 		private double sliceTime;
@@ -419,15 +435,17 @@ public class TimeSlicerToKML {
 			int alpha = (int) Utils.map(sliceTime, startTime, endTime,
 					maxPolygonOpacityMapping, minPolygonOpacityMapping);
 
-			//////////////
-			//---TODO---//
-			//////////////
-			
-//			System.out.println("sliceTime: " + sliceTime + " startTime: " + startTime + " endTime: " + endTime);
-//			System.out.println("red: " + red + " green: " + green + " blue: " + blue);
-			
-			/////////////////////////////////
-			
+			// ////////////
+			// ---TODO---//
+			// ////////////
+
+			// System.out.println("sliceTime: " + sliceTime + " startTime: " +
+			// startTime + " endTime: " + endTime);
+			// System.out.println("red: " + red + " green: " + green + " blue: "
+			// + blue);
+
+			// ///////////////////////////////
+
 			Color color = new Color(red, green, blue, alpha);
 			Style polygonsStyle = new Style(color, 0);
 			polygonsStyle.setId("polygon_style" + polygonsStyleId);
@@ -483,7 +501,7 @@ public class TimeSlicerToKML {
 	// ///////////////////////////
 	// ---CONCURRENT BRANCHES---//
 	// ///////////////////////////
-	
+
 	private class Branches implements Runnable {
 
 		public void run() {
@@ -613,8 +631,9 @@ public class TimeSlicerToKML {
 		// This is a general time span for all of the trees
 		int numberOfSlices = timeSlices.length;
 		double firstSlice = timeSlices[0];
-		
-		double startTime = mrsd.getTime() - (firstSlice * DayInMillis * DaysInYear * timescaler);
+
+		double startTime = mrsd.getTime()
+				- (firstSlice * DayInMillis * DaysInYear * timescaler);
 		double endTime = mrsd.getTime();
 
 		return new TimeLine(startTime, endTime, numberOfSlices);

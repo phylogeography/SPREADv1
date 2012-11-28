@@ -14,7 +14,6 @@ import utils.Utils;
 
 public class AnalyzeTree implements Runnable {
 
-	// how many days one year holds
 	private static final int DaysInYear = 365;
 
 	private RootedTree currentTree;
@@ -49,6 +48,9 @@ public class AnalyzeTree implements Runnable {
 
 		try {
 
+			List<Double> timeList = new ArrayList<Double>();
+			List<Double> distanceList = new ArrayList<Double>();
+			
 			// attributes parsed once per tree
 			double currentTreeNormalization = Utils.getTreeLength(currentTree,
 					currentTree.getRootNode());
@@ -75,31 +77,65 @@ public class AnalyzeTree implements Runnable {
 					double rate = Utils
 							.getDoubleNodeAttribute(node, rateString);
 
+					double[] startLocation = location;
+					
+					System.out.println("branch length: " + currentTree.getEdgeLength(node, parentNode));
+					
 					for (int i = 0; i < sliceHeights.length; i++) {
 
 						double sliceHeight = sliceHeights[i];
-
-						// System.out.println("nodeHeight: " + nodeHeight +
-						// " parentHeight: " + parentHeight + " sliceHeight: " +
-						// sliceHeight);
-
-						if (nodeHeight < sliceHeight
-								&& sliceHeight <= parentHeight) {
-
-							int days = (int) (sliceHeight * DaysInYear * timescaler);
-							double sliceTime = mrsd.minus(days);
+						
+//						System.out.println(sliceHeight);
+						
+						if (nodeHeight < sliceHeight && sliceHeight <= parentHeight) {
 
 							double[] imputedLocation = imputeValue(location,
 									parentLocation, sliceHeight, nodeHeight,
 									parentHeight, rate, useTrueNoise,
 									currentTreeNormalization, precisionArray);
 
+							double distance = Utils.rhumbDistance(
+									startLocation[1], // startLon
+									startLocation[0], // startLat
+									imputedLocation[1], // endLon
+									imputedLocation[0] // endLat
+									);
+							
+							
+							
+							
+							
+//							System.out.println(
+//									"distance: " + distance +
+//									" startLon: " + startLocation[1] +
+//									" startLat: " + startLocation[0] +
+//									" endLon: " + imputedLocation[1] + 
+//									" endLat: " + imputedLocation[0] 
+//									);
+							
+							startLocation = imputedLocation;
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							// calculate key
+							int days = (int) (sliceHeight * DaysInYear * timescaler);
+							double sliceTime = mrsd.minus(days);
+							
 							// grow map entry if key exists
 							if (slicesMap.containsKey(sliceTime)) {
 
 								slicesMap.get(sliceTime).add(
-										new Coordinates(imputedLocation[1],
-												imputedLocation[0], 0.0));
+										new Coordinates(imputedLocation[1], // longitude
+												imputedLocation[0], // latitude
+												0.0 // altitude
+										));
 
 								// start new entry if no such key in the map
 							} else {
@@ -113,14 +149,18 @@ public class AnalyzeTree implements Runnable {
 								slicesMap.put(sliceTime, coords);
 
 							}// END: key check
-
+							
 						}// END: sliceTime check
 
+						
+						
+						
+						
 					}// END: numberOfIntervals loop
 				}// END: root node check
 			}// END: node loop
 
-			// System.exit(-1);
+			 System.exit(-1);
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1066,6 +1066,30 @@ public class Utils {
 		}
 	}// END: save2DArray
 
+	public static void printHashMap(
+			ConcurrentMap<Double, List<Coordinates>> slicesMap) {
+
+		Iterator<Double> iterator = slicesMap.keySet().iterator();
+		while (iterator.hasNext()) {
+
+			Double sliceTime = (Double) iterator.next();
+			List<Coordinates> list = slicesMap.get(sliceTime);
+
+			double[][] array = new double[list.size()][2];// 3
+			for (int i = 0; i < list.size(); i++) {
+
+				array[i][0] = list.get(i).getLatitude();// 1
+				array[i][1] = list.get(i).getLongitude();// 2
+
+			}
+
+			System.out.println(sliceTime);
+			System.out.println(array.length);
+//            print2DArray(array);
+			
+		}// END while has next
+	}// END: saveHashMap
+	
 	public static void saveHashMap(
 			ConcurrentMap<Double, List<Coordinates>> slicesMap) {
 

@@ -20,7 +20,7 @@ public class TimeSlicerToKMLTest {
 				
 				timeSlicerToKML.setAnalysisType(TimeSlicerToKML.FIRST_ANALYSIS);
 				
-				timeSlicerToKML.setTreePath("/home/filip/Dropbox/SPREAD_dev/Cent_ITS_broad.tree");
+				timeSlicerToKML.setTreePath("/home/filip/Dropbox/SPREAD_dev/CustomTimeSlicing/Cent_ITS_broad.tree");
 				
 				timeSlicerToKML.setNumberOfIntervals(10);
 				
@@ -28,13 +28,13 @@ public class TimeSlicerToKMLTest {
 				
 				timeSlicerToKML.setAnalysisType(TimeSlicerToKML.SECOND_ANALYSIS);
 				
-				timeSlicerToKML.setCustomSliceHeightsPath("/home/filip/Dropbox/SPREAD_dev/treeslice.txt");
+				timeSlicerToKML.setCustomSliceHeightsPath("/home/filip/Dropbox/SPREAD_dev/CustomTimeSlicing/treeslice_small.txt");
 				
 			}
 			
-			timeSlicerToKML.setTreesPath("/home/filip/Dropbox/SPREAD_dev/Cent_ITS_broad.trees");
+			timeSlicerToKML.setTreesPath("/home/filip/Dropbox/SPREAD_dev/CustomTimeSlicing/Cent_ITS_small.trees");
 
-			timeSlicerToKML.setBurnIn(500);
+			timeSlicerToKML.setBurnIn(0);
 			
 			timeSlicerToKML.setLocationAttributeName("coords");
 			

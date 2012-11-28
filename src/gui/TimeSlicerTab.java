@@ -513,22 +513,22 @@ public class TimeSlicerTab extends JPanel {
 		timeSlicerToProcessing.setPreferredSize(new Dimension(mapImageWidth,
 				mapImageHeight));
 
-		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
-				"openjdk")) {
-
-			JScrollPane rightScrollPane = new JScrollPane(
-					timeSlicerToProcessing,
-					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-			rightScrollPane.setMinimumSize(minimumDimension);
-
-			SplitPane splitPane = new SplitPane(JSplitPane.HORIZONTAL_SPLIT,
-					leftScrollPane, rightScrollPane);
-			splitPane.setDividerLocation(leftPanelWidth);
-
-			this.add(splitPane);
-
-		} else {
+//		if (System.getProperty("java.runtime.name").toLowerCase().startsWith(
+//				"openjdk")) {
+//
+//			JScrollPane rightScrollPane = new JScrollPane(
+//					timeSlicerToProcessing,
+//					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+//					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//			rightScrollPane.setMinimumSize(minimumDimension);
+//
+//			SplitPane splitPane = new SplitPane(JSplitPane.HORIZONTAL_SPLIT,
+//					leftScrollPane, rightScrollPane);
+//			splitPane.setDividerLocation(leftPanelWidth);
+//
+//			this.add(splitPane);
+//
+//		} else {
 
 			ScrollPane rightScrollPane = new ScrollPane(
 					ScrollPane.SCROLLBARS_ALWAYS);
@@ -541,7 +541,7 @@ public class TimeSlicerTab extends JPanel {
 
 			this.add(splitPane);
 
-		}
+//		}
 
 	}// END: TimeSlicerTab
 
