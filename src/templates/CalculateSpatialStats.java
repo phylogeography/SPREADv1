@@ -17,7 +17,7 @@ public class CalculateSpatialStats implements Runnable {
 	private double[] sliceHeights;
 	private String precisionString;
 	private boolean useTrueNoise;
-
+	
 	private List<Double> timesList;
 	private List<Double> distancesList;
 
@@ -31,10 +31,10 @@ public class CalculateSpatialStats implements Runnable {
 		this.rateString = rateString;
 		this.useTrueNoise = useTrueNoise;
 		this.precisionString = precisionString;
-
+		
 		timesList = new ArrayList<Double>();
 		distancesList = new ArrayList<Double>();
-
+		
 	}// END: Constructor
 
 	@Override
@@ -42,12 +42,8 @@ public class CalculateSpatialStats implements Runnable {
 
 		try {
 
-			// TODO: move
-			// attributes parsed once per analysis
-			int nSlices = sliceHeights.length;
-			int lastSliceTime = nSlices - 2;
-
-			// END: move
+			// parsed once per analysis
+			int lastSliceNumber = sliceHeights.length - 2;	
 
 			// attributes parsed once per tree
 			double currentTreeNormalization = Utils.getTreeLength(currentTree,
@@ -115,7 +111,7 @@ public class CalculateSpatialStats implements Runnable {
 						}// END: 0-th slice check
 
 						// second case: i to i+1 slice
-						for (int i = 1; i <= lastSliceTime; i++) {
+						for (int i = 1; i <= lastSliceNumber; i++) {
 
 							if (nodeHeight < sliceHeights[i]) {
 
@@ -187,15 +183,15 @@ public class CalculateSpatialStats implements Runnable {
 						}// END: i loop
 
 						// third case: last slice height
-						if (parentHeight >= sliceHeights[lastSliceTime]
-								&& sliceHeights[lastSliceTime] > nodeHeight) {
+						if (parentHeight >= sliceHeights[lastSliceNumber]
+								&& sliceHeights[lastSliceNumber] > nodeHeight) {
 
 							timesList.add(parentHeight
-									- sliceHeights[lastSliceTime]);
+									- sliceHeights[lastSliceNumber]);
 
 							double[] imputedLocation = Utils.imputeValue(
 									location, parentLocation,
-									sliceHeights[lastSliceTime], nodeHeight,
+									sliceHeights[lastSliceNumber], nodeHeight,
 									parentHeight, rate, useTrueNoise,
 									currentTreeNormalization, precisionArray);
 
@@ -208,7 +204,7 @@ public class CalculateSpatialStats implements Runnable {
 
 							distancesList.add(distance);
 
-						} else if (nodeHeight > sliceHeights[lastSliceTime]) {
+						} else if (nodeHeight > sliceHeights[lastSliceNumber]) {
 
 							timesList.add(branchLength);
 

@@ -116,11 +116,9 @@ public class AnalyzeTree implements Runnable {
 				}// END: root node check
 			}// END: node loop
 
-			 System.exit(-1);
-
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}// END: try-caych block
 
 	}// END: run
 
