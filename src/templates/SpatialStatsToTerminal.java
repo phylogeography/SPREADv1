@@ -3,7 +3,9 @@ package templates;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -85,8 +87,6 @@ public class SpatialStatsToTerminal {
 			// start timing
 			time = -System.currentTimeMillis();
 
-			// mrsd = new ThreadLocalSpreadDate(mrsdString);
-
 			switch (analysisType) {
 			case FIRST_ANALYSIS:
 				tree = (RootedTree) treeImporter.importNextTree();
@@ -107,17 +107,14 @@ public class SpatialStatsToTerminal {
 
 			// Executor for threads
 			int NTHREDS = Runtime.getRuntime().availableProcessors();
-			ExecutorService executor = Executors
-					.newFixedThreadPool(NTHREDS * 2);
+			ExecutorService executor = Executors.newFixedThreadPool(NTHREDS * 2);
 
 			int treesAssumed = 10000;
 			int treesRead = 0;
 
 			System.out.println("Analyzing trees (bar assumes 10,000 trees)");
-			System.out
-					.println("0                   25                  50                  75                 100");
-			System.out
-					.println("|---------------------|---------------------|---------------------|---------------------|");
+			System.out.println("0                   25                  50                  75                 100");
+			System.out.println("|---------------------|---------------------|---------------------|---------------------|");
 			// System.out.println("0              25             50             75            100");
 			// System.out.println("|--------------|--------------|--------------|--------------|");
 			
@@ -127,20 +124,25 @@ public class SpatialStatsToTerminal {
 			}
 
 			int totalTrees = 0;
+			List<Double> treesRatesList = new ArrayList<Double>();
 			while (treesImporter.hasTree()) {
 
 				currentTree = (RootedTree) treesImporter.importNextTree();
 
 				if (totalTrees >= burnIn) {
 
-					executor.submit(new CalculateSpatialStats(currentTree,//
+					CalculateTreeSpatialStats calculateTreeSpatialStats = new CalculateTreeSpatialStats(currentTree,//
 							coordinatesName, //
 							rateString, //
 							precisionString,//
 							sliceHeights, //
 							useTrueNoise //
-							));
+							);
+					
+					calculateTreeSpatialStats.run();
+//					executor.submit(calculateTreeSpatialStats);
 
+					treesRatesList.add(calculateTreeSpatialStats.getTreeRate());
 					treesRead += 1;
 
 				}// END: if burn-in
@@ -154,6 +156,11 @@ public class SpatialStatsToTerminal {
 
 			}// END: while has trees
 
+			// Wait until all threads are finished
+			executor.shutdown();
+			while (!executor.isTerminated()) {
+			}
+
 			if ((totalTrees - burnIn) <= 0.0) {
 				throw new RuntimeException("Burnt too many trees!");
 			} else {
@@ -161,12 +168,10 @@ public class SpatialStatsToTerminal {
 						+ " trees with burn-in of " + burnIn
 						+ " for the total of " + totalTrees + " trees");
 			}
-
-			// Wait until all threads are finished
-			executor.shutdown();
-			while (!executor.isTerminated()) {
-			}
-
+			
+//			System.out.println("rate statistic: ");
+			
+			
 			// stop timing
 			time += System.currentTimeMillis();
 

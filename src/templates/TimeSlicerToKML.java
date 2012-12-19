@@ -329,6 +329,11 @@ public class TimeSlicerToKML {
 
 		}// END: while has trees
 
+		// Wait until all threads are finished
+		executor.shutdown();
+		while (!executor.isTerminated()) {
+		}
+
 		if ((totalTrees - burnIn) <= 0.0) {
 			throw new RuntimeException("Burnt too many trees!");
 		} else {
@@ -336,12 +341,7 @@ public class TimeSlicerToKML {
 					+ " trees with burn-in of " + burnIn + " for the total of "
 					+ totalTrees + " trees");
 		}
-
-		// Wait until all threads are finished
-		executor.shutdown();
-		while (!executor.isTerminated()) {
-		}
-
+		
 		System.out.println("Generating polygons...");
 
 		Iterator<Double> iterator = slicesMap.keySet().iterator();

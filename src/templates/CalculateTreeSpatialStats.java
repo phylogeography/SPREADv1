@@ -7,7 +7,7 @@ import jebl.evolution.graphs.Node;
 import jebl.evolution.trees.RootedTree;
 import utils.Utils;
 
-public class CalculateSpatialStats implements Runnable {
+public class CalculateTreeSpatialStats implements Runnable {
 
 	private static final boolean DEBUG = true;
 
@@ -20,8 +20,11 @@ public class CalculateSpatialStats implements Runnable {
 	
 	private List<Double> timesList;
 	private List<Double> distancesList;
-
-	public CalculateSpatialStats(RootedTree currentTree,
+//	private double timesSum = 0.0;
+//	private double distancesSum = 0.0;
+	private double treeRate = 0.0;
+	
+	public CalculateTreeSpatialStats(RootedTree currentTree,
 			String coordinatesName, String rateString, String precisionString,
 			double[] sliceHeights, boolean useTrueNoise) {
 
@@ -228,26 +231,19 @@ public class CalculateSpatialStats implements Runnable {
 						}
 					}
 
-					double[] weights = new double[timesList.size()];
-					double[] distances = new double[distancesList.size()];
-					for (int i = 0; i < distancesList.size(); i++) {
-						weights[i] = timesList.get(i);
-						distances[i] = distancesList.get(i);
+					double timesSum = 0.0;
+					double distancesSum = 0.0;
+					for (int i = 0; i < timesList.size(); i++) {
+						timesSum += timesList.get(i);
+						distancesSum += distancesList.get(i);
 					}
 
-//					final double[] distances = new double[distancesList.size()];
-//					for (int i = 0; i < distancesList.size(); i++) {
-//						distances[i] = distancesList.get(i);
-//					}
-
+					rate = distancesSum / timesSum;
+					
 					if (DEBUG) {
-						// System.out.println("branchLength: " + branchLength);
-						// Utils.printArray(weights);
-						// System.out.println("branchDistances: ");
-						// Utils.printArray(distances);
-						// System.out.println();
+						System.out.println("rate for tree: " + rate);
 					}
-
+					
 				}// END: root node check
 			}// END: node loop
 
@@ -256,5 +252,9 @@ public class CalculateSpatialStats implements Runnable {
 		}// END: try-catch block
 
 	}// END: run
-
+	
+	public double getTreeRate() {
+		return treeRate;
+	}// END: getTreeDistancesSum
+	
 }// END: class

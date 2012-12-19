@@ -4,7 +4,7 @@ import templates.SpatialStatsToTerminal;
 
 public class SpatialStatsToTerminalTest {
 	
-	private static boolean FIRST_ANALYSIS = true;
+	private static boolean FIRST_ANALYSIS = false;
 	
 	private static SpatialStatsToTerminal spatialStatsToTerminal = new SpatialStatsToTerminal();
 	
@@ -25,7 +25,7 @@ public class SpatialStatsToTerminalTest {
 			spatialStatsToTerminal.setAnalysisType(SpatialStatsToTerminal.SECOND_ANALYSIS);
 			
 			spatialStatsToTerminal.setCustomSliceHeightsPath("/home/filip/Dropbox/SPREAD_dev/CustomTimeSlicing/treeslice_small.txt");
-			
+//			spatialStatsToTerminal.setCustomSliceHeightsPath("/home/filip/Dropbox/SPREAD_dev/CustomTimeSlicing/zeroSlice.txt");
 		}	
 		
 		spatialStatsToTerminal.setTreesPath("/home/filip/Dropbox/SPREAD_dev/CustomTimeSlicing/Cent_ITS_small.trees");
