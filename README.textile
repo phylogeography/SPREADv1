@@ -1,6 +1,6 @@
-h1.===================
-h1.SPREAD
-h1.===================
+===================
+SPREAD
+===================
 SPREAD: *Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
 Version: 1.0.5rc, 2012
 Authors: Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
