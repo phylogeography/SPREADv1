@@ -59,7 +59,8 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basi
 h1. TODO
 
 * Annotate the terminals in the tree with corresponding taxon names
-* Eliminate text fields, fill combo boxes with parsed trait names instead
+* Eliminate text fields, fill combo boxes with parsed trait names instead -> start with BF indicator attribute name
+* Input sanity check for BF indicator attribute name
 * Less dependencies:
  - add kmlframework to sources (if licenses compatible) 
 * Add command line interface for kml templates 
