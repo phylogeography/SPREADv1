@@ -57,7 +57,8 @@ public class RateIndicatorBFTab extends JPanel {
 	private JTextField maxAltMappingParser;
 	private JTextField bfCutoffParser;
 	private JTextField kmlPathParser;
-
+    private JTextField indicatorNameParser;
+	
 	// Buttons
 	private JButton openLog;
 	private JButton openLocations;
@@ -101,7 +102,8 @@ public class RateIndicatorBFTab extends JPanel {
 		maxAltMappingParser = new JTextField("500000", 10);
 		bfCutoffParser = new JTextField("3.0", 5);
 		kmlPathParser = new JTextField("output.kml", 10);
-
+        indicatorNameParser = new JTextField("indicator", 10); 
+		
 		// Setup buttons
 		openLog = new JButton("Open", SpreadApp.logIcon);
 		openLocations = new JButton("Open", SpreadApp.locationsIcon);
@@ -168,6 +170,14 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel.add(openLocations);
 		tmpPanelsHolder.add(tmpPanel);
 
+		//TODO: field for indicator core name
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Indicator attribute name:"));
+		tmpPanel.add(indicatorNameParser);
+		tmpPanelsHolder.add(tmpPanel);
+		
 		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
 				leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(true);
@@ -466,8 +476,8 @@ public class RateIndicatorBFTab extends JPanel {
 
 							rateIndicatorBFToKML.setTable(table);
 
-							rateIndicatorBFToKML.setLogFilePath(logFilename,
-									burnInParser.getValue() / 100.0);
+							rateIndicatorBFToKML.setLogFileParser(logFilename,
+									burnInParser.getValue() / 100.0, indicatorNameParser.getText());
 
 							rateIndicatorBFToKML.setBfCutoff(Double
 									.valueOf(bfCutoffParser.getText()));
@@ -628,7 +638,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 							rateIndicatorBFToProcessing.setLogFilePath(
 									logFilename,
-									burnInParser.getValue() / 100.0);
+									burnInParser.getValue() / 100.0, indicatorNameParser.getText());
 
 							rateIndicatorBFToProcessing.setBfCutoff(Double
 									.valueOf(bfCutoffParser.getText()));

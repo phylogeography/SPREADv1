@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import utils.Holder;
-import utils.ReadLog;
+import utils.LogFileParser;
 import utils.Utils;
 import utils.Utils.PoissonPriorEnum;
 
@@ -25,7 +25,7 @@ public class BayesFactorTest {
 	private InteractiveTableModel table;
 	private PoissonPriorEnum meanPoissonPriorSwitcher;
 	private PoissonPriorEnum poissonPriorOffsetSwitcher;
-	private ReadLog indicators;
+	private LogFileParser indicators;
 	private ArrayList<String> combin;
 	private ArrayList<Double> bayesFactors;
 	private ArrayList<Double> posteriorProbabilities;
@@ -35,7 +35,7 @@ public class BayesFactorTest {
 			Holder meanPoissonPriorHolder, //
 			PoissonPriorEnum poissonPriorOffsetSwitcher, //
 			Holder poissonPriorOffsetHolder, //
-			ReadLog indicators, //
+			LogFileParser indicators, //
 			ArrayList<String> combin, // 
 			ArrayList<Double> bayesFactors, //
 			ArrayList<Double> posteriorProbabilities //

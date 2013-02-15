@@ -12,31 +12,35 @@ import java.util.regex.Pattern;
 import processing.core.PApplet;
 
 @SuppressWarnings("serial")
-public class ReadLog extends PApplet {
+public class LogFileParser extends PApplet {
 
+	private static final int HEADER_ROW = 0;
+	
 	public double[][] indicators;
 	public int nrow;
 	public int ncol;
 
-	public ReadLog(String filename, double burnIn) {
+	public LogFileParser(String filename, double burnIn, String indicatorName) {
 
 		String[] lines = LoadStrings(filename);
 
 		// count commented lines
-		int commentedLines = 0;
-		for (int row = 0; row < lines.length; row++) {
-			if (lines[row].startsWith("#")) {
-				commentedLines++;
-			}
-		}
+//		int commentedLines = 0;
+//		for (int row = 0; row < lines.length; row++) {
+//			if (lines[row].startsWith("#")) {
+//				commentedLines++;
+//			}
+//		}
+//		nrow = lines.length - commentedLines - 1;
+//		String[] colNames = lines[commentedLines].split("\t");
 
-		nrow = lines.length - commentedLines - 1;
-		String[] colNames = lines[commentedLines].split("\t");
-
+		nrow = lines.length - 1;
+		String[] colNames = lines[HEADER_ROW].split("\t");		
+		
 		List<Integer> list = new ArrayList<Integer>();
 
 		// Create a pattern to match
-		Pattern pattern = Pattern.compile("indicator");
+		Pattern pattern = Pattern.compile(indicatorName);
 		for (int row = 0; row < colNames.length; row++) {
 
 			// Look for matches in column names
@@ -46,6 +50,20 @@ public class ReadLog extends PApplet {
 				list.add(row);
 			}
 		}
+		
+//		if (list.size() == 0) {
+//			// did not find any indicator columns, try "rateIndicator." instead
+//			pattern = Pattern.compile("rateIndicator");
+//			for (int row = 0; row < colNames.length; row++) {
+//
+//				// Look for matches in column names
+//				Matcher matcher = pattern.matcher(colNames[row]);
+//
+//				if (matcher.find()) {
+//					list.add(row);
+//				}
+//			}
+//		}
 
 		ncol = list.size();
 		// skip first line with col names and the burn in lines
@@ -96,7 +114,10 @@ public class ReadLog extends PApplet {
 					System.arraycopy(lines, 0, temp, 0, lineCount);
 					lines = temp;
 				}
-				lines[lineCount++] = line;
+				// suppress commented lines
+				if (!line.startsWith("#")) {
+					lines[lineCount++] = line;
+				}
 			}
 			reader.close();
 

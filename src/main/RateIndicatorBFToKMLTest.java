@@ -24,6 +24,8 @@ public class RateIndicatorBFToKMLTest {
 			data = new ReadLocations(
 					"/home/filip/Phyleography/data/H5N1/locationCoordinates_H5N1");
 
+			String indicatorAttributeName = "indicator";
+			
 			for (int i = 0; i < data.nrow; i++) {
 
 				String name = String.valueOf(data.locations[i]);
@@ -36,9 +38,9 @@ public class RateIndicatorBFToKMLTest {
 			rateIndicatorBFToKML.setTable(table);
 
 			rateIndicatorBFToKML
-					.setLogFilePath(
+					.setLogFileParser(
 							"/home/filip/Phyleography/data/H5N1/H5N1_HA_discrete_rateMatrix.log",
-							0.1);
+							0.1, indicatorAttributeName);
 
 			rateIndicatorBFToKML.setBfCutoff(3.0);
 
@@ -51,7 +53,7 @@ public class RateIndicatorBFToKMLTest {
 			rateIndicatorBFToKML.setDefaultPoissonPriorOffset();
 			
 			rateIndicatorBFToKML
-					.setKmlWriterPath("/home/filip/Pulpit/output.kml");
+					.setKmlWriterPath("/home/filip/Desktop/output.kml");
 
 			rateIndicatorBFToKML.setMinBranchRedMapping(255);
 

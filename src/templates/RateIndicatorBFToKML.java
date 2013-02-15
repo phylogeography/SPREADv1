@@ -21,7 +21,7 @@ import structure.Place;
 import structure.Style;
 import structure.TimeLine;
 import utils.Holder;
-import utils.ReadLog;
+import utils.LogFileParser;
 import utils.Utils;
 import utils.Utils.PoissonPriorEnum;
 
@@ -30,7 +30,7 @@ public class RateIndicatorBFToKML {
 	public static long time;
 
 	private InteractiveTableModel table;
-	private ReadLog indicators;
+	private LogFileParser indicators;
 	private List<Layer> layers;
 	private PrintWriter writer;
 	private int numberOfIntervals;
@@ -96,8 +96,8 @@ public class RateIndicatorBFToKML {
 		table = tableModel;
 	}
 
-	public void setLogFilePath(String path, double burnIn) {
-		indicators = new ReadLog(path, burnIn);
+	public void setLogFileParser(String path, double burnIn, String indicatorName) {
+		indicators = new LogFileParser(path, burnIn, indicatorName);
 	}
 
 	public void setKmlWriterPath(String kmlpath) throws FileNotFoundException {
