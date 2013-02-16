@@ -1,7 +1,9 @@
 SPREAD version 1.0.6 release candidate
 ------------------------------------------------
-* Combobox for choosing indicator attribute name in Discrete Bayes Factor test
-* Log files parser compatible with BEAST 1 and BEAST 2
+* Combobox for choosing indicator attribute name in Discrete Bayes Factor test.
+* Log files parser compatible with BEAST 1 and BEAST 2.
+* Comboboxes for latitude and longitude attribute names in Continuous model tab.
+
 
 
 November 18, 2012: SPREAD version 1.0.5 released
@@ -32,7 +34,4 @@ February 4, 2012: SPREAD version 1.0.3 released
 * The weights used in Time Slicer template are now printed to the Terminal window.
 * The tool panes size can be adjusted for viewing the inner Spread maps on smaller screens. 
 * Made several other minor changes.
-
-
-
 
