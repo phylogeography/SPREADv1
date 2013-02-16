@@ -8,8 +8,14 @@ import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedHashSet;
 
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -21,6 +27,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
+
+import jebl.evolution.graphs.Node;
+import jebl.evolution.io.ImportException;
+import jebl.evolution.io.NexusImporter;
+import jebl.evolution.trees.RootedTree;
 
 import templates.DiscreteTreeToKML;
 import templates.DiscreteTreeToProcessing;
@@ -56,7 +67,7 @@ public class DiscreteModelTab extends JPanel {
 	private File workingDirectory = null;
 
 	// Text fields
-	private JTextField stateAttNameParser;
+//	private JTextField stateAttNameParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField maxAltMappingParser;
 	private JTextField kmlPathParser;
@@ -82,6 +93,7 @@ public class DiscreteModelTab extends JPanel {
 
 	// Combo boxes
 	private JComboBox eraParser;
+	private JComboBox stateAttributeNameParser;
 
 	// left tools pane
 	private JPanel leftPanel;
@@ -107,7 +119,7 @@ public class DiscreteModelTab extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 
 		// Setup text fields
-		stateAttNameParser = new JTextField("states", 10);
+//		stateAttNameParser = new JTextField("states", 10);
 		numberOfIntervalsParser = new JTextField("100", 10);
 		maxAltMappingParser = new JTextField("5000000", 10);
 		kmlPathParser = new JTextField("output.kml", 10);
@@ -137,17 +149,16 @@ public class DiscreteModelTab extends JPanel {
 		polygonsRadiusMultiplierParser.setPaintTicks(true);
 		polygonsRadiusMultiplierParser.setPaintLabels(true);
 
+		// Setup Combo boxes
+		stateAttributeNameParser = new JComboBox(new String[] {"state"});
+		
 		// Setup progress bar
 		progressBar = new JProgressBar();
 
-		/**
-		 * left tools pane
-		 * */
+		// Left tools pane
 		leftPanel = new JPanel();
 		leftPanel.setBackground(backgroundColor);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-		// leftPanel.setMinimumSize(new Dimension(leftPanelWidth,
-		// leftPanelHeight));
 
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
@@ -207,7 +218,7 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("State attribute name:"));
-		tmpPanel.add(stateAttNameParser);
+		tmpPanel.add(stateAttributeNameParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
@@ -418,9 +429,35 @@ public class DiscreteModelTab extends JPanel {
 
 	private void populateAttributeComboboxes() {
 		
-		//TODO
-		
-	}//END: populateAttributeComboboxes
+		try {
+			
+			NexusImporter importer = new NexusImporter(new FileReader(
+					treeFilename));
+			RootedTree tree = (RootedTree) importer.importNextTree();
+
+			LinkedHashSet<String> uniqueAttributes = new LinkedHashSet<String>();
+
+			for (Node node : tree.getNodes()) {
+				if (!tree.isRoot(node)) {
+
+					uniqueAttributes.addAll(node.getAttributeNames());
+
+				}// END: root check
+			}// END: nodeloop
+
+			// re-initialise comboboxes
+			ComboBoxModel stateNameParserModel = new DefaultComboBoxModel(uniqueAttributes.toArray(new String[0]));
+			stateAttributeNameParser.setModel(stateNameParserModel);
+			
+		} catch (FileNotFoundException e) {
+			Utils.handleException(e, e.getMessage());
+		} catch (IOException e) {
+			Utils.handleException(e, e.getMessage());
+		} catch (ImportException e) {
+			Utils.handleException(e, e.getMessage());
+		}// END: try-catch block
+
+	}// END: populateAttributeComboboxes
 	
 	private class ListenOpenTree implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
@@ -469,7 +506,7 @@ public class DiscreteModelTab extends JPanel {
 
 				LocationCoordinatesEditor locationCoordinatesEditor = new LocationCoordinatesEditor();
 				locationCoordinatesEditor.launch(treeFilename,
-						stateAttNameParser.getText(), workingDirectory);
+						stateAttributeNameParser.getSelectedItem().toString(), workingDirectory);
 
 				table = locationCoordinatesEditor.getTable();
 
@@ -562,15 +599,14 @@ public class DiscreteModelTab extends JPanel {
 						try {
 
 							if (new DiscreteSanityCheck().check(treeFilename,
-									stateAttNameParser.getText(), table)) {
+									stateAttributeNameParser.getSelectedItem().toString(), table)) {
 
 								DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
 
 								discreteTreeToKML.setTable(table);
 
 								discreteTreeToKML
-										.setStateAttName(stateAttNameParser
-												.getText());
+										.setStateAttName(stateAttributeNameParser.getSelectedItem().toString());
 
 								discreteTreeToKML
 										.setMaxAltitudeMapping(Double
@@ -732,13 +768,12 @@ public class DiscreteModelTab extends JPanel {
 						try {
 
 							if (new DiscreteSanityCheck().check(treeFilename,
-									stateAttNameParser.getText(), table)) {
+									stateAttributeNameParser.getSelectedItem().toString(), table)) {
 
 								// TODO Should only be done with state data
 								// changes, not with each draw
 								discreteTreeToProcessing
-										.setStateAttName(stateAttNameParser
-												.getText());
+										.setStateAttName(stateAttributeNameParser.getSelectedItem().toString());
 
 								// TODO Should only be done when changed,
 								// not with each draw

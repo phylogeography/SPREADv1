@@ -87,8 +87,8 @@ public class ContinuousModelTab extends JPanel {
 
 	// Combo boxes
 	private JComboBox eraParser;
-	private JComboBox latitudeNameParser;
-	private JComboBox longitudeNameParser;
+	private JComboBox latitudeAttributeNameParser;
+	private JComboBox longitudeAttributeNameParser;
 	
 	// Left tools pane
 	private JPanel leftPanel;
@@ -137,11 +137,11 @@ public class ContinuousModelTab extends JPanel {
 		branchesWidthParser.setPaintLabels(true);
 
 		// Setup Combo boxes
-		latitudeNameParser = new JComboBox(new String[] {"location1"});
-		latitudeNameParser.setToolTipText("Choose latitude attribute name. " +
+		latitudeAttributeNameParser = new JComboBox(new String[] {"location1"});
+		latitudeAttributeNameParser.setToolTipText("Choose latitude attribute name. " +
                 "This attribute name is typically followed by number 1.");
-		longitudeNameParser = new JComboBox(new String[] {"location2"});
-		longitudeNameParser.setToolTipText("Choose longitude attribute name. " +
+		longitudeAttributeNameParser = new JComboBox(new String[] {"location2"});
+		longitudeAttributeNameParser.setToolTipText("Choose longitude attribute name. " +
 				                            "This attribute name is typically followed by number 2.");
 		
 		// Setup progress bar
@@ -202,14 +202,14 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Latitude attribute name:"));
-		tmpPanel.add(latitudeNameParser);
+		tmpPanel.add(latitudeAttributeNameParser);
 		tmpPanelsHolder.add(tmpPanel);
 		
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Longitude attribute name:"));
-		tmpPanel.add(longitudeNameParser);
+		tmpPanel.add(longitudeAttributeNameParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
@@ -428,10 +428,10 @@ public class ContinuousModelTab extends JPanel {
 
 			// re-initialise comboboxes
 			ComboBoxModel latitudeNameParserModel = new DefaultComboBoxModel(uniqueAttributes.toArray(new String[0]));
-			latitudeNameParser.setModel(latitudeNameParserModel);
+			latitudeAttributeNameParser.setModel(latitudeNameParserModel);
 			
 			ComboBoxModel longitudeNameParserModel = new DefaultComboBoxModel(uniqueAttributes.toArray(new String[0]));
-			longitudeNameParser.setModel(longitudeNameParserModel);
+			longitudeAttributeNameParser.setModel(longitudeNameParserModel);
 			
 		} catch (FileNotFoundException e) {
 			Utils.handleException(e, e.getMessage());
@@ -551,8 +551,8 @@ public class ContinuousModelTab extends JPanel {
 							ContinuousSanityCheck contSanCheck = new ContinuousSanityCheck();
 
 							if (contSanCheck.check(treeFilename,
-									longitudeNameParser.getName(),
-									latitudeNameParser.getName()
+									longitudeAttributeNameParser.getSelectedItem().toString(),
+									latitudeAttributeNameParser.getSelectedItem().toString()
 //									coordinatesNameParser.getText()
 									)) {
 
@@ -561,13 +561,9 @@ public class ContinuousModelTab extends JPanel {
 								continuousTreeToKML.setHPDString(contSanCheck
 										.getHPDString());
 
-//								continuousTreeToKML
-//										.setCoordinatesName(coordinatesNameParser
-//												.getText());
-
-								continuousTreeToKML.setLongitudeName(longitudeNameParser.getSelectedItem().toString());
+								continuousTreeToKML.setLongitudeName(longitudeAttributeNameParser.getSelectedItem().toString());
 								
-								continuousTreeToKML.setLatitudeName(latitudeNameParser.getSelectedItem().toString());
+								continuousTreeToKML.setLatitudeName(latitudeAttributeNameParser.getSelectedItem().toString());
 								
 								continuousTreeToKML
 										.setMaxAltitudeMapping(Double
@@ -721,17 +717,17 @@ public class ContinuousModelTab extends JPanel {
 							ContinuousSanityCheck contSanCheck = new ContinuousSanityCheck();
 
 							if (contSanCheck.check(treeFilename,
-									longitudeNameParser.getSelectedItem().toString(),
-									latitudeNameParser.getSelectedItem().toString()
+									longitudeAttributeNameParser.getSelectedItem().toString(),
+									latitudeAttributeNameParser.getSelectedItem().toString()
 //									coordinatesNameParser.getText()
 									)) {
 
 								continuousTreeToProcessing
 										.setTreePath(treeFilename);
 
-								continuousTreeToProcessing.setLongitudeName(longitudeNameParser.getSelectedItem().toString());
+								continuousTreeToProcessing.setLongitudeName(longitudeAttributeNameParser.getSelectedItem().toString());
 								
-								continuousTreeToProcessing.setLatitudeName(latitudeNameParser.getSelectedItem().toString());
+								continuousTreeToProcessing.setLatitudeName(latitudeAttributeNameParser.getSelectedItem().toString());
 
 								continuousTreeToProcessing
 										.setHPDString(contSanCheck

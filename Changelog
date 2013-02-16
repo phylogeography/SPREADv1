@@ -1,9 +1,10 @@
 SPREAD version 1.0.6 release candidate
 ------------------------------------------------
-* Combobox for choosing indicator attribute name in Discrete Bayes Factor test.
+* Combo box for choosing state attribute name in Discrete tree tab.
+* Combo box for choosing indicator attribute name in Discrete Bayes Factor test tab
+* Combo box for choosing state attribute name in Continuous tree tab.
 * Log files parser compatible with BEAST 1 and BEAST 2.
-* Comboboxes for latitude and longitude attribute names in Continuous model tab.
-
+* Improved handling of exceptions in Open and Save dialogs
 
 
 November 18, 2012: SPREAD version 1.0.5 released
