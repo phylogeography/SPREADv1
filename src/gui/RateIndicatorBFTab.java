@@ -8,8 +8,14 @@ import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -25,6 +31,7 @@ import javax.swing.border.TitledBorder;
 import templates.MapBackground;
 import templates.RateIndicatorBFToKML;
 import templates.RateIndicatorBFToProcessing;
+import utils.LogFileParser;
 import utils.Utils;
 import app.SpreadApp;
 import colorpicker.swing.ColorPicker;
@@ -57,7 +64,7 @@ public class RateIndicatorBFTab extends JPanel {
 	private JTextField maxAltMappingParser;
 	private JTextField bfCutoffParser;
 	private JTextField kmlPathParser;
-    private JTextField indicatorNameParser;
+    private JComboBox indicatorNameBox;
 	
 	// Buttons
 	private JButton openLog;
@@ -102,7 +109,7 @@ public class RateIndicatorBFTab extends JPanel {
 		maxAltMappingParser = new JTextField("500000", 10);
 		bfCutoffParser = new JTextField("3.0", 5);
 		kmlPathParser = new JTextField("output.kml", 10);
-        indicatorNameParser = new JTextField("indicator", 10); 
+        indicatorNameBox = new JComboBox(new String[] {"indicator"});
 		
 		// Setup buttons
 		openLog = new JButton("Open", SpreadApp.logIcon);
@@ -170,12 +177,11 @@ public class RateIndicatorBFTab extends JPanel {
 		tmpPanel.add(openLocations);
 		tmpPanelsHolder.add(tmpPanel);
 
-		//TODO: field for indicator core name
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Indicator attribute name:"));
-		tmpPanel.add(indicatorNameParser);
+		tmpPanel.add(indicatorNameBox);
 		tmpPanelsHolder.add(tmpPanel);
 		
 		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
@@ -402,10 +408,38 @@ public class RateIndicatorBFTab extends JPanel {
 				if (tmpDir != null) {
 					workingDirectory = tmpDir;
 				}
-
+				populateInidacatorCombobox();
 			} catch (Exception e) {
 				System.err.println("Could not Open! \n");
 			}
+		}
+
+		private void populateInidacatorCombobox() {
+			LogFileParser parser = new LogFileParser();
+			String [] colNames = parser.getColNames(logFilename);
+
+			// remove numbers from end of column name, and count their occurrances 
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			for (String colName : colNames) {
+				colName = colName.replaceAll("[0-9]*$", "");
+				if (map.containsKey(colName)) {
+					map.put(colName, map.get(colName) + 1);
+				} else {
+					map.put(colName, 1);
+				}
+			}
+			
+			// make those that occur more than once a candidate
+			List<String> indicatorNames = new ArrayList<String>(); 
+			for (String colName : map.keySet()) {
+				if (map.get(colName) > 1) {
+					indicatorNames.add(colName);
+				}
+			}
+			
+			// re-initialise combobox
+			ComboBoxModel model = new DefaultComboBoxModel(indicatorNames.toArray(new String[0]));
+			indicatorNameBox.setModel(model);
 		}
 	}
 
@@ -477,7 +511,7 @@ public class RateIndicatorBFTab extends JPanel {
 							rateIndicatorBFToKML.setTable(table);
 
 							rateIndicatorBFToKML.setLogFileParser(logFilename,
-									burnInParser.getValue() / 100.0, indicatorNameParser.getText());
+									burnInParser.getValue() / 100.0, indicatorNameBox.getSelectedItem().toString());
 
 							rateIndicatorBFToKML.setBfCutoff(Double
 									.valueOf(bfCutoffParser.getText()));
@@ -638,7 +672,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 							rateIndicatorBFToProcessing.setLogFilePath(
 									logFilename,
-									burnInParser.getValue() / 100.0, indicatorNameParser.getText());
+									burnInParser.getValue() / 100.0, indicatorNameBox.getSelectedItem().toString());
 
 							rateIndicatorBFToProcessing.setBfCutoff(Double
 									.valueOf(bfCutoffParser.getText()));

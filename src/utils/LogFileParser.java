@@ -20,6 +20,8 @@ public class LogFileParser extends PApplet {
 	public int nrow;
 	public int ncol;
 
+	public LogFileParser() {}
+	
 	public LogFileParser(String filename, double burnIn, String indicatorName) {
 
 		String[] lines = LoadStrings(filename);
@@ -83,6 +85,14 @@ public class LogFileParser extends PApplet {
 		nrow = indicators.length;
 
 	}// END: ReadLog
+
+	public String [] getColNames(String filename) {
+		// a bit ineffecient to read the complete log file
+		// TODO: only read to column names line
+		String[] lines = LoadStrings(filename);
+		String[] colNames = lines[HEADER_ROW].split("\t");
+		return colNames;
+	}
 
 	private String[] LoadStrings(String filename) {
 		InputStream is = createInput(filename);
