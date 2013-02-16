@@ -760,12 +760,8 @@ public class RateIndicatorBFTab extends JPanel {
 
 							rateIndicatorBFToProcessing.init();
 
-							System.out.println("Finished. \n");
-
 						} catch (final Exception e) {
-
 							Utils.handleException(e, null);
-
 						}
 
 						return null;
@@ -776,7 +772,8 @@ public class RateIndicatorBFTab extends JPanel {
 
 						generateProcessing.setEnabled(true);
 						progressBar.setIndeterminate(false);
-
+						frame.setStatus("Finished. \n");
+						
 					}
 				};
 
@@ -803,10 +800,10 @@ public class RateIndicatorBFTab extends JPanel {
 
 					rateIndicatorBFToProcessing.save(filename);
 					
-					System.out.println("Saved " + filename + "\n");
+					frame.setStatus("Saved " + filename + "\n");
 
 				} else {
-					System.out.println("Could not Save! \n");
+					frame.setStatus("Could not Save! \n");
 				}
 
 			} catch (Exception e) {

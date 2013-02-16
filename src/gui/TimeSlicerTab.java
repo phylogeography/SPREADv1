@@ -1114,7 +1114,7 @@ public class TimeSlicerTab extends JPanel {
 
 								timeSlicerToProcessing.init();
 
-								System.out.println("Finished. \n");
+//								System.out.println("Finished. \n");
 
 							}// END: check
 
@@ -1136,7 +1136,7 @@ public class TimeSlicerTab extends JPanel {
 
 						generateProcessing.setEnabled(true);
 						progressBar.setIndeterminate(false);
-
+//						frame.setStatus("Finished. \n");
 						System.gc();
 
 					}// END: done
@@ -1165,10 +1165,10 @@ public class TimeSlicerTab extends JPanel {
 
 					timeSlicerToProcessing.save(filename);
 					
-					System.out.println("Saved " + filename + "\n");
+					frame.setStatus("Saved " + filename + "\n");
 
 				} else {
-					System.out.println("Could not Save! \n");
+					frame.setStatus("Could not Save! \n");
 				}
 
 			} catch (Exception e) {

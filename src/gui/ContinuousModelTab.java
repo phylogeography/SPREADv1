@@ -808,8 +808,6 @@ public class ContinuousModelTab extends JPanel {
 
 								continuousTreeToProcessing.init();
 
-								System.out.println("Finished. \n");
-
 							}// END: check
 
 						} catch (final Exception e) {
@@ -826,7 +824,8 @@ public class ContinuousModelTab extends JPanel {
 
 						generateProcessing.setEnabled(true);
 						progressBar.setIndeterminate(false);
-
+						frame.setStatus("Finished. \n");
+						
 					}
 				};
 
