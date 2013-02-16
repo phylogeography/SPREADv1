@@ -53,13 +53,9 @@ public class LocationCoordinatesEditor {
 	private JButton save;
 	private JButton done;
 
-	// File chooser
-	private JFileChooser chooser;
-
 	// Strings for paths
 	private String locationsFilename;
 	private File workingDirectory;
-	private File file;
 
 	// Data, model & stuff for JTable
 	private JTable table;
@@ -126,54 +122,54 @@ public class LocationCoordinatesEditor {
 
 			try {
 
-				chooser = new JFileChooser();
+				final JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Loading location file...");
+				chooser.setMultiSelectionEnabled(false);
 				chooser.setCurrentDirectory(workingDirectory);
 
-				chooser.showOpenDialog(Utils.getActiveFrame());
-				file = chooser.getSelectedFile();
-				locationsFilename = file.getAbsolutePath();
-				System.out.println("Opened " + locationsFilename + "\n");
-				
-				File tmpDir = chooser.getCurrentDirectory();
+				int returnVal = chooser.showOpenDialog(Utils.getActiveFrame());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
 
-				if (tmpDir != null) {
+					File file = chooser.getSelectedFile();
+					locationsFilename = file.getAbsolutePath();
+					System.out.println("Opened " + locationsFilename + "\n");
 
-					workingDirectory = tmpDir;
-					locationsReader data = new locationsReader(locationsFilename);
+					File tmpDir = chooser.getCurrentDirectory();
 
-					if (tableModel.getRowCount() < data.nrow) {
-						for (int i = 0; i < data.nrow - 1; i++) {
-							tableModel.addEmptyRow();
+					if (tmpDir != null) {
+						workingDirectory = tmpDir;
+						locationsReader data = new locationsReader(
+								locationsFilename);
+
+						if (tableModel.getRowCount() < data.nrow) {
+							for (int i = 0; i < data.nrow - 1; i++) {
+								tableModel.addEmptyRow();
+							}
 						}
-					}
 
-					for (int i = 0; i < data.nrow; i++) {
+						for (int i = 0; i < data.nrow; i++) {
 
-						// String name = String.valueOf(data.locations[i]);
-						// String longitude =
-						// String.valueOf(data.coordinates[i][0]);
-						// String latitude =
-						// String.valueOf(data.coordinates[i][1]);
-						// tableModel.insertRow(i, new TableRecord(name,
-						// longitude, latitude));
+							tableModel.setValueAt(data.locations[i], i, 0);
 
-						tableModel.setValueAt(data.locations[i], i, 0);
+							for (int j = 0; j < 2; j++) {
 
-						for (int j = 0; j < 2; j++) {
+								tableModel.setValueAt(
+										String.valueOf(data.coordinates[i][j]),
+										i, j + 1);
 
-							tableModel.setValueAt(String
-									.valueOf(data.coordinates[i][j]), i, j + 1);
+							}// END: col loop
+						}// END: row loop
+					}// END: null check
 
-						}// END: col loop
-					}// END: row loop
-				}// END: null check
+				} else {
+					System.out.println("Could not Open! \n");
+				}
 
 			} catch (Exception e) {
-				System.err.println("Could not Open! \n");
-				e.printStackTrace();
-			}
-		}
+				Utils.handleException(e, e.getMessage());
+			}// END: try-catch block
+
+		}// END: actionPerformed
 	}// END: ListenOpenLocations
 
 	private class ListenSaveLocationCoordinates implements ActionListener {
@@ -184,16 +180,22 @@ public class LocationCoordinatesEditor {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Saving as tab delimited file...");
 
-				chooser.showSaveDialog(Utils.getActiveFrame());
-				File file = chooser.getSelectedFile();
-				String filename = file.getAbsolutePath();
+				int returnVal = chooser.showSaveDialog(Utils.getActiveFrame());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
 
-				JTableToTDV(filename, tableModel);
-				System.out.println("Saved " + filename + "\n");
+					File file = chooser.getSelectedFile();
+					String filename = file.getAbsolutePath();
+
+					JTableToTDV(filename, tableModel);
+					System.out.println("Saved " + filename + "\n");
+
+				} else {
+					System.out.println("Could not Save! \n");
+				}
 
 			} catch (Exception e) {
-				System.err.println("Could not save! \n");
-			}
+				Utils.handleException(e, e.getMessage());
+			}// END: try-catch block
 
 		}// END: actionPerformed
 	}// END: ListenSaveLocationCoordinates

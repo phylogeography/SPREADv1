@@ -384,8 +384,36 @@ public class RateIndicatorBFTab extends JPanel {
 
 //		}
 
-	}// END: RateIndicatorBFTab
+	}// END: Constructor
 
+	private void populateInidcatorCombobox() {
+		LogFileReader parser = new LogFileReader();
+		String [] colNames = parser.getColNames(logFilename);
+
+		// remove numbers from end of column name, and count their occurrances 
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		for (String colName : colNames) {
+			colName = colName.replaceAll("[0-9]*$", "");
+			if (map.containsKey(colName)) {
+				map.put(colName, map.get(colName) + 1);
+			} else {
+				map.put(colName, 1);
+			}
+		}
+		
+		// make those that occur more than once a candidate
+		List<String> indicatorNames = new ArrayList<String>(); 
+		for (String colName : map.keySet()) {
+			if (map.get(colName) > 1) {
+				indicatorNames.add(colName);
+			}
+		}
+		
+		// re-initialise combobox
+		ComboBoxModel model = new DefaultComboBoxModel(indicatorNames.toArray(new String[0]));
+		indicatorNameBox.setModel(model);
+	}
+	
 	private class ListenOpenLog implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
@@ -393,57 +421,38 @@ public class RateIndicatorBFTab extends JPanel {
 
 				String[] logFiles = new String[] { "log" };
 
-				JFileChooser chooser = new JFileChooser();
-				chooser.setDialogTitle("Opening log file...");
+				final JFileChooser chooser = new JFileChooser();
+				chooser.setDialogTitle("Loading tree file...");
 				chooser.setMultiSelectionEnabled(false);
 				chooser.addChoosableFileFilter(new SimpleFileFilter(logFiles,
 						"Log files (*.log)"));
 				chooser.setCurrentDirectory(workingDirectory);
 
-				chooser.showOpenDialog(Utils.getActiveFrame());
-				File file = chooser.getSelectedFile();
-				logFilename = file.getAbsolutePath();
-				System.out.println("Opened " + logFilename + "\n");
+				int returnVal = chooser.showOpenDialog(Utils.getActiveFrame());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
 
-				File tmpDir = chooser.getCurrentDirectory();
+					File file = chooser.getSelectedFile();
+					logFilename = file.getAbsolutePath();
+					System.out.println("Opened " + logFilename + "\n");
 
-				if (tmpDir != null) {
-					workingDirectory = tmpDir;
-				}
-				populateInidcatorCombobox();
-			} catch (Exception e) {
-				System.err.println("Could not Open! \n");
-			}
-		}
+					File tmpDir = chooser.getCurrentDirectory();
 
-		private void populateInidcatorCombobox() {
-			LogFileReader parser = new LogFileReader();
-			String [] colNames = parser.getColNames(logFilename);
+					if (tmpDir != null) {
+						workingDirectory = tmpDir;
+					}
 
-			// remove numbers from end of column name, and count their occurrances 
-			Map<String, Integer> map = new HashMap<String, Integer>();
-			for (String colName : colNames) {
-				colName = colName.replaceAll("[0-9]*$", "");
-				if (map.containsKey(colName)) {
-					map.put(colName, map.get(colName) + 1);
+					populateInidcatorCombobox();
+
 				} else {
-					map.put(colName, 1);
+					System.out.println("Could not Open! \n");
 				}
-			}
-			
-			// make those that occur more than once a candidate
-			List<String> indicatorNames = new ArrayList<String>(); 
-			for (String colName : map.keySet()) {
-				if (map.get(colName) > 1) {
-					indicatorNames.add(colName);
-				}
-			}
-			
-			// re-initialise combobox
-			ComboBoxModel model = new DefaultComboBoxModel(indicatorNames.toArray(new String[0]));
-			indicatorNameBox.setModel(model);
-		}
-	}
+
+			} catch (Exception e) {
+				Utils.handleException(e, e.getMessage());
+			}// END: try-catch block
+
+		}// END: actionPerformed
+	}// END: ListenOpenLog
 
 	private class ListenOpenLocationCoordinatesEditor implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
@@ -457,7 +466,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 			} catch (Exception e) {
 
-				Utils.handleException(e, null);
+				Utils.handleException(e, e.getMessage());
 
 			}
 		}
@@ -781,18 +790,25 @@ public class RateIndicatorBFTab extends JPanel {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Saving as png file...");
 
-				chooser.showSaveDialog(Utils.getActiveFrame());
-				File file = chooser.getSelectedFile();
-				String plotToSaveFilename = file.getAbsolutePath();
+				int returnVal = chooser.showSaveDialog(Utils.getActiveFrame());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					
+					File file = chooser.getSelectedFile();
+					String filename = file.getAbsolutePath();
 
-				rateIndicatorBFToProcessing.save(plotToSaveFilename);
-				System.out.println("Saved " + plotToSaveFilename + "\n");
+					rateIndicatorBFToProcessing.save(filename);
+					
+					System.out.println("Saved " + filename + "\n");
+
+				} else {
+					System.out.println("Could not Save! \n");
+				}
 
 			} catch (Exception e) {
-				System.err.println("Could not save! \n");
-			}
+				Utils.handleException(e, e.getMessage());
+			}// END: try-catch block
 
 		}// END: actionPerformed
-	}// END: class
+	}// END: ListenSaveProcessingPlot
 
 }// END: class

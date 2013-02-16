@@ -416,6 +416,12 @@ public class DiscreteModelTab extends JPanel {
 
 	} // END: discreteModelTab
 
+	private void populateAttributeComboboxes() {
+		
+		//TODO
+		
+	}//END: populateAttributeComboboxes
+	
 	private class ListenOpenTree implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
@@ -423,29 +429,37 @@ public class DiscreteModelTab extends JPanel {
 
 				String[] treeFiles = new String[] { "tre", "tree", "trees" };
 
-				JFileChooser chooser = new JFileChooser();
+				final JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Loading tree file...");
 				chooser.setMultiSelectionEnabled(false);
 				chooser.addChoosableFileFilter(new SimpleFileFilter(treeFiles,
 						"Tree files (*.tree(s), *.tre)"));
 				chooser.setCurrentDirectory(workingDirectory);
 
-				chooser.showOpenDialog(Utils.getActiveFrame());
-				File file = chooser.getSelectedFile();
-				treeFilename = file.getAbsolutePath();
+				int returnVal = chooser.showOpenDialog(Utils.getActiveFrame());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
 
-				System.out.println("Opened " + treeFilename + "\n");
+					File file = chooser.getSelectedFile();
+					treeFilename = file.getAbsolutePath();
+					System.out.println("Opened " + treeFilename + "\n");
 
-				File tmpDir = chooser.getCurrentDirectory();
+					File tmpDir = chooser.getCurrentDirectory();
 
-				if (tmpDir != null) {
-					workingDirectory = tmpDir;
+					if (tmpDir != null) {
+						workingDirectory = tmpDir;
+					}
+
+					populateAttributeComboboxes();
+
+				} else {
+					System.out.println("Could not Open! \n");
 				}
 
 			} catch (Exception e) {
-				System.err.println("Could not Open! \n");
-			}
-		}
+				Utils.handleException(e, e.getMessage());
+			}// END: try-catch block
+
+		}// END: actionPerformed
 	}// END: ListenOpenTree
 
 	private class ListenOpenLocationCoordinatesEditor implements ActionListener {
@@ -851,20 +865,25 @@ public class DiscreteModelTab extends JPanel {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Saving as png file...");
 
-				chooser.showSaveDialog(Utils.getActiveFrame());
-				File file = chooser.getSelectedFile();
-				String plotToSaveFilename = file.getAbsolutePath();
+				int returnVal = chooser.showSaveDialog(Utils.getActiveFrame());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					
+					File file = chooser.getSelectedFile();
+					String filename = file.getAbsolutePath();
 
-				discreteTreeToProcessing.save(plotToSaveFilename);
-				System.out.println("Saved " + plotToSaveFilename + "\n");
-				// table.printTable();
+					discreteTreeToProcessing.save(filename);
+					
+					System.out.println("Saved " + filename + "\n");
+
+				} else {
+					System.out.println("Could not Save! \n");
+				}
 
 			} catch (Exception e) {
-				e.printStackTrace();
-				System.err.println("Could not save! \n");
-			}
+				Utils.handleException(e, e.getMessage());
+			}// END: try-catch block
 
 		}// END: actionPerformed
-	}// END: class
+	}// END: ListenSaveProcessingPlot
 
 }// END: class

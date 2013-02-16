@@ -590,7 +590,9 @@ public class TimeSlicerTab extends JPanel {
 				chooser.setDialogTitle("Loading slice heights file...");
 				chooser.setCurrentDirectory(workingDirectory);
 
-				chooser.showOpenDialog(Utils.getActiveFrame());
+				int returnVal = chooser.showOpenDialog(Utils.getActiveFrame());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+				
 				File file = chooser.getSelectedFile();
 				sliceHeightsFilename = file.getAbsolutePath();
 				System.out.println("Opened " + sliceHeightsFilename + "\n");
@@ -601,10 +603,14 @@ public class TimeSlicerTab extends JPanel {
 					workingDirectory = tmpDir;
 				}
 
+				} else {
+					System.out.println("Could not Open! \n");
+				}
+				
 			} catch (Exception e) {
-				System.err.println("Could not load! \n");
-			}
-
+				Utils.handleException(e, e.getMessage());
+			}// END: try-catch block
+				
 		}
 	}// END: ListenLoadTimeSlices
 
@@ -622,22 +628,29 @@ public class TimeSlicerTab extends JPanel {
 						"Tree files (*.tree(s), *.tre)"));
 				chooser.setCurrentDirectory(workingDirectory);
 
-				chooser.showOpenDialog(Utils.getActiveFrame());
-				File file = chooser.getSelectedFile();
-				treeFilename = file.getAbsolutePath();
-				System.out.println("Opened " + treeFilename + "\n");
+				int returnVal = chooser.showOpenDialog(Utils.getActiveFrame());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					
+					File file = chooser.getSelectedFile();
+					treeFilename = file.getAbsolutePath();
+					System.out.println("Opened " + treeFilename + "\n");
 
-				File tmpDir = chooser.getCurrentDirectory();
+					File tmpDir = chooser.getCurrentDirectory();
 
-				if (tmpDir != null) {
-					workingDirectory = tmpDir;
+					if (tmpDir != null) {
+						workingDirectory = tmpDir;
+					}
+
+				} else {
+					System.out.println("Could not Open! \n");
 				}
 
 			} catch (Exception e) {
-				System.err.println("Could not open! \n");
-			}
-		}
-	}
+				Utils.handleException(e, e.getMessage());
+			}// END: try-catch block
+
+		}// END: actionPerformed
+	}// END: ListenOpenTree
 
 	private class ListenOpenTrees implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
@@ -653,22 +666,29 @@ public class TimeSlicerTab extends JPanel {
 						"Tree files (*.trees)"));
 				chooser.setCurrentDirectory(workingDirectory);
 
-				chooser.showOpenDialog(Utils.getActiveFrame());
-				File file = chooser.getSelectedFile();
-				treesFilename = file.getAbsolutePath();
-				System.out.println("Opened " + treesFilename + "\n");
+				int returnVal = chooser.showOpenDialog(Utils.getActiveFrame());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
 
-				File tmpDir = chooser.getCurrentDirectory();
+					File file = chooser.getSelectedFile();
+					treesFilename = file.getAbsolutePath();
+					System.out.println("Opened " + treesFilename + "\n");
 
-				if (tmpDir != null) {
-					workingDirectory = tmpDir;
+					File tmpDir = chooser.getCurrentDirectory();
+
+					if (tmpDir != null) {
+						workingDirectory = tmpDir;
+					}
+
+				} else {
+					System.out.println("Could not Open! \n");
 				}
 
 			} catch (Exception e) {
-				System.err.println("Could not open! \n");
-			}
-		}
-	}
+				Utils.handleException(e, e.getMessage());
+			}// END: try-catch block
+
+		}// END: actionPerformed
+	}// END: ListenOpenTrees
 
 	private class ListenPolygonsMinColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
@@ -897,7 +917,7 @@ public class TimeSlicerTab extends JPanel {
 							
 						} catch (final Exception e) {
 
-							Utils.handleException(e, null);
+							Utils.handleException(e, e.getMessage());
 
 						}
 
@@ -1123,26 +1143,33 @@ public class TimeSlicerTab extends JPanel {
 	}// END: ListenGenerateProcessing
 
 	private class ListenSaveProcessingPlot implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 
 			try {
 
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Saving as png file...");
 
-				chooser.showSaveDialog(Utils.getActiveFrame());
-				File file = chooser.getSelectedFile();
-				String plotToSaveFilename = file.getAbsolutePath();
+				int returnVal = chooser.showSaveDialog(Utils.getActiveFrame());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					
+					File file = chooser.getSelectedFile();
+					String filename = file.getAbsolutePath();
 
-				timeSlicerToProcessing.save(plotToSaveFilename);
-				System.out.println("Saved " + plotToSaveFilename + "\n");
+					timeSlicerToProcessing.save(filename);
+					
+					System.out.println("Saved " + filename + "\n");
 
-			} catch (Exception e0) {
-				System.err.println("Could not save! \n");
-			}
+				} else {
+					System.out.println("Could not Save! \n");
+				}
+
+			} catch (Exception e) {
+				Utils.handleException(e, e.getMessage());
+			}// END: try-catch block
 
 		}// END: actionPerformed
-	}// END: class
+	}// END: ListenSaveProcessingPlot
 
 }// END class
 

@@ -64,7 +64,6 @@ public class ContinuousModelTab extends JPanel {
 	private File workingDirectory = null;
 
 	// Text fields
-//	private JTextField coordinatesNameParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField maxAltMappingParser;
 	private JTextField kmlPathParser;
@@ -115,7 +114,6 @@ public class ContinuousModelTab extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 
 		// Setup text fields
-//		coordinatesNameParser = new JTextField("location", 10);
 		numberOfIntervalsParser = new JTextField("100", 10);
 		maxAltMappingParser = new JTextField("5000000", 10);
 		kmlPathParser = new JTextField("output.kml", 10);
@@ -149,14 +147,12 @@ public class ContinuousModelTab extends JPanel {
 		// Setup progress bar
 		progressBar = new JProgressBar();
 
-		/**
-		 * left tools pane
-		 * */
+		// Setup left tools pane
 		leftPanel = new JPanel();
 		leftPanel.setBackground(backgroundColor);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
-		// Listeners
+		// Add Listeners
 		openTree.addActionListener(new ListenOpenTree());
 		generateKml.addActionListener(new ListenGenerateKml());
 		generateProcessing.addActionListener(new ListenGenerateProcessing());
@@ -375,9 +371,7 @@ public class ContinuousModelTab extends JPanel {
 		leftScrollPane.setMinimumSize(minimumDimension);
 		leftScrollPane.setMaximumSize(new Dimension(leftPanelWidth, leftPanelHeight));
 
-		/**
-		 * Processing pane
-		 * */
+		// Setup Processing pane
 		continuousTreeToProcessing = new ContinuousTreeToProcessing();
 		continuousTreeToProcessing.setPreferredSize(new Dimension(
 				mapImageWidth, mapImageHeight));
@@ -412,10 +406,10 @@ public class ContinuousModelTab extends JPanel {
 
 //		}
 
-	}// END: ContinuousModelTab
+	}// END: Constructor
 
 	//TODO: move all the tree parsing to separate tree parser class with getters for all the attributes we need
-	private void populateCoordinateAttributeCombobox() {
+	private void populateAttributeComboboxes() {
 		
 		try {
 		
@@ -432,7 +426,7 @@ public class ContinuousModelTab extends JPanel {
 				}
 			}
 
-			// re-initialise combobox
+			// re-initialise comboboxes
 			ComboBoxModel latitudeNameParserModel = new DefaultComboBoxModel(uniqueAttributes.toArray(new String[0]));
 			latitudeNameParser.setModel(latitudeNameParserModel);
 			
@@ -456,31 +450,38 @@ public class ContinuousModelTab extends JPanel {
 
 				String[] treeFiles = new String[] { "tre", "tree", "trees" };
 
-				JFileChooser chooser = new JFileChooser();
+				final JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Loading tree file...");
 				chooser.setMultiSelectionEnabled(false);
 				chooser.addChoosableFileFilter(new SimpleFileFilter(treeFiles,
 						"Tree files (*.tree(s), *.tre)"));
 				chooser.setCurrentDirectory(workingDirectory);
 
-				chooser.showOpenDialog(Utils.getActiveFrame());
-				File file = chooser.getSelectedFile();
-				treeFilename = file.getAbsolutePath();
-				System.out.println("Opened " + treeFilename + "\n");
+				int returnVal = chooser.showOpenDialog(Utils.getActiveFrame());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
 
-				File tmpDir = chooser.getCurrentDirectory();
+					File file = chooser.getSelectedFile();
+					treeFilename = file.getAbsolutePath();
+					System.out.println("Opened " + treeFilename + "\n");
 
-				if (tmpDir != null) {
-					workingDirectory = tmpDir;
+					File tmpDir = chooser.getCurrentDirectory();
+
+					if (tmpDir != null) {
+						workingDirectory = tmpDir;
+					}
+
+					populateAttributeComboboxes();
+
+				} else {
+					System.out.println("Could not Open! \n");
 				}
 
-				populateCoordinateAttributeCombobox();
-				
 			} catch (Exception e) {
-				System.err.println("Could not Open! \n");
-			}
-		}
-	}
+				Utils.handleException(e, e.getMessage());
+			}// END: try-catch block
+
+		}// END: actionPerformed
+	}// END: ListenOpenTree
 
 	private class ListenPolygonsMinColorChooser implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
@@ -843,18 +844,25 @@ public class ContinuousModelTab extends JPanel {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Saving as png file...");
 
-				chooser.showSaveDialog(Utils.getActiveFrame());
-				File file = chooser.getSelectedFile();
-				String plotToSaveFilename = file.getAbsolutePath();
+				int returnVal = chooser.showSaveDialog(Utils.getActiveFrame());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					
+					File file = chooser.getSelectedFile();
+					String filename = file.getAbsolutePath();
 
-				continuousTreeToProcessing.save(plotToSaveFilename);
-				System.out.println("Saved " + plotToSaveFilename + "\n");
+					continuousTreeToProcessing.save(filename);
+					
+					System.out.println("Saved " + filename + "\n");
+
+				} else {
+					System.out.println("Could not Save! \n");
+				}
 
 			} catch (Exception e) {
-				System.err.println("Could not save! \n");
-			}
+				Utils.handleException(e, e.getMessage());
+			}// END: try-catch block
 
 		}// END: actionPerformed
-	}// END: class
+	}// END: ListenSaveProcessingPlot
 
 }// END class
