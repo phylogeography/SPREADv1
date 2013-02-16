@@ -36,8 +36,8 @@ public class SpreadApp {
     /**
      * Version string: assumed to be in format x.x.x
      */
-    private static final String VERSION = "1.0.5";
-    private static final String DATE_STRING = "2012";
+    private static final String VERSION = "1.0.6rc";
+    private static final String DATE_STRING = "2013";
 
 	// Dimension
 	private Dimension dimension;

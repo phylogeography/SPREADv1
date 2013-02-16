@@ -1,4 +1,10 @@
-SPREAD version 1.0.5 release candidate
+SPREAD version 1.0.6 release candidate
+------------------------------------------------
+* Combobox for choosing indicator attribute name in Discrete Bayes Factor test
+* Log files parser compatible with BEAST 1 and BEAST 2
+
+
+November 18, 2012: SPREAD version 1.0.5 released
 ------------------------------------------------
 
 * Improved custom time slicer
