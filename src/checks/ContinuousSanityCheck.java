@@ -15,13 +15,13 @@ public class ContinuousSanityCheck {
 	private boolean notNull = false;
 	private String HPDString = null;
 
-	public boolean check(String treeFilename, String coordinatesName)
+	public boolean check(String treeFilename, String longitudeName, String latitudeName)
 			throws IOException, ImportException {
 
 		NexusImporter importer = new NexusImporter(new FileReader(treeFilename));
 		RootedTree tree = (RootedTree) importer.importNextTree();
-		String longitudeName = (coordinatesName + 2);
-		String latitudeName = (coordinatesName + 1);
+//		String longitudeName = (coordinatesName + 2);
+//		String latitudeName = (coordinatesName + 1);
 
 		Double longitude = null;
 		Double latitude = null;
@@ -61,8 +61,8 @@ public class ContinuousSanityCheck {
 		if (unannotatedNodeCount == nodeCount) {
 
 			notNull = false;
-			throw new RuntimeException("Attribute, " + coordinatesName
-					+ ", missing from node");
+//			throw new RuntimeException("Attribute, " + coordinatesName
+//					+ ", missing from node");
 
 		} else if (unannotatedNodeCount == 0) {
 

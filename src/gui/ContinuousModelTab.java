@@ -8,8 +8,14 @@ import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedHashSet;
 
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -21,6 +27,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
+
+import jebl.evolution.graphs.Node;
+import jebl.evolution.io.ImportException;
+import jebl.evolution.io.NexusImporter;
+import jebl.evolution.trees.RootedTree;
 
 import templates.ContinuousTreeToKML;
 import templates.ContinuousTreeToProcessing;
@@ -37,8 +48,8 @@ public class ContinuousModelTab extends JPanel {
 	private final int leftPanelWidth = 260;
 	private final int leftPanelHeight = 1000;
 	private final int spinningPanelHeight = 20;
-	private final int mapImageWidth = MapBackground.mapImageWidth;
-	private final int mapImageHeight = MapBackground.mapImageHeight;
+	private final int mapImageWidth = MapBackground.MAP_IMAGE_WIDTH;
+	private final int mapImageHeight = MapBackground.MAP_IMAGE_HEIGHT;
 	private final Dimension minimumDimension = new Dimension(0, 0);
 
 	// Colors
@@ -53,7 +64,7 @@ public class ContinuousModelTab extends JPanel {
 	private File workingDirectory = null;
 
 	// Text fields
-	private JTextField coordinatesNameParser;
+//	private JTextField coordinatesNameParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField maxAltMappingParser;
 	private JTextField kmlPathParser;
@@ -77,7 +88,9 @@ public class ContinuousModelTab extends JPanel {
 
 	// Combo boxes
 	private JComboBox eraParser;
-
+	private JComboBox latitudeNameParser;
+	private JComboBox longitudeNameParser;
+	
 	// Left tools pane
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
@@ -102,7 +115,7 @@ public class ContinuousModelTab extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 
 		// Setup text fields
-		coordinatesNameParser = new JTextField("location", 10);
+//		coordinatesNameParser = new JTextField("location", 10);
 		numberOfIntervalsParser = new JTextField("100", 10);
 		maxAltMappingParser = new JTextField("5000000", 10);
 		kmlPathParser = new JTextField("output.kml", 10);
@@ -125,6 +138,14 @@ public class ContinuousModelTab extends JPanel {
 		branchesWidthParser.setPaintTicks(true);
 		branchesWidthParser.setPaintLabels(true);
 
+		// Setup Combo boxes
+		latitudeNameParser = new JComboBox(new String[] {"location1"});
+		latitudeNameParser.setToolTipText("Choose latitude attribute name. " +
+                "This attribute name is typically followed by number 1.");
+		longitudeNameParser = new JComboBox(new String[] {"location2"});
+		longitudeNameParser.setToolTipText("Choose longitude attribute name. " +
+				                            "This attribute name is typically followed by number 2.");
+		
 		// Setup progress bar
 		progressBar = new JProgressBar();
 
@@ -184,8 +205,15 @@ public class ContinuousModelTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Coordinate attribute name:"));
-		tmpPanel.add(coordinatesNameParser);
+		tmpPanel.setBorder(new TitledBorder("Latitude attribute name:"));
+		tmpPanel.add(latitudeNameParser);
+		tmpPanelsHolder.add(tmpPanel);
+		
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Longitude attribute name:"));
+		tmpPanel.add(longitudeNameParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
@@ -386,6 +414,41 @@ public class ContinuousModelTab extends JPanel {
 
 	}// END: ContinuousModelTab
 
+	//TODO: move all the tree parsing to separate tree parser class with getters for all the attributes we need
+	private void populateCoordinateAttributeCombobox() {
+		
+		try {
+		
+			NexusImporter importer = new NexusImporter(new FileReader(treeFilename));
+			RootedTree tree = (RootedTree) importer.importNextTree();
+			
+			LinkedHashSet<String> uniqueAttributes = new LinkedHashSet<String>();
+			
+			for (Node node : tree.getNodes()) {
+				if (!tree.isRoot(node)) {
+				
+					uniqueAttributes.addAll(node.getAttributeNames());
+					
+				}
+			}
+
+			// re-initialise combobox
+			ComboBoxModel latitudeNameParserModel = new DefaultComboBoxModel(uniqueAttributes.toArray(new String[0]));
+			latitudeNameParser.setModel(latitudeNameParserModel);
+			
+			ComboBoxModel longitudeNameParserModel = new DefaultComboBoxModel(uniqueAttributes.toArray(new String[0]));
+			longitudeNameParser.setModel(longitudeNameParserModel);
+			
+		} catch (FileNotFoundException e) {
+			Utils.handleException(e, e.getMessage());
+		} catch (IOException e) {
+			Utils.handleException(e, e.getMessage());
+		} catch (ImportException e) {
+			Utils.handleException(e, e.getMessage());
+		}
+		
+	}//END: populateCoordinateAttributeCombobox
+	
 	private class ListenOpenTree implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
@@ -411,6 +474,8 @@ public class ContinuousModelTab extends JPanel {
 					workingDirectory = tmpDir;
 				}
 
+				populateCoordinateAttributeCombobox();
+				
 			} catch (Exception e) {
 				System.err.println("Could not Open! \n");
 			}
@@ -484,17 +549,24 @@ public class ContinuousModelTab extends JPanel {
 							ContinuousSanityCheck contSanCheck = new ContinuousSanityCheck();
 
 							if (contSanCheck.check(treeFilename,
-									coordinatesNameParser.getText())) {
+									longitudeNameParser.getName(),
+									latitudeNameParser.getName()
+//									coordinatesNameParser.getText()
+									)) {
 
 								ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
 
 								continuousTreeToKML.setHPDString(contSanCheck
 										.getHPDString());
 
-								continuousTreeToKML
-										.setCoordinatesName(coordinatesNameParser
-												.getText());
+//								continuousTreeToKML
+//										.setCoordinatesName(coordinatesNameParser
+//												.getText());
 
+								continuousTreeToKML.setLongitudeName(longitudeNameParser.getSelectedItem().toString());
+								
+								continuousTreeToKML.setLatitudeName(latitudeNameParser.getSelectedItem().toString());
+								
 								continuousTreeToKML
 										.setMaxAltitudeMapping(Double
 												.valueOf(maxAltMappingParser
@@ -647,14 +719,17 @@ public class ContinuousModelTab extends JPanel {
 							ContinuousSanityCheck contSanCheck = new ContinuousSanityCheck();
 
 							if (contSanCheck.check(treeFilename,
-									coordinatesNameParser.getText())) {
+									longitudeNameParser.getSelectedItem().toString(),
+									latitudeNameParser.getSelectedItem().toString()
+//									coordinatesNameParser.getText()
+									)) {
 
 								continuousTreeToProcessing
 										.setTreePath(treeFilename);
 
-								continuousTreeToProcessing
-										.setCoordinatesName(coordinatesNameParser
-												.getText());
+								continuousTreeToProcessing.setLongitudeName(longitudeNameParser.getSelectedItem().toString());
+								
+								continuousTreeToProcessing.setLatitudeName(latitudeNameParser.getSelectedItem().toString());
 
 								continuousTreeToProcessing
 										.setHPDString(contSanCheck

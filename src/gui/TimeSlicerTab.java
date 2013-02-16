@@ -41,8 +41,8 @@ public class TimeSlicerTab extends JPanel {
 	private final int leftPanelWidth = 260;
 	private final int leftPanelHeight = 1000;
 	private final int spinningPanelHeight = 20;
-	private final int mapImageWidth = MapBackground.mapImageWidth;
-	private final int mapImageHeight = MapBackground.mapImageHeight;
+	private final int mapImageWidth = MapBackground.MAP_IMAGE_WIDTH;
+	private final int mapImageHeight = MapBackground.MAP_IMAGE_HEIGHT;
 	private final Dimension minimumDimension = new Dimension(0, 0);
 
 	// Colors

@@ -8,8 +8,8 @@ public class MapBackground {
 	private PApplet parent;
 	private PImage mapImage;
 	private String imgPath;
-	public static int mapImageWidth = 2048;
-	public static int mapImageHeight = 1025;
+	public static int MAP_IMAGE_WIDTH = 2048;
+	public static int MAP_IMAGE_HEIGHT = 1025;
 
 	public MapBackground(PApplet p) {
 

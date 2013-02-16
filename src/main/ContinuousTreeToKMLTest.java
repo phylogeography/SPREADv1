@@ -17,8 +17,11 @@ public class ContinuousTreeToKMLTest {
 
 			continuousTreeToKML.setHPDString("80%HPD");
 
-			continuousTreeToKML.setCoordinatesName("location");
+			//TODO
+//			continuousTreeToKML.setCoordinatesName("location2");
 
+//			continuousTreeToKML.setCoordinatesName("location1");
+			
 			continuousTreeToKML.setMaxAltitudeMapping(50000);
 
 			continuousTreeToKML.setMinPolygonRedMapping(100);

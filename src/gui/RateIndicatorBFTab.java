@@ -43,8 +43,8 @@ public class RateIndicatorBFTab extends JPanel {
 	private final int leftPanelWidth = 260;
 	private final int leftPanelHeight = 1000;
 	private final int spinningPanelHeight = 20;
-	private final int mapImageWidth = MapBackground.mapImageWidth;
-	private final int mapImageHeight = MapBackground.mapImageHeight;
+	private final int mapImageWidth = MapBackground.MAP_IMAGE_WIDTH;
+	private final int mapImageHeight = MapBackground.MAP_IMAGE_HEIGHT;
 	private final Dimension minimumDimension = new Dimension(0, 0);
 
 	// Colors
@@ -64,7 +64,6 @@ public class RateIndicatorBFTab extends JPanel {
 	private JTextField maxAltMappingParser;
 	private JTextField bfCutoffParser;
 	private JTextField kmlPathParser;
-    private JComboBox indicatorNameBox;
 	
 	// Buttons
 	private JButton openLog;
@@ -82,8 +81,9 @@ public class RateIndicatorBFTab extends JPanel {
 	// Combo boxes
 	private JComboBox meanPoissonPriorParser;
 	private JComboBox poissonPriorOffsetParser;
-
-	// left tools pane
+	private JComboBox indicatorNameBox;
+	  
+	// Left tools pane
 	private JPanel leftPanel;
 	private JPanel tmpPanel;
 	private SpinningPanel sp;
@@ -109,7 +109,6 @@ public class RateIndicatorBFTab extends JPanel {
 		maxAltMappingParser = new JTextField("500000", 10);
 		bfCutoffParser = new JTextField("3.0", 5);
 		kmlPathParser = new JTextField("output.kml", 10);
-        indicatorNameBox = new JComboBox(new String[] {"indicator"});
 		
 		// Setup buttons
 		openLog = new JButton("Open", SpreadApp.logIcon);
@@ -132,6 +131,9 @@ public class RateIndicatorBFTab extends JPanel {
 		branchesWidthParser.setPaintTicks(true);
 		branchesWidthParser.setPaintLabels(true);
 
+		// Setup Combo boxes
+		indicatorNameBox = new JComboBox(new String[] {"indicator"});
+		 
 		// Setup progress bar
 		progressBar = new JProgressBar();
 
@@ -408,13 +410,13 @@ public class RateIndicatorBFTab extends JPanel {
 				if (tmpDir != null) {
 					workingDirectory = tmpDir;
 				}
-				populateInidacatorCombobox();
+				populateInidcatorCombobox();
 			} catch (Exception e) {
 				System.err.println("Could not Open! \n");
 			}
 		}
 
-		private void populateInidacatorCombobox() {
+		private void populateInidcatorCombobox() {
 			LogFileParser parser = new LogFileParser();
 			String [] colNames = parser.getColNames(logFilename);
 

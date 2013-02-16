@@ -59,12 +59,12 @@ public class ContinuousTreeToProcessing extends PApplet {
 		this.HPDString = HPDString;
 	}
 
-	public void setCoordinatesName(String name) {
-
-		coordinatesName = name;
-		// this is for coordinate attribute names
-		longitudeName = (coordinatesName + 2);
-		latitudeName = (coordinatesName + 1);
+	public void setLongitudeName(String name) {
+		longitudeName = name;
+	}
+	
+	public void setLatitudeName(String name) {
+		latitudeName = name;
 	}
 
 	public void setTreePath(String path) throws IOException, ImportException {
