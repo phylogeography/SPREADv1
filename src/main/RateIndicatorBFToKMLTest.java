@@ -19,7 +19,7 @@ public class RateIndicatorBFToKMLTest {
 
 		try {
 
-			table = new InteractiveTableModel(new LocationCoordinatesEditor()
+			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
 			data = new locationsReader(
 					"/home/filip/Phyleography/data/H5N1/locationCoordinates_H5N1");

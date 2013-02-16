@@ -19,7 +19,7 @@ public class DiscreteTreeToKMLTest {
 
 		try {
 
-			table = new InteractiveTableModel(new LocationCoordinatesEditor()
+			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
 			data = new locationsReader(
 					"/home/filip/HP_locations");
