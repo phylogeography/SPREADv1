@@ -546,6 +546,7 @@ public class ContinuousModelTab extends JPanel {
 
 						try {
 
+							//TODO: move the checks to tree parser
 							ContinuousSanityCheck contSanCheck = new ContinuousSanityCheck();
 
 							if (contSanCheck.check(treeFilename,

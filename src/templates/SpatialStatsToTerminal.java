@@ -9,11 +9,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import readers.sliceHeightsReader;
+
 import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
-import utils.ReadSliceHeights;
 import utils.Utils;
 
 public class SpatialStatsToTerminal {
@@ -77,7 +78,7 @@ public class SpatialStatsToTerminal {
 	}
 
 	public void setCustomSliceHeightsPath(String path) {
-		sliceHeights = new ReadSliceHeights(path).getSliceHeights();
+		sliceHeights = new sliceHeightsReader(path).getSliceHeights();
 	}
 
 	public void calculate() {

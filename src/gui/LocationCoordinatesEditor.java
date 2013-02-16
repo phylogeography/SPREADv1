@@ -28,11 +28,12 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import readers.locationsReader;
+
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.trees.RootedTree;
-import utils.ReadLocations;
 import utils.Utils;
 import app.SpreadApp;
 
@@ -139,7 +140,7 @@ public class LocationCoordinatesEditor {
 				if (tmpDir != null) {
 
 					workingDirectory = tmpDir;
-					ReadLocations data = new ReadLocations(locationsFilename);
+					locationsReader data = new locationsReader(locationsFilename);
 
 					if (tableModel.getRowCount() < data.nrow) {
 						for (int i = 0; i < data.nrow - 1; i++) {

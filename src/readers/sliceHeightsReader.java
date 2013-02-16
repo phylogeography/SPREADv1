@@ -1,14 +1,14 @@
-package utils;
+package readers;
 
 import processing.core.PApplet;
 
 @SuppressWarnings("serial")
-public class ReadSliceHeights extends PApplet {
+public class sliceHeightsReader extends PApplet {
 
 	private double[] sliceHeights;
 	private int nrow;
 
-	public ReadSliceHeights(String filename) {
+	public sliceHeightsReader(String filename) {
 
 		String[] lines = loadStrings(filename);
 		nrow = lines.length;

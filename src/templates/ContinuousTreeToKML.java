@@ -231,51 +231,6 @@ public class ContinuousTreeToKML {
 
 	}// END: GenerateKML
 
-//	public ArrayList<Layer> getLayers() throws IOException, ImportException,
-//			ParseException {
-//
-//		// start timing
-//		time = -System.currentTimeMillis();
-//
-//		// import tree
-//		tree = (RootedTree) importer.importNextTree();
-//
-//		// this is for time calculations
-//		rootHeight = tree.getHeight(tree.getRootNode());
-//
-//		// this is for coordinate attribute names
-//		longitudeName = (coordinatesName + 2);
-//		latitudeName = (coordinatesName + 1);
-//
-//		// this is for mappings
-//		treeHeightMax = Utils.getTreeHeightMax(tree);
-//
-//		// This is a general time span for the tree
-//		mrsd = new ThreadLocalSpreadDate(mrsdString);
-//		timeLine = new TimeLine(mrsd.getTime()
-//				- (rootHeight * DayInMillis * DaysInYear * timescaler), mrsd
-//				.getTime(), numberOfIntervals);
-//
-//		layers = new ArrayList<Layer>();
-//
-//		// Execute threads
-//		final int NTHREDS = Runtime.getRuntime().availableProcessors();
-//		ExecutorService executor = Executors.newFixedThreadPool(NTHREDS);
-//
-//		executor.submit(new Branches());
-//		executor.submit(new Polygons());
-//		executor.shutdown();
-//
-//		// Wait until all threads are finished
-//		while (!executor.isTerminated()) {
-//		}
-//
-//		// stop timing
-//		time += System.currentTimeMillis();
-//
-//		return layers;
-//	}// END: getLayers
-
 	// ////////////////
 	// ---BRANCHES---//
 	// ////////////////

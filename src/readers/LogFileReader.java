@@ -1,4 +1,4 @@
-package utils;
+package readers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,9 +10,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import processing.core.PApplet;
+import utils.Utils;
 
 @SuppressWarnings("serial")
-public class LogFileParser extends PApplet {
+public class LogFileReader extends PApplet {
 
 	private static final int HEADER_ROW = 0;
 	
@@ -20,21 +21,11 @@ public class LogFileParser extends PApplet {
 	public int nrow;
 	public int ncol;
 
-	public LogFileParser() {}
+	public LogFileReader() {}
 	
-	public LogFileParser(String filename, double burnIn, String indicatorName) {
+	public LogFileReader(String filename, double burnIn, String indicatorName) {
 
 		String[] lines = LoadStrings(filename);
-
-		// count commented lines
-//		int commentedLines = 0;
-//		for (int row = 0; row < lines.length; row++) {
-//			if (lines[row].startsWith("#")) {
-//				commentedLines++;
-//			}
-//		}
-//		nrow = lines.length - commentedLines - 1;
-//		String[] colNames = lines[commentedLines].split("\t");
 
 		nrow = lines.length - 1;
 		String[] colNames = lines[HEADER_ROW].split("\t");		
@@ -53,20 +44,6 @@ public class LogFileParser extends PApplet {
 			}
 		}
 		
-//		if (list.size() == 0) {
-//			// did not find any indicator columns, try "rateIndicator." instead
-//			pattern = Pattern.compile("rateIndicator");
-//			for (int row = 0; row < colNames.length; row++) {
-//
-//				// Look for matches in column names
-//				Matcher matcher = pattern.matcher(colNames[row]);
-//
-//				if (matcher.find()) {
-//					list.add(row);
-//				}
-//			}
-//		}
-
 		ncol = list.size();
 		// skip first line with col names and the burn in lines
 		int delete = (int) (nrow * burnIn) + 1;

@@ -3,14 +3,14 @@ package main;
 import gui.InteractiveTableModel;
 import gui.LocationCoordinatesEditor;
 import gui.TableRecord;
+import readers.locationsReader;
 import templates.RateIndicatorBFToKML;
-import utils.ReadLocations;
 
 public class RateIndicatorBFToKMLTest {
 
 	static RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 	private static InteractiveTableModel table;
-	private static ReadLocations data;
+	private static locationsReader data;
 
 	public static void main(String[] args) {
 
@@ -21,7 +21,7 @@ public class RateIndicatorBFToKMLTest {
 
 			table = new InteractiveTableModel(new LocationCoordinatesEditor()
 					.getColumnNames());
-			data = new ReadLocations(
+			data = new locationsReader(
 					"/home/filip/Phyleography/data/H5N1/locationCoordinates_H5N1");
 
 			String indicatorAttributeName = "indicator";

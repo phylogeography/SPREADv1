@@ -24,13 +24,13 @@ import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.io.TreeImporter;
 import jebl.evolution.trees.RootedTree;
+import readers.sliceHeightsReader;
 import structure.Coordinates;
 import structure.Layer;
 import structure.Line;
 import structure.Polygon;
 import structure.Style;
 import structure.TimeLine;
-import utils.ReadSliceHeights;
 import utils.ThreadLocalSpreadDate;
 import utils.Utils;
 import contouring.ContourMaker;
@@ -110,7 +110,7 @@ public class TimeSlicerToKML {
 	}
 
 	public void setCustomSliceHeightsPath(String path) {
-		sliceHeights = new ReadSliceHeights(path).getSliceHeights();
+		sliceHeights = new sliceHeightsReader(path).getSliceHeights();
 	}
 
 	public void setTimescaler(double timescaler) {

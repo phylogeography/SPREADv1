@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 import processing.core.PApplet;
 import processing.core.PFont;
+import readers.LogFileReader;
 import utils.Holder;
-import utils.LogFileParser;
 import utils.Utils;
 import utils.Utils.PoissonPriorEnum;
 
@@ -15,7 +15,7 @@ import utils.Utils.PoissonPriorEnum;
 public class RateIndicatorBFToProcessing extends PApplet {
 
 	private InteractiveTableModel table;
-	private LogFileParser indicators;
+	private LogFileReader indicators;
 	private double bfCutoff;
 	private MapBackground mapBackground;
 	private ArrayList<Double> bayesFactors;
@@ -80,7 +80,7 @@ public class RateIndicatorBFToProcessing extends PApplet {
 	}
 
 	public void setLogFilePath(String path, double burnIn, String indicatorName) {
-		indicators = new LogFileParser(path, burnIn, indicatorName);
+		indicators = new LogFileReader(path, burnIn, indicatorName);
 	}
 
 	public void setMinBranchRedMapping(double min) {

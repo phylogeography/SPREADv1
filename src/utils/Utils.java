@@ -26,6 +26,7 @@ import org.boehn.kmlframework.kml.Point;
 
 import app.SpreadApp;
 
+import readers.locationsReader;
 import structure.Coordinates;
 import structure.TimeLine;
 
@@ -139,7 +140,7 @@ public class Utils {
 		return coordinate;
 	}// END: MatchStateCoordinate
 
-	public static float matchStateCoordinate(ReadLocations data, String state,
+	public static float matchStateCoordinate(locationsReader data, String state,
 			int latlon) {
 		/**
 		 * Match state name with its coordinates

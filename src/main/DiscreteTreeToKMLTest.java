@@ -3,14 +3,14 @@ package main;
 import gui.InteractiveTableModel;
 import gui.LocationCoordinatesEditor;
 import gui.TableRecord;
+import readers.locationsReader;
 import templates.DiscreteTreeToKML;
-import utils.ReadLocations;
 
 public class DiscreteTreeToKMLTest {
 
 	private static DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
 	private static InteractiveTableModel table;
-	private static ReadLocations data;
+	private static locationsReader data;
 
 	public static void main(String[] args) {
 
@@ -21,7 +21,7 @@ public class DiscreteTreeToKMLTest {
 
 			table = new InteractiveTableModel(new LocationCoordinatesEditor()
 					.getColumnNames());
-			data = new ReadLocations(
+			data = new locationsReader(
 					"/home/filip/HP_locations");
 
 			for (int i = 0; i < data.nrow; i++) {

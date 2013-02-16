@@ -1,18 +1,18 @@
-package utils;
+package readers;
 
 import java.text.ParseException;
 
 import processing.core.PApplet;
 
 @SuppressWarnings("serial")
-public class ReadLocations extends PApplet {
+public class locationsReader extends PApplet {
 
 	private String[] lines;
 	public String[] locations;
 	public float[][] coordinates;
 	public int nrow;
 
-	public ReadLocations(String filename) throws ParseException {
+	public locationsReader(String filename) throws ParseException {
 
 		lines = loadStrings(filename);
 		nrow = lines.length;

@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import jebl.evolution.io.ImportException;
+import readers.LogFileReader;
 import structure.Coordinates;
 import structure.Layer;
 import structure.Line;
@@ -21,7 +22,6 @@ import structure.Place;
 import structure.Style;
 import structure.TimeLine;
 import utils.Holder;
-import utils.LogFileParser;
 import utils.Utils;
 import utils.Utils.PoissonPriorEnum;
 
@@ -30,7 +30,7 @@ public class RateIndicatorBFToKML {
 	public static long time;
 
 	private InteractiveTableModel table;
-	private LogFileParser indicators;
+	private LogFileReader indicators;
 	private List<Layer> layers;
 	private PrintWriter writer;
 	private int numberOfIntervals;
@@ -97,7 +97,7 @@ public class RateIndicatorBFToKML {
 	}
 
 	public void setLogFileParser(String path, double burnIn, String indicatorName) {
-		indicators = new LogFileParser(path, burnIn, indicatorName);
+		indicators = new LogFileReader(path, burnIn, indicatorName);
 	}
 
 	public void setKmlWriterPath(String kmlpath) throws FileNotFoundException {

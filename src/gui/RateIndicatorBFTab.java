@@ -28,10 +28,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
+import readers.LogFileReader;
 import templates.MapBackground;
 import templates.RateIndicatorBFToKML;
 import templates.RateIndicatorBFToProcessing;
-import utils.LogFileParser;
 import utils.Utils;
 import app.SpreadApp;
 import colorpicker.swing.ColorPicker;
@@ -417,7 +417,7 @@ public class RateIndicatorBFTab extends JPanel {
 		}
 
 		private void populateInidcatorCombobox() {
-			LogFileParser parser = new LogFileParser();
+			LogFileReader parser = new LogFileReader();
 			String [] colNames = parser.getColNames(logFilename);
 
 			// remove numbers from end of column name, and count their occurrances 
