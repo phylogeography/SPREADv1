@@ -32,7 +32,6 @@ import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.trees.RootedTree;
-
 import templates.DiscreteTreeToKML;
 import templates.DiscreteTreeToProcessing;
 import templates.MapBackground;
@@ -44,6 +43,9 @@ import colorpicker.swing.ColorPicker;
 @SuppressWarnings("serial")
 public class DiscreteModelTab extends JPanel {
 
+	//Shared Frame
+	private SpreadApp frame;
+	
 	// Sizing constants
 	private final int leftPanelWidth = 260;
 	private final int leftPanelHeight = 1000;
@@ -67,7 +69,6 @@ public class DiscreteModelTab extends JPanel {
 	private File workingDirectory = null;
 
 	// Text fields
-//	private JTextField stateAttNameParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField maxAltMappingParser;
 	private JTextField kmlPathParser;
@@ -107,8 +108,10 @@ public class DiscreteModelTab extends JPanel {
 	// Progress bar
 	private JProgressBar progressBar;
 
-	public DiscreteModelTab() {
+	public DiscreteModelTab(SpreadApp spreadApp) {
 
+		this.frame = spreadApp;
+		
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		backgroundColor = new Color(231, 237, 246);
@@ -119,7 +122,6 @@ public class DiscreteModelTab extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 
 		// Setup text fields
-//		stateAttNameParser = new JTextField("states", 10);
 		numberOfIntervalsParser = new JTextField("100", 10);
 		maxAltMappingParser = new JTextField("5000000", 10);
 		kmlPathParser = new JTextField("output.kml", 10);
@@ -478,7 +480,8 @@ public class DiscreteModelTab extends JPanel {
 
 					File file = chooser.getSelectedFile();
 					treeFilename = file.getAbsolutePath();
-					System.out.println("Opened " + treeFilename + "\n");
+					
+					frame.setStatus("Opened " + treeFilename + "\n");
 
 					File tmpDir = chooser.getCurrentDirectory();
 
@@ -489,7 +492,7 @@ public class DiscreteModelTab extends JPanel {
 					populateAttributeComboboxes();
 
 				} else {
-					System.out.println("Could not Open! \n");
+					frame.setStatus("Could not Open! \n");
 				}
 
 			} catch (Exception e) {
@@ -504,7 +507,7 @@ public class DiscreteModelTab extends JPanel {
 
 			try {
 
-				LocationCoordinatesEditor locationCoordinatesEditor = new LocationCoordinatesEditor();
+				LocationCoordinatesEditor locationCoordinatesEditor = new LocationCoordinatesEditor(frame);
 				locationCoordinatesEditor.launch(treeFilename,
 						stateAttributeNameParser.getSelectedItem().toString(), workingDirectory);
 
@@ -727,7 +730,7 @@ public class DiscreteModelTab extends JPanel {
 						generateKml.setEnabled(true);
 						progressBar.setIndeterminate(false);
 
-						System.out.println("Generated "
+						frame.setStatus("Generated "
 								+ workingDirectory.toString().concat("/")
 										.concat(kmlPathParser.getText()));
 					}
@@ -908,10 +911,10 @@ public class DiscreteModelTab extends JPanel {
 
 					discreteTreeToProcessing.save(filename);
 					
-					System.out.println("Saved " + filename + "\n");
+					frame.setStatus("Saved " + filename + "\n");
 
 				} else {
-					System.out.println("Could not Save! \n");
+					frame.setStatus("Could not Save! \n");
 				}
 
 			} catch (Exception e) {

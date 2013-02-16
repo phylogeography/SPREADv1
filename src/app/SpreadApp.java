@@ -18,16 +18,19 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
 
-import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.BevelBorder;
 
 import utils.ExceptionHandler;
 
@@ -76,6 +79,9 @@ public class SpreadApp {
 	private RateIndicatorBFTab rateIndicatorBFTab;
 	private TimeSlicerTab timeSlicerTab;
 	private TerminalTab terminalTab;
+	
+	// Status bar
+	private JLabel statusbar;
 	
 	public SpreadApp() throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException, UnsupportedLookAndFeelException {
@@ -194,32 +200,43 @@ public class SpreadApp {
 		tabbedPane = new JTabbedPane();
 
 		// add Discrete Model Tab
-		discreteModelTab = new DiscreteModelTab();
+		discreteModelTab = new DiscreteModelTab(this);
 		tabbedPane.add("Discrete Tree", discreteModelTab);
 
 		// add rateIndicatorBF Tab
-		rateIndicatorBFTab = new RateIndicatorBFTab();
+		rateIndicatorBFTab = new RateIndicatorBFTab(this);
 		tabbedPane.add("Discrete Bayes Factors", rateIndicatorBFTab);
 
 		// add Continuous Model Tab
-		continuousModelTab = new ContinuousModelTab();
+		continuousModelTab = new ContinuousModelTab(this);
 		tabbedPane.add("Continuous Tree", continuousModelTab);
 
 		// add Time Slicer tab
-		timeSlicerTab = new TimeSlicerTab();
+		timeSlicerTab = new TimeSlicerTab(this);
 		tabbedPane.add("Time Slicer", timeSlicerTab);
 
 		// add Terminal Tab
 		terminalTab = new TerminalTab();
 		tabbedPane.add("Terminal", terminalTab);
 
-		frame.add(mainMenu, BorderLayout.NORTH);
-		frame.add(tabbedPane, BorderLayout.CENTER);
-		frame.getContentPane().add(Box.createVerticalStrut(15),
-				BorderLayout.SOUTH);
+		// Setup status bar
+		JPanel statusPanel = new JPanel();
+		statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+		statusPanel.setPreferredSize(new Dimension(frame.getWidth(), 16));
+		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+
+		statusbar = new JLabel("Welcome to Spread!");
+		statusbar.setHorizontalAlignment(SwingConstants.LEFT);
+		statusPanel.add(statusbar);
+
+		frame.getContentPane().add(mainMenu, BorderLayout.NORTH);
+		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		frame.getContentPane().add(statusPanel, BorderLayout.SOUTH);
+//		frame.getContentPane().add(Box.createVerticalStrut(15),
+//				BorderLayout.SOUTH);
 		frame.pack();
 
-	}
+	}// END: Constructor
 
 	private class ListenMenuHelp implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
@@ -301,20 +318,16 @@ public class SpreadApp {
 
 				} catch (UnsupportedClassVersionError e) {
 					
-					System.err.println("Your Java Runtime Environment is too old. Please update");
+					System.err.println("Your Java Runtime Environment is too old. Please update!");
 					e.printStackTrace();
 
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (UnsupportedLookAndFeelException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -344,5 +357,9 @@ public class SpreadApp {
 		}
 
 	}// END: CreateImage
+	
+	public void setStatus(String status) {
+		statusbar.setText(status);
+	}// END: setStatus
 
-}// END: SpreadApp
+}// END: class

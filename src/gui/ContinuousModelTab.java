@@ -32,7 +32,6 @@ import jebl.evolution.graphs.Node;
 import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.trees.RootedTree;
-
 import templates.ContinuousTreeToKML;
 import templates.ContinuousTreeToProcessing;
 import templates.MapBackground;
@@ -44,6 +43,9 @@ import colorpicker.swing.ColorPicker;
 @SuppressWarnings("serial")
 public class ContinuousModelTab extends JPanel {
 
+	// Shared Frame
+	private SpreadApp frame;
+	
 	// Sizing constants
 	private final int leftPanelWidth = 260;
 	private final int leftPanelHeight = 1000;
@@ -102,8 +104,10 @@ public class ContinuousModelTab extends JPanel {
 	// Progress bar
 	private JProgressBar progressBar;
 
-	public ContinuousModelTab() {
+	public ContinuousModelTab(SpreadApp spreadApp) {
 
+		this.frame = spreadApp;
+		
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		backgroundColor = new Color(231, 237, 246);
@@ -462,7 +466,8 @@ public class ContinuousModelTab extends JPanel {
 
 					File file = chooser.getSelectedFile();
 					treeFilename = file.getAbsolutePath();
-					System.out.println("Opened " + treeFilename + "\n");
+					
+					frame.setStatus("Opened " + treeFilename + "\n");
 
 					File tmpDir = chooser.getCurrentDirectory();
 
@@ -682,7 +687,7 @@ public class ContinuousModelTab extends JPanel {
 						generateKml.setEnabled(true);
 						progressBar.setIndeterminate(false);
 
-						System.out.println("Generated "
+						frame.setStatus("Generated "
 								+ workingDirectory.toString().concat("/")
 										.concat(kmlPathParser.getText()));
 					}
@@ -848,10 +853,10 @@ public class ContinuousModelTab extends JPanel {
 
 					continuousTreeToProcessing.save(filename);
 					
-					System.out.println("Saved " + filename + "\n");
+					frame.setStatus("Saved " + filename + "\n");
 
 				} else {
-					System.out.println("Could not Save! \n");
+					frame.setStatus("Could not Save! \n");
 				}
 
 			} catch (Exception e) {

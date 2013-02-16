@@ -7,9 +7,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,12 +26,10 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import readers.locationsReader;
-
 import jebl.evolution.graphs.Node;
-import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.trees.RootedTree;
+import readers.locationsReader;
 import utils.Utils;
 import app.SpreadApp;
 
@@ -41,6 +37,8 @@ public class LocationCoordinatesEditor {
 
 	private InteractiveTableModel returnValue = null;
 
+	private SpreadApp frame;
+	
 	// Window
 	private JDialog window;
 	private Frame owner;
@@ -62,8 +60,10 @@ public class LocationCoordinatesEditor {
 	private InteractiveTableModel tableModel;
 	private String[] COLUMN_NAMES = { "Location", "Latitude", "Longitude", "" };
 
-	public LocationCoordinatesEditor() {
+	public LocationCoordinatesEditor(SpreadApp frame) {
 
+		this.frame = frame;
+		
 		// Setup Main Menu buttons
 		load = new JButton("Load", SpreadApp.loadIcon);
 		save = new JButton("Save", SpreadApp.saveIcon);
@@ -132,7 +132,8 @@ public class LocationCoordinatesEditor {
 
 					File file = chooser.getSelectedFile();
 					locationsFilename = file.getAbsolutePath();
-					System.out.println("Opened " + locationsFilename + "\n");
+					
+					frame.setStatus("Opened " + locationsFilename + "\n");
 
 					File tmpDir = chooser.getCurrentDirectory();
 
@@ -162,7 +163,7 @@ public class LocationCoordinatesEditor {
 					}// END: null check
 
 				} else {
-					System.out.println("Could not Open! \n");
+					frame.setStatus("Could not Open! \n");
 				}
 
 			} catch (Exception e) {
@@ -187,10 +188,11 @@ public class LocationCoordinatesEditor {
 					String filename = file.getAbsolutePath();
 
 					JTableToTDV(filename, tableModel);
-					System.out.println("Saved " + filename + "\n");
+					
+					frame.setStatus("Saved " + filename + "\n");
 
 				} else {
-					System.out.println("Could not Save! \n");
+					frame.setStatus("Could not Save! \n");
 				}
 
 			} catch (Exception e) {
@@ -207,8 +209,9 @@ public class LocationCoordinatesEditor {
 
 			returnValue = tableModel;
 
-			System.out.println("Loaded " + returnValue.getRowCount()
+			frame.setStatus("Loaded " + returnValue.getRowCount()
 					+ " discrete locations:");
+			
 			returnValue.printTable();
 
 		}// END: actionPerformed
@@ -223,6 +226,7 @@ public class LocationCoordinatesEditor {
 				table.setColumnSelectionInterval(column + 1, column + 1);
 				table.setRowSelectionInterval(row, row);
 			}
+			
 		}
 	}// END: InteractiveTableModelListener
 
@@ -292,11 +296,11 @@ public class LocationCoordinatesEditor {
 			}// END: row loop
 
 			printWriter.close();
-		}
 
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			Utils.handleException(e, e.getMessage());
+		}// END: try-catch block
+		
 	}// END: JTableToTDV
 
 	private Object[] getUniqueTreeStates(RootedTree tree, String stateAttName) {
@@ -309,9 +313,7 @@ public class LocationCoordinatesEditor {
 						stateAttName).split("\\+");
 
 				for (int i = 0; i < states.length; i++) {
-
 					uniqueTreeStates.add(states[i]);
-
 				}
 
 			}// END: isRoot
@@ -348,15 +350,9 @@ public class LocationCoordinatesEditor {
 			window.setResizable(true);
 			window.setVisible(true);
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-
-		} catch (ImportException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			Utils.handleException(e, e.getMessage());
+		}// END: try-catch block
 
 	}// END: launch
 
@@ -384,4 +380,4 @@ public class LocationCoordinatesEditor {
 		return COLUMN_NAMES;
 	}// END: getColumnNames
 
-}// /END: class
+}// END: class

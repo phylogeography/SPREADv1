@@ -20,8 +20,6 @@ public class ContinuousSanityCheck {
 
 		NexusImporter importer = new NexusImporter(new FileReader(treeFilename));
 		RootedTree tree = (RootedTree) importer.importNextTree();
-//		String longitudeName = (coordinatesName + 2);
-//		String latitudeName = (coordinatesName + 1);
 
 		Double longitude = null;
 		Double latitude = null;

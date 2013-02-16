@@ -39,6 +39,9 @@ import colorpicker.swing.ColorPicker;
 @SuppressWarnings("serial")
 public class RateIndicatorBFTab extends JPanel {
 
+	// Shared Frame
+	private SpreadApp frame;
+	
 	// Sizing constants
 	private final int leftPanelWidth = 260;
 	private final int leftPanelHeight = 1000;
@@ -95,8 +98,10 @@ public class RateIndicatorBFTab extends JPanel {
 	// Progress bar
 	private JProgressBar progressBar;
 
-	public RateIndicatorBFTab() {
+	public RateIndicatorBFTab(SpreadApp spreadApp) {
 
+		this.frame = spreadApp;
+		
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		backgroundColor = new Color(231, 237, 246);
@@ -459,7 +464,7 @@ public class RateIndicatorBFTab extends JPanel {
 
 			try {
 
-				LocationCoordinatesEditor locationCoordinatesEditor = new LocationCoordinatesEditor();
+				LocationCoordinatesEditor locationCoordinatesEditor = new LocationCoordinatesEditor(frame);
 				locationCoordinatesEditor.launch(workingDirectory);
 
 				table = locationCoordinatesEditor.getTable();

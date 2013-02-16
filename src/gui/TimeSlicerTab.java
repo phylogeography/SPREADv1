@@ -37,6 +37,9 @@ import colorpicker.swing.ColorPicker;
 @SuppressWarnings("serial")
 public class TimeSlicerTab extends JPanel {
 
+	//Shared Frame
+	private SpreadApp frame;
+	
 	// Sizing constants
 	private final int leftPanelWidth = 260;
 	private final int leftPanelHeight = 1000;
@@ -117,8 +120,10 @@ public class TimeSlicerTab extends JPanel {
 	// Progress bar
 	private JProgressBar progressBar;
 
-	public TimeSlicerTab() {
+	public TimeSlicerTab(SpreadApp spreadApp) {
 
+		this.frame = spreadApp;
+		
 		// Setup miscallenous
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		GridBagConstraints c = new GridBagConstraints();
@@ -188,9 +193,7 @@ public class TimeSlicerTab extends JPanel {
 		progressBar = new JProgressBar();
 		trueNoiseParser = new JCheckBox();
 
-		/**
-		 * left tools pane
-		 * */
+		// Left tools pane
 		leftPanel = new JPanel();
 		leftPanel.setBackground(backgroundColor);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -559,7 +562,8 @@ public class TimeSlicerTab extends JPanel {
 				numberOfIntervalsParser.setEnabled(true);
 
 				analysisType = TimeSlicerToKML.FIRST_ANALYSIS;
-				System.out.println(firstAnalysis + " analysis selected \n");
+				
+				frame.setStatus(firstAnalysis + " analysis selected \n");
 
 			} else if (ev.getActionCommand() == secondAnalysis) {
 
@@ -572,10 +576,11 @@ public class TimeSlicerTab extends JPanel {
 				numberOfIntervalsParser.setEnabled(false);
 
 				analysisType = TimeSlicerToKML.SECOND_ANALYSIS;
-				System.out.println(secondAnalysis + " analysis selected \n");
+				
+				frame.setStatus(secondAnalysis + " analysis selected \n");
 
 			} else {
-				System.err.println("Unimplemented analysis type selected");
+				throw new RuntimeException("Unimplemented analysis type selected");
 			}
 
 		}// END: actionPerformed
@@ -595,7 +600,8 @@ public class TimeSlicerTab extends JPanel {
 				
 				File file = chooser.getSelectedFile();
 				sliceHeightsFilename = file.getAbsolutePath();
-				System.out.println("Opened " + sliceHeightsFilename + "\n");
+				
+				frame.setStatus("Opened " + sliceHeightsFilename + "\n");
 
 				File tmpDir = chooser.getCurrentDirectory();
 
@@ -633,7 +639,7 @@ public class TimeSlicerTab extends JPanel {
 					
 					File file = chooser.getSelectedFile();
 					treeFilename = file.getAbsolutePath();
-					System.out.println("Opened " + treeFilename + "\n");
+					frame.setStatus("Opened " + treeFilename + "\n");
 
 					File tmpDir = chooser.getCurrentDirectory();
 
@@ -671,7 +677,8 @@ public class TimeSlicerTab extends JPanel {
 
 					File file = chooser.getSelectedFile();
 					treesFilename = file.getAbsolutePath();
-					System.out.println("Opened " + treesFilename + "\n");
+					
+					frame.setStatus("Opened " + treesFilename + "\n");
 
 					File tmpDir = chooser.getCurrentDirectory();
 
@@ -680,7 +687,7 @@ public class TimeSlicerTab extends JPanel {
 					}
 
 				} else {
-					System.out.println("Could not Open! \n");
+					frame.setStatus("Could not Open! \n");
 				}
 
 			} catch (Exception e) {
@@ -930,7 +937,7 @@ public class TimeSlicerTab extends JPanel {
 						generateKml.setEnabled(true);
 						progressBar.setIndeterminate(false);
 
-						System.out.println("Generated "
+						frame.setStatus("Generated "
 								+ workingDirectory.toString().concat("/")
 										.concat(kmlPathParser.getText()));
 
