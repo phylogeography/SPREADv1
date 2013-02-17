@@ -2,7 +2,7 @@
 .:: SPREAD ::.
 ===================
 SPREAD: *Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
-Version: 1.0.5rc, 2012
+Version: 1.0.6rc, 2013
 Authors: Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
 Homepage: www.phylogeography.org
 License: LGPL
@@ -41,7 +41,6 @@ h1. COMPILING
 Depends on the following libraries:
 
 * jebl.jar
-* org.boehn.kmlframework_20090320.jar
 * core.jar
 * colt.jar
 * quaqua.jar (libquaqua64.jnilib, libquaqua.jnilib)
