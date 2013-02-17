@@ -674,9 +674,7 @@ public class ContinuousModelTab extends JPanel {
 							}// END: check
 
 						} catch (final Exception e) {
-
 							Utils.handleException(e, null);
-
 						}// END: try-catch
 
 						return null;

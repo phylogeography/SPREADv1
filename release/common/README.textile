@@ -1,11 +1,11 @@
 ===================
-SPREAD v0.9999
+.:: SPREAD ::.
 ===================
-:SPREAD: *Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
-:Version: 1.0.5rc, 2012
-:Authors: Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
-:Homepage: www.phylogeography.org
-:License: LGPL
+SPREAD: *Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
+Version: 1.0.5rc, 2012
+Authors: Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
+Homepage: www.phylogeography.org
+License: LGPL
 
 h1. LICENSE
 
@@ -58,12 +58,13 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basi
 
 h1. TODO
 
-* Eliminate text fields, fill combo boxes with parsed trait names instead
+* Annotate the terminals in the tree with corresponding taxon names
+* Editable combo box for location attribute in Time Slicer
+* Move all the parsing code to reader classes for trees -> avoid code duplication  
 * Less dependencies:
  - add kmlframework to sources (if licenses compatible) 
 * Add command line interface for kml templates 
 * Fix large scaling factor issues
-* Improve custom slice heights
 
 
 

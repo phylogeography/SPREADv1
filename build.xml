@@ -35,21 +35,19 @@
 <!--<attribute name="Classpath" value="." />-->
 </manifest>
         <fileset dir="classes"/>
+        <zipgroupfileset dir="lib" includes="colt.jar"/>
         <zipgroupfileset dir="lib" includes="core.jar"/>
         <zipgroupfileset dir="lib" includes="jebl.jar"/>
-        <zipgroupfileset dir="lib" includes="colt.jar"/>
-        <zipgroupfileset dir="lib" includes="org.boehn.kmlframework_20090320.jar"/>
-<!--        <zipgroupfileset dir="lib" includes="ColorPicker.jar"/>-->
-        <!--
-        <zipgroupfileset dir="lib" includes="quaqua.jar"/>
-        -->
+<!--        <zipgroupfileset dir="lib" includes="org.boehn.kmlframework_20090320.jar"/> -->
+<!--        <zipgroupfileset dir="lib" includes="ColorPicker.jar"/>                     -->
+<!--        <zipgroupfileset dir="lib" includes="quaqua.jar"/>                          -->
     </jar>
 </target>
 
 <target name="compile">
     <mkdir dir="classes"/>
     <mkdir dir="classes/icons"/>
-    <mkdir dir="classes/colorpicker/swing/resources"/>
+    <mkdir dir="classes/colorpicker/swing/resources"/> 
     <javac
         source="1.6" target="1.6"   
         srcdir="src"

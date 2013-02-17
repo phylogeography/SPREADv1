@@ -8,22 +8,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-import org.boehn.kmlframework.kml.AltitudeModeEnum;
-import org.boehn.kmlframework.kml.Document;
-import org.boehn.kmlframework.kml.Feature;
-import org.boehn.kmlframework.kml.Folder;
-import org.boehn.kmlframework.kml.Kml;
-import org.boehn.kmlframework.kml.KmlException;
-import org.boehn.kmlframework.kml.LineString;
-import org.boehn.kmlframework.kml.LineStyle;
-import org.boehn.kmlframework.kml.LinearRing;
-import org.boehn.kmlframework.kml.Placemark;
-import org.boehn.kmlframework.kml.Point;
-import org.boehn.kmlframework.kml.PolyStyle;
-import org.boehn.kmlframework.kml.StyleSelector;
-import org.boehn.kmlframework.kml.TimePrimitive;
-import org.boehn.kmlframework.kml.TimeSpan;
-
+import kmlframework.kml.AltitudeModeEnum;
+import kmlframework.kml.Document;
+import kmlframework.kml.Feature;
+import kmlframework.kml.Folder;
+import kmlframework.kml.Kml;
+import kmlframework.kml.KmlException;
+import kmlframework.kml.LineString;
+import kmlframework.kml.LineStyle;
+import kmlframework.kml.LinearRing;
+import kmlframework.kml.Placemark;
+import kmlframework.kml.Point;
+import kmlframework.kml.PolyStyle;
+import kmlframework.kml.StyleSelector;
+import kmlframework.kml.TimePrimitive;
+import kmlframework.kml.TimeSpan;
 import structure.Container;
 import structure.Coordinates;
 import structure.Item;
@@ -139,7 +138,7 @@ public class KMLGenerator implements Generator {
 		linearRing.setCoordinates(Utils.convertToPoint(polygon
 				.getPolyCoordinates()));
 
-		org.boehn.kmlframework.kml.Polygon localPolygon = new org.boehn.kmlframework.kml.Polygon();
+		kmlframework.kml.Polygon localPolygon = new kmlframework.kml.Polygon();
 		localPolygon.setTessellate(true);
 		localPolygon.setOuterBoundary(linearRing);
 		placemark.setGeometry(localPolygon);

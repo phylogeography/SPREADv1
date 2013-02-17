@@ -6,7 +6,7 @@ import java.awt.Color;
  * @author Andrew Rambaut
  * @version $Id$
  */
-public class Style extends org.boehn.kmlframework.kml.Style {
+public class Style extends kmlframework.kml.Style {
 
 	public Style(final Color strokeColor, final double strokeWidth) {
 		this(strokeColor, strokeWidth, null);

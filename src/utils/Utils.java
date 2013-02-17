@@ -22,7 +22,7 @@ import jebl.evolution.trees.RootedTree;
 
 import math.MultivariateNormalDistribution;
 
-import org.boehn.kmlframework.kml.Point;
+import kmlframework.kml.Point;
 
 import app.SpreadApp;
 

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/coordinates
+END
+TimeAndPlace.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/coordinates/TimeAndPlace.java
+END
+Coordinate.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/coordinates/Coordinate.java
+END
+EarthCoordinate.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/coordinates/EarthCoordinate.java
+END
+CartesianCoordinate.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/coordinates/CartesianCoordinate.java
+END

@@ -1,0 +1,407 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/24/trunk/src/org/boehn/kmlframework/kml
+END
+Model.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Model.java
+END
+Delete.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Delete.java
+END
+PolyStyle.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/PolyStyle.java
+END
+BalloonStyle.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/22/trunk/src/org/boehn/kmlframework/kml/BalloonStyle.java
+END
+ColorModeEnum.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/ColorModeEnum.java
+END
+LineString.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/LineString.java
+END
+ScreenOverlay.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/ScreenOverlay.java
+END
+RefreshModeEnum.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/RefreshModeEnum.java
+END
+Point.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Point.java
+END
+LookAt.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/LookAt.java
+END
+PhotoOverlay.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/PhotoOverlay.java
+END
+UpdateElement.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/UpdateElement.java
+END
+Link.java
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/24/trunk/src/org/boehn/kmlframework/kml/Link.java
+END
+SimpleField.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/SimpleField.java
+END
+GroundOverlay.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/GroundOverlay.java
+END
+Style.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/22/trunk/src/org/boehn/kmlframework/kml/Style.java
+END
+UnitEnum.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/UnitEnum.java
+END
+AltitudeModeEnum.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/AltitudeModeEnum.java
+END
+MultiGeometry.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/MultiGeometry.java
+END
+NetworkLink.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/NetworkLink.java
+END
+LineStyle.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/LineStyle.java
+END
+KmlObject.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/23/trunk/src/org/boehn/kmlframework/kml/KmlObject.java
+END
+TimeSpan.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/TimeSpan.java
+END
+Update.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Update.java
+END
+ShapeEnum.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/ShapeEnum.java
+END
+Change.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/Change.java
+END
+StyleStateEnum.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/StyleStateEnum.java
+END
+Polygon.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Polygon.java
+END
+Camera.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Camera.java
+END
+Alias.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Alias.java
+END
+LinearRing.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/LinearRing.java
+END
+Pair.java
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Pair.java
+END
+AbstractView.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/AbstractView.java
+END
+DisplayModeEnum.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/DisplayModeEnum.java
+END
+ColorStyle.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/ColorStyle.java
+END
+Placemark.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Placemark.java
+END
+Schema.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Schema.java
+END
+NetworkLinkControl.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/NetworkLinkControl.java
+END
+Data.java
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Data.java
+END
+Folder.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Folder.java
+END
+ListItemTypeEnum.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/ListItemTypeEnum.java
+END
+Deletable.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Deletable.java
+END
+GridOriginEnum.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/GridOriginEnum.java
+END
+Container.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Container.java
+END
+ViewRefreshModeEnum.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/ViewRefreshModeEnum.java
+END
+ViewFormat.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/ViewFormat.java
+END
+TimePrimitive.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/TimePrimitive.java
+END
+ExtendedData.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/ExtendedData.java
+END
+Feature.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Feature.java
+END
+ListStyle.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/ListStyle.java
+END
+StyleMap.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/StyleMap.java
+END
+LabelStyle.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/LabelStyle.java
+END
+StyleSelector.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/StyleSelector.java
+END
+KmlException.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/KmlException.java
+END
+Create.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/Create.java
+END
+TimeStamp.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/TimeStamp.java
+END
+Location.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/19/trunk/src/org/boehn/kmlframework/kml/Location.java
+END
+IconStyle.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/IconStyle.java
+END
+Document.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Document.java
+END
+Overlay.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Overlay.java
+END
+SimpleData.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/SimpleData.java
+END
+Region.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/21/trunk/src/org/boehn/kmlframework/kml/Region.java
+END
+Kml.java
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Kml.java
+END
+SimpleFieldTypeEnum.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/SimpleFieldTypeEnum.java
+END
+Icon.java
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/18/trunk/src/org/boehn/kmlframework/kml/Icon.java
+END
+Geometry.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/11/trunk/src/org/boehn/kmlframework/kml/Geometry.java
+END
+Orientation.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/19/trunk/src/org/boehn/kmlframework/kml/Orientation.java
+END

@@ -1,4 +1,14 @@
-SPREAD version 1.0.5 release candidate
+SPREAD version 1.0.6 release candidate
+------------------------------------------------
+* Combo box for choosing state attribute name in Discrete tree tab.
+* Combo box for choosing indicator attribute name in Discrete Bayes Factor test tab
+* Combo box for choosing state attribute name in Continuous tree tab.
+* Log files parser compatible with BEAST 1 and BEAST 2.
+* Improved handling of exceptions in Open and Save dialogs
+* Status bar for common messages
+
+
+November 18, 2012: SPREAD version 1.0.5 released
 ------------------------------------------------
 
 * Improved custom time slicer
@@ -26,7 +36,4 @@ February 4, 2012: SPREAD version 1.0.3 released
 * The weights used in Time Slicer template are now printed to the Terminal window.
 * The tool panes size can be adjusted for viewing the inner Spread maps on smaller screens. 
 * Made several other minor changes.
-
-
-
 
