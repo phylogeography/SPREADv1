@@ -37,7 +37,7 @@ import colorpicker.swing.ColorPicker;
 @SuppressWarnings("serial")
 public class TimeSlicerTab extends JPanel {
 
-	//Shared Frame
+	// Shared frame
 	private SpreadApp frame;
 	
 	// Sizing constants
@@ -223,7 +223,7 @@ public class TimeSlicerTab extends JPanel {
 				BoxLayout.Y_AXIS));
 
 		tmpPanel = new JPanel();
-		tmpPanel.setLayout(new GridLayout(3, 1));
+		tmpPanel.setLayout(new GridLayout(2, 1));
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Choose analysis type:"));
@@ -546,7 +546,7 @@ public class TimeSlicerTab extends JPanel {
 
 //		}
 
-	}// END: TimeSlicerTab
+	}// END: Constructor
 
 	class ChooseAnalysisTypeListener implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
@@ -563,7 +563,7 @@ public class TimeSlicerTab extends JPanel {
 
 				analysisType = TimeSlicerToKML.FIRST_ANALYSIS;
 				
-				frame.setStatus(firstAnalysis + " analysis selected \n");
+				frame.setStatus(firstAnalysis + " analysis selected");
 
 			} else if (ev.getActionCommand() == secondAnalysis) {
 
@@ -577,10 +577,10 @@ public class TimeSlicerTab extends JPanel {
 
 				analysisType = TimeSlicerToKML.SECOND_ANALYSIS;
 				
-				frame.setStatus(secondAnalysis + " analysis selected \n");
+				frame.setStatus(secondAnalysis + " analysis selected");
 
 			} else {
-				throw new RuntimeException("Unimplemented analysis type selected");
+				throw new RuntimeException("Unimplemented analysis type selected!");
 			}
 
 		}// END: actionPerformed
@@ -601,7 +601,7 @@ public class TimeSlicerTab extends JPanel {
 				File file = chooser.getSelectedFile();
 				sliceHeightsFilename = file.getAbsolutePath();
 				
-				frame.setStatus("Opened " + sliceHeightsFilename + "\n");
+				frame.setStatus("Opened " + sliceHeightsFilename);
 
 				File tmpDir = chooser.getCurrentDirectory();
 
@@ -610,7 +610,7 @@ public class TimeSlicerTab extends JPanel {
 				}
 
 				} else {
-					System.out.println("Could not Open! \n");
+					System.out.println("Could not Open!");
 				}
 				
 			} catch (Exception e) {
