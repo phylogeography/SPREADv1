@@ -289,7 +289,7 @@ public class SpreadApp {
 		}
 	}
 
-	public void launchFrame() {
+	public JFrame launchFrame() {
 
 		// Display Frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -298,8 +298,11 @@ public class SpreadApp {
 		frame.setMinimumSize(new Dimension(260, 100));
 		frame.setResizable(true);
 		frame.setVisible(true);
+		return frame;
 	}
 
+	public static SpreadApp gui;
+	
 	public static void main(String args[]) {
 
 		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
@@ -309,7 +312,6 @@ public class SpreadApp {
 
 			public void run() {
 
-				SpreadApp gui;
 
 				try {
 
