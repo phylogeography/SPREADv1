@@ -3,6 +3,8 @@ package main;
 import java.io.IOException;
 import java.text.ParseException;
 
+import app.SpreadApp;
+
 import jebl.evolution.io.ImportException;
 import templates.TimeSlicerToKML;
 
@@ -10,7 +12,7 @@ public class TimeSlicerToKMLTest {
 
 	private static TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
 
-	private static boolean FIRST_ANALYSIS = false;
+	private static boolean FIRST_ANALYSIS = true;
 	
 	public static void main(String[] args) {
 
@@ -20,7 +22,7 @@ public class TimeSlicerToKMLTest {
 				
 				timeSlicerToKML.setAnalysisType(TimeSlicerToKML.FIRST_ANALYSIS);
 				
-				timeSlicerToKML.setTreePath("/home/filip/Dropbox/SPREAD_dev/CustomTimeSlicing/Cent_ITS_broad.tree");
+				timeSlicerToKML.setTreePath(getResourcePath("/data/WNV_relaxed_geo_gamma_MCC.tre"));
 				
 				timeSlicerToKML.setNumberOfIntervals(10);
 				
@@ -28,11 +30,11 @@ public class TimeSlicerToKMLTest {
 				
 				timeSlicerToKML.setAnalysisType(TimeSlicerToKML.SECOND_ANALYSIS);
 				
-				timeSlicerToKML.setCustomSliceHeightsPath("/home/filip/Dropbox/SPREAD_dev/CustomTimeSlicing/treeslice_small.txt");
+				timeSlicerToKML.setCustomSliceHeightsPath(getResourcePath("data/treeslice_WNV.txt"));
 				
 			}
 			
-			timeSlicerToKML.setTreesPath("/home/filip/Dropbox/SPREAD_dev/CustomTimeSlicing/Cent_ITS_small.trees");
+			timeSlicerToKML.setTreesPath(getResourcePath("/data/WNV_relaxed_geo_gamma.trees"));
 
 			timeSlicerToKML.setBurnIn(0);
 			
@@ -111,4 +113,9 @@ public class TimeSlicerToKMLTest {
 
 	}// END: main
 
+	private static String getResourcePath(String resource) {
+		String path = SpreadApp.class.getResource(resource).getPath();
+		return path;
+	}
+	
 }// END: class

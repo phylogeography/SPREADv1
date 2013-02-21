@@ -1,5 +1,6 @@
 package main;
 
+import app.SpreadApp;
 import gui.InteractiveTableModel;
 import gui.LocationCoordinatesEditor;
 import gui.TableRecord;
@@ -8,7 +9,7 @@ import templates.RateIndicatorBFToKML;
 
 public class RateIndicatorBFToKMLTest {
 
-	static RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
+	private static RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 	private static InteractiveTableModel table;
 	private static locationsReader data;
 
@@ -22,7 +23,7 @@ public class RateIndicatorBFToKMLTest {
 			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
 			data = new locationsReader(
-					"/home/filip/Phyleography/data/H5N1/locationCoordinates_H5N1");
+					getResourcePath("data/locationCoordinates_H5N1"));
 
 			String indicatorAttributeName = "indicator";
 			
@@ -87,4 +88,9 @@ public class RateIndicatorBFToKMLTest {
 
 	}// END: RateIndicatorBFToKMLTest
 
+	private static String getResourcePath(String resource) {
+		String path = SpreadApp.class.getResource(resource).getPath();
+		return path;
+	}
+	
 }// END: class

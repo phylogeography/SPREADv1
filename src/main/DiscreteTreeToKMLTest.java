@@ -1,5 +1,6 @@
 package main;
 
+import app.SpreadApp;
 import gui.InteractiveTableModel;
 import gui.LocationCoordinatesEditor;
 import gui.TableRecord;
@@ -14,15 +15,12 @@ public class DiscreteTreeToKMLTest {
 
 	public static void main(String[] args) {
 
-		System.out
-				.println("Command line mode is experimental. Expect the unexpected.");
-
 		try {
 
 			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
 			data = new locationsReader(
-					"/home/filip/HP_locations");
+					getResourcePath("data/locationCoordinates_H5N1"));
 
 			for (int i = 0; i < data.nrow; i++) {
 
@@ -34,7 +32,7 @@ public class DiscreteTreeToKMLTest {
 			}// END: row loop
 
 			discreteTreeToKML
-					.setTreePath("/home/filip/HP_mtDNA.tree");
+					.setTreePath(getResourcePath("data/H5N1_HA_discrete_MCC.tre"));
 
 			discreteTreeToKML.setTimescaler(1);
 			
@@ -100,4 +98,9 @@ public class DiscreteTreeToKMLTest {
 
 	}// END: DiscreteTreeToKMLTest
 
+	private static String getResourcePath(String resource) {
+		String path = SpreadApp.class.getResource(resource).getPath();
+		return path;
+	}
+	
 }// END: class

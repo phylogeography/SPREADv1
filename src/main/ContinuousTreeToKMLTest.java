@@ -1,5 +1,6 @@
 package main;
 
+import app.SpreadApp;
 import templates.ContinuousTreeToKML;
 
 public class ContinuousTreeToKMLTest {
@@ -13,15 +14,14 @@ public class ContinuousTreeToKMLTest {
 			continuousTreeToKML.setMrsdString("2011-07-28 AD");
 
 			continuousTreeToKML
-					.setTreePath("/home/filip/Phyleography/data/WNV/WNV_relaxed_geo_gamma_MCC.tre");
-
+					.setTreePath(getResourcePath("data/WNV_relaxed_geo_gamma_MCC.tre"));
+			
 			continuousTreeToKML.setHPDString("80%HPD");
 
-			//TODO
-//			continuousTreeToKML.setCoordinatesName("location2");
-
-//			continuousTreeToKML.setCoordinatesName("location1");
+			continuousTreeToKML.setLatitudeName("location1");
 			
+			continuousTreeToKML.setLongitudeName("location2");
+
 			continuousTreeToKML.setMaxAltitudeMapping(50000);
 
 			continuousTreeToKML.setMinPolygonRedMapping(100);
@@ -75,4 +75,9 @@ public class ContinuousTreeToKMLTest {
 
 	}// END: ContinuousTreeToKMLTest
 
+	private static String getResourcePath(String resource) {
+		String path = SpreadApp.class.getResource(resource).getPath();
+		return path;
+	}
+	
 }// END: class
