@@ -1,14 +1,16 @@
-package main;
+package test.templates;
 
+import org.junit.Test;
+
+import junit.framework.TestCase;
 import templates.ContinuousTreeToKML;
 
-public class ContinuousTreeToKMLTest {
+public class ContinuousTreeToKMLTest extends TestCase {
 
-	static ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
 
-	public static void main(String[] args) {
-
-		try {
+	@Test
+	public void testContinuousTreeToKML() throws Exception {
+		ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
 
 			continuousTreeToKML.setMrsdString("2011-07-28 AD");
 
@@ -62,16 +64,13 @@ public class ContinuousTreeToKMLTest {
 
 			continuousTreeToKML.setNumberOfIntervals(100);
 
-			continuousTreeToKML.setKmlWriterPath("/home/filip/output.kml");
+			//continuousTreeToKML.setKmlWriterPath("/home/filip/output.kml");
+			continuousTreeToKML.setKmlWriterPath("output.kml");
 
 			continuousTreeToKML.GenerateKML();
 			
 			System.out.println("Finished in: " + continuousTreeToKML.time
 					+ " msec \n");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 	}// END: ContinuousTreeToKMLTest
 

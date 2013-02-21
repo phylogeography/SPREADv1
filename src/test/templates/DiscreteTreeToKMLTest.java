@@ -1,23 +1,26 @@
-package main;
+package test.templates;
 
+import org.junit.Test;
+
+import junit.framework.TestCase;
 import gui.InteractiveTableModel;
 import gui.LocationCoordinatesEditor;
 import gui.TableRecord;
 import readers.locationsReader;
 import templates.DiscreteTreeToKML;
 
-public class DiscreteTreeToKMLTest {
+public class DiscreteTreeToKMLTest extends TestCase {
 
 	private static DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
 	private static InteractiveTableModel table;
 	private static locationsReader data;
 
-	public static void main(String[] args) {
+	@Test
+	public void testDiscreteTreeToKML() throws Exception {
 
 		System.out
 				.println("Command line mode is experimental. Expect the unexpected.");
 
-		try {
 
 			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
@@ -84,7 +87,7 @@ public class DiscreteTreeToKMLTest {
 
 			discreteTreeToKML.setBranchWidth(4);
 
-			discreteTreeToKML.setKmlWriterPath("/home/filip/output.kml");
+			discreteTreeToKML.setKmlWriterPath("output.kml");
 
 			discreteTreeToKML.GenerateKML();
 
@@ -93,10 +96,6 @@ public class DiscreteTreeToKMLTest {
 
 			// force quit
 			System.exit(0);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 	}// END: DiscreteTreeToKMLTest
 

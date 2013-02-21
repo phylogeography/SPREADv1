@@ -1,16 +1,19 @@
-package main;
+package test.templates;
 
+import org.junit.Test;
+
+import junit.framework.TestCase;
 import templates.SpatialStatsToTerminal;
 
-public class SpatialStatsToTerminalTest {
+public class SpatialStatsToTerminalTest extends TestCase {
 	
 	private static boolean FIRST_ANALYSIS = false;
 	
 	private static SpatialStatsToTerminal spatialStatsToTerminal = new SpatialStatsToTerminal();
 	
-	public static void main(String[] args) {
+	@Test
+	public static void testSpatialStatsToTerminal() throws Exception {
 	
-	try {
 
 		if(FIRST_ANALYSIS) {
 			
@@ -41,10 +44,6 @@ public class SpatialStatsToTerminalTest {
 		spatialStatsToTerminal.setUseTrueNoise(false);
 		
 		spatialStatsToTerminal.calculate();
-
-	} catch (Exception e) {
-		e.printStackTrace();
-	}//END: try-catch block
 	
 	}//END: main
 	

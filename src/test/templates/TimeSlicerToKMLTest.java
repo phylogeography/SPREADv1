@@ -1,20 +1,19 @@
-package main;
+package test.templates;
 
-import java.io.IOException;
-import java.text.ParseException;
+import org.junit.Test;
 
-import jebl.evolution.io.ImportException;
+import junit.framework.TestCase;
 import templates.TimeSlicerToKML;
 
-public class TimeSlicerToKMLTest {
+public class TimeSlicerToKMLTest extends TestCase {
 
 	private static TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
 
 	private static boolean FIRST_ANALYSIS = false;
 	
-	public static void main(String[] args) {
+	@Test
+	public void testTimeSlicerToKML() throws Exception {
 
-		try {
 
 			if(FIRST_ANALYSIS) {
 				
@@ -94,20 +93,6 @@ public class TimeSlicerToKMLTest {
 
 			System.out.println("Finished in: " + timeSlicerToKML.time
 					+ " msec \n");
-
-		} catch (OutOfMemoryError e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-		} catch (ImportException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 	}// END: main
 

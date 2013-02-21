@@ -1,23 +1,25 @@
-package main;
+package test.templates;
 
+import org.junit.Test;
+
+import junit.framework.TestCase;
 import gui.InteractiveTableModel;
 import gui.LocationCoordinatesEditor;
 import gui.TableRecord;
 import readers.locationsReader;
 import templates.RateIndicatorBFToKML;
 
-public class RateIndicatorBFToKMLTest {
+public class RateIndicatorBFToKMLTest extends TestCase {
 
 	static RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 	private static InteractiveTableModel table;
 	private static locationsReader data;
 
-	public static void main(String[] args) {
+	@Test
+	public void testRateIndicatorBFToKML() throws Exception {
 
 		System.out
 				.println("Command line mode is experimental. Expect the unexpected.");
-
-		try {
 
 			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
@@ -53,7 +55,7 @@ public class RateIndicatorBFToKMLTest {
 			rateIndicatorBFToKML.setDefaultPoissonPriorOffset();
 			
 			rateIndicatorBFToKML
-					.setKmlWriterPath("/home/filip/Desktop/output.kml");
+					.setKmlWriterPath("output.kml");
 
 			rateIndicatorBFToKML.setMinBranchRedMapping(255);
 
@@ -81,9 +83,6 @@ public class RateIndicatorBFToKMLTest {
 			// force quit
 			System.exit(0);
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 	}// END: RateIndicatorBFToKMLTest
 
