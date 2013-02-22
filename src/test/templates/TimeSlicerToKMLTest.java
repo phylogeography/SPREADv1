@@ -36,7 +36,7 @@ public class TimeSlicerToKMLTest extends TestCase {
 
 			timeSlicerToKML.setBurnIn(0);
 			
-			timeSlicerToKML.setLocationAttributeName("coords");
+			timeSlicerToKML.setLocationAttributeName("location");
 			
 			timeSlicerToKML.setMrsdString("2012-10-24 AD");
 			
