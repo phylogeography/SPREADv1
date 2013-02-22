@@ -14,7 +14,7 @@ public class ContinuousTreeToKMLTest {
 			continuousTreeToKML.setMrsdString("2011-07-28 AD");
 
 			continuousTreeToKML
-					.setTreePath(getResourcePath("data/WNV_relaxed_geo_gamma_MCC.tre"));
+					.setTreePath(getResourcePath("/data/WNV_relaxed_geo_gamma_MCC.tre"));
 			
 			continuousTreeToKML.setHPDString("80%HPD");
 
