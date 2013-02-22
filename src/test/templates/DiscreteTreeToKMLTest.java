@@ -1,26 +1,32 @@
-package main;
+package test.templates;
 
-import app.SpreadApp;
+import org.junit.Test;
+
+import junit.framework.TestCase;
 import gui.InteractiveTableModel;
 import gui.LocationCoordinatesEditor;
 import gui.TableRecord;
 import readers.locationsReader;
 import templates.DiscreteTreeToKML;
 
-public class DiscreteTreeToKMLTest {
+public class DiscreteTreeToKMLTest extends TestCase {
 
 	private static DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
 	private static InteractiveTableModel table;
 	private static locationsReader data;
 
-	public static void main(String[] args) {
+	@Test
+	public void testDiscreteTreeToKML() throws Exception {
 
-		try {
+		System.out
+				.println("Command line mode is experimental. Expect the unexpected.");
+
 
 			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
 			data = new locationsReader(
-					getResourcePath("data/locationCoordinates_H5N1"));
+					ContinuousTreeToKMLTest.getResourcePath("/data/locationCoordinates_H5N1"));
+					
 
 			for (int i = 0; i < data.nrow; i++) {
 
@@ -32,7 +38,7 @@ public class DiscreteTreeToKMLTest {
 			}// END: row loop
 
 			discreteTreeToKML
-					.setTreePath(getResourcePath("data/H5N1_HA_discrete_MCC.tre"));
+				.setTreePath(ContinuousTreeToKMLTest.getResourcePath("/data/H5N1_HA_discrete_MCC.tre"));
 
 			discreteTreeToKML.setTimescaler(1);
 			
@@ -82,7 +88,7 @@ public class DiscreteTreeToKMLTest {
 
 			discreteTreeToKML.setBranchWidth(4);
 
-			discreteTreeToKML.setKmlWriterPath("/home/filip/output.kml");
+			discreteTreeToKML.setKmlWriterPath("output.kml");
 
 			discreteTreeToKML.GenerateKML();
 
@@ -90,17 +96,8 @@ public class DiscreteTreeToKMLTest {
 					+ " msec \n");
 
 			// force quit
-			System.exit(0);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			//System.exit(0);
 
 	}// END: DiscreteTreeToKMLTest
-
-	private static String getResourcePath(String resource) {
-		String path = SpreadApp.class.getResource(resource).getPath();
-		return path;
-	}
 	
 }// END: class

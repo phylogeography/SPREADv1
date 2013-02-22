@@ -8,6 +8,7 @@
    <property name="buildDir" location="classes" />
    <property name="dist" location="dist" />
    <property name="lib" location="lib" />
+   <property name="report" location="${buildDir}/junitreport" />
 
 
    <target name="help">
@@ -80,6 +81,36 @@
       <delete dir="${buildDir}" />
       <delete dir="${dist}" />
    </target>
+
+	<!-- JUnit test -->
+	<target name="junit" depends="compile">
+		<mkdir dir="${report}" />
+		<junit printsummary="yes">
+			<!--showoutput='yes'-->
+			<classpath>
+				<path refid="classpath" />
+				<path location="${buildDir}" />
+			</classpath>
+
+			<formatter type="xml" />
+
+			<batchtest fork="yes" todir="${report}">
+				<fileset dir="${src}">
+					<include name="test/**/*Test.java" />
+                    <exclude name="test/templates/SpatialStatsToTerminalTest.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+		<echo message="JUnit test finished." />
+	</target>
+
+	<target name="junitreport">
+		<junitreport todir="${report}">
+			<fileset dir="${report}" includes="*.xml" />
+			<report format="frames" todir="${report}" />
+		</junitreport>
+		<echo message="JUnit test report finished." />
+	</target>
 
 </project>
 
