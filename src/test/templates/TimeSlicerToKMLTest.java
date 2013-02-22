@@ -1,28 +1,26 @@
-package main;
+package test.templates;
 
-import java.io.IOException;
-import java.text.ParseException;
+import org.junit.Test;
 
-import app.SpreadApp;
+import junit.framework.TestCase;
 
-import jebl.evolution.io.ImportException;
 import templates.TimeSlicerToKML;
 
-public class TimeSlicerToKMLTest {
+public class TimeSlicerToKMLTest extends TestCase {
 
 	private static TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
 
 	private static boolean FIRST_ANALYSIS = true;
 	
-	public static void main(String[] args) {
+	@Test
+	public void testTimeSlicerToKML() throws Exception {
 
-		try {
 
 			if(FIRST_ANALYSIS) {
 				
 				timeSlicerToKML.setAnalysisType(TimeSlicerToKML.FIRST_ANALYSIS);
 				
-				timeSlicerToKML.setTreePath(getResourcePath("/data/WNV_relaxed_geo_gamma_MCC.tre"));
+				timeSlicerToKML.setTreePath(ContinuousTreeToKMLTest.getResourcePath("/data/WNV_relaxed_geo_gamma_MCC.tre"));
 				
 				timeSlicerToKML.setNumberOfIntervals(10);
 				
@@ -30,11 +28,11 @@ public class TimeSlicerToKMLTest {
 				
 				timeSlicerToKML.setAnalysisType(TimeSlicerToKML.SECOND_ANALYSIS);
 				
-				timeSlicerToKML.setCustomSliceHeightsPath(getResourcePath("data/treeslice_WNV.txt"));
+				timeSlicerToKML.setCustomSliceHeightsPath(ContinuousTreeToKMLTest.getResourcePath("/data/treeslice_WNV.txt"));
 				
 			}
 			
-			timeSlicerToKML.setTreesPath(getResourcePath("/data/WNV_relaxed_geo_gamma.trees"));
+			timeSlicerToKML.setTreesPath(ContinuousTreeToKMLTest.getResourcePath("/data/WNV_relaxed_geo_gamma.trees"));
 
 			timeSlicerToKML.setBurnIn(0);
 			
@@ -54,7 +52,7 @@ public class TimeSlicerToKMLTest {
 
 			timeSlicerToKML.setTimescaler(1);
 
-			timeSlicerToKML.setKmlWriterPath("/home/filip/Dropbox/SPREAD_dev/output_custom.kml");
+			timeSlicerToKML.setKmlWriterPath("output_custom.kml");
 			
 			timeSlicerToKML.setMinPolygonRedMapping(0);
 
@@ -97,25 +95,7 @@ public class TimeSlicerToKMLTest {
 			System.out.println("Finished in: " + timeSlicerToKML.time
 					+ " msec \n");
 
-		} catch (OutOfMemoryError e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-		} catch (ImportException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}// END: main
 
-	private static String getResourcePath(String resource) {
-		String path = SpreadApp.class.getResource(resource).getPath();
-		return path;
-	}
 	
 }// END: class

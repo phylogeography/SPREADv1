@@ -1,29 +1,30 @@
-package main;
+package test.templates;
 
-import app.SpreadApp;
+import org.junit.Test;
+
+import junit.framework.TestCase;
 import gui.InteractiveTableModel;
 import gui.LocationCoordinatesEditor;
 import gui.TableRecord;
 import readers.locationsReader;
 import templates.RateIndicatorBFToKML;
 
-public class RateIndicatorBFToKMLTest {
+public class RateIndicatorBFToKMLTest extends TestCase {
 
 	private static RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 	private static InteractiveTableModel table;
 	private static locationsReader data;
 
-	public static void main(String[] args) {
+	@Test
+	public void testRateIndicatorBFToKML() throws Exception {
 
 		System.out
 				.println("Command line mode is experimental. Expect the unexpected.");
 
-		try {
-
 			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
 			data = new locationsReader(
-					getResourcePath("data/locationCoordinates_H5N1"));
+					ContinuousTreeToKMLTest.getResourcePath("/data/locationCoordinates_H5N1"));
 
 			String indicatorAttributeName = "indicator";
 			
@@ -40,7 +41,7 @@ public class RateIndicatorBFToKMLTest {
 
 			rateIndicatorBFToKML
 					.setLogFileParser(
-							"/home/filip/Phyleography/data/H5N1/H5N1_HA_discrete_rateMatrix.log",
+							ContinuousTreeToKMLTest.getResourcePath("/data/H5N1_HA_discrete_rateMatrix.log"),
 							0.1, indicatorAttributeName);
 
 			rateIndicatorBFToKML.setBfCutoff(3.0);
@@ -54,7 +55,7 @@ public class RateIndicatorBFToKMLTest {
 			rateIndicatorBFToKML.setDefaultPoissonPriorOffset();
 			
 			rateIndicatorBFToKML
-					.setKmlWriterPath("/home/filip/Desktop/output.kml");
+					.setKmlWriterPath("output.kml");
 
 			rateIndicatorBFToKML.setMinBranchRedMapping(255);
 
@@ -80,17 +81,10 @@ public class RateIndicatorBFToKMLTest {
 					+ " msec \n");
 			
 			// force quit
-			System.exit(0);
+			//System.exit(0);
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 	}// END: RateIndicatorBFToKMLTest
 
-	private static String getResourcePath(String resource) {
-		String path = SpreadApp.class.getResource(resource).getPath();
-		return path;
-	}
 	
 }// END: class

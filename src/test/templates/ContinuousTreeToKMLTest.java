@@ -1,15 +1,18 @@
-package main;
+package test.templates;
 
+import java.net.URL;
+
+import org.junit.Test;
 import app.SpreadApp;
 import templates.ContinuousTreeToKML;
+import junit.framework.TestCase;
 
-public class ContinuousTreeToKMLTest {
+public class ContinuousTreeToKMLTest extends TestCase {
 
-	static ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
 
-	public static void main(String[] args) {
-
-		try {
+	@Test
+	public void testContinuousTreeToKML() throws Exception {
+		ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
 
 			continuousTreeToKML.setMrsdString("2011-07-28 AD");
 
@@ -62,21 +65,25 @@ public class ContinuousTreeToKMLTest {
 
 			continuousTreeToKML.setNumberOfIntervals(100);
 
-			continuousTreeToKML.setKmlWriterPath("/home/filip/output.kml");
+			//continuousTreeToKML.setKmlWriterPath("/home/filip/output.kml");
+			continuousTreeToKML.setKmlWriterPath("output.kml");
 
 			continuousTreeToKML.GenerateKML();
 			
 			System.out.println("Finished in: " + continuousTreeToKML.time
 					+ " msec \n");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}// END: ContinuousTreeToKMLTest
 
-	private static String getResourcePath(String resource) {
-		String path = SpreadApp.class.getResource(resource).getPath();
+	public static String getResourcePath(String resource) throws Exception {
+		URL url = SpreadApp.class.getResource(resource);
+		if (url == null) {
+			url = SpreadApp.class.getResource("/src/" + resource);
+		}
+		if (url == null) {
+			throw new Exception ("Resource  " + resource + " not found");
+		}
+		String path = url.getPath();
 		return path;
 	}
 	
