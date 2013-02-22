@@ -3,13 +3,14 @@ package test.templates;
 import org.junit.Test;
 
 import junit.framework.TestCase;
+
 import templates.TimeSlicerToKML;
 
 public class TimeSlicerToKMLTest extends TestCase {
 
 	private static TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
 
-	private static boolean FIRST_ANALYSIS = false;
+	private static boolean FIRST_ANALYSIS = true;
 	
 	@Test
 	public void testTimeSlicerToKML() throws Exception {
@@ -19,7 +20,7 @@ public class TimeSlicerToKMLTest extends TestCase {
 				
 				timeSlicerToKML.setAnalysisType(TimeSlicerToKML.FIRST_ANALYSIS);
 				
-				timeSlicerToKML.setTreePath("/home/filip/Dropbox/SPREAD_dev/CustomTimeSlicing/Cent_ITS_broad.tree");
+				timeSlicerToKML.setTreePath(ContinuousTreeToKMLTest.getResourcePath("/data/WNV_relaxed_geo_gamma_MCC.tre"));
 				
 				timeSlicerToKML.setNumberOfIntervals(10);
 				
@@ -27,11 +28,11 @@ public class TimeSlicerToKMLTest extends TestCase {
 				
 				timeSlicerToKML.setAnalysisType(TimeSlicerToKML.SECOND_ANALYSIS);
 				
-				timeSlicerToKML.setCustomSliceHeightsPath("/home/filip/Dropbox/SPREAD_dev/CustomTimeSlicing/treeslice_small.txt");
+				timeSlicerToKML.setCustomSliceHeightsPath(ContinuousTreeToKMLTest.getResourcePath("/data/treeslice_WNV.txt"));
 				
 			}
 			
-			timeSlicerToKML.setTreesPath("/home/filip/Dropbox/SPREAD_dev/CustomTimeSlicing/Cent_ITS_small.trees");
+			timeSlicerToKML.setTreesPath(ContinuousTreeToKMLTest.getResourcePath("/data/WNV_relaxed_geo_gamma.trees"));
 
 			timeSlicerToKML.setBurnIn(0);
 			
@@ -51,7 +52,7 @@ public class TimeSlicerToKMLTest extends TestCase {
 
 			timeSlicerToKML.setTimescaler(1);
 
-			timeSlicerToKML.setKmlWriterPath("/home/filip/Dropbox/SPREAD_dev/output_custom.kml");
+			timeSlicerToKML.setKmlWriterPath("output_custom.kml");
 			
 			timeSlicerToKML.setMinPolygonRedMapping(0);
 
@@ -96,4 +97,5 @@ public class TimeSlicerToKMLTest extends TestCase {
 
 	}// END: main
 
+	
 }// END: class

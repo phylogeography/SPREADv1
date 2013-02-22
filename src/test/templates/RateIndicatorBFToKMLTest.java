@@ -11,7 +11,7 @@ import templates.RateIndicatorBFToKML;
 
 public class RateIndicatorBFToKMLTest extends TestCase {
 
-	static RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
+	private static RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 	private static InteractiveTableModel table;
 	private static locationsReader data;
 
@@ -24,7 +24,7 @@ public class RateIndicatorBFToKMLTest extends TestCase {
 			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
 			data = new locationsReader(
-					"/home/filip/Phyleography/data/H5N1/locationCoordinates_H5N1");
+					ContinuousTreeToKMLTest.getResourcePath("/data/locationCoordinates_H5N1"));
 
 			String indicatorAttributeName = "indicator";
 			
@@ -41,7 +41,7 @@ public class RateIndicatorBFToKMLTest extends TestCase {
 
 			rateIndicatorBFToKML
 					.setLogFileParser(
-							"/home/filip/Phyleography/data/H5N1/H5N1_HA_discrete_rateMatrix.log",
+							ContinuousTreeToKMLTest.getResourcePath("/data/H5N1_HA_discrete_rateMatrix.log"),
 							0.1, indicatorAttributeName);
 
 			rateIndicatorBFToKML.setBfCutoff(3.0);
@@ -81,9 +81,10 @@ public class RateIndicatorBFToKMLTest extends TestCase {
 					+ " msec \n");
 			
 			// force quit
-			System.exit(0);
+			//System.exit(0);
 			
 
 	}// END: RateIndicatorBFToKMLTest
 
+	
 }// END: class

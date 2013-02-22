@@ -25,7 +25,8 @@ public class DiscreteTreeToKMLTest extends TestCase {
 			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
 			data = new locationsReader(
-					"/home/filip/HP_locations");
+					ContinuousTreeToKMLTest.getResourcePath("/data/locationCoordinates_H5N1"));
+					
 
 			for (int i = 0; i < data.nrow; i++) {
 
@@ -37,7 +38,7 @@ public class DiscreteTreeToKMLTest extends TestCase {
 			}// END: row loop
 
 			discreteTreeToKML
-					.setTreePath("/home/filip/HP_mtDNA.tree");
+				.setTreePath(ContinuousTreeToKMLTest.getResourcePath("/data/H5N1_HA_discrete_MCC.tre"));
 
 			discreteTreeToKML.setTimescaler(1);
 			
@@ -95,8 +96,8 @@ public class DiscreteTreeToKMLTest extends TestCase {
 					+ " msec \n");
 
 			// force quit
-			System.exit(0);
+			//System.exit(0);
 
 	}// END: DiscreteTreeToKMLTest
-
+	
 }// END: class

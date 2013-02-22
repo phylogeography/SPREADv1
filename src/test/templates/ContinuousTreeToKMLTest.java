@@ -1,9 +1,11 @@
 package test.templates;
 
-import org.junit.Test;
+import java.net.URL;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import app.SpreadApp;
 import templates.ContinuousTreeToKML;
+import junit.framework.TestCase;
 
 public class ContinuousTreeToKMLTest extends TestCase {
 
@@ -15,15 +17,14 @@ public class ContinuousTreeToKMLTest extends TestCase {
 			continuousTreeToKML.setMrsdString("2011-07-28 AD");
 
 			continuousTreeToKML
-					.setTreePath("/home/filip/Phyleography/data/WNV/WNV_relaxed_geo_gamma_MCC.tre");
-
+					.setTreePath(getResourcePath("/data/WNV_relaxed_geo_gamma_MCC.tre"));
+			
 			continuousTreeToKML.setHPDString("80%HPD");
 
-			//TODO
-//			continuousTreeToKML.setCoordinatesName("location2");
-
-//			continuousTreeToKML.setCoordinatesName("location1");
+			continuousTreeToKML.setLatitudeName("location1");
 			
+			continuousTreeToKML.setLongitudeName("location2");
+
 			continuousTreeToKML.setMaxAltitudeMapping(50000);
 
 			continuousTreeToKML.setMinPolygonRedMapping(100);
@@ -74,4 +75,16 @@ public class ContinuousTreeToKMLTest extends TestCase {
 
 	}// END: ContinuousTreeToKMLTest
 
+	public static String getResourcePath(String resource) throws Exception {
+		URL url = SpreadApp.class.getResource(resource);
+		if (url == null) {
+			url = SpreadApp.class.getResource("/src/" + resource);
+		}
+		if (url == null) {
+			throw new Exception ("Resource  " + resource + " not found");
+		}
+		String path = url.getPath();
+		return path;
+	}
+	
 }// END: class
