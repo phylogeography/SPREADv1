@@ -11,12 +11,12 @@ import templates.DiscreteTreeToKML;
 
 public class DiscreteTreeToKMLTest extends TestCase {
 
-	private static DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
-	private static InteractiveTableModel table;
-	private static locationsReader data;
 
 	@Test
 	public void testDiscreteTreeToKML() throws Exception {
+		DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
+		InteractiveTableModel table;
+		locationsReader data;
 
 		System.out
 				.println("Command line mode is experimental. Expect the unexpected.");

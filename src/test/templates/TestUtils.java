@@ -2,9 +2,11 @@ package test.templates;
 
 import java.net.URL;
 
+import junit.framework.TestCase;
+
 import app.SpreadApp;
 
-public class TestUtils {
+public class TestUtils extends TestCase {
 
 	public static String getResourcePath(String resource) throws Exception {
 		URL url = SpreadApp.class.getResource(resource);
@@ -18,4 +20,8 @@ public class TestUtils {
 		return path;
 	}
 	
+
+	public static void main(String args[]) {
+	    org.junit.runner.JUnitCore.main(args[0]);
+    }
 }

@@ -7,12 +7,12 @@ import templates.SpatialStatsToTerminal;
 
 public class SpatialStatsToTerminalTest extends TestCase {
 	
-	private static boolean FIRST_ANALYSIS = false;
-	
-	private static SpatialStatsToTerminal spatialStatsToTerminal = new SpatialStatsToTerminal();
 	
 	@Test
 	public static void testSpatialStatsToTerminal() throws Exception {
+		boolean FIRST_ANALYSIS = false;
+		
+		SpatialStatsToTerminal spatialStatsToTerminal = new SpatialStatsToTerminal();
 	
 
 		if(FIRST_ANALYSIS) {
