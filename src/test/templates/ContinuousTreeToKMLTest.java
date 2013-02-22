@@ -1,11 +1,10 @@
 package test.templates;
 
-import java.net.URL;
+import junit.framework.TestCase;
 
 import org.junit.Test;
-import app.SpreadApp;
+
 import templates.ContinuousTreeToKML;
-import junit.framework.TestCase;
 
 public class ContinuousTreeToKMLTest extends TestCase {
 
@@ -17,7 +16,7 @@ public class ContinuousTreeToKMLTest extends TestCase {
 			continuousTreeToKML.setMrsdString("2011-07-28 AD");
 
 			continuousTreeToKML
-					.setTreePath(getResourcePath("/data/WNV_relaxed_geo_gamma_MCC.tre"));
+					.setTreePath(TestUtils.getResourcePath("/data/WNV_relaxed_geo_gamma_MCC.tre"));
 			
 			continuousTreeToKML.setHPDString("80%HPD");
 
@@ -74,17 +73,5 @@ public class ContinuousTreeToKMLTest extends TestCase {
 					+ " msec \n");
 
 	}// END: ContinuousTreeToKMLTest
-
-	public static String getResourcePath(String resource) throws Exception {
-		URL url = SpreadApp.class.getResource(resource);
-		if (url == null) {
-			url = SpreadApp.class.getResource("/src/" + resource);
-		}
-		if (url == null) {
-			throw new Exception ("Resource  " + resource + " not found");
-		}
-		String path = url.getPath();
-		return path;
-	}
 	
 }// END: class

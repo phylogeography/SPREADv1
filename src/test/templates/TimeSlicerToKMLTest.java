@@ -20,7 +20,7 @@ public class TimeSlicerToKMLTest extends TestCase {
 				
 				timeSlicerToKML.setAnalysisType(TimeSlicerToKML.FIRST_ANALYSIS);
 				
-				timeSlicerToKML.setTreePath(ContinuousTreeToKMLTest.getResourcePath("/data/WNV_relaxed_geo_gamma_MCC.tre"));
+				timeSlicerToKML.setTreePath(TestUtils.getResourcePath("/data/WNV_relaxed_geo_gamma_MCC.tre"));
 				
 				timeSlicerToKML.setNumberOfIntervals(10);
 				
@@ -28,11 +28,11 @@ public class TimeSlicerToKMLTest extends TestCase {
 				
 				timeSlicerToKML.setAnalysisType(TimeSlicerToKML.SECOND_ANALYSIS);
 				
-				timeSlicerToKML.setCustomSliceHeightsPath(ContinuousTreeToKMLTest.getResourcePath("/data/treeslice_WNV.txt"));
+				timeSlicerToKML.setCustomSliceHeightsPath(TestUtils.getResourcePath("/data/treeslice_WNV.txt"));
 				
 			}
 			
-			timeSlicerToKML.setTreesPath(ContinuousTreeToKMLTest.getResourcePath("/data/WNV_relaxed_geo_gamma.trees"));
+			timeSlicerToKML.setTreesPath(TestUtils.getResourcePath("/data/WNV_relaxed_geo_gamma.trees"));
 
 			timeSlicerToKML.setBurnIn(0);
 			

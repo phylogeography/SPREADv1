@@ -24,7 +24,7 @@ public class RateIndicatorBFToKMLTest extends TestCase {
 			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
 			data = new locationsReader(
-					ContinuousTreeToKMLTest.getResourcePath("/data/locationCoordinates_H5N1"));
+					TestUtils.getResourcePath("/data/locationCoordinates_H5N1"));
 
 			String indicatorAttributeName = "indicator";
 			
@@ -41,7 +41,7 @@ public class RateIndicatorBFToKMLTest extends TestCase {
 
 			rateIndicatorBFToKML
 					.setLogFileParser(
-							ContinuousTreeToKMLTest.getResourcePath("/data/H5N1_HA_discrete_rateMatrix.log"),
+							TestUtils.getResourcePath("/data/H5N1_HA_discrete_rateMatrix.log"),
 							0.1, indicatorAttributeName);
 
 			rateIndicatorBFToKML.setBfCutoff(3.0);
