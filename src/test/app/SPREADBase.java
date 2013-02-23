@@ -2,6 +2,7 @@ package test.app;
 
 
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.finder.JFileChooserFinder.findFileChooser;
 
@@ -87,5 +88,13 @@ public class SPREADBase extends FestSwingJUnitTestCase {
 	}
 
 	
+	void assertArrayEquals(Object [] o, String array) {
+		String str = array.substring(1, array.length() - 1);
+		String [] strs = str.split(", ");
+		for (int i = 0; i < o.length && i < strs.length; i++) {
+			assertThat(strs[i]).as("expected array value " + strs[i] + " instead of " + o[i].toString()).isEqualTo(o[i].toString());
+		}
+		assertThat(o.length).as("arrays do not match: different lengths").isEqualTo(strs.length);
+	}
 	
 }

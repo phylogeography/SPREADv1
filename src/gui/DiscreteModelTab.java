@@ -153,6 +153,7 @@ public class DiscreteModelTab extends JPanel {
 
 		// Setup Combo boxes
 		stateAttributeNameParser = new JComboBox(new String[] {"state"});
+		stateAttributeNameParser.setName("state");
 		
 		// Setup progress bar
 		progressBar = new JProgressBar();
