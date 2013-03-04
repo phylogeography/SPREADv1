@@ -447,7 +447,7 @@ public class ContinuousModelTab extends JPanel {
 			Utils.handleException(e, e.getMessage());
 		}
 		
-	}//END: populateCoordinateAttributeCombobox
+	}//END: populateAttributeCombobox
 	
 	private class ListenOpenTree implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
