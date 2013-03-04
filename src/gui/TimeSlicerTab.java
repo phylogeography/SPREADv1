@@ -9,9 +9,15 @@ import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedHashSet;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -25,6 +31,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
+
+import jebl.evolution.graphs.Node;
+import jebl.evolution.io.ImportException;
+import jebl.evolution.io.NexusImporter;
+import jebl.evolution.trees.RootedTree;
 
 import templates.MapBackground;
 import templates.TimeSlicerToKML;
@@ -74,9 +85,6 @@ public class TimeSlicerTab extends JPanel {
 
 	// Text fields
 	private JTextField burnInParser;
-	private JTextField coordinatesNameParser;
-	private JTextField rateAttNameParser;
-	private JTextField precisionAttNameParser;
 	private JTextField numberOfIntervalsParser;
 	private JTextField kmlPathParser;
 	private JTextField maxAltMappingParser;
@@ -104,7 +112,10 @@ public class TimeSlicerTab extends JPanel {
 
 	// Combo boxes
 	private JComboBox eraParser;
-
+	private JComboBox coordinatesNameParser;
+	private JComboBox rateAttNameParser;
+	private JComboBox precisionAttNameParser;
+	
 	// checkboxes
 	private JCheckBox trueNoiseParser;
 
@@ -154,10 +165,9 @@ public class TimeSlicerTab extends JPanel {
 
 		// Setup text fields
 		burnInParser = new JTextField("500", 10);
-		//TODO: change to combobox
-		coordinatesNameParser = new JTextField("location", 10);
-		rateAttNameParser = new JTextField("rate", 10);
-		precisionAttNameParser = new JTextField("precision", 10);
+		coordinatesNameParser = new JComboBox(new String[] {"location"});
+		rateAttNameParser = new JComboBox(new String[] {"rate"});
+		precisionAttNameParser = new JComboBox(new String[] {"precision"});
 		numberOfIntervalsParser = new JTextField("10", 5);
 		maxAltMappingParser = new JTextField("500000", 5);
 		kmlPathParser = new JTextField("output.kml", 10);
@@ -306,6 +316,20 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.add(coordinatesNameParser);
 		tmpPanelsHolder.add(tmpPanel);
 
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Rate attribute name:"));
+		tmpPanel.add(rateAttNameParser);
+		tmpPanelsHolder.add(tmpPanel);
+
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("Precision attribute name:"));
+		tmpPanel.add(precisionAttNameParser);
+		tmpPanelsHolder.add(tmpPanel);
+		
 		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
 				leftPanelWidth, spinningPanelHeight));
 		sp.showBottom(true);
@@ -396,20 +420,6 @@ public class TimeSlicerTab extends JPanel {
 		tmpPanel.setBorder(new TitledBorder("Use true noise:"));
 		trueNoiseParser.setSelected(true);
 		tmpPanel.add(trueNoiseParser);
-		tmpPanelsHolder.add(tmpPanel);
-
-		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
-		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Rate attribute name:"));
-		tmpPanel.add(rateAttNameParser);
-		tmpPanelsHolder.add(tmpPanel);
-
-		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
-		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("Precision attribute name:"));
-		tmpPanel.add(precisionAttNameParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		tmpPanel = new JPanel();
@@ -658,6 +668,44 @@ public class TimeSlicerTab extends JPanel {
 		}// END: actionPerformed
 	}// END: ListenOpenTree
 
+	//TODO: move all the tree parsing to separate tree parser class with getters for all the attributes we need
+	private void populateAttributeComboboxes() {
+		
+		try {
+		
+			NexusImporter importer = new NexusImporter(new FileReader(treesFilename));
+			RootedTree tree = (RootedTree) importer.importNextTree();
+			
+			LinkedHashSet<String> uniqueAttributes = new LinkedHashSet<String>();
+			
+			for (Node node : tree.getNodes()) {
+				if (!tree.isRoot(node)) {
+				
+					uniqueAttributes.addAll(node.getAttributeNames());
+					
+				}
+			}
+
+			// re-initialise comboboxes
+			ComboBoxModel coordinatesNameParserModel = new DefaultComboBoxModel(uniqueAttributes.toArray(new String[0]));			
+			coordinatesNameParser.setModel(coordinatesNameParserModel);
+			
+			ComboBoxModel rateAttNameParserModel = new DefaultComboBoxModel(uniqueAttributes.toArray(new String[0]));			
+			rateAttNameParser.setModel(rateAttNameParserModel);
+	
+			ComboBoxModel precisionAttNameParserModel = new DefaultComboBoxModel(tree.getAttributeNames().toArray(new String[0]));			
+			precisionAttNameParser.setModel(precisionAttNameParserModel);
+			
+		} catch (FileNotFoundException e) {
+			Utils.handleException(e, e.getMessage());
+		} catch (IOException e) {
+			Utils.handleException(e, e.getMessage());
+		} catch (ImportException e) {
+			Utils.handleException(e, e.getMessage());
+		}
+		
+	}//END: populateAttributeCombobox
+	
 	private class ListenOpenTrees implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 
@@ -686,6 +734,8 @@ public class TimeSlicerTab extends JPanel {
 						workingDirectory = tmpDir;
 					}
 
+					populateAttributeComboboxes();
+					
 				} else {
 					frame.setStatus("Could not Open! \n");
 				}
@@ -769,7 +819,7 @@ public class TimeSlicerTab extends JPanel {
 						try {
 
 							if (new TimeSlicerSanityCheck().check(treeFilename,
-									coordinatesNameParser.getText(),
+									coordinatesNameParser.getSelectedItem().toString(),
 									treesFilename, analysisType)) {
 
 								TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
@@ -851,15 +901,15 @@ public class TimeSlicerTab extends JPanel {
 
 								timeSlicerToKML
 										.setLocationAttributeName(coordinatesNameParser
-												.getText());
+												.getSelectedItem().toString());
 
 								timeSlicerToKML
 										.setRateAttributeName(rateAttNameParser
-												.getText());
+												.getSelectedItem().toString());
 
 								timeSlicerToKML
 										.setPrecisionAttName(precisionAttNameParser
-												.getText());
+												.getSelectedItem().toString());
 
 								timeSlicerToKML.setUseTrueNoise(trueNoiseParser
 										.isSelected());
@@ -977,7 +1027,7 @@ public class TimeSlicerTab extends JPanel {
 						try {
 
 							if (new TimeSlicerSanityCheck().check(treeFilename,
-									coordinatesNameParser.getText(),
+									coordinatesNameParser.getSelectedItem().toString(),
 									treesFilename, analysisType)) {
 
 								timeSlicerToProcessing
@@ -1055,15 +1105,15 @@ public class TimeSlicerTab extends JPanel {
 
 								timeSlicerToProcessing
 										.setCoordinatesName(coordinatesNameParser
-												.getText());
+												.getSelectedItem().toString());
 
 								timeSlicerToProcessing
 										.setRateAttributeName(rateAttNameParser
-												.getText());
+												.getSelectedItem().toString());
 
 								timeSlicerToProcessing
 										.setPrecisionAttributeName(precisionAttNameParser
-												.getText());
+												.getSelectedItem().toString());
 
 								timeSlicerToProcessing
 										.setUseTrueNoise(trueNoiseParser
