@@ -1,7 +1,5 @@
 package test.templates;
 
-import junit.framework.TestCase;
-
 import org.junit.Test;
 
 import templates.ContinuousTreeToKML;
