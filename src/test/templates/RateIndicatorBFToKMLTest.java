@@ -11,12 +11,12 @@ import templates.RateIndicatorBFToKML;
 
 public class RateIndicatorBFToKMLTest extends TestCase {
 
-	private static RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
-	private static InteractiveTableModel table;
-	private static locationsReader data;
 
 	@Test
 	public void testRateIndicatorBFToKML() throws Exception {
+		RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
+		InteractiveTableModel table;
+		locationsReader data;
 
 		System.out
 				.println("Command line mode is experimental. Expect the unexpected.");

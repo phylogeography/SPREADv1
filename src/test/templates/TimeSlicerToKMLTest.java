@@ -8,12 +8,12 @@ import templates.TimeSlicerToKML;
 
 public class TimeSlicerToKMLTest extends TestCase {
 
-	private static TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
-
-	private static boolean FIRST_ANALYSIS = true;
 	
 	@Test
 	public void testTimeSlicerToKML() throws Exception {
+		TimeSlicerToKML timeSlicerToKML = new TimeSlicerToKML();
+
+		boolean FIRST_ANALYSIS = true;
 
 
 			if(FIRST_ANALYSIS) {

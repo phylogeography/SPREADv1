@@ -142,9 +142,11 @@ public class ContinuousModelTab extends JPanel {
 
 		// Setup Combo boxes
 		latitudeAttributeNameParser = new JComboBox(new String[] {"location1"});
+		latitudeAttributeNameParser.setName("latitudeComboBox");
 		latitudeAttributeNameParser.setToolTipText("Choose latitude attribute name. " +
                 "This attribute name is typically followed by number 1.");
 		longitudeAttributeNameParser = new JComboBox(new String[] {"location2"});
+		longitudeAttributeNameParser.setName("longitudeComboBox");
 		longitudeAttributeNameParser.setToolTipText("Choose longitude attribute name. " +
 				                            "This attribute name is typically followed by number 2.");
 		

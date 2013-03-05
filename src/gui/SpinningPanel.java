@@ -52,6 +52,7 @@ public class SpinningPanel extends JPanel {
 		labelPanel.setLayout(new BorderLayout());
 
 		spinWidget = new SpinWidget();
+		spinWidget.setName(label.trim() + ".spinWidget");
 		labelPanel.add(spinWidget, BorderLayout.LINE_START);
 
 		JLabel jlabel = new JLabel(label);

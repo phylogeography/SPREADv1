@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import templates.ContinuousTreeToKML;
 
-public class ContinuousTreeToKMLTest extends TestCase {
+public class ContinuousTreeToKMLTest extends TestUtils {
 
 
 	@Test
