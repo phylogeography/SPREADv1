@@ -7,6 +7,7 @@ March 4, 2013: SPREAD version 1.0.6 released
 * Log files parser compatible with BEAST 1 and BEAST 2.
 * Improved handling of exceptions in Open and Save dialogs
 * Status bar for common messages
+* Kmlframework merged into sources (New BSD license)
 
 November 18, 2012: SPREAD version 1.0.5 released
 ------------------------------------------------
@@ -25,7 +26,7 @@ April 21, 2012: SPREAD-phy version 1.0.4 released
 * Name change: prepended 'phy' for phylogeny to the software name to conform with Debian naming convention.
 * SPREAD-phy now has it's own build system
 * Removed ColorPicker dependency by combining the original code. This code (in the colorpicker package) is released under 
-  Modified BSD license.
+  New BSD license.
 * Row numbers in location coordinates editor  
 * Fixed bug in Bayes factor values sort function (introduced in v1.0.3)
 
