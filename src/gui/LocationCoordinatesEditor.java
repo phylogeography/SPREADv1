@@ -29,7 +29,7 @@ import javax.swing.table.TableColumn;
 import jebl.evolution.graphs.Node;
 import jebl.evolution.io.NexusImporter;
 import jebl.evolution.trees.RootedTree;
-import readers.locationsReader;
+import readers.LocationsReader;
 import utils.Utils;
 import app.SpreadApp;
 
@@ -139,7 +139,7 @@ public class LocationCoordinatesEditor {
 
 					if (tmpDir != null) {
 						workingDirectory = tmpDir;
-						locationsReader data = new locationsReader(
+						LocationsReader data = new LocationsReader(
 								locationsFilename);
 
 						if (tableModel.getRowCount() < data.nrow) {

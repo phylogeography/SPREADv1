@@ -2,7 +2,7 @@
 .:: SPREAD ::.
 ===================
 *Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
-Version: 1.0.6, 2013
+Version: 1.0.7rc, 2013
 Authors: Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
 Homepage: www.phylogeography.org
 License: LGPL

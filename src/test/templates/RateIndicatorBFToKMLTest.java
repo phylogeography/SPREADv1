@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 import gui.InteractiveTableModel;
 import gui.LocationCoordinatesEditor;
 import gui.TableRecord;
-import readers.locationsReader;
+import readers.LocationsReader;
 import templates.RateIndicatorBFToKML;
 
 public class RateIndicatorBFToKMLTest extends TestCase {
@@ -16,14 +16,14 @@ public class RateIndicatorBFToKMLTest extends TestCase {
 	public void testRateIndicatorBFToKML() throws Exception {
 		RateIndicatorBFToKML rateIndicatorBFToKML = new RateIndicatorBFToKML();
 		InteractiveTableModel table;
-		locationsReader data;
+		LocationsReader data;
 
 		System.out
 				.println("Command line mode is experimental. Expect the unexpected.");
 
 			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
-			data = new locationsReader(
+			data = new LocationsReader(
 					TestUtils.getResourcePath("/data/locationCoordinates_H5N1"));
 
 			String indicatorAttributeName = "indicator";

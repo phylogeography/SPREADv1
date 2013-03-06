@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 import gui.InteractiveTableModel;
 import gui.LocationCoordinatesEditor;
 import gui.TableRecord;
-import readers.locationsReader;
+import readers.LocationsReader;
 import templates.DiscreteTreeToKML;
 
 public class DiscreteTreeToKMLTest extends TestCase {
@@ -16,7 +16,7 @@ public class DiscreteTreeToKMLTest extends TestCase {
 	public void testDiscreteTreeToKML() throws Exception {
 		DiscreteTreeToKML discreteTreeToKML = new DiscreteTreeToKML();
 		InteractiveTableModel table;
-		locationsReader data;
+		LocationsReader data;
 
 		System.out
 				.println("Command line mode is experimental. Expect the unexpected.");
@@ -24,7 +24,7 @@ public class DiscreteTreeToKMLTest extends TestCase {
 
 			table = new InteractiveTableModel(new LocationCoordinatesEditor(null)
 					.getColumnNames());
-			data = new locationsReader(
+			data = new LocationsReader(
 					TestUtils.getResourcePath("/data/locationCoordinates_H5N1"));
 					
 

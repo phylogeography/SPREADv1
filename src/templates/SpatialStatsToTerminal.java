@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import readers.sliceHeightsReader;
+import readers.SliceHeightsReader;
 
 import jebl.evolution.io.ImportException;
 import jebl.evolution.io.NexusImporter;
@@ -78,7 +78,7 @@ public class SpatialStatsToTerminal {
 	}
 
 	public void setCustomSliceHeightsPath(String path) {
-		sliceHeights = new sliceHeightsReader(path).getSliceHeights();
+		sliceHeights = new SliceHeightsReader(path).getSliceHeights();
 	}
 
 	public void calculate() {

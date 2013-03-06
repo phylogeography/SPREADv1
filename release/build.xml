@@ -9,7 +9,7 @@
 	<property environment="env"/>
 
 
-    <property name="version" value="1.0.6" />
+    <property name="version" value="1.0.7rc" />
     <property name="release_dir" value="." />
     <property name="name" value="SPREAD" />
 
