@@ -405,7 +405,7 @@ public class DiscreteTreeToKML {
 				String circlesDescription = null;
 				Layer circlesLayer = new Layer("Circles", circlesDescription);
 
-				double[][] numberOfLineages = CountLineagesHoldingState(
+				double[][] numberOfLineages = countLineagesHoldingState(
 						numberOfIntervals, rootHeight);
 				double lineagesCountMax = Utils.get2DArrayMax(numberOfLineages);
 
@@ -435,7 +435,6 @@ public class DiscreteTreeToKML {
 
 							/**
 							 * Opacity mapping
-							 * 
 							 * Larger the values more opaque the colors
 							 * */
 							int alpha = (int) Utils.map(
@@ -495,7 +494,7 @@ public class DiscreteTreeToKML {
 		}// END: run
 	}// END: Circles class
 
-	private double[][] CountLineagesHoldingState(int numberOfIntervals,
+	private double[][] countLineagesHoldingState(int numberOfIntervals,
 			double rootHeight) {
 
 		double delta = rootHeight / numberOfIntervals;
@@ -549,7 +548,7 @@ public class DiscreteTreeToKML {
 		}// END: row loop
 
 		return numberOfLineages;
-	}// END: CountLineagesHoldingState
+	}// END: countLineagesHoldingState
 
 	private String getRandomState(String state, boolean verbose) {
 
