@@ -31,7 +31,8 @@ public class DiscreteTutorialTest extends SPREADBase {
 		spreadFrame.button(new GenericTypeMatcher<JButton>(JButton.class, true) {
 			@Override
 			protected boolean isMatching(JButton button) {
-				return button.getLabel().equals("Open");
+//				return button.getLabel().equals("Open");
+				return button.getText().equals("Open");
 			}
 		}).click();
 
@@ -44,14 +45,16 @@ public class DiscreteTutorialTest extends SPREADBase {
 		spreadFrame.button(new GenericTypeMatcher<JButton>(JButton.class, true) {
 			@Override
 			protected boolean isMatching(JButton button) {
-				return button.getLabel().equals("Setup");
+//				return button.getLabel().equals("Setup");
+				return button.getText().equals("Setup");
 			}
 		}).click();
 		
 		spreadFrame.button(new GenericTypeMatcher<JButton>(JButton.class, true) {
 			@Override
 			protected boolean isMatching(JButton button) {
-				return button.getLabel().equals("Load");
+//				return button.getLabel().equals("Load");
+				return button.getText().equals("Load");
 			}
 		}).click();
 		
@@ -62,7 +65,8 @@ public class DiscreteTutorialTest extends SPREADBase {
 		spreadFrame.button(new GenericTypeMatcher<JButton>(JButton.class, true) {
 			@Override
 			protected boolean isMatching(JButton button) {
-				return button.getLabel().equals("Done");
+//				return button.getLabel().equals("Done");
+				return button.getText().equals("Done");
 			}
 		}).click();
 
@@ -70,7 +74,8 @@ public class DiscreteTutorialTest extends SPREADBase {
 		spreadFrame.button(new GenericTypeMatcher<JButton>(JButton.class, true) {
 			@Override
 			protected boolean isMatching(JButton button) {
-				return button.getLabel().equals("Plot");
+//				return button.getLabel().equals("Plot");
+				return button.getText().equals("Plot");
 			}
 		}).click();
 		
@@ -87,7 +92,8 @@ public class DiscreteTutorialTest extends SPREADBase {
 		spreadFrame.button(new GenericTypeMatcher<JButton>(JButton.class, true) {
 			@Override
 			protected boolean isMatching(JButton button) {
-				return button.getLabel().equals("Generate");
+//				return button.getLabel().equals("Generate");
+				return button.getText().equals("Generate");
 			}
 		}).click();
 		

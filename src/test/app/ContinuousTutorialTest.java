@@ -29,7 +29,8 @@ public class ContinuousTutorialTest extends SPREADBase {
 		spreadFrame.button(new GenericTypeMatcher<JButton>(JButton.class, true) {
 			@Override
 			protected boolean isMatching(JButton button) {
-				return button.getLabel().equals("Open");
+//				return button.getLabel().equals("Open");
+				return button.getText().equals("Open");
 			}
 		}).click();
 		
@@ -44,7 +45,8 @@ public class ContinuousTutorialTest extends SPREADBase {
 		spreadFrame.button(new GenericTypeMatcher<JButton>(JButton.class, true) {
 			@Override
 			protected boolean isMatching(JButton button) {
-				return button.getLabel().equals("Plot");
+//				return button.getLabel().equals("Plot");
+				return button.getText().equals("Plot");
 			}
 		}).click();
 
