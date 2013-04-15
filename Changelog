@@ -1,3 +1,7 @@
+2013: SPREAD version 1.0.7 release candidate
+------------------------------------------------
+* fixed bug in Continuous tree template that caused empty KMLs to be generated
+
 March 4, 2013: SPREAD version 1.0.6 released
 ------------------------------------------------
 * Combo box for choosing state attribute name in Discrete tree tab.

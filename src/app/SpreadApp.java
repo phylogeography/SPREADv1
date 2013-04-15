@@ -259,9 +259,11 @@ public class SpreadApp {
 					+ "\t author = {Bielejec, Filip and Rambaut, Andrew and Suchard, Marc A. and Lemey, Philippe}, \n"
 					+ "\t title = {SPREAD: Spatial phylogenetic reconstruction of evolutionary dynamics}, \n"
 					+ "\t year = {2011}, \n"
+					+ "\t volume = {27}, \n"
+					+ "\t pages = {2910-2912}, \n"
 					+ "\t doi = {10.1093/bioinformatics/btr481}, \n"
-					+ "\t URL = {http://bioinformatics.oxfordjournals.org/content/early/2011/09/11/bioinformatics.btr481.abstract}, \n"
-					+ "\t eprint = {http://bioinformatics.oxfordjournals.org/content/early/2011/09/11/bioinformatics.btr481.full.pdf+html}, \n"
+					+ "\t URL = {http://bioinformatics.oxfordjournals.org/content/27/20/2910.abstract}, \n"
+					+ "\t eprint = {http://bioinformatics.oxfordjournals.org/content/27/20/2910.full.pdf+html}, \n"
 					+ "\t journal = {Bioinformatics} \n" 
 					+ "} \n";
 

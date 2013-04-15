@@ -57,6 +57,7 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basi
 
 h1. TODO
 
+* Rewrite Log file reader 
 * Combobox for relaxed (from parser) / standard brownian motion (rate of 1)
 * Annotate the terminals in the tree with corresponding taxon names
 * Move all the parsing code to reader classes for trees -> avoid code duplication  

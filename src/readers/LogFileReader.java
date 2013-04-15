@@ -21,7 +21,8 @@ public class LogFileReader extends PApplet {
 	public int nrow;
 	public int ncol;
 
-	public LogFileReader() {}
+	public LogFileReader() {
+	}
 	
 	public LogFileReader(String filename, double burnIn, String indicatorName) {
 
@@ -119,8 +120,7 @@ public class LogFileReader extends PApplet {
 			return output;
 
 		} catch (IOException e) {
-			e.printStackTrace();
-			// throw new RuntimeException("Error inside loadStrings()");
+			Utils.handleException(e, "Error when loading strings!");
 		}
 		return null;
 

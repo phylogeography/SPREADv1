@@ -560,7 +560,6 @@ public class ContinuousModelTab extends JPanel {
 							if (contSanCheck.check(treeFilename,
 									longitudeAttributeNameParser.getSelectedItem().toString(),
 									latitudeAttributeNameParser.getSelectedItem().toString()
-//									coordinatesNameParser.getText()
 									)) {
 
 								ContinuousTreeToKML continuousTreeToKML = new ContinuousTreeToKML();
@@ -724,7 +723,6 @@ public class ContinuousModelTab extends JPanel {
 							if (contSanCheck.check(treeFilename,
 									longitudeAttributeNameParser.getSelectedItem().toString(),
 									latitudeAttributeNameParser.getSelectedItem().toString()
-//									coordinatesNameParser.getText()
 									)) {
 
 								continuousTreeToProcessing

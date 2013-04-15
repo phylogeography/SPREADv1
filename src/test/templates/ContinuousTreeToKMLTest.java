@@ -62,7 +62,7 @@ public class ContinuousTreeToKMLTest extends TestUtils {
 
 			continuousTreeToKML.setNumberOfIntervals(100);
 
-			//continuousTreeToKML.setKmlWriterPath("/home/filip/output.kml");
+//			continuousTreeToKML.setKmlWriterPath("/home/filip/output.kml");
 			continuousTreeToKML.setKmlWriterPath("output.kml");
 
 			continuousTreeToKML.GenerateKML();

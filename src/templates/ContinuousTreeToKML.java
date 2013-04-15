@@ -38,7 +38,6 @@ public class ContinuousTreeToKML {
 	private static final double EarthRadius = 6371;
 
 	private RootedTree tree;
-	private String coordinatesName;
 	private String HPDString;
 	private String mrsdString;
 	private ThreadLocalSpreadDate mrsd;
@@ -94,7 +93,7 @@ public class ContinuousTreeToKML {
 	public void setLatitudeName(String name) {
 		latitudeName = name;
 	}
-	
+
 	public void setMrsdString(String mrsd) {
 		mrsdString = mrsd;
 	}
@@ -194,10 +193,6 @@ public class ContinuousTreeToKML {
 
 		// this is for time calculations
 		rootHeight = tree.getHeight(tree.getRootNode());
-
-		// this is for coordinate attribute names
-		longitudeName = (coordinatesName + 2);
-		latitudeName = (coordinatesName + 1);
 
 		// this is for mappings
 		treeHeightMax = Utils.getTreeHeightMax(tree);
@@ -315,9 +310,9 @@ public class ContinuousTreeToKML {
 							double endTime = mrsd.minus((int) (parentHeight
 									* DaysInYear * timescaler));
 
-							branchesLayer.addItem(new Line((parentLongitude
-									+ "," + parentLatitude + ":" + longitude
-									+ "," + latitude), // name
+							Line line = new Line(
+									(parentLongitude + "," + parentLatitude
+											+ ":" + longitude + "," + latitude), // name
 									new Coordinates(parentLongitude,
 											parentLatitude), // startCoords
 									startTime, // double startime
@@ -326,8 +321,10 @@ public class ContinuousTreeToKML {
 									endTime, // double endtime
 									linesStyle, // style endstyle
 									maxAltitude, // double maxAltitude
-									0.0) // double duration
-									);
+									0.0 // double duration
+							);
+
+							branchesLayer.addItem(line);
 
 						}// END: null checks
 					}// END: root check
@@ -352,6 +349,8 @@ public class ContinuousTreeToKML {
 
 			try {
 
+				String modalityAttributeName = Utils.getModalityAttributeName(longitudeName, HPDString);
+				
 				// this is for Polygons folder:
 				String polygonsDescription = null;
 				Layer polygonsLayer = new Layer("Polygons", polygonsDescription);
@@ -362,8 +361,7 @@ public class ContinuousTreeToKML {
 						if (!tree.isExternal(node)) {
 
 							Integer modality = (Integer) node
-									.getAttribute(coordinatesName + "_"
-											+ HPDString + "_modality");
+									.getAttribute(modalityAttributeName);
 
 							if (modality != null) {
 

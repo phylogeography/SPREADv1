@@ -28,6 +28,7 @@ import app.SpreadApp;
 
 import readers.LocationsReader;
 import structure.Coordinates;
+import structure.Line;
 import structure.TimeLine;
 
 public class Utils {
@@ -202,6 +203,16 @@ public class Utils {
 	// ---CONTINUOUS TREE UTILS---//
 	// /////////////////////////////
 
+	public static String getModalityAttributeName(String longitudeName,
+			String HPDString) {
+		
+		String coordinatesName = longitudeName.replaceAll("[0-9.]", "");
+		String modalityAttributeName = coordinatesName + "_" + HPDString
+				+ "_modality";
+
+		return modalityAttributeName;
+	}// END: getModalityAttributeName
+	
 	public static List<Coordinates> parsePolygons(Object[] longitudeHPD,
 			Object[] latitudeHPD) {
 
@@ -1063,6 +1074,31 @@ public class Utils {
 	// ---DEBUGGING---//
 	// /////////////////
 
+	public static void printCoordinate(Coordinates coordinate) {
+		System.out.println("Longitude: " + coordinate.getLongitude());
+		System.out.println("Latitude: " + coordinate.getLatitude());
+	}
+	
+	public static void printCoordinatesList(List<Coordinates> list) {
+		for (Coordinates coordinate : list) {
+			printCoordinate(coordinate);
+		}
+	}// END: printCoordinatesList
+	
+	public static void printLine(Line line) {
+		
+		System.out.println("Start coords:");
+		System.out.println("\t Longitude: " + line.getStartLocation().getLongitude());
+		System.out.println("\t Latitude: " + line.getStartLocation().getLatitude());
+		System.out.println("Start time: " + line.getStartTime());
+		System.out.println("End coords:");
+		System.out.println("\t Longitude: " + line.getEndLocation().getLongitude());
+		System.out.println("\t Latitude: " + line.getEndLocation().getLatitude());
+		System.out.println("End time: " + line.getEndTime());
+		System.out.println("Max altitude: "+line.getMaxAltitude());
+		
+	}//END: printLine
+	
 	public static String getSpreadFormattedTime(double time) {
 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd G",

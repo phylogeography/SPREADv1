@@ -16,7 +16,6 @@ import utils.Utils;
 @SuppressWarnings("serial")
 public class ContinuousTreeToProcessing extends PApplet {
 
-	private String coordinatesName;
 	private TreeImporter importer;
 	private RootedTree tree;
 	private String longitudeName;
@@ -230,13 +229,14 @@ public class ContinuousTreeToProcessing extends PApplet {
 	// ////////////////
 	private void drawPolygons() {
 
+		String modalityAttributeName = Utils.getModalityAttributeName(longitudeName, HPDString);
+		
 		for (Node node : tree.getNodes()) {
 			if (!tree.isRoot(node)) {
 				if (!tree.isExternal(node)) {
 
 					Integer modality = (Integer) node
-							.getAttribute(coordinatesName + "_" + HPDString
-									+ "_modality");
+							.getAttribute(modalityAttributeName);
 
 					if (modality != null) {
 
@@ -246,10 +246,12 @@ public class ContinuousTreeToProcessing extends PApplet {
 									.getObjectArrayNodeAttribute(node,
 											longitudeName + "_" + HPDString
 													+ "_" + i);
+							
 							Object[] latitudeHPD = Utils
 									.getObjectArrayNodeAttribute(node,
 											latitudeName + "_" + HPDString
 													+ "_" + i);
+							
 							/**
 							 * Color mapping
 							 * */
