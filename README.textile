@@ -63,6 +63,6 @@ h1. TODO
 * Move all the parsing code to reader classes for trees -> avoid code duplication  
 * Add command line interface for kml templates 
 * Fix large scaling factor issues
-
+* Spread v2.0
 
 
