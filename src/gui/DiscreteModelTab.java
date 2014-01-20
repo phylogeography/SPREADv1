@@ -152,8 +152,8 @@ public class DiscreteModelTab extends JPanel {
 		polygonsRadiusMultiplierParser.setPaintLabels(true);
 
 		// Setup Combo boxes
-		stateAttributeNameParser = new JComboBox(new String[] {"state"});
-		stateAttributeNameParser.setName("state");
+		stateAttributeNameParser = new JComboBox(new String[] {"      "});
+		stateAttributeNameParser.setName("      ");
 		
 		// Setup progress bar
 		progressBar = new JProgressBar();
@@ -196,6 +196,13 @@ public class DiscreteModelTab extends JPanel {
 		tmpPanel = new JPanel();
 		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
 		tmpPanel.setBackground(backgroundColor);
+		tmpPanel.setBorder(new TitledBorder("State attribute name:"));
+		tmpPanel.add(stateAttributeNameParser);
+		tmpPanelsHolder.add(tmpPanel);
+		
+		tmpPanel = new JPanel();
+		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
+		tmpPanel.setBackground(backgroundColor);
 		tmpPanel.setBorder(new TitledBorder("Setup location coordinates:"));
 		tmpPanel.add(openLocationCoordinatesEditor);
 		tmpPanelsHolder.add(tmpPanel);
@@ -215,13 +222,6 @@ public class DiscreteModelTab extends JPanel {
 		c.gridx = 2;
 		c.gridy = 0;
 		tmpPanel.add(eraParser, c);
-		tmpPanelsHolder.add(tmpPanel);
-
-		tmpPanel = new JPanel();
-		tmpPanel.setMaximumSize(new Dimension(leftPanelWidth, 100));
-		tmpPanel.setBackground(backgroundColor);
-		tmpPanel.setBorder(new TitledBorder("State attribute name:"));
-		tmpPanel.add(stateAttributeNameParser);
 		tmpPanelsHolder.add(tmpPanel);
 
 		sp = new SpinningPanel(tmpPanelsHolder, "   Input", new Dimension(
