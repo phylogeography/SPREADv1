@@ -2,7 +2,7 @@
 ------------------------------------------------
 * Fixed bug in Continuous tree template that caused empty KMLs to be generated
 * Moved state attribute name spinner after the tree file loader (in the order the files should be loaded)
-* Make Linux bin/spread executable when built
+* Fixes bug where bin/spread was not executable for Linux
 * Fixed bug when no file was loaded and setup was clicked (Issue #7)
 * Fixed bug when incorrect State was selected and an exception was raised about Object->String cast error instead
   of the error about selecting a correct state.
