@@ -48,14 +48,14 @@ public class Utils {
 		DEFAULT, USER
 	}
 
-    public static void errorMessageBox(final String msg) {
-        JOptionPane.showMessageDialog(Utils.getActiveFrame(), //
-            msg, //
-            "Error", //
-            JOptionPane.ERROR_MESSAGE, //
-            SpreadApp.errorIcon
-        );
-    }
+	public static void errorMessageBox(final String msg) {
+		JOptionPane.showMessageDialog(Utils.getActiveFrame(), //
+			msg, //
+			"Error", //
+			JOptionPane.ERROR_MESSAGE, //
+			SpreadApp.errorIcon
+		);
+	}
 
 	// ////////////////////////////////
 	// ---EXCEPTION HANDLING UTILS---//
@@ -423,7 +423,7 @@ public class Utils {
 		 * latitude/longitude using the Spherical Law of Cosines (slc)
 		 * 
 		 * @param start
-		 *            point Lon, Lat; end point Lon, Lat;
+		 *			point Lon, Lat; end point Lon, Lat;
 		 * 
 		 * @return distance in km
 		 * */
@@ -446,7 +446,7 @@ public class Utils {
 		 * latitude/longitude using the Haversine formula
 		 * 
 		 * @param start
-		 *            point Lon, Lat; end point Lon, Lat;
+		 *			point Lon, Lat; end point Lon, Lat;
 		 * 
 		 * @return distance in km
 		 * */
@@ -470,7 +470,7 @@ public class Utils {
 		 * latitude/longitude using the Vincenty inverse formula for ellipsoids
 		 * 
 		 * @param start
-		 *            point Lon, Lat; end point Lon, Lat;
+		 *			point Lon, Lat; end point Lon, Lat;
 		 * 
 		 * @return distance in km
 		 * */
@@ -574,7 +574,7 @@ public class Utils {
 		 * travelling along a rhumb line
 		 * 
 		 * @param start
-		 *            point Lon, Lat; end point Lon, Lat;
+		 *			point Lon, Lat; end point Lon, Lat;
 		 * 
 		 * @return distance in km
 		 */
@@ -608,8 +608,8 @@ public class Utils {
 		 * point, in degrees
 		 * 
 		 * @param rlat1
-		 *            , rlon1 : longitude/latitude in radians of start point
-		 *            rlon2, rlat2 : longitude/latitude of end point
+		 *			, rlon1 : longitude/latitude in radians of start point
+		 *			rlon2, rlat2 : longitude/latitude of end point
 		 * 
 		 * @returns Initial bearing in degrees from North
 		 */
@@ -649,8 +649,8 @@ public class Utils {
 		 * rhumb line
 		 * 
 		 * @param rlat1
-		 *            , rlon1 : longitude/latitude in radians of start point
-		 *            rlon2, rlat2 : longitude/latitude of end point
+		 *			, rlon1 : longitude/latitude in radians of start point
+		 *			rlon2, rlat2 : longitude/latitude of end point
 		 * 
 		 * @returns Initial bearing in degrees from North
 		 */
@@ -697,7 +697,7 @@ public class Utils {
 			}
 		}
 
-		bar.append("]   " + percent + "%     ");
+		bar.append("]   " + percent + "%	 ");
 		System.out.print("\r" + bar.toString());
 	}
 
@@ -818,17 +818,17 @@ public class Utils {
 	}
 
 	public static String getStringNodeAttribute(Node node, String attributeName) {
-        Object attr = node.getAttribute(attributeName);
+		Object attr = node.getAttribute(attributeName);
 		if (attr == null) {
 			throw new RuntimeException("Attribute, " + attributeName
 					+ ", missing from node");
 		}
-        if(!attr.getClass().equals(String.class)) {
-            throw new RuntimeException(
-                "Attribute, " + attributeName 
-                + ", is not a text attribute for nodes."
-            );
-        }
+		if(!attr.getClass().equals(String.class)) {
+			throw new RuntimeException(
+				"Attribute, " + attributeName 
+				+ ", is not a text attribute for nodes."
+			);
+		}
 		return attr.toString();
 	}
 
@@ -1251,7 +1251,7 @@ public class Utils {
 
 			System.out.println(sliceTime);
 			System.out.println(array.length);
-//            print2DArray(array);
+//			print2DArray(array);
 			
 		}// END while has next
 	}// END: saveHashMap

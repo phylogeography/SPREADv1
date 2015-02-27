@@ -331,10 +331,10 @@ public class LocationCoordinatesEditor {
 
 			this.workingDirectory = workingDirectory;
 
-            if(treeFilename == null) {
-                Utils.errorMessageBox("Must open a file first.");
-                return;
-            }
+			if(treeFilename == null) {
+				Utils.errorMessageBox("Must open a file first.");
+				return;
+			}
 
 			RootedTree tree = (RootedTree) new NexusImporter(new FileReader(
 					treeFilename)).importNextTree();

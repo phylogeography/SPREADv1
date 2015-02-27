@@ -100,8 +100,8 @@
 
         <echo message="Linux/Unix version release is finished." />
         
-        <!--<echo message="Cleaning up." />
-         <delete dir="${Linux_package_dir}" />-->
+        <echo message="Cleaning up." />
+         <delete dir="${Linux_package_dir}" />
         
     </target>
 
