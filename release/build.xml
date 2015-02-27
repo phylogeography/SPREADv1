@@ -83,6 +83,8 @@
             <fileset dir="${Linux_dir}/scripts"/>
         </copy>
 
+        <chmod dir="${Linux_package_dir}/bin" perm="ugo+x" includes="**/*"/>
+
         <copy file="${Linux_dir}/icons/spread.png" todir="${Linux_package_dir}/images"/>
         <copy file="${dist}/spread.jar" todir="${Linux_package_dir}/lib"/>
         <copy todir="${Linux_package_dir}/lib">

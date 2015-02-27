@@ -48,6 +48,15 @@ public class Utils {
 		DEFAULT, USER
 	}
 
+	public static void errorMessageBox(final String msg) {
+		JOptionPane.showMessageDialog(Utils.getActiveFrame(), //
+			msg, //
+			"Error", //
+			JOptionPane.ERROR_MESSAGE, //
+			SpreadApp.errorIcon
+		);
+	}
+
 	// ////////////////////////////////
 	// ---EXCEPTION HANDLING UTILS---//
 	// ////////////////////////////////
@@ -809,11 +818,18 @@ public class Utils {
 	}
 
 	public static String getStringNodeAttribute(Node node, String attributeName) {
-		if (node.getAttribute(attributeName) == null) {
+		Object attr = node.getAttribute(attributeName);
+		if (attr == null) {
 			throw new RuntimeException("Attribute, " + attributeName
 					+ ", missing from node");
 		}
-		return (String) node.getAttribute(attributeName);
+		if(!attr.getClass().equals(String.class)) {
+			throw new RuntimeException(
+				"Attribute, " + attributeName 
+				+ ", is not a text attribute for nodes."
+			);
+		}
+		return attr.toString();
 	}
 
 	public static String getStringNodeAttribute(Node node,
