@@ -697,7 +697,7 @@ public class Utils {
 			}
 		}
 
-		bar.append("]   " + percent + "%      ");
+		bar.append("]   " + percent + "%     ");
 		System.out.print("\r" + bar.toString());
 	}
 
