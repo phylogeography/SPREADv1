@@ -42,7 +42,9 @@ public class TerminalTab extends JPanel {
 
 		// Redirect streams
 		System.setOut(new PrintStream(new JTextAreaOutputStream(textArea)));
-		System.setErr(new PrintStream(new JTextAreaOutputStream(textArea)));
+		
+		//for dev it's easier to catch them in console
+//		System.setErr(new PrintStream(new JTextAreaOutputStream(textArea)));
 
 //		//TODO: check how to append and use JEditorPane for text, hyperlinks handling etc
 //		JEditorPane textAreaTest = new JEditorPane();
