@@ -332,7 +332,7 @@ public class LocationCoordinatesEditor {
 			this.workingDirectory = workingDirectory;
 
 			if(treeFilename == null) {
-				Utils.errorMessageBox("Must open a file first.");
+				Utils.handleError("Must open a file first.");
 				return;
 			}
 

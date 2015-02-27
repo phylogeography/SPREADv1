@@ -48,21 +48,16 @@ public class Utils {
 		DEFAULT, USER
 	}
 
-	public static void errorMessageBox(final String msg) {
-		JOptionPane.showMessageDialog(Utils.getActiveFrame(), //
-			msg, //
-			"Error", //
-			JOptionPane.ERROR_MESSAGE, //
-			SpreadApp.errorIcon
-		);
-	}
-
 	// ////////////////////////////////
 	// ---EXCEPTION HANDLING UTILS---//
 	// ////////////////////////////////
 
 	public static void handleException(final Throwable e, final String msg) {
 
+		/*
+		 * Called when exception is caught
+		 * */
+		
 		final Thread t = Thread.currentThread();
 		
 		if (SwingUtilities.isEventDispatchThread()) {
@@ -77,7 +72,7 @@ public class Utils {
 	}// END: uncaughtException
 
 	private static void showExceptionDialog(Thread t, Throwable e, String msg) {
-		
+
 		String message = String.format("Unexpected problem on thread %s: %s" + "\n" + msg,
 				t.getName(), e.getMessage());
 
@@ -93,8 +88,35 @@ public class Utils {
 	private static void logException(Thread t, Throwable e) {
 		// TODO: start a thread that logs it, also spying on the user and planting evidence
 		// CIA style MOFO!!!
+		// END: Poor attempt at humor
 		e.printStackTrace();
 	}// END: logException
+	
+	public static void handleError(final String msg) {
+
+		/*
+		 * Called when possible exception can occur
+		 * */
+		
+		if (SwingUtilities.isEventDispatchThread()) {
+			showErrorDialog(msg);
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					showErrorDialog(msg);
+				}
+			});
+		}// END: EDT check
+	}// END: uncaughtException
+	
+	public static void showErrorDialog(final String msg) {
+		JOptionPane.showMessageDialog(Utils.getActiveFrame(), //
+			msg, //
+			"Error", //
+			JOptionPane.ERROR_MESSAGE, //
+			SpreadApp.errorIcon
+		);
+	}
 	
 	// ///////////////////////////
 	// ---DISCRETE TREE UTILS---//
