@@ -2,6 +2,13 @@
 ------------------------------------------------
 * Fixed bug in Continuous tree template that caused empty KMLs to be generated
 * Moved state attribute name spinner after the tree file loader (in the order the files should be loaded)
+* Make Linux bin/spread executable when built
+* Fixed bug when no file was loaded and setup was clicked (Issue #7)
+* Fixed bug when incorrect State was selected and an exception was raised about Object->String cast error instead
+  of the error about selecting a correct state.
+* Fixed an issue with ant build for linux where release/Linux/lib directory did not exist that prevented the build
+  from succeeding
+* Removed release/common/Changelog from git as it is copied with ant from main Changelog
 
 March 4, 2013: SPREAD version 1.0.6 released
 ------------------------------------------------
