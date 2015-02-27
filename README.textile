@@ -2,7 +2,7 @@
 .:: SPREAD ::.
 ===================
 *Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
-Version: 1.0.7rc, 2013
+Version: 1.0.7rc, 2015
 Authors: Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
 Homepage: www.phylogeography.org
 License: LGPL
@@ -57,6 +57,7 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basi
 
 h1. TODO
 
+* Left panel stretches if a parsed attribute name is long
 * Rewrite Log file reader 
 * Mean tree calculation (from .trees file)
 * Combobox for relaxed (from parser) / standard brownian motion (rate of 1)
