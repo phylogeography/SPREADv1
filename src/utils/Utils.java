@@ -423,7 +423,7 @@ public class Utils {
 		 * latitude/longitude using the Spherical Law of Cosines (slc)
 		 * 
 		 * @param start
-		 *			point Lon, Lat; end point Lon, Lat;
+		 *            point Lon, Lat; end point Lon, Lat;
 		 * 
 		 * @return distance in km
 		 * */
@@ -446,7 +446,7 @@ public class Utils {
 		 * latitude/longitude using the Haversine formula
 		 * 
 		 * @param start
-		 *			point Lon, Lat; end point Lon, Lat;
+		 *            point Lon, Lat; end point Lon, Lat;
 		 * 
 		 * @return distance in km
 		 * */
@@ -470,7 +470,7 @@ public class Utils {
 		 * latitude/longitude using the Vincenty inverse formula for ellipsoids
 		 * 
 		 * @param start
-		 *			point Lon, Lat; end point Lon, Lat;
+		 *            point Lon, Lat; end point Lon, Lat;
 		 * 
 		 * @return distance in km
 		 * */
@@ -574,7 +574,7 @@ public class Utils {
 		 * travelling along a rhumb line
 		 * 
 		 * @param start
-		 *			point Lon, Lat; end point Lon, Lat;
+		 *            point Lon, Lat; end point Lon, Lat;
 		 * 
 		 * @return distance in km
 		 */
@@ -608,8 +608,8 @@ public class Utils {
 		 * point, in degrees
 		 * 
 		 * @param rlat1
-		 *			, rlon1 : longitude/latitude in radians of start point
-		 *			rlon2, rlat2 : longitude/latitude of end point
+		 *            , rlon1 : longitude/latitude in radians of start point
+		 *            rlon2, rlat2 : longitude/latitude of end point
 		 * 
 		 * @returns Initial bearing in degrees from North
 		 */
@@ -649,8 +649,8 @@ public class Utils {
 		 * rhumb line
 		 * 
 		 * @param rlat1
-		 *			, rlon1 : longitude/latitude in radians of start point
-		 *			rlon2, rlat2 : longitude/latitude of end point
+		 *            , rlon1 : longitude/latitude in radians of start point
+		 *            rlon2, rlat2 : longitude/latitude of end point
 		 * 
 		 * @returns Initial bearing in degrees from North
 		 */
@@ -697,7 +697,7 @@ public class Utils {
 			}
 		}
 
-		bar.append("]   " + percent + "%	 ");
+		bar.append("]   " + percent + "%      ");
 		System.out.print("\r" + bar.toString());
 	}
 
@@ -1251,7 +1251,7 @@ public class Utils {
 
 			System.out.println(sliceTime);
 			System.out.println(array.length);
-//			print2DArray(array);
+//            print2DArray(array);
 			
 		}// END while has next
 	}// END: saveHashMap
