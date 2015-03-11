@@ -1,8 +1,8 @@
 ===================
 .:: SPREAD ::.
 ===================
-SPREAD: *Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
-Version: 1.0.6, 2013
+*Spatial Phylogenetic Reconstruction of Evolutionary Dynamics*
+Version: 1.0.7rc, 2015
 Authors: Filip Bielejec, Andrew Rambaut, Marc A. Suchard & Philippe Lemey
 Homepage: www.phylogeography.org
 License: LGPL
@@ -57,11 +57,15 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basi
 
 h1. TODO
 
+* Left panel stretches if a parsed attribute name is long
+* (Continous Tree) Relate the HPD areas shown as polygons in GoogleEarth with specific nodes of the tree
+* Rewrite Log file reader 
+* Mean tree calculation (from .trees file)
 * Combobox for relaxed (from parser) / standard brownian motion (rate of 1)
 * Annotate the terminals in the tree with corresponding taxon names
 * Move all the parsing code to reader classes for trees -> avoid code duplication  
 * Add command line interface for kml templates 
 * Fix large scaling factor issues
-
+* Spread v2.0
 
 

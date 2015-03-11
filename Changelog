@@ -1,4 +1,4 @@
-2015: SPREAD version 1.0.7 release candidate
+2015: SPREAD version 1.0.7
 ------------------------------------------------
 * Fixed bug in Continuous tree template that caused empty KMLs to be generated
 * Moved state attribute name spinner after the tree file loader (in the order the files should be loaded)

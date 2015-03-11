@@ -58,6 +58,7 @@ You're interested in contributing to SPREAD? *THAT'S AWESOME!* Here are the basi
 h1. TODO
 
 * Left panel stretches if a parsed attribute name is long
+* (Continous Tree) Relate the HPD areas shown as polygons in GoogleEarth with specific nodes of the tree
 * Rewrite Log file reader 
 * Mean tree calculation (from .trees file)
 * Combobox for relaxed (from parser) / standard brownian motion (rate of 1)

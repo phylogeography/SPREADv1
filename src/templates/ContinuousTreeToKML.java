@@ -310,6 +310,7 @@ public class ContinuousTreeToKML {
 							double endTime = mrsd.minus((int) (parentHeight
 									* DaysInYear * timescaler));
 
+							//TODO: correlate with node names
 							Line line = new Line(
 									(parentLongitude + "," + parentLatitude
 											+ ":" + longitude + "," + latitude), // name
@@ -416,6 +417,7 @@ public class ContinuousTreeToKML {
 									int days = (int) (nodeHeight * DaysInYear * timescaler);
 									double startTime = mrsd.minus(days);
 
+									//TODO: correlate with node names
 									polygonsLayer.addItem(new Polygon("node"
 											+ polygonsStyleId + "_" + HPDString
 											+ "_" + i, // String name
