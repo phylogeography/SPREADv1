@@ -1,3 +1,7 @@
+2016: SPREAD version 1.0.8 rc
+------------------------------------------------
+
+
 2015: SPREAD version 1.0.7
 ------------------------------------------------
 * Fixed bug in Continuous tree template that caused empty KMLs to be generated
