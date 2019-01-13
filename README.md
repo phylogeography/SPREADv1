@@ -23,7 +23,7 @@ License: LGPL
  
 ### PURPOSE
                             
-SPREAD is a Java program supporting processing and visualizations of BEAST's phylogeographic models ("BEAST software":http://beast.bio.ed.ac.uk/Main_Page). 
+SPREAD is a Java program supporting processing and visualizations of BEAST's phytogeographic models ("BEAST software":http://beast.bio.ed.ac.uk/Main_Page). 
 
 Contains visualisations (templates), wrapped in a user friendly interface. Supported visualisations include embedded Processing applets and KML output for viewing in "Google Earth":http://www.google.com/earth or any other virtual globe software capable of reading the format.
 
